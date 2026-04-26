@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import type { SiteSettings } from "./validators/content";
+import type {
+  SiteSettings,
+  SolutionDetail,
+  FaqEntry,
+} from "./validators/content";
 
 export function buildMetadata({
   title,
@@ -82,5 +86,84 @@ export function buildOrganizationJsonLd(
       },
     ],
     ...(sameAs.length > 0 ? { sameAs } : {}),
+  };
+}
+
+// ============================================================================
+// JSON-LD helpers — Pages détaillées des solutions corporate
+// (feature 001-pages-corporate-solutions)
+// ============================================================================
+
+export function buildProductJsonLd(
+  solution: SolutionDetail,
+  siteUrl: string
+): Record<string, unknown> {
+  const url = new URL(`/solutions/${solution.slug}`, siteUrl).toString();
+  const image = solution.ogImage
+    ? new URL(solution.ogImage, siteUrl).toString()
+    : undefined;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: solution.name,
+    description: solution.shortDescription,
+    category: solution.category,
+    brand: {
+      "@type": "Brand",
+      name: "Alliance Consultants",
+    },
+    url,
+    ...(image ? { image } : {}),
+  };
+}
+
+export function buildFaqJsonLd(faq: FaqEntry[]): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((entry) => ({
+      "@type": "Question",
+      name: entry.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: entry.answer,
+      },
+    })),
+  };
+}
+
+export function buildBreadcrumbJsonLd({
+  slug,
+  name,
+  siteUrl,
+}: {
+  slug: string;
+  name: string;
+  siteUrl: string;
+}): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Accueil",
+        item: new URL("/", siteUrl).toString(),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Solutions",
+        item: new URL("/solutions", siteUrl).toString(),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name,
+        item: new URL(`/solutions/${slug}`, siteUrl).toString(),
+      },
+    ],
   };
 }

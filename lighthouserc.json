@@ -1,7 +1,16 @@
 {
   "ci": {
     "collect": {
-      "url": ["http://localhost:3000/"],
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/solutions",
+        "http://localhost:3000/solutions/docupro-suite",
+        "http://localhost:3000/solutions/medicpro",
+        "http://localhost:3000/solutions/cliniquepro",
+        "http://localhost:3000/solutions/immotopia-cloud",
+        "http://localhost:3000/solutions/annonces-web",
+        "http://localhost:3000/solutions/ecole-digitale"
+      ],
       "numberOfRuns": 3,
       "settings": {
         "preset": "desktop",

@@ -5,12 +5,14 @@ import {
   SiteSettingsSchema,
   HomepageSchema,
   SolutionSchema,
+  SolutionDetailSchema,
   ServiceSchema,
   TrainingSchema,
   ReferenceSchema,
   type SiteSettings,
   type Homepage,
   type Solution,
+  type SolutionDetail,
   type Service,
   type Training,
   type Reference,
@@ -46,6 +48,28 @@ export async function getSolutions(
   let result = solutions.sort((a, b) => a.homepageOrder - b.homepageOrder);
   if (opts.homepageOnly) result = result.filter((s) => s.showOnHomepage);
   return result;
+}
+
+export async function getSolutionDetailBySlug(
+  slug: string
+): Promise<(SolutionDetail & { body: string }) | null> {
+  const filePath = path.join(ROOT, "solutions", `${slug}.mdx`);
+  let raw: string;
+  try {
+    raw = await fs.readFile(filePath, "utf-8");
+  } catch {
+    return null;
+  }
+  const { data, content } = matter(raw);
+  return { ...SolutionDetailSchema.parse(data), body: content };
+}
+
+export async function getAllSolutionDetailSlugs(): Promise<string[]> {
+  const dir = path.join(ROOT, "solutions");
+  const files = await fs.readdir(dir);
+  return files
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => f.replace(/\.mdx$/, ""));
 }
 
 export async function getServices(

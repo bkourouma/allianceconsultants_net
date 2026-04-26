@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="DocuPro Suite — Alliance Consultants">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <text x="60" y="320" font-family="Helvetica, Arial, sans-serif" font-size="84" font-weight="700" fill="#ffffff">DocuPro Suite</text>
+  <text x="60" y="400" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="400" fill="#e2e8f0">Alliance Consultants</text>
+</svg>

@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate content
+        run: npm run validate-content
+
+      - name: Unit tests
+        run: npm run test:ci
+
+      - name: Build
+        run: next build
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+          NEXT_PUBLIC_SITE_URL: https://allianceconsultants.net
+          SKIP_DB_PUSH: "true"
+
+      # Lighthouse CI — non bloquant MVP, bloquant en V2
+      - name: Lighthouse CI (non-blocking MVP)
+        run: npm run lhci || true
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

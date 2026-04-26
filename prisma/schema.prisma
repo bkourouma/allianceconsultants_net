@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadIntent {
+  DEMO
+  CONTACT
+  TRAINING
+  AUTOMATION
+  DIAGNOSTIC
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  ARCHIVED
+  SPAM
+}
+
+model Lead {
+  id           String     @id @default(cuid())
+  createdAt    DateTime   @default(now())
+
+  // Intention & origine (transmis par les query params des CTA)
+  intent       LeadIntent
+  solutionSlug String?
+  fromPage     String?
+  fromBlock    String?
+
+  // Champs formulaire (feature /contact-demo)
+  name         String
+  email        String
+  phone        String
+  organization String
+  message      String     @db.Text
+  consent      Boolean
+
+  // Métadonnées anti-spam (RGPD)
+  userAgent    String?    @db.Text
+  ipHash       String?
+  honeypot     String?
+
+  // Cycle de vie
+  status       LeadStatus @default(NEW)
+  notes        String?    @db.Text
+  contactedAt  DateTime?
+  contactedBy  String?
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([intent])
+}

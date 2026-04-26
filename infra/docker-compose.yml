@@ -1,0 +1,44 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://allcc:allcc@db:5432/allcc
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://allianceconsultants.net}
+      NEXT_PUBLIC_MATOMO_URL: ${NEXT_PUBLIC_MATOMO_URL:-}
+      NEXT_PUBLIC_MATOMO_SITE_ID: ${NEXT_PUBLIC_MATOMO_SITE_ID:-}
+      ADMIN_BASIC_USER: ${ADMIN_BASIC_USER}
+      ADMIN_BASIC_PASSWORD_HASH: ${ADMIN_BASIC_PASSWORD_HASH}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: ${SMTP_FROM}
+      LEAD_NOTIFY_TO: ${LEAD_NOTIFY_TO}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: allcc
+      POSTGRES_PASSWORD: allcc
+      POSTGRES_DB: allcc
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U allcc -d allcc"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

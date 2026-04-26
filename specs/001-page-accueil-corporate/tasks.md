@@ -124,9 +124,9 @@
 
 **Independent Test**: Verify AI section is reachable by scroll on both desktop and mobile; section lists ≥5 capabilities; CTA "Automatiser un processus" links to `/contact-demo?intent=automation`.
 
-- [ ] T050 [US3] Author `aiSection` block in `content/homepage.mdx` — `title: "Automatisation IA des processus métiers"`, `bullets` ≥5 (automatisation tâches répétitives, workflows intelligents, analyse documentaire, extraction/résumé/classification, intégration IA métier, développement processus automatisés), `ctaLabel: "Automatiser un processus"` (FR-021)
-- [ ] T051 [US3] Create `src/components/homepage/AISection.tsx` — section title, capability bullet list, `CTAButton` "Automatiser un processus" → `/contact-demo?intent=automation`; fires `trackEvent("conversion", "automate-cta-click")` (FR-020/FR-022/SC-004)
-- [ ] T052 [US3] Wire `AISection` into `src/app/page.tsx` — position after Solutions section; add H2 section title
+- [x] T050 [US3] Author `aiSection` block in `content/homepage.mdx` — `title: "Automatisation IA des processus métiers"`, `bullets` ≥5 (automatisation tâches répétitives, workflows intelligents, analyse documentaire, extraction/résumé/classification, intégration IA métier, développement processus automatisés), `ctaLabel: "Automatiser un processus"` (FR-021)
+- [x] T051 [US3] Create `src/components/homepage/AISection.tsx` — section title, capability bullet list, `CTAButton` "Automatiser un processus" → `/contact-demo?intent=automation`; fires `trackEvent("conversion", "automate-cta-click")` (FR-020/FR-022/SC-004)
+- [x] T052 [US3] Wire `AISection` into `src/app/page.tsx` — position after Solutions section; add H2 section title
 
 **Checkpoint**: AI section visible by scrolling; CTA fires correct Matomo event and routes to `/contact-demo?intent=automation`.
 
@@ -138,16 +138,16 @@
 
 **Independent Test**: Verify 6 training cards present with title + short description + 3 modalities; verify both CTAs visible and routing correctly.
 
-- [ ] T053 [P] [US4] Create `content/trainings/ia-entreprise.mdx` — `slug: "ia-entreprise"`, `title: "Formation IA pour entreprises"`, `category: "IA"`, `modalities: { presentiel: true, distanciel: true, intra: true }`, `homepageOrder: 1`, `showOnHomepage: true`
-- [ ] T054 [P] [US4] Create `content/trainings/developpement-web-dotnet-ia.mdx` — `homepageOrder: 2`
-- [ ] T055 [P] [US4] Create `content/trainings/automatisation-n8n-processus-ia.mdx` — `homepageOrder: 3`
-- [ ] T056 [P] [US4] Create `content/trainings/sql-server.mdx` — `homepageOrder: 4`
-- [ ] T057 [P] [US4] Create `content/trainings/ged-archivage.mdx` — `homepageOrder: 5`
-- [ ] T058 [P] [US4] Create `content/trainings/gestion-projet.mdx` — `homepageOrder: 6`
-- [ ] T059 [US4] Create `src/components/shared/TrainingCard.tsx` — `title`, `shortDescription`, modality badges (Présentiel / Distanciel / Intra-entreprise) from `modalities` object
-- [ ] T060 [US4] Create `src/components/homepage/TrainingsSection.tsx` — 6 `TrainingCard` components; 3 modality labels displayed as global info; 2 CTAs: `CTAButton` "Voir le catalogue" → `/formations` (not via CTAButton — direct link), `CTAButton` "Demander une formation entreprise" → `/contact-demo?intent=training` (FR-040/FR-041/FR-042)
-- [ ] T061 [US4] Wire `TrainingsSection` into `src/app/page.tsx` — pass `getTrainings({ homepageOnly: true })`
-- [ ] T062 [P] [US4] Add Matomo events in `src/components/homepage/TrainingsSection.tsx` — `trackEvent("conversion", "catalogue-cta-click")` and `trackEvent("conversion", "training-cta-click")` (FR-142/SC-016)
+- [x] T053 [P] [US4] Create `content/trainings/ia-entreprise.mdx` — `slug: "ia-entreprise"`, `title: "Formation IA pour entreprises"`, `category: "IA"`, `modalities: { presentiel: true, distanciel: true, intra: true }`, `homepageOrder: 1`, `showOnHomepage: true`
+- [x] T054 [P] [US4] Create `content/trainings/developpement-web-dotnet-ia.mdx` — `homepageOrder: 2`
+- [x] T055 [P] [US4] Create `content/trainings/automatisation-n8n-processus-ia.mdx` — `homepageOrder: 3`
+- [x] T056 [P] [US4] Create `content/trainings/sql-server.mdx` — `homepageOrder: 4`
+- [x] T057 [P] [US4] Create `content/trainings/ged-archivage.mdx` — `homepageOrder: 5`
+- [x] T058 [P] [US4] Create `content/trainings/gestion-projet.mdx` — `homepageOrder: 6`
+- [x] T059 [US4] Create `src/components/shared/TrainingCard.tsx` — `title`, `shortDescription`, modality badges (Présentiel / Distanciel / Intra-entreprise) from `modalities` object
+- [x] T060 [US4] Create `src/components/homepage/TrainingsSection.tsx` — 6 `TrainingCard` components; 3 modality labels displayed as global info; 2 CTAs: `CTAButton` "Voir le catalogue" → `/formations` (not via CTAButton — direct link), `CTAButton` "Demander une formation entreprise" → `/contact-demo?intent=training` (FR-040/FR-041/FR-042)
+- [x] T061 [US4] Wire `TrainingsSection` into `src/app/page.tsx` — pass `getTrainings({ homepageOnly: true })`
+- [x] T062 [P] [US4] Add Matomo events in `src/components/homepage/TrainingsSection.tsx` — `trackEvent("conversion", "catalogue-cta-click")` and `trackEvent("conversion", "training-cta-click")` (FR-142/SC-016)
 
 **Checkpoint**: 6 training cards rendered; both CTAs functional; Matomo events fired on click.
 
@@ -159,14 +159,14 @@
 
 **Independent Test**: Verify 5 service cards present, each with title + description + benefit + link; verify no service card is missing or duplicated.
 
-- [ ] T063 [P] [US5] Create `content/services/developpement-specifique.mdx` — `slug: "developpement-specifique"`, `title: "Développement spécifique / SaaS métier"`, `shortDescription`, `benefit`, `homepageOrder: 1`, `showOnHomepage: true`
-- [ ] T064 [P] [US5] Create `content/services/automatisation-ia-processus-metiers.mdx` — `homepageOrder: 2`
-- [ ] T065 [P] [US5] Create `content/services/assistance-maitrise-ouvrage.mdx` — `title: "Assistance à maîtrise d'ouvrage"`, `homepageOrder: 3`
-- [ ] T066 [P] [US5] Create `content/services/dematerialisation-archives.mdx` — `title: "Dématérialisation des archives"`, `homepageOrder: 4`
-- [ ] T067 [P] [US5] Create `content/services/scanners-professionnels.mdx` — `title: "Vente et intégration de scanners professionnels"`, `homepageOrder: 5`
-- [ ] T068 [US5] Create `src/components/shared/ServiceCard.tsx` — `title`, `shortDescription`, `benefit`, `<a href="/services/{slug}">` link; fires `trackEvent("services", "card-click", slug)` on click (FR-031)
-- [ ] T069 [US5] Create `src/components/homepage/ServicesSection.tsx` — 5 `ServiceCard` components in responsive grid; section title from `homepage.mdx` (FR-030)
-- [ ] T070 [US5] Wire `ServicesSection` into `src/app/page.tsx` — pass `getServices({ homepageOnly: true })`
+- [x] T063 [P] [US5] Create `content/services/developpement-specifique.mdx` — `slug: "developpement-specifique"`, `title: "Développement spécifique / SaaS métier"`, `shortDescription`, `benefit`, `homepageOrder: 1`, `showOnHomepage: true`
+- [x] T064 [P] [US5] Create `content/services/automatisation-ia-processus-metiers.mdx` — `homepageOrder: 2`
+- [x] T065 [P] [US5] Create `content/services/assistance-maitrise-ouvrage.mdx` — `title: "Assistance à maîtrise d'ouvrage"`, `homepageOrder: 3`
+- [x] T066 [P] [US5] Create `content/services/dematerialisation-archives.mdx` — `title: "Dématérialisation des archives"`, `homepageOrder: 4`
+- [x] T067 [P] [US5] Create `content/services/scanners-professionnels.mdx` — `title: "Vente et intégration de scanners professionnels"`, `homepageOrder: 5`
+- [x] T068 [US5] Create `src/components/shared/ServiceCard.tsx` — `title`, `shortDescription`, `benefit`, `<a href="/services/{slug}">` link; fires `trackEvent("services", "card-click", slug)` on click (FR-031)
+- [x] T069 [US5] Create `src/components/homepage/ServicesSection.tsx` — 5 `ServiceCard` components in responsive grid; section title from `homepage.mdx` (FR-030)
+- [x] T070 [US5] Wire `ServicesSection` into `src/app/page.tsx` — pass `getServices({ homepageOnly: true })`
 
 **Checkpoint**: 5 service cards rendered; each navigates to `/services/<slug>`; Matomo card-click events fire.
 
@@ -178,10 +178,10 @@
 
 **Independent Test**: Verify history milestones present; verify no placeholder logos or unvalidated metrics; verify tech stack list matches FR-060.
 
-- [ ] T071 [US6] Author `referencesSection` and `techSection` blocks in `content/homepage.mdx` — `referencesSection.history` with 4 milestones (2003 création, 2006, 2013, 2026 refonte écosystème); `techSection.stack` (≥7 items) and `techSection.methodSummary`; leave `logos` and `stats` empty (no placeholder — FR-051/SC-009)
-- [ ] T072 [US6] Create `src/components/homepage/ReferencesSection.tsx` — renders history timeline; renders logos only for `validated: true` references (from `getReferences({ validatedOnly: true })`); renders chiffres clés only if non-null and validated; renders zero placeholder elements (FR-050/FR-051/SC-009)
-- [ ] T073 [US6] Create `src/components/homepage/TechMethodSection.tsx` — technology badge list from `techSection.stack`; method summary text; no CTA required (FR-060)
-- [ ] T074 [US6] Wire `ReferencesSection` and `TechMethodSection` into `src/app/page.tsx`
+- [x] T071 [US6] Author `referencesSection` and `techSection` blocks in `content/homepage.mdx` — `referencesSection.history` with 4 milestones (2003 création, 2006, 2013, 2026 refonte écosystème); `techSection.stack` (≥7 items) and `techSection.methodSummary`; leave `logos` and `stats` empty (no placeholder — FR-051/SC-009)
+- [x] T072 [US6] Create `src/components/homepage/ReferencesSection.tsx` — renders history timeline; renders logos only for `validated: true` references (from `getReferences({ validatedOnly: true })`); renders chiffres clés only if non-null and validated; renders zero placeholder elements (FR-050/FR-051/SC-009)
+- [x] T073 [US6] Create `src/components/homepage/TechMethodSection.tsx` — technology badge list from `techSection.stack`; method summary text; no CTA required (FR-060)
+- [x] T074 [US6] Wire `ReferencesSection` and `TechMethodSection` into `src/app/page.tsx`
 
 **Checkpoint**: History milestones visible; no placeholder logos; tech stack listed accurately.
 
@@ -191,18 +191,18 @@
 
 **Purpose**: Compliance, accessibility, performance, editorial review, and E2E validation.
 
-- [ ] T075 Run `npx tsx scripts/validate-content.ts` — confirm zero Zod errors and zero forbidden strings across all `content/**` files before any build (FR-116/FR-132/SC-009/SC-010)
-- [ ] T076 [P] Audit `src/styles/globals.css` — add `html { scroll-padding-top: <header-height> }` for anchor deep-link offset; add `@media (prefers-reduced-motion: reduce)` suppression for all transitions/animations (FR-115/edge-case deep-links)
-- [ ] T077 [P] Verify SEO structure in `src/app/page.tsx` — single H1, `<title>` ≤60 chars, `<meta name="description">` ≤160 chars, H2/H3 hierarchy with no level skip, all solution/service/training links present (FR-100 through FR-105/SC-015)
-- [ ] T078 Full editorial review of all MDX content in `content/` — zero English-language CTA, zero template mention, French professional tone throughout, brand names and CTA labels consistent with other pages, coordonnées match `site-settings.json` (SC-009/SC-010/SC-011)
-- [ ] T079 [P] Validate JSON-LD `Organization` output from `src/lib/seo.ts` — `name`, `url`, `logo`, `address`, `email`, `telephone`, `sameAs` (social URLs from site-settings.json); test with Google Rich Results Test or equivalent (SC-014)
-- [ ] T080 [P] Audit for zero cookies on first visit — run `npm run build && npm start`, open in browser, check DevTools Application → Cookies; confirm no cookie set before any user interaction (SC-017/FR-123)
-- [ ] T081 Create Playwright E2E tests in `tests/e2e/homepage.spec.ts` — covers acceptance scenarios for US1 (hero above-the-fold), US2 (6 cards equitable), US3 (AI section reachable by scroll), US4 (2 CTAs), US5 (5 cards), US6 (no placeholder), US7 (final CTA → /contact-demo); includes `@axe-core/playwright` a11y check (SC-008)
-- [ ] T082 [P] Create Playwright E2E tests in `tests/e2e/redirects.spec.ts` — for every `CTAButton` on page: verify navigation ends at `/contact-demo`, correct `intent` param present, `solution` param present where applicable; verify zero form inputs on homepage (FR-080/FR-081/SC-013)
-- [ ] T083 [P] Create Playwright E2E tests in `tests/e2e/analytics.spec.ts` — intercept XHR to Matomo; verify all events from FR-142 fire (hero CTAs, 6 solution clicks, automation CTA, 2 training CTAs, 5 service clicks, final CTA, scroll-depth 25/50/75/100); verify no PII in event payloads (FR-142/FR-144/SC-016)
-- [ ] T084 [P] Create Vitest frontmatter validation test in `tests/content/frontmatter.test.ts` — loads all MDX files in `content/solutions/`, `content/services/`, `content/trainings/`, `content/references/`; asserts each passes the corresponding Zod schema; asserts `showOnHomepage: true` solutions + services + trainings equal expected counts (6/5/6)
-- [ ] T085 Run `npm run build && npm run lhci` — verify Lighthouse mobile scores: Performance ≥ 85, CLS ≤ 0.1, LCP ≤ 2.5 s, INP ≤ 200 ms on homepage build output (SC-007/FR-034 in plan Technical Context)
-- [ ] T086 [P] Add Lighthouse CI step to `.github/workflows/ci.yml` using `lhci autorun` — configured as **non-blocking** for MVP (comment: `# non-bloquant MVP — bloquant en V2` per plan.md)
+- [x] T075 Run `npx tsx scripts/validate-content.ts` — confirm zero Zod errors and zero forbidden strings across all `content/**` files before any build (FR-116/FR-132/SC-009/SC-010)
+- [x] T076 [P] Audit `src/styles/globals.css` — add `html { scroll-padding-top: <header-height> }` for anchor deep-link offset; add `@media (prefers-reduced-motion: reduce)` suppression for all transitions/animations (FR-115/edge-case deep-links)
+- [x] T077 [P] Verify SEO structure in `src/app/page.tsx` — single H1, `<title>` ≤60 chars, `<meta name="description">` ≤160 chars, H2/H3 hierarchy with no level skip, all solution/service/training links present (FR-100 through FR-105/SC-015)
+- [x] T078 Full editorial review of all MDX content in `content/` — zero English-language CTA, zero template mention, French professional tone throughout, brand names and CTA labels consistent with other pages, coordonnées match `site-settings.json` (SC-009/SC-010/SC-011)
+- [x] T079 [P] Validate JSON-LD `Organization` output from `src/lib/seo.ts` — `name`, `url`, `logo`, `address`, `email`, `telephone`, `sameAs` (social URLs from site-settings.json); test with Google Rich Results Test or equivalent (SC-014)
+- [x] T080 [P] Audit for zero cookies on first visit — run `npm run build && npm start`, open in browser, check DevTools Application → Cookies; confirm no cookie set before any user interaction (SC-017/FR-123)
+- [x] T081 Create Playwright E2E tests in `tests/e2e/homepage.spec.ts` — covers acceptance scenarios for US1 (hero above-the-fold), US2 (6 cards equitable), US3 (AI section reachable by scroll), US4 (2 CTAs), US5 (5 cards), US6 (no placeholder), US7 (final CTA → /contact-demo); includes `@axe-core/playwright` a11y check (SC-008)
+- [x] T082 [P] Create Playwright E2E tests in `tests/e2e/redirects.spec.ts` — for every `CTAButton` on page: verify navigation ends at `/contact-demo`, correct `intent` param present, `solution` param present where applicable; verify zero form inputs on homepage (FR-080/FR-081/SC-013)
+- [x] T083 [P] Create Playwright E2E tests in `tests/e2e/analytics.spec.ts` — intercept XHR to Matomo; verify all events from FR-142 fire (hero CTAs, 6 solution clicks, automation CTA, 2 training CTAs, 5 service clicks, final CTA, scroll-depth 25/50/75/100); verify no PII in event payloads (FR-142/FR-144/SC-016)
+- [x] T084 [P] Create Vitest frontmatter validation test in `tests/content/frontmatter.test.ts` — loads all MDX files in `content/solutions/`, `content/services/`, `content/trainings/`, `content/references/`; asserts each passes the corresponding Zod schema; asserts `showOnHomepage: true` solutions + services + trainings equal expected counts (6/5/6)
+- [x] T085 Run `npm run build && npm run lhci` — verify Lighthouse mobile scores: Performance ≥ 85, CLS ≤ 0.1, LCP ≤ 2.5 s, INP ≤ 200 ms on homepage build output (SC-007/FR-034 in plan Technical Context)
+- [x] T086 [P] Add Lighthouse CI step to `.github/workflows/ci.yml` using `lhci autorun` — configured as **non-blocking** for MVP (comment: `# non-bloquant MVP — bloquant en V2` per plan.md)
 
 **Checkpoint**: All E2E tests pass; zero cookies on first visit; Lighthouse ≥ 85 mobile; zero forbidden strings; editorial review signed off.
 

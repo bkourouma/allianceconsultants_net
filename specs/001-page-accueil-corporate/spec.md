@@ -5,6 +5,16 @@
 **Status**: Draft
 **Input**: User description: "Créer la spécification fonctionnelle de la nouvelle page d'accueil de allianceconsultants.net. La page doit repositionner Alliance Consultants comme une marque ombrelle technologique africaine et rendre visible son écosystème complet : DocuPro Suite, MedicPro, CliniquePro, ImmoTopia.cloud, Annonces Web, École Digitale, services experts, formations IA et développement, automatisation IA des processus métiers."
 
+## Clarifications
+
+### Session 2026-04-26
+
+- Q: Formulaire de contact intégré sur l'accueil ou redirection vers `/contact-demo` ? → A: Redirection vers `/contact-demo` (aucun formulaire intégré à l'accueil)
+- Q: Périmètre linguistique du MVP ? → A: Français uniquement (pas de sélecteur de langue, pas de `hreflang`, pas d'architecture i18n imposée pour le MVP)
+- Q: Tracking analytique et événements de conversion ? → A: Matomo auto-hébergé, configuré en mode RGPD-friendly (anonymisation IP, sans cookie si possible) ; événements de conversion business obligatoires sur tous les CTA et la profondeur de scroll
+- Q: Bandeau de consentement cookies pour le MVP ? → A: Pas de bandeau (la page d'accueil n'utilise aucun cookie non strictement nécessaire ; Matomo en mode sans cookie ; toute introduction future d'un tracker à cookie déclencherait une feature dédiée « consentement »)
+- Q: Engagement de disponibilité (uptime) de la page d'accueil ? → A: 99,5 % mensuel (≈ 3,6 h d'indisponibilité tolérée par mois) ; maintenance planifiée annoncée et fenêtre 20 h–6 h GMT (hors heures ouvrées Afrique francophone) ; monitoring uptime obligatoire
+
 ## Contexte et alignement constitutionnel
 
 Cette spécification est régie par la constitution du projet ([.specify/memory/constitution.md](../../.specify/memory/constitution.md), v1.0.0).
@@ -116,17 +126,17 @@ Un décideur prudent, avant de demander une démo ou un contact, veut évaluer l
 
 ### User Story 7 - Conclure la visite par une demande de contact ou de démo (Priority: P1)
 
-Un décideur ayant parcouru la page doit pouvoir conclure sa visite par une action business : demander une démo, contacter le commercial, ou être redirigé vers la page Contact & Démo via un bloc CTA final fort.
+Un décideur ayant parcouru la page doit pouvoir conclure sa visite par une action business : être redirigé vers la page Contact & Démo via un bloc CTA final fort, où il pourra qualifier sa demande (démo, contact commercial, formation, automatisation, diagnostic).
 
 **Why this priority**: la conversion finale est l'objectif business numéro un de la page d'accueil (Principe III). Sans bloc final clair, le taux de conversion s'effondre même si la page a tenu sur le reste.
 
-**Independent Test**: vérifier la présence d'un bloc CTA final (titre fort, sous-titre, CTA principal vers Contact & Démo) et la présence soit d'un formulaire court intégré sur l'accueil, soit d'une redirection vers `/contact-demo`.
+**Independent Test**: vérifier la présence d'un bloc CTA final (titre fort, sous-titre, CTA principal vers `/contact-demo`) et qu'aucun formulaire de saisie n'est présent sur l'accueil ; tous les CTA business renvoient vers `/contact-demo` sans perte d'intention.
 
 **Acceptance Scenarios**:
 
-1. **Given** un décideur arrive en bas de page, **When** il observe la zone finale, **Then** un bloc CTA final est présent avec un titre fort orienté écosystème (par défaut : « Un projet SaaS, GED, immobilier, santé ou IA ? Parlons-en. ») et un CTA principal qui mène vers Contact & Démo.
-2. **Given** un formulaire court est intégré sur l'accueil, **When** un décideur le consulte, **Then** il comporte au minimum les champs : nom, email, téléphone, organisation, solution d'intérêt, message, et une case de consentement explicite à la politique de confidentialité (case non pré-cochée).
-3. **Given** la page d'accueil ne porte pas de formulaire intégré, **When** un décideur clique sur le CTA final, **Then** il est redirigé vers `/contact-demo` sans perte d'intention.
+1. **Given** un décideur arrive en bas de page, **When** il observe la zone finale, **Then** un bloc CTA final est présent avec un titre fort orienté écosystème (par défaut : « Un projet SaaS, GED, immobilier, santé ou IA ? Parlons-en. ») et un CTA principal qui mène vers `/contact-demo`.
+2. **Given** un décideur clique sur n'importe quel CTA business de la page (« Demander une démo », « Automatiser un processus », « Demander une formation entreprise », CTA final), **When** la navigation se déclenche, **Then** il est redirigé vers `/contact-demo`, et l'intention (type de demande, solution d'intérêt si applicable) est transmise à la page de destination (par paramètre d'URL ou ancre vers le bon formulaire).
+3. **Given** la page d'accueil est inspectée, **When** un observateur en parcourt le contenu, **Then** aucun champ de saisie de formulaire (nom, email, téléphone, etc.) n'y est présent.
 
 ---
 
@@ -137,9 +147,8 @@ Un décideur ayant parcouru la page doit pouvoir conclure sa visite par une acti
 - **Visiteur en navigation clavier uniquement** : tous les CTA, liens, cartes solutions/services et champs de formulaire DOIVENT être atteignables et activables au clavier, avec un focus visible.
 - **Visiteur utilisant un lecteur d'écran** : la structure sémantique (header, nav, main, sections, footer) DOIT permettre une lecture cohérente ; les images informatives portent un `alt` pertinent, les images décoratives un `alt` vide.
 - **Visiteur configurant `prefers-reduced-motion`** : les animations DOIVENT être réduites ou supprimées.
-- **Saisie incomplète ou invalide du formulaire** : la validation client ET serveur DOIT empêcher la soumission, afficher un message clair en français, et préserver les saisies déjà valides.
-- **Tentative de spam sur le formulaire** : une protection anti-spam (honeypot, captcha discret ou équivalent) DOIT bloquer les soumissions automatisées sans gêner les humains.
 - **Visiteur arrivant via un lien profond avec ancre (ex. `#solutions`)** : la section ciblée DOIT être atteinte avec un offset correct (le header sticky ne doit pas masquer le titre de section).
+- **Visiteur cliquant sur un CTA business** : la redirection vers `/contact-demo` DOIT préserver l'intention (type de demande, solution d'intérêt) ; aucun CTA ne doit aboutir à un cul-de-sac ou à une page non qualifiée.
 - **Visiteur consultant la page sur tablette en orientation paysage et portrait** : le rendu DOIT rester sans régression de contenu ni de CTA.
 
 ## Requirements *(mandatory)*
@@ -199,12 +208,11 @@ Un décideur ayant parcouru la page doit pouvoir conclure sa visite par une acti
 - **FR-070** : la page DOIT se terminer par un bloc CTA final fort, avec un titre orienté écosystème. Titre par défaut : « Un projet SaaS, GED, immobilier, santé ou IA ? Parlons-en. »
 - **FR-071** : le CTA final DOIT mener à la page Contact & Démo (`/contact-demo`).
 
-#### Formulaire de contact / redirection
+#### Redirection vers la page Contact & Démo
 
-- **FR-080** : la page d'accueil DOIT, au choix, soit intégrer un formulaire court de contact, soit rediriger vers `/contact-demo`. Le choix DOIT être unique pour le MVP et documenté lors de la phase plan.
-- **FR-081** : si un formulaire est intégré sur l'accueil, il DOIT comporter les champs : nom, email, téléphone, organisation, solution d'intérêt (sélection liée aux 6 solutions), message, case de consentement explicite à la politique de confidentialité (non pré-cochée).
-- **FR-082** : tout formulaire DOIT être validé côté client ET côté serveur, et intégrer une protection anti-spam (honeypot, captcha discret, ou équivalent).
-- **FR-083** : la finalité de la collecte de données DOIT être affichée clairement à proximité du formulaire ; un lien vers la politique de confidentialité DOIT être présent.
+- **FR-080** : la page d'accueil NE DOIT PAS intégrer de formulaire de saisie. Tous les CTA business de l'accueil (« Demander une démo », « Découvrir nos solutions », « Voir les formations IA », « Automatiser un processus », « Voir le catalogue », « Demander une formation entreprise », CTA final) DOIVENT rediriger vers `/contact-demo`.
+- **FR-081** : la redirection DOIT préserver l'intention de l'utilisateur : le type de demande (démo, contact, formation, automatisation, diagnostic) et, lorsque pertinent, la solution d'intérêt (DocuPro Suite, MedicPro, CliniquePro, ImmoTopia.cloud, Annonces Web, École Digitale) DOIVENT être transmis à la page de destination (par paramètre d'URL, ancre, ou mécanisme équivalent).
+- **FR-082** : la spécification, l'implémentation et la sécurisation des formulaires (champs, validation client/serveur, anti-spam, consentement, persistance, notifications) relèvent de la feature `/contact-demo` et sont hors périmètre de cette feature.
 
 #### Header et footer globaux
 
@@ -236,11 +244,33 @@ Un décideur ayant parcouru la page doit pouvoir conclure sa visite par une acti
 - **FR-120** : aucune clé API ni secret NE DOIT être présent dans le HTML, le JS publié ou les commentaires.
 - **FR-121** : la page DOIT être servie en HTTPS en production ; les requêtes HTTP DOIVENT être redirigées vers HTTPS.
 - **FR-122** : la page DOIT exposer un lien vers la politique de confidentialité depuis le footer.
-- **FR-123** : si des cookies non strictement nécessaires sont utilisés, un mécanisme de consentement conforme DOIT être prévu (le détail relève du plan).
+- **FR-123** : la page d'accueil NE DOIT déposer **aucun cookie non strictement nécessaire**. Matomo est configuré en mode sans cookie (FR-141), aucun autre tracker n'est introduit (FR-140), et aucun cookie tiers (réseau social, vidéo embarquée, etc.) n'est posé. En conséquence, **aucun bandeau de consentement cookies n'est requis ni affiché** sur la page d'accueil pour le MVP.
+- **FR-124** : toute introduction future d'un cookie non strictement nécessaire (nouveau tracker, vidéo tierce avec cookie, widget social, etc.) DOIT être traitée par une **feature dédiée « consentement cookies »** (bandeau, choix, persistance du consentement, blocage des cookies avant consentement) avant déploiement. Aucun ajout silencieux d'un tel cookie n'est autorisé.
+
+#### Disponibilité et maintenance
+
+- **FR-135** : la page d'accueil DOIT viser une disponibilité de **99,5 % mensuel** en production (≈ 3,6 h maximum d'indisponibilité tolérée par mois civil, maintenance planifiée annoncée non comprise).
+- **FR-136** : toute maintenance planifiée nécessitant une indisponibilité DOIT être réalisée en dehors des heures ouvrées d'Afrique francophone, c'est-à-dire dans la fenêtre **20 h – 6 h GMT** ; elle DOIT être annoncée à l'avance via les canaux internes (et publiquement si la fenêtre dépasse 30 minutes).
+- **FR-137** : un monitoring d'uptime externe (sondes HTTP régulières, fréquence ≤ 5 minutes, depuis au moins une localisation représentative de l'audience cible) DOIT être en place pour la page d'accueil ; toute indisponibilité supérieure à 5 minutes DOIT déclencher une alerte vers l'équipe technique.
+
+#### Observabilité et mesure de conversion
+
+- **FR-140** : la page d'accueil DOIT être instrumentée avec **Matomo auto-hébergé** comme outil unique d'analyse d'audience et de conversion pour le MVP. Aucun autre outil de tracking tiers (GA4, Hotjar, etc.) n'est introduit dans le MVP.
+- **FR-141** : la configuration Matomo DOIT être en mode **sans cookie** (`disableCookies`) avec anonymisation IP activée. Aucun cookie Matomo n'est déposé sur le navigateur du visiteur.
+- **FR-142** : les événements de conversion suivants DOIVENT être tracés sur la page d'accueil, avec un nommage stable et documenté :
+  - clic sur chaque CTA du hero (« Demander une démo », « Découvrir nos solutions », « Voir les formations IA ») — événement distinct par CTA ;
+  - clic sur chaque carte solution (6 solutions distinctes : DocuPro Suite, MedicPro, CliniquePro, ImmoTopia.cloud, Annonces Web, École Digitale) — événement distinct par solution ;
+  - clic sur « Automatiser un processus » (section IA) ;
+  - clic sur « Voir le catalogue » et sur « Demander une formation entreprise » (section formations) — événements distincts ;
+  - clic sur chaque carte service (5 services) — événement distinct par service ;
+  - clic sur le CTA final ;
+  - profondeur de scroll : 25 %, 50 %, 75 %, 100 % de la page.
+- **FR-143** : chaque CTA business qui redirige vers `/contact-demo` DOIT transmettre l'intention (type de demande, et solution d'intérêt si applicable) afin que le funnel puisse être reconstitué côté Matomo (page de destination + segmentation par intention).
+- **FR-144** : aucune donnée personnelle identifiable (PII) NE DOIT être envoyée à Matomo (pas d'email, pas de nom, pas de téléphone) ; seuls les événements anonymisés et les attributs de page sont collectés.
 
 #### Gouvernance éditoriale
 
-- **FR-130** : tous les contenus DOIVENT être rédigés en français professionnel, clair, sans jargon inutile.
+- **FR-130** : tous les contenus DOIVENT être rédigés en français professionnel, clair, sans jargon inutile. Le MVP est mono-langue : aucun sélecteur de langue, aucune version traduite (anglais, arabe, autre), aucune balise `hreflang`. L'unique langue déclarée DOIT être `fr` (attribut `lang` du document).
 - **FR-131** : le ton DOIT être crédible, moderne, rassurant, commercial sans exagération ; aucun superlatif gratuit (« le meilleur », « le numéro un ») sans preuve.
 - **FR-132** : aucune mention parasite ou héritée d'un ancien template (exemple : « Institut Froebel ») NE DOIT être présente.
 - **FR-133** : le nom de marque, le nom des solutions et les libellés des CTA DOIVENT être strictement cohérents avec ceux utilisés sur les autres pages du site.
@@ -254,7 +284,6 @@ Cette feature porte sur une page éditoriale ; les « entités » sont des blocs
 - **Training offer** : représente une thématique de formation. Attributs : intitulé, description courte, modalités (présentiel / distanciel / intra-entreprise), lien vers le détail.
 - **Reference / proof element** : représente un élément de crédibilité. Variantes : logo client, secteur servi, jalon historique (année + libellé), chiffre clé (libellé + valeur + source), témoignage (citation + auteur + organisation), cas client (titre + résumé). Toutes les instances DOIVENT être validées avant publication.
 - **CTA block** : représente un appel à l'action contextuel. Attributs : titre, sous-titre optionnel, libellé du CTA principal, destination, libellé/destination du CTA secondaire optionnel.
-- **Lead form** : formulaire de contact qualifié. Attributs : nom, email, téléphone, organisation, solution d'intérêt, message, consentement à la politique de confidentialité.
 - **Tech & method block** : présentation synthétique des compétences techniques et de la méthode. Attributs : liste de compétences techniques, énoncé méthode (agile, accompagnement métier).
 - **Reassurance badge** : élément graphique indiquant un domaine de compétence (GED, Santé, Immobilier, IA, Formation, Automatisation). Attributs : libellé, icône optionnelle.
 - **Global header / Global footer** : composants partagés à toute la page. Attributs : menu principal (header), liens groupés solutions/services/formations/ressources (footer), coordonnées centralisées, liens légaux.
@@ -275,13 +304,16 @@ Cette feature porte sur une page éditoriale ; les « entités » sont des blocs
 - **SC-010** : zéro libellé en anglais non intentionnel dans les CTA, formulaires, menus ou microcopy de la page (le ton et la langue sont français professionnel).
 - **SC-011** : zéro divergence des coordonnées (adresse, téléphones, e-mails, réseaux sociaux) entre header, footer, formulaire et page Contact & Démo (source unique centralisée).
 - **SC-012** : 100 % des cartes solution renvoient vers leur page solution dédiée (maillage interne complet) ; 100 % des cartes service renvoient vers leur page service ; la section formations renvoie vers les pages formations ; le bloc CTA final renvoie vers Contact & Démo.
-- **SC-013** : le formulaire (s'il est intégré) refuse les soumissions invalides (validation client + serveur), affiche les erreurs en français, et bloque les soumissions automatisées (anti-spam) sans gêner les humains.
+- **SC-013** : 100 % des CTA business de l'accueil aboutissent sur `/contact-demo` en transmettant l'intention (type de demande, et solution d'intérêt si applicable) ; aucun CTA n'aboutit sur une page non qualifiée ou ne perd l'intention en route.
 - **SC-014** : la page expose des données structurées JSON-LD `Organization` valides (vérifiables par un outil de validation public).
 - **SC-015** : la page contient un H1 unique, un title SEO unique < 60 caractères, une meta description unique < 160 caractères, et une hiérarchie H2/H3 sans saut de niveau.
+- **SC-016** : 100 % des CTA business listés en FR-142 émettent un événement Matomo distinct au clic, et la profondeur de scroll est tracée aux paliers 25 / 50 / 75 / 100 % ; un test de validation (clic sur chaque CTA + scroll complet) doit produire la liste complète d'événements attendus dans Matomo, sans envoi d'aucune donnée personnelle identifiable.
+- **SC-017** : zéro cookie non strictement nécessaire posé par la page d'accueil (vérifiable par un audit des cookies via les DevTools navigateur sur première visite et navigation interne) ; en conséquence, aucun bandeau de consentement cookies n'est affiché.
+- **SC-018** : disponibilité observée ≥ 99,5 % par mois civil sur le monitoring d'uptime externe (maintenance planifiée annoncée hors heures ouvrées Afrique francophone exclue du calcul) ; toute indisponibilité non planifiée > 5 minutes a déclenché une alerte tracée.
 
 ## Assumptions
 
-- **A-01** : la cible primaire est constituée de décideurs B2B francophones de l'Afrique francophone (DG, DSI, directeurs métier, responsables qualité, dirigeants PME/ETI). Les contenus sont rédigés en français professionnel.
+- **A-01** : la cible primaire est constituée de décideurs B2B francophones de l'Afrique francophone (DG, DSI, directeurs métier, responsables qualité, dirigeants PME/ETI). Les contenus sont rédigés en français professionnel. Le MVP est mono-langue (français uniquement) ; toute internationalisation (anglais, arabe, autre) relève d'une feature ultérieure.
 - **A-02** : la marque ombrelle est « Alliance Consultants » ; les six solutions SaaS du périmètre MVP sont stables et nommées comme indiqué (DocuPro Suite, MedicPro, CliniquePro, ImmoTopia.cloud, Annonces Web, École Digitale).
 - **A-03** : les pages solutions, services, formations et la page Contact & Démo seront livrées dans des features ultérieures ; la page d'accueil ne dépend que de leur existence d'URL pour le maillage interne (les liens DOIVENT exister fonctionnellement à la mise en production de l'accueil).
 - **A-04** : le périmètre du MVP exigé par la constitution (accueil, 6 pages solutions, pages services, pages formations, page références, page à propos, page Contact & Démo, footer harmonisé, formulaires qualifiés) reste stable. Aucune solution du périmètre MVP n'est retirée.
@@ -289,14 +321,17 @@ Cette feature porte sur une page éditoriale ; les « entités » sont des blocs
 - **A-06** : la politique de confidentialité et les mentions légales sont disponibles et accessibles depuis le footer à la mise en production.
 - **A-07** : le site est servi en HTTPS en production, avec redirection HTTP→HTTPS systématique.
 - **A-08** : la page d'accueil utilise le header et footer globaux ; ces composants relèvent d'une feature transverse et peuvent être livrés ou stabilisés en parallèle, mais leur API d'usage (menu principal, groupes de liens du footer, coordonnées centralisées) est conforme aux exigences listées ici.
-- **A-09** : le choix « formulaire intégré sur l'accueil » vs « redirection vers `/contact-demo` » sera tranché lors de la phase plan, en fonction des arbitrages UX et performance ; les deux options restent conformes à la spec.
+- **A-09** : *(résolu — voir Clarifications, session 2026-04-26)* la page d'accueil ne porte aucun formulaire ; tous les CTA business redirigent vers `/contact-demo`. La feature `/contact-demo` portera les formulaires qualifiés.
+- **A-10** : Matomo est disponible (auto-hébergé) et opérationnel à la mise en production de la page d'accueil ; la fourniture de l'instance Matomo (installation, configuration serveur, sauvegardes) relève de l'infrastructure et ne fait pas l'objet de cette feature.
+- **A-11** : un service de monitoring d'uptime externe (UptimeRobot, Better Stack, ou équivalent) est disponible et configuré au plus tard à la mise en production ; le choix précis et l'intégration alerte (e-mail, Slack, SMS) sont du ressort du plan ou de l'infrastructure.
 
 ## Hors périmètre
 
 - Pas de développement de composants ni d'implémentation dans cette feature de spec.
 - Pas de création des pages solutions détaillées (chaque solution fera l'objet d'une feature dédiée).
 - Pas de création du CMS ni du back-office d'édition.
-- Pas d'intégration backend du formulaire (envoi e-mail, persistance, anti-spam serveur) ; ces points relèveront du plan ultérieur.
+- Pas de formulaire de saisie sur l'accueil ; toute spécification, implémentation, validation, anti-spam, persistance et notification de formulaire relèvent de la feature `/contact-demo`.
 - Pas d'animations complexes (au-delà de micro-interactions discrètes prévues par la constitution).
 - Pas d'implémentation du design system complet ; cette spec n'engage que les composants/blocs strictement nécessaires à la page d'accueil.
 - Pas de création des pages Références, À propos, Ressources, Mentions légales, Politique de confidentialité, qui font l'objet de features distinctes.
+- Pas d'internationalisation (multilingue, sélecteur de langue, `hreflang`, architecture i18n) ; le MVP est mono-langue français.

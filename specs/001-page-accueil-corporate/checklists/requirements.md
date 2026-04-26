@@ -47,10 +47,19 @@
 - [x] Critères d'acceptation globaux constitutionnels mappés — voir SC-001..SC-015 et User Stories US1..US7
 - [x] Périmètre MVP respecté — les 6 solutions du MVP sont toutes visibles sur l'accueil (FR-010, SC-002)
 
+## Clarifications (session 2026-04-26)
+
+- [x] Q1 — Formulaire intégré vs redirection `/contact-demo` → **Redirection** (A-09 résolu, FR-080..FR-082, US7, SC-013)
+- [x] Q2 — Périmètre linguistique du MVP → **Français uniquement** (A-01 enrichi, FR-130)
+- [x] Q3 — Tracking analytique et événements de conversion → **Matomo auto-hébergé** (FR-140..FR-144, SC-016, A-10)
+- [x] Q4 — Bandeau de consentement cookies → **Pas de bandeau** (Matomo sans cookie, FR-123/FR-124, SC-017)
+- [x] Q5 — Engagement de disponibilité (uptime) → **99,5 % mensuel + maintenance hors heures ouvrées Afrique GMT** (FR-135..FR-137, SC-018, A-11)
+
 ## Notes
 
-- Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`.
-- Aucun marqueur [NEEDS CLARIFICATION] n'a été nécessaire : les ambiguïtés (formulaire intégré vs redirection ; choix exacts d'icônes ; choix Angular vs autre frontend) ont été couvertes par des hypothèses documentées (Assumptions A-09) ou laissées au plan, sans bloquer la spécification.
+- Items marked incomplete require spec updates before `/speckit-plan`.
+- Toutes les ambiguïtés à fort impact détectées au scan ont été résolues par la session de clarifications du 2026-04-26 (5 questions / 5).
+- Aucun marqueur [NEEDS CLARIFICATION] présent dans le spec.
 - Mapping FR ↔ Constitution : voir la section *Constitution Alignment* ci-dessus.
 - Mapping User Story ↔ Success Criteria :
   - US1 → SC-001, SC-005

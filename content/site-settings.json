@@ -1,0 +1,67 @@
+{
+  "brand": {
+    "name": "Alliance Consultants",
+    "alternateName": "Alliance Computer Consultants",
+    "tagline": "Éditeur et intégrateur africain de solutions SaaS, IA et métiers pour les organisations de l'Afrique francophone.",
+    "logoUrl": "/images/logo.svg",
+    "foundingYear": 2003
+  },
+  "contact": {
+    "email": "contact@allianceconsultants.net",
+    "phone": "+2250000000000",
+    "whatsapp": "+2250000000000",
+    "address": {
+      "street": "Abidjan, Côte d'Ivoire",
+      "city": "Abidjan",
+      "country": "CI"
+    }
+  },
+  "social": {
+    "linkedin": null,
+    "facebook": null,
+    "youtube": null,
+    "x": null
+  },
+  "primaryMenu": [
+    { "label": "Accueil", "href": "/" },
+    { "label": "Solutions", "href": "/solutions" },
+    { "label": "Services", "href": "/services" },
+    { "label": "Formations", "href": "/formations" },
+    { "label": "Références", "href": "/references" },
+    { "label": "Ressources", "href": "/ressources" },
+    { "label": "À propos", "href": "/a-propos" },
+    { "label": "Contact & Démo", "href": "/contact-demo", "primary": true }
+  ],
+  "footerMenu": {
+    "solutions": [
+      { "label": "DocuPro Suite", "href": "/solutions/docupro-suite" },
+      { "label": "MedicPro", "href": "/solutions/medicpro" },
+      { "label": "CliniquePro", "href": "/solutions/cliniquepro" },
+      { "label": "ImmoTopia.cloud", "href": "/solutions/immotopia-cloud" },
+      { "label": "Annonces Web", "href": "/solutions/annonces-web" },
+      { "label": "École Digitale", "href": "/solutions/ecole-digitale" }
+    ],
+    "services": [
+      { "label": "Développement spécifique", "href": "/services/developpement-specifique" },
+      { "label": "Automatisation IA", "href": "/services/automatisation-ia-processus-metiers" },
+      { "label": "AMOA", "href": "/services/assistance-maitrise-ouvrage" },
+      { "label": "Dématérialisation", "href": "/services/dematerialisation-archives" },
+      { "label": "Scanners professionnels", "href": "/services/scanners-professionnels" }
+    ],
+    "formations": [
+      { "label": "Formation IA entreprise", "href": "/formations/ia-entreprise" },
+      { "label": "Développement web & IA", "href": "/formations/developpement-web-dotnet-ia" },
+      { "label": "Automatisation n8n", "href": "/formations/automatisation-n8n-processus-ia" },
+      { "label": "SQL Server", "href": "/formations/sql-server" },
+      { "label": "GED & Archivage", "href": "/formations/ged-archivage" }
+    ],
+    "ressources": [
+      { "label": "Blog", "href": "/ressources" },
+      { "label": "FAQ", "href": "/ressources#faq" }
+    ],
+    "legal": [
+      { "label": "Mentions légales", "href": "/mentions-legales" },
+      { "label": "Politique de confidentialité", "href": "/confidentialite" }
+    ]
+  }
+}

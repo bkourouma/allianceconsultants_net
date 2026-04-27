@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { GlobalHeader } from "@/components/layout/GlobalHeader";
 import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { MatomoTracker } from "@/components/shared/MatomoTracker";
 import { getSiteSettings } from "@/lib/content";
 import "@/styles/globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allianceconsultants.net"),
@@ -13,7 +21,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const settings = await getSiteSettings();
 
   return (
-    <html lang="fr">
+    <html lang="fr" className={inter.variable}>
       <body>
         <a href="#main-content" className="skip-link">
           Aller au contenu principal

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.css";
 
 :root {
   --color-primary: #1d4ed8;
@@ -7,6 +7,8 @@
   --color-dark: #0f172a;
   --color-dark-secondary: #1e293b;
   --color-accent: #f59e0b;
+  --font-sans-fallback:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
@@ -15,7 +17,7 @@ html {
 }
 
 body {
-  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-family: var(--font-sans, var(--font-sans-fallback));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

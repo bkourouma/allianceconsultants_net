@@ -13,7 +13,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "lhci": "lhci autorun",
-    "validate-content": "tsx scripts/validate-content.ts"
+    "validate-content": "tsx scripts/validate-content.ts",
+    "slds:assets": "node scripts/copy-slds-assets.mjs",
+    "postinstall": "node scripts/copy-slds-assets.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -37,7 +39,6 @@
     "@eslint/eslintrc": "^3.2.0",
     "@lhci/cli": "^0.14.0",
     "@playwright/test": "^1.49.1",
-    "@tailwindcss/postcss": "^4.1.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/bcryptjs": "^2.4.6",
@@ -52,7 +53,6 @@
     "postcss": "^8.5.3",
     "prettier": "^3.4.2",
     "prisma": "^5.22.0",
-    "tailwindcss": "^4.1.4",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8"

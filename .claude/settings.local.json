@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.specify/extensions/git/scripts/bash/create-new-feature.sh --json --short-name \"pages-corporate-solutions\" \"pages détaillées des solutions corporate: DocuPro Suite, MedicPro, CliniquePro, ImmoTopia.cloud, Annonces Web, École Digitale\")"
+    ]
+  }
+}

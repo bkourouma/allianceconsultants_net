@@ -25,7 +25,7 @@ export function FinalCTA({ finalCta }: FinalCTAProps) {
             label={finalCta.label}
             block="final-cta"
             size="lg"
-            className="bg-white text-[var(--color-primary)] hover:bg-blue-50 focus-visible:ring-white"
+            onDark
           />
           <CTAButton
             intent="contact"
@@ -33,7 +33,7 @@ export function FinalCTA({ finalCta }: FinalCTAProps) {
             block="final-cta"
             size="lg"
             variant="secondary"
-            className="border-white text-white hover:bg-white hover:text-[var(--color-primary)] focus-visible:ring-white"
+            onDark
           />
         </div>
       </div>

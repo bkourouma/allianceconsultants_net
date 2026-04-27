@@ -11,7 +11,7 @@ export function SolutionHero({ hero, category }: SolutionHeroProps) {
   const hasImage = Boolean(hero.image);
 
   return (
-    <Section bg="white" className="!pt-10 !pb-12 lg:!pt-16 lg:!pb-16" container={false}>
+    <Section bg="white" padding="md" container={false}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className={hasImage ? "grid items-center gap-10 lg:grid-cols-2" : ""}>
           <div>

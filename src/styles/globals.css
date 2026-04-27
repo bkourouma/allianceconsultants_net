@@ -95,15 +95,6 @@ body {
   background: #ffffff;
 }
 
-.site-header .slds-button_brand {
-  --slds-c-button-brand-color-background: var(--color-primary);
-  --slds-c-button-brand-color-background-hover: var(--color-primary-dark);
-  --slds-c-button-brand-color-background-active: var(--color-primary-dark);
-  --slds-c-button-brand-color-border: var(--color-primary);
-  --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
-  --slds-c-button-brand-color-border-active: var(--color-primary-dark);
-}
-
 .site-footer {
   background: var(--color-dark);
   color: #d1d5db;
@@ -147,4 +138,110 @@ body {
   --slds-c-button-brand-color-border: var(--color-primary);
   --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
   --slds-c-button-brand-color-border-active: var(--color-primary-dark);
+}
+
+/* === Section variants === */
+
+.section--white {
+  background: #ffffff;
+}
+
+.section--gray {
+  background: #f3f3f3;
+}
+
+.section--dark {
+  background: var(--color-dark);
+  color: #ffffff;
+}
+
+.section--primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.section--dark .slds-text-heading_large,
+.section--dark .slds-text-heading_medium,
+.section--dark .slds-text-heading_small,
+.section--dark .slds-text-title,
+.section--dark .slds-text-title_caps,
+.section--dark .slds-text-title_bold,
+.section--dark .slds-text-body_regular,
+.section--dark .slds-text-body_small,
+.section--primary .slds-text-heading_large,
+.section--primary .slds-text-heading_medium,
+.section--primary .slds-text-heading_small,
+.section--primary .slds-text-title,
+.section--primary .slds-text-title_caps,
+.section--primary .slds-text-title_bold,
+.section--primary .slds-text-body_regular,
+.section--primary .slds-text-body_small {
+  color: #ffffff;
+}
+
+/* === CTA button variants === */
+
+.cta-button {
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.cta-button--sm {
+  min-height: 36px;
+  padding: 0 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+}
+
+.cta-button--md {
+  min-height: 40px;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.cta-button--lg {
+  min-height: 48px;
+  padding: 0 1.25rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.cta-button--inverse-primary {
+  background: #ffffff;
+  color: var(--color-primary);
+  border: 1px solid #ffffff;
+}
+
+.cta-button--inverse-primary:hover,
+.cta-button--inverse-primary:focus {
+  background: #eff6ff;
+  color: var(--color-primary-dark);
+  border-color: #eff6ff;
+}
+
+.slds-button_brand:not(.cta-button--inverse-primary) {
+  --slds-c-button-brand-color-background: var(--color-primary);
+  --slds-c-button-brand-color-background-hover: var(--color-primary-dark);
+  --slds-c-button-brand-color-background-active: var(--color-primary-dark);
+  --slds-c-button-brand-color-border: var(--color-primary);
+  --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
+  --slds-c-button-brand-color-border-active: var(--color-primary-dark);
+}
+
+/* === Hero shell (mini-patch; full restyle in Phase 3B) === */
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-dark);
+  color: #ffffff;
+}
+
+.hero-section__center {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }

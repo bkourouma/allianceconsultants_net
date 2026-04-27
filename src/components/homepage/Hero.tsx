@@ -45,20 +45,23 @@ export function Hero({ hero }: HeroProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-[var(--color-dark)] text-white"
+      className="hero-section"
       aria-labelledby="hero-title"
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-20"
         aria-hidden="true"
         style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.2,
+          pointerEvents: "none",
           background:
             "radial-gradient(ellipse 80% 60% at 50% -20%, var(--color-primary-light), transparent)",
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-        <div className="mx-auto max-w-3xl text-center">
+      <div className="slds-container_x-large slds-container_center slds-p-horizontal_medium slds-p-vertical_xx-large">
+        <div className="hero-section__center">
           <h1
             id="hero-title"
             className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
@@ -77,7 +80,7 @@ export function Hero({ hero }: HeroProps) {
                   <Link
                     key={i}
                     href={cta.href}
-                    className="inline-flex items-center justify-center rounded-lg border-2 border-white px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[var(--color-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark)]"
+                    className="slds-button cta-button cta-button--lg slds-button_inverse"
                   >
                     {cta.label}
                   </Link>
@@ -90,11 +93,8 @@ export function Hero({ hero }: HeroProps) {
                   label={cta.label}
                   block="hero"
                   size="lg"
-                  className={
-                    i === 0
-                      ? "bg-white text-[var(--color-dark)] hover:bg-gray-100 focus-visible:ring-white"
-                      : "border-2 border-white bg-transparent text-white hover:bg-white hover:text-[var(--color-dark)]"
-                  }
+                  variant={i === 0 ? "primary" : "secondary"}
+                  onDark
                 />
               );
             })}

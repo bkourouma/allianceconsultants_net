@@ -47,7 +47,7 @@ export default async function SolutionsIndexPage() {
     <>
       <JsonLd data={breadcrumb} />
 
-      <Section bg="white" className="!pb-8">
+      <Section bg="white" padding="md">
         <nav aria-label="Fil d'Ariane" className="mb-4 text-sm text-gray-500">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
@@ -69,7 +69,7 @@ export default async function SolutionsIndexPage() {
         </p>
       </Section>
 
-      <Section bg="gray" className="!pt-8">
+      <Section bg="gray" padding="md">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {solutions.map((solution) => (
             <SolutionCard key={solution.slug} solution={solution} />

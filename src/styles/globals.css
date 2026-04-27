@@ -50,3 +50,101 @@ body {
 .skip-link:focus {
   top: 0;
 }
+
+/* === Layout shell overrides === */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgb(255 255 255 / 0.95);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.site-header__logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.site-header__nav-link {
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease;
+}
+
+.site-header__nav-link:hover,
+.site-header__nav-link:focus {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.site-header__nav-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.site-header__mobile {
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.site-header .slds-button_brand {
+  --slds-c-button-brand-color-background: var(--color-primary);
+  --slds-c-button-brand-color-background-hover: var(--color-primary-dark);
+  --slds-c-button-brand-color-background-active: var(--color-primary-dark);
+  --slds-c-button-brand-color-border: var(--color-primary);
+  --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
+  --slds-c-button-brand-color-border-active: var(--color-primary-dark);
+}
+
+.site-footer {
+  background: var(--color-dark);
+  color: #d1d5db;
+}
+
+.site-footer__heading,
+.site-footer__heading-brand {
+  color: #ffffff;
+}
+
+.site-footer__muted {
+  color: #9ca3af;
+}
+
+.site-footer__link {
+  color: #9ca3af;
+  text-decoration: none;
+  border-radius: 0.125rem;
+  transition: color 0.15s ease;
+}
+
+.site-footer__link:hover,
+.site-footer__link:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.site-footer__link:focus-visible {
+  outline: 1px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.site-footer__divider {
+  border-top: 1px solid #374151;
+}
+
+.site-footer .slds-button_brand {
+  --slds-c-button-brand-color-background: var(--color-primary);
+  --slds-c-button-brand-color-background-hover: var(--color-primary-dark);
+  --slds-c-button-brand-color-background-active: var(--color-primary-dark);
+  --slds-c-button-brand-color-border: var(--color-primary);
+  --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
+  --slds-c-button-brand-color-border-active: var(--color-primary-dark);
+}

@@ -10,44 +10,50 @@ export function GlobalFooter({ settings }: GlobalFooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[var(--color-dark)] text-gray-300">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <p className="text-xl font-bold text-white">{brand.name}</p>
-            <p className="mt-2 text-sm leading-relaxed text-gray-400">{brand.tagline}</p>
+    <footer className="site-footer">
+      <div className="slds-container_x-large slds-container_center slds-p-vertical_xx-large slds-p-horizontal_medium">
+        <div className="slds-grid slds-wrap slds-gutters">
+          <div className="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_2-of-5">
+            <p className="slds-text-heading_medium site-footer__heading-brand">
+              {brand.name}
+            </p>
+            <p className="slds-text-body_small site-footer__muted slds-m-top_x-small">
+              {brand.tagline}
+            </p>
 
-            <div className="mt-6 space-y-2 text-sm">
-              <p>
+            <div className="slds-m-top_medium">
+              <p className="slds-m-bottom_xx-small">
                 <a
                   href={`mailto:${contact.email}`}
-                  className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                  className="site-footer__link slds-text-body_small"
                 >
                   {contact.email}
                 </a>
               </p>
-              <p>
+              <p className="slds-m-bottom_xx-small">
                 <a
                   href={`tel:${contact.phone}`}
-                  className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                  className="site-footer__link slds-text-body_small"
                 >
                   {contact.phone}
                 </a>
               </p>
-              <p className="text-gray-400">{contact.address.street}</p>
+              <p className="slds-text-body_small site-footer__muted">
+                {contact.address.street}
+              </p>
             </div>
           </div>
 
-          {/* Solutions */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Solutions</h3>
-            <ul className="mt-4 space-y-2">
+          <div className="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-5">
+            <h3 className="slds-text-title_caps site-footer__heading slds-m-bottom_small">
+              Solutions
+            </h3>
+            <ul>
               {footerMenu.solutions?.map((item) => (
-                <li key={item.href}>
+                <li key={item.href} className="slds-m-bottom_xx-small">
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                    className="site-footer__link slds-text-body_small"
                   >
                     {item.label}
                   </Link>
@@ -56,15 +62,16 @@ export function GlobalFooter({ settings }: GlobalFooterProps) {
             </ul>
           </div>
 
-          {/* Services & Formations */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Services</h3>
-            <ul className="mt-4 space-y-2">
+          <div className="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-5">
+            <h3 className="slds-text-title_caps site-footer__heading slds-m-bottom_small">
+              Services
+            </h3>
+            <ul>
               {footerMenu.services?.map((item) => (
-                <li key={item.href}>
+                <li key={item.href} className="slds-m-bottom_xx-small">
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                    className="site-footer__link slds-text-body_small"
                   >
                     {item.label}
                   </Link>
@@ -72,13 +79,15 @@ export function GlobalFooter({ settings }: GlobalFooterProps) {
               ))}
             </ul>
 
-            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-white">Formations</h3>
-            <ul className="mt-4 space-y-2">
+            <h3 className="slds-text-title_caps site-footer__heading slds-m-top_medium slds-m-bottom_small">
+              Formations
+            </h3>
+            <ul>
               {footerMenu.formations?.map((item) => (
-                <li key={item.href}>
+                <li key={item.href} className="slds-m-bottom_xx-small">
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                    className="site-footer__link slds-text-body_small"
                   >
                     {item.label}
                   </Link>
@@ -87,15 +96,16 @@ export function GlobalFooter({ settings }: GlobalFooterProps) {
             </ul>
           </div>
 
-          {/* Ressources & Legal */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Ressources</h3>
-            <ul className="mt-4 space-y-2">
+          <div className="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-5">
+            <h3 className="slds-text-title_caps site-footer__heading slds-m-bottom_small">
+              Ressources
+            </h3>
+            <ul>
               {footerMenu.ressources?.map((item) => (
-                <li key={item.href}>
+                <li key={item.href} className="slds-m-bottom_xx-small">
                   <Link
                     href={item.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                    className="site-footer__link slds-text-body_small"
                   >
                     {item.label}
                   </Link>
@@ -105,17 +115,17 @@ export function GlobalFooter({ settings }: GlobalFooterProps) {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 border-t border-gray-700 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-400">
-            © {year} {brand.name}. Tous droits réservés. Fondée en {brand.foundingYear}.
+        <div className="site-footer__divider slds-m-top_xx-large slds-p-top_large slds-grid slds-wrap slds-grid_align-spread slds-grid_vertical-align-center">
+          <p className="slds-text-body_small site-footer__muted">
+            © {year} {brand.name}. Tous droits réservés. Fondée en{" "}
+            {brand.foundingYear}.
           </p>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="slds-grid slds-wrap slds-grid_align-end slds-text-body_small">
             {footerMenu.legal?.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded"
+                className="site-footer__link slds-m-left_medium"
               >
                 {item.label}
               </Link>

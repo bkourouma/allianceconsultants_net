@@ -67,8 +67,9 @@ jobs:
           docker network connect app_medicpro-network allianceconsultants-nginx 2>/dev/null || true
           echo "Waiting for services to start..."
           sleep 15
-          # Sync Prisma schema against the running DB (no migrations dir is committed)
-          docker exec allianceconsultants-web npx prisma db push --skip-generate || true
+          # Sync Prisma schema against the running DB (no migrations dir is committed).
+          # Pin prisma CLI to match @prisma/client@5.22.0 — `npx prisma` resolves to v7+.
+          docker exec allianceconsultants-web npx -y prisma@5.22.0 db push --skip-generate --accept-data-loss || true
           dc ps
           echo "--- Web logs (last 30 lines) ---"
           docker logs --tail 30 allianceconsultants-web 2>&1 || true

@@ -8,23 +8,37 @@ interface UseCasesProps {
 export function UseCases({ useCases }: UseCasesProps) {
   if (!useCases.length) return null;
   return (
-    <Section bg="gray">
-      <div className="mb-10 max-w-3xl">
-        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+    <Section bg="white">
+      <div className="mx-auto max-w-3xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          Sur le terrain
+        </p>
+        <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
           Cas d&apos;usage
         </h2>
-        <p className="mt-2 text-base text-gray-600">
-          Quelques exemples concrets d&apos;utilisation de la solution sur le terrain.
+        <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+          Quelques exemples concrets d&apos;utilisation de la solution.
         </p>
       </div>
-      <div className="grid gap-6 md:grid-cols-2">
-        {useCases.map((uc) => (
+
+      <div className="mt-14 grid gap-6 md:grid-cols-2">
+        {useCases.map((uc, i) => (
           <article
             key={uc.title}
-            className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+            className="relative flex flex-col rounded-2xl border border-slate-200/70 bg-gradient-to-br from-white to-slate-50 p-6 lg:p-8"
           >
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">{uc.title}</h3>
-            <p className="text-sm leading-relaxed text-gray-700">{uc.summary}</p>
+            <span
+              aria-hidden="true"
+              className="text-5xl font-bold leading-none text-primary/15 lg:text-6xl"
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 className="mt-4 text-xl font-bold tracking-tight text-slate-900">
+              {uc.title}
+            </h3>
+            <p className="mt-3 text-base leading-relaxed text-slate-600">
+              {uc.summary}
+            </p>
           </article>
         ))}
       </div>

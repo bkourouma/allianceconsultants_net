@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ===========================================================================
+// Lead (feature 001 — homepage / pages solutions corporate). Inchangé.
+// ===========================================================================
+
 enum LeadIntent {
   DEMO
   CONTACT
@@ -55,4 +59,107 @@ model Lead {
   @@index([createdAt])
   @@index([status])
   @@index([intent])
+}
+
+// ===========================================================================
+// Backoffice + Blog (feature 002).
+// ===========================================================================
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String?
+  passwordHash String
+  role         Role       @default(ADMIN)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  posts        BlogPost[]
+
+  @@index([email])
+}
+
+model BlogPost {
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  title          String
+  excerpt        String         @db.Text
+  coverUrl       String?
+  coverAlt       String?
+  bodyHtml       String         @db.Text
+  seoTitle       String?
+  seoDescription String?
+  ogImage        String?
+  status         PostStatus     @default(DRAFT)
+  publishedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  authorId       String
+  author         User           @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  tags           BlogPostTag[]
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([authorId])
+}
+
+model BlogTag {
+  id        String        @id @default(cuid())
+  slug      String        @unique
+  label     String
+  createdAt DateTime      @default(now())
+
+  posts     BlogPostTag[]
+}
+
+model BlogPostTag {
+  postId String
+  tagId  String
+
+  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@index([tagId])
+}
+
+// ===========================================================================
+// Module « Références » (cas clients / projets) — persisté en base.
+// Gérable depuis le backoffice (/admin/references). Distinct du type
+// `Reference` (logos / témoignages) historiquement chargé via MDX dans
+// `content/references/*` et utilisé par la section homepage.
+// ===========================================================================
+
+model ProjectReference {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Champs métier (correspondent aux libellés du backoffice)
+  companyName  String   // Nom de la société
+  projectTitle String   // Titre du projet
+  year         String   // Année — texte libre (ex. "2015", "2015 (démarrage octobre 2015 ; achèvement janvier 2016)")
+  duration     String   // Durée — texte libre (ex. "6 mois", "1 mois (prévu)", "T1 2024 → T3 2025")
+  problem      String   @db.Text // Problématique
+  solution     String   @db.Text // Solution proposée
+  impact       String?  @db.Text // Impact / résultat — optionnel (peut être renseigné a posteriori)
+
+  // Champs additionnels
+  sector       String?  // Secteur d'activité (ex. "Santé", "Immobilier")
+  logoUrl      String?  // Logo client (URL absolue ou relative à /public)
+  published    Boolean  @default(true)
+  displayOrder Int      @default(0)
+
+  @@index([published, displayOrder])
 }

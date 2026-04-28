@@ -1,4 +1,43 @@
-@import "@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.css";
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1d4ed8;
+  --color-primary-dark: #1e40af;
+  --color-primary-light: #3b82f6;
+  --color-dark: #0f172a;
+  --color-dark-secondary: #1e293b;
+  --color-accent: #f59e0b;
+
+  --font-sans:
+    var(--font-sans-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+
+  --animate-hero-mesh: hero-mesh 18s ease-in-out infinite;
+
+  @keyframes hero-mesh {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.55;
+    }
+    50% {
+      transform: translate3d(2%, -3%, 0) scale(1.08);
+      opacity: 0.75;
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  --animate-fade-up: fade-up 0.6s ease-out both;
+}
 
 :root {
   --color-primary: #1d4ed8;
@@ -13,13 +52,15 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 120px;
 }
 
 body {
-  font-family: var(--font-sans, var(--font-sans-fallback));
+  font-family: var(--font-sans-inter, var(--font-sans-fallback));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,199 +90,4 @@ body {
 
 .skip-link:focus {
   top: 0;
-}
-
-/* === Layout shell overrides === */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgb(255 255 255 / 0.95);
-  backdrop-filter: saturate(180%) blur(8px);
-  -webkit-backdrop-filter: saturate(180%) blur(8px);
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-}
-
-.site-header__logo {
-  height: 40px;
-  width: auto;
-  display: block;
-}
-
-.site-header__nav-link {
-  color: #374151;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease;
-}
-
-.site-header__nav-link:hover,
-.site-header__nav-link:focus {
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-.site-header__nav-link:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.site-header__mobile {
-  border-top: 1px solid #e5e7eb;
-  background: #ffffff;
-}
-
-.site-footer {
-  background: var(--color-dark);
-  color: #d1d5db;
-}
-
-.site-footer__heading,
-.site-footer__heading-brand {
-  color: #ffffff;
-}
-
-.site-footer__muted {
-  color: #9ca3af;
-}
-
-.site-footer__link {
-  color: #9ca3af;
-  text-decoration: none;
-  border-radius: 0.125rem;
-  transition: color 0.15s ease;
-}
-
-.site-footer__link:hover,
-.site-footer__link:focus {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.site-footer__link:focus-visible {
-  outline: 1px solid #ffffff;
-  outline-offset: 2px;
-}
-
-.site-footer__divider {
-  border-top: 1px solid #374151;
-}
-
-.site-footer .slds-button_brand {
-  --slds-c-button-brand-color-background: var(--color-primary);
-  --slds-c-button-brand-color-background-hover: var(--color-primary-dark);
-  --slds-c-button-brand-color-background-active: var(--color-primary-dark);
-  --slds-c-button-brand-color-border: var(--color-primary);
-  --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
-  --slds-c-button-brand-color-border-active: var(--color-primary-dark);
-}
-
-/* === Section variants === */
-
-.section--white {
-  background: #ffffff;
-}
-
-.section--gray {
-  background: #f3f3f3;
-}
-
-.section--dark {
-  background: var(--color-dark);
-  color: #ffffff;
-}
-
-.section--primary {
-  background: var(--color-primary);
-  color: #ffffff;
-}
-
-.section--dark .slds-text-heading_large,
-.section--dark .slds-text-heading_medium,
-.section--dark .slds-text-heading_small,
-.section--dark .slds-text-title,
-.section--dark .slds-text-title_caps,
-.section--dark .slds-text-title_bold,
-.section--dark .slds-text-body_regular,
-.section--dark .slds-text-body_small,
-.section--primary .slds-text-heading_large,
-.section--primary .slds-text-heading_medium,
-.section--primary .slds-text-heading_small,
-.section--primary .slds-text-title,
-.section--primary .slds-text-title_caps,
-.section--primary .slds-text-title_bold,
-.section--primary .slds-text-body_regular,
-.section--primary .slds-text-body_small {
-  color: #ffffff;
-}
-
-/* === CTA button variants === */
-
-.cta-button {
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.cta-button--sm {
-  min-height: 36px;
-  padding: 0 0.75rem;
-  font-size: 0.8125rem;
-  line-height: 1.2;
-}
-
-.cta-button--md {
-  min-height: 40px;
-  padding: 0 1rem;
-  font-size: 0.875rem;
-  line-height: 1.2;
-}
-
-.cta-button--lg {
-  min-height: 48px;
-  padding: 0 1.25rem;
-  font-size: 1rem;
-  line-height: 1.2;
-}
-
-.cta-button--inverse-primary {
-  background: #ffffff;
-  color: var(--color-primary);
-  border: 1px solid #ffffff;
-}
-
-.cta-button--inverse-primary:hover,
-.cta-button--inverse-primary:focus {
-  background: #eff6ff;
-  color: var(--color-primary-dark);
-  border-color: #eff6ff;
-}
-
-.slds-button_brand:not(.cta-button--inverse-primary) {
-  --slds-c-button-brand-color-background: var(--color-primary);
-  --slds-c-button-brand-color-background-hover: var(--color-primary-dark);
-  --slds-c-button-brand-color-background-active: var(--color-primary-dark);
-  --slds-c-button-brand-color-border: var(--color-primary);
-  --slds-c-button-brand-color-border-hover: var(--color-primary-dark);
-  --slds-c-button-brand-color-border-active: var(--color-primary-dark);
-}
-
-/* === Hero shell (mini-patch; full restyle in Phase 3B) === */
-
-.hero-section {
-  position: relative;
-  overflow: hidden;
-  background: var(--color-dark);
-  color: #ffffff;
-}
-
-.hero-section__center {
-  max-width: 48rem;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
 }

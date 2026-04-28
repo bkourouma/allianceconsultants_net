@@ -1,47 +1,42 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: 0.0.0 (template placeholder) → 1.0.0
-Bump rationale: MAJOR — première ratification d'une constitution complète et
-exécutoire pour le projet de refonte du site Alliance Consultants. Remplacement
-intégral du gabarit générique par un cadre projet métier (web corporate B2B
-multi-solutions). Toutes les sections ont été redéfinies.
+Version change: 1.0.0 → 1.0.1
+Bump rationale: PATCH — clarification du libellé du menu principal :
+remplacement de l'item « Ressources » par « Blog » (libellé + URL `/blog`),
+décidé dans le cadre de la feature 002 (backoffice + blog éditorial). Aucun
+principe non négociable n'est modifié ; aucune règle UX/SEO/sécurité/contenu
+n'est élargie ou restreinte. Il s'agit d'un ajustement de nomenclature
+publique.
 
-Modified principles:
-- [PRINCIPLE_1_NAME] → I. Clarté de positionnement
-- [PRINCIPLE_2_NAME] → II. Architecture de marque ombrelle
-- [PRINCIPLE_3_NAME] → III. Priorité business (génération de leads qualifiés)
-- [PRINCIPLE_4_NAME] → IV. Cohérence éditoriale des pages solutions
-- [PRINCIPLE_5_NAME] → V. Modularité, réutilisabilité et qualité technique
-- (ajouts) → VI. Souveraineté de la constitution (gouvernance Spec Kit)
+Modified principles: aucun.
+Added sections: aucune.
+Removed sections: aucune.
 
-Added sections:
-- Vision du projet
-- Règles UX/UI
-- Règles de contenu
-- Règles SEO
-- Règles techniques
-- Règles de sécurité
-- Règles d'accessibilité
-- Règles de gouvernance du contenu
-- Critères d'acceptation globaux
-- Processus d'amendement de la constitution
-
-Removed sections:
-- [SECTION_2_NAME] / [SECTION_3_NAME] génériques (remplacés par des
-  sections métier dédiées)
+Modifié dans « Règles UX/UI » → bullet "Navigation principale (menu)" :
+le libellé `Ressources` devient `Blog`, et le menu de référence passe de
+*Accueil · Solutions · Services · Formations · Références · Ressources ·
+À propos · Contact & Démo* à
+*Accueil · Solutions · Services · Formations · Références · Blog ·
+À propos · Contact & Démo*.
 
 Templates requiring updates:
-- ✅ .specify/templates/constitution-template.md — non modifié (gabarit
-  générique conservé pour réinitialisations futures)
-- ✅ .specify/templates/plan-template.md — compatible : la section
-  "Constitution Check" lit dynamiquement ce fichier ; aucun ajustement requis
-- ✅ .specify/templates/spec-template.md — compatible
-- ✅ .specify/templates/tasks-template.md — compatible
-- ⚠ docs/ et CLAUDE.md — à enrichir lors des prochaines features pour
-  référencer les règles UX/SEO/contenu si pertinent (non bloquant)
+- ✅ .specify/templates/* — non impactés (aucune règle structurelle
+  modifiée)
+- ⚠ specs/001-page-accueil-corporate/contracts/urls.md — contient l'URL
+  publique `/ressources` ; conservée pour traçabilité historique de la
+  feature 001. Tout nouveau lien public vers le blog DOIT utiliser `/blog`.
+- ⚠ content/site-settings.json — DOIT être mis à jour (item
+  `primaryMenu` : libellé `Blog` + href `/blog` ; clé `footerMenu.blog`).
+- ⚠ src/components/layout/GlobalFooter.tsx, src/app/sitemap.ts,
+  src/app/robots.ts — DOIVENT référencer `/blog` (et plus `/ressources`).
+
+Précédent (v1.0.0):
+- Version change: 0.0.0 (template placeholder) → 1.0.0 — ratification
+  initiale. Voir l'historique git pour le détail.
 
 Follow-up TODOs: aucun. RATIFICATION_DATE = 2026-04-26 (adoption initiale).
+LAST_AMENDED_DATE = 2026-04-27 (Ressources → Blog).
 -->
 
 # Alliance Consultants — Constitution du projet de refonte du site corporate
@@ -187,7 +182,7 @@ Règles dérivées :
 - **Responsive.** Le site DOIT être pleinement utilisable sur desktop,
   tablette et mobile, sans régression de contenu ni de CTA.
 - **Navigation principale (menu).** Le menu de référence est :
-  *Accueil · Solutions · Services · Formations · Références · Ressources ·
+  *Accueil · Solutions · Services · Formations · Références · Blog ·
   À propos · Contact & Démo*. Toute évolution DOIT être justifiée et
   amendée.
 - **Simplicité.** La navigation DOIT être courte, claire, cohérente entre
@@ -391,4 +386,4 @@ formel de la constitution.
 
 ---
 
-**Version**: 1.0.0 | **Ratifiée le**: 2026-04-26 | **Dernière modification**: 2026-04-26
+**Version**: 1.0.1 | **Ratifiée le**: 2026-04-26 | **Dernière modification**: 2026-04-27

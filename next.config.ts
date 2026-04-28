@@ -31,6 +31,12 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      { source: "/ressources", destination: "/blog", permanent: true },
+      { source: "/ressources/:path*", destination: "/blog/:path*", permanent: true },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);

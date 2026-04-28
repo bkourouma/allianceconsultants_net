@@ -7,28 +7,37 @@ interface BenefitListProps {
 
 export function BenefitList({ benefits }: BenefitListProps) {
   return (
-    <Section bg="white">
-      <div className="mb-10 max-w-3xl">
-        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+    <Section bg="gray">
+      <div className="mx-auto max-w-3xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
           Bénéfices métier
+        </p>
+        <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          Ce que la solution apporte
         </h2>
-        <p className="mt-2 text-base text-gray-600">
-          Ce que la solution apporte concrètement à votre organisation.
+        <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+          Des résultats concrets, mesurables, pour vos équipes et vos
+          opérations.
         </p>
       </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {benefits.map((b) => (
           <article
             key={b.title}
-            className="rounded-xl border border-gray-200 bg-gray-50 p-6"
+            className="flex flex-col rounded-2xl border border-slate-200/70 bg-white p-6 lg:p-7"
           >
             {b.metric && (
-              <p className="mb-3 text-2xl font-bold text-[var(--color-primary)]">
+              <p className="text-3xl font-bold tracking-tight text-primary lg:text-4xl">
                 {b.metric}
               </p>
             )}
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">{b.title}</h3>
-            <p className="text-sm leading-relaxed text-gray-700">{b.description}</p>
+            <h3 className="mt-3 text-lg font-bold tracking-tight text-slate-900">
+              {b.title}
+            </h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+              {b.description}
+            </p>
           </article>
         ))}
       </div>

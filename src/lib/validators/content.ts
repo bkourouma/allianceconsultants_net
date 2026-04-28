@@ -16,10 +16,12 @@ export const SiteSettingsSchema = z.object({
   }),
   contact: z.object({
     email: z.string().email(),
-    phone: z.string().regex(/^\+\d{6,15}$/),
+    phones: z
+      .array(z.string().regex(/^\+[\d\s]{6,30}\d$/))
+      .min(1),
     whatsapp: z
       .string()
-      .regex(/^\+\d{6,15}$/)
+      .regex(/^\+[\d\s]{6,30}\d$/)
       .nullable()
       .optional(),
     address: z.object({

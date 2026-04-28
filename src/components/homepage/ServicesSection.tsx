@@ -9,20 +9,24 @@ interface ServicesSectionProps {
 export function ServicesSection({ services }: ServicesSectionProps) {
   return (
     <Section bg="gray" aria-labelledby="services-title">
-      <div className="text-center">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          Services experts
+        </p>
         <h2
           id="services-title"
-          className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl"
+          className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
         >
           Nos services experts
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
-          Au-delà de nos solutions logicielles, nous intervenons en conseil, développement sur mesure
-          et déploiement de matériel pour accompagner votre transformation digitale de bout en bout.
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          Au-delà de nos solutions logicielles, nous intervenons en conseil,
+          développement sur mesure et déploiement de matériel pour accompagner
+          votre transformation digitale de bout en bout.
         </p>
       </div>
 
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-2">
         {services.map((service) => (
           <ServiceCard key={service.slug} service={service} />
         ))}

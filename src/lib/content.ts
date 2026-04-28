@@ -96,6 +96,33 @@ export async function getServices(
   return result;
 }
 
+export async function getServiceBySlug(
+  slug: string
+): Promise<(Service & { body: string }) | null> {
+  const filePath = path.join(ROOT, "services", `${slug}.mdx`);
+  let raw: string;
+  try {
+    raw = await fs.readFile(filePath, "utf-8");
+  } catch {
+    return null;
+  }
+  const { data, content } = matter(raw);
+  return { ...ServiceSchema.parse(data), body: content };
+}
+
+export async function getAllServiceSlugs(): Promise<string[]> {
+  const dir = path.join(ROOT, "services");
+  let files: string[];
+  try {
+    files = await fs.readdir(dir);
+  } catch {
+    return [];
+  }
+  return files
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => f.replace(/\.mdx$/, ""));
+}
+
 export async function getTrainings(
   opts: { homepageOnly?: boolean } = {}
 ): Promise<Training[]> {
@@ -118,6 +145,33 @@ export async function getTrainings(
   let result = trainings.sort((a, b) => a.homepageOrder - b.homepageOrder);
   if (opts.homepageOnly) result = result.filter((t) => t.showOnHomepage);
   return result;
+}
+
+export async function getTrainingBySlug(
+  slug: string
+): Promise<(Training & { body: string }) | null> {
+  const filePath = path.join(ROOT, "trainings", `${slug}.mdx`);
+  let raw: string;
+  try {
+    raw = await fs.readFile(filePath, "utf-8");
+  } catch {
+    return null;
+  }
+  const { data, content } = matter(raw);
+  return { ...TrainingSchema.parse(data), body: content };
+}
+
+export async function getAllTrainingSlugs(): Promise<string[]> {
+  const dir = path.join(ROOT, "trainings");
+  let files: string[];
+  try {
+    files = await fs.readdir(dir);
+  } catch {
+    return [];
+  }
+  return files
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => f.replace(/\.mdx$/, ""));
 }
 
 export async function getReferences(

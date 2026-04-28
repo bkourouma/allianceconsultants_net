@@ -1,42 +1,41 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { GlobalHeader } from "@/components/layout/GlobalHeader";
-import { GlobalFooter } from "@/components/layout/GlobalFooter";
-import { MatomoTracker } from "@/components/shared/MatomoTracker";
-import { getSiteSettings } from "@/lib/content";
 import "@/styles/globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-sans-inter",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a3a5e",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allianceconsultants.net"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  manifest: "/manifest.webmanifest",
+  formatDetection: { telephone: false },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const settings = await getSiteSettings();
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="fr" className={inter.variable}>
-      <body>
-        <a href="#main-content" className="skip-link">
-          Aller au contenu principal
-        </a>
-        <GlobalHeader
-          menu={settings.primaryMenu}
-          brandName={settings.brand.name}
-          logoUrl={settings.brand.logoUrl}
-        />
-        <main id="main-content" tabIndex={-1}>
-          {children}
-        </main>
-        <GlobalFooter settings={settings} />
-        <MatomoTracker />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -43,6 +43,29 @@ const BLOCK_CATEGORY_MAP: Record<Block, MatomoCategory> = {
   "final-cta": "FinalCTA",
 };
 
+const BASE =
+  "inline-flex items-center justify-center rounded-lg font-semibold no-underline transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary";
+
+const SIZE: Record<NonNullable<CTAButtonProps["size"]>, string> = {
+  sm: "h-9 px-3 text-sm gap-1.5",
+  md: "h-11 px-5 text-sm gap-2",
+  lg: "h-12 px-6 text-base gap-2",
+};
+
+function variantClasses(
+  variant: NonNullable<CTAButtonProps["variant"]>,
+  onDark: boolean,
+): string {
+  if (variant === "primary") {
+    return onDark
+      ? "bg-white text-primary hover:bg-slate-100 shadow-sm"
+      : "bg-primary text-white hover:bg-primary-dark shadow-sm";
+  }
+  return onDark
+    ? "border-2 border-white/80 text-white hover:bg-white hover:text-primary focus-visible:ring-white"
+    : "border-2 border-primary text-primary hover:bg-primary hover:text-white";
+}
+
 export function CTAButton({
   intent,
   label,
@@ -67,33 +90,11 @@ export function CTAButton({
     (e.currentTarget as HTMLAnchorElement).dataset.tracked = "true";
   }
 
-  const sizeClass =
-    size === "sm"
-      ? "cta-button--sm"
-      : size === "lg"
-        ? "cta-button--lg"
-        : "cta-button--md";
-
-  const variantClass =
-    variant === "primary"
-      ? onDark
-        ? "cta-button--inverse-primary"
-        : "slds-button_brand"
-      : onDark
-        ? "slds-button_inverse"
-        : "slds-button_outline-brand";
-
   return (
     <a
       href={href}
       onClick={handleClick}
-      className={cn(
-        "slds-button cta-button",
-        sizeClass,
-        size === "sm" && "slds-button_small",
-        variantClass,
-        className,
-      )}
+      className={cn(BASE, SIZE[size], variantClasses(variant, onDark), className)}
     >
       {label}
     </a>

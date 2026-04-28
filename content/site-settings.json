@@ -3,13 +3,13 @@
     "name": "Alliance Consultants",
     "alternateName": "Alliance Computer Consultants",
     "tagline": "Éditeur et intégrateur africain de solutions SaaS, IA et métiers pour les organisations de l'Afrique francophone.",
-    "logoUrl": "/images/logo.svg",
+    "logoUrl": "/images/Logo_AllianceConsultants.png",
     "foundingYear": 2003
   },
   "contact": {
-    "email": "contact@allianceconsultants.net",
-    "phone": "+2250000000000",
-    "whatsapp": "+2250000000000",
+    "email": "devaccrocs@gmail.com",
+    "phones": ["+225 01 01 51 01 36", "+225 07 07 66 41 05"],
+    "whatsapp": "+225 07 07 66 41 05",
     "address": {
       "street": "Abidjan, Côte d'Ivoire",
       "city": "Abidjan",
@@ -17,10 +17,10 @@
     }
   },
   "social": {
-    "linkedin": null,
-    "facebook": null,
-    "youtube": null,
-    "x": null
+    "linkedin": "https://www.linkedin.com/company/alliance-computer-consultants",
+    "facebook": "https://www.facebook.com/ACC225",
+    "youtube": "https://www.youtube.com/@Envol_IA",
+    "x": "https://x.com/acc_225"
   },
   "primaryMenu": [
     { "label": "Accueil", "href": "/" },
@@ -28,7 +28,7 @@
     { "label": "Services", "href": "/services" },
     { "label": "Formations", "href": "/formations" },
     { "label": "Références", "href": "/references" },
-    { "label": "Ressources", "href": "/ressources" },
+    { "label": "Blog", "href": "/blog" },
     { "label": "À propos", "href": "/a-propos" },
     { "label": "Contact & Démo", "href": "/contact-demo", "primary": true }
   ],
@@ -55,9 +55,9 @@
       { "label": "SQL Server", "href": "/formations/sql-server" },
       { "label": "GED & Archivage", "href": "/formations/ged-archivage" }
     ],
-    "ressources": [
-      { "label": "Blog", "href": "/ressources" },
-      { "label": "FAQ", "href": "/ressources#faq" }
+    "blog": [
+      { "label": "Tous les articles", "href": "/blog" },
+      { "label": "Flux RSS", "href": "/feed.xml" }
     ],
     "legal": [
       { "label": "Mentions légales", "href": "/mentions-legales" },

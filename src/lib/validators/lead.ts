@@ -12,8 +12,8 @@ export const LeadInputSchema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email().max(200),
   phone: z.string().min(6).max(40),
-  organization: z.string().min(2).max(160),
-  message: z.string().min(10).max(4000),
+  organization: z.string().max(160).optional().default(""),
+  message: z.string().max(4000).optional().default(""),
   consent: z.literal(true),
   honeypot: z.string().max(0).optional(),
 });

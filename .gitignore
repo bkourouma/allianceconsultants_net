@@ -23,6 +23,12 @@ yarn-error.log*
 .vscode/
 .idea/
 
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Claude Code worktrees
+.claude/worktrees/
+
 # Prisma
 prisma/migrations/
 
@@ -30,3 +36,7 @@ prisma/migrations/
 playwright-report/
 test-results/
 coverage/
+
+# Blog uploads (gitignored except .gitkeep)
+public/uploads/blog/*
+!public/uploads/blog/.gitkeep

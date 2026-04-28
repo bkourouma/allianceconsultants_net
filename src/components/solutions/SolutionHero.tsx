@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Section } from "@/components/ui/Section";
 import type { SolutionHero as SolutionHeroData } from "@/lib/validators/content";
 
 interface SolutionHeroProps {
@@ -11,22 +10,41 @@ export function SolutionHero({ hero, category }: SolutionHeroProps) {
   const hasImage = Boolean(hero.image);
 
   return (
-    <Section bg="white" padding="md" container={false}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className={hasImage ? "grid items-center gap-10 lg:grid-cols-2" : ""}>
+    <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-50"
+        style={{
+          backgroundImage:
+            "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%), radial-gradient(40% 50% at 0% 100%, rgba(245,158,11,0.10), transparent 70%)",
+        }}
+      />
+
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div
+          className={
+            hasImage
+              ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+              : "max-w-3xl"
+          }
+        >
           <div>
-            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              <span className="inline-block size-1.5 rounded-full bg-accent" />
               {category}
             </p>
-            <h1 className="mb-4 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            <h1 className="mt-4 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
               {hero.headline}
             </h1>
-            <p className="mb-8 max-w-2xl text-lg text-gray-600">{hero.tagline}</p>
-            <div className="flex flex-wrap gap-3">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              {hero.tagline}
+            </p>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4">
               <a
                 href="#demander-une-demo"
                 data-cta="solution-hero-primary"
-                className="inline-flex items-center justify-center rounded-lg bg-[var(--color-primary)] px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-[var(--color-primary-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
+                className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 {hero.primaryCta.label}
               </a>
@@ -36,27 +54,32 @@ export function SolutionHero({ hero, category }: SolutionHeroProps) {
                   {...(hero.secondaryCta.href.startsWith("http")
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
-                  className="inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-primary)] px-6 py-3 text-base font-semibold text-[var(--color-primary)] transition-colors hover:bg-[var(--color-primary)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
+                  className="inline-flex h-12 items-center justify-center rounded-lg border-2 border-primary px-6 text-base font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   {hero.secondaryCta.label}
                 </a>
               )}
             </div>
           </div>
+
           {hero.image && (
             <div className="relative">
+              <div
+                aria-hidden="true"
+                className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/15 via-primary/5 to-transparent blur-xl"
+              />
               <Image
                 src={hero.image.src}
                 alt={hero.image.alt}
                 width={hero.image.width}
                 height={hero.image.height}
                 priority
-                className="h-auto w-full rounded-xl object-cover shadow-md"
+                className="w-full rounded-2xl border border-slate-200/70 object-cover shadow-lg"
               />
             </div>
           )}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

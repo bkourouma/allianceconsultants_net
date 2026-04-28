@@ -1,0 +1,15 @@
+{
+  "name": "Alliance Consultants",
+  "short_name": "Alliance",
+  "description": "Éditeur et intégrateur africain de solutions SaaS, IA et métiers pour l'Afrique francophone.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a3a5e",
+  "lang": "fr-FR",
+  "icons": [
+    { "src": "/images/Logo_AllianceConsultants.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/images/Logo_AllianceConsultants.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

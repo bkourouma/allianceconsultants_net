@@ -6,10 +6,9 @@ interface ValuePropProps {
 
 export function ValueProp({ text }: ValuePropProps) {
   return (
-    <Section bg="gray" padding="sm">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="sr-only">Notre proposition de valeur</h2>
-        <p className="text-xl leading-relaxed text-gray-800 sm:text-2xl">
+    <Section bg="white" padding="md">
+      <div className="mx-auto max-w-4xl">
+        <p className="text-balance text-center text-xl font-medium leading-relaxed text-slate-800 sm:text-2xl lg:text-3xl">
           {text}
         </p>
       </div>

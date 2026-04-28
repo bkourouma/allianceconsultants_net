@@ -9,46 +9,70 @@ interface AISectionProps {
 export function AISection({ aiSection }: AISectionProps) {
   return (
     <Section bg="dark" aria-labelledby="ai-section-title">
-      <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wider text-blue-400">
-            IA & Automatisation
+          <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">
+            <span className="inline-block size-1.5 rounded-full bg-accent" />
+            IA &amp; Automatisation
           </p>
           <h2
             id="ai-section-title"
-            className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl"
+            className="mt-4 text-balance text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl"
           >
             {aiSection.title}
           </h2>
-          <p className="mt-4 text-gray-400">
-            Nos experts conçoivent et déploient des automatisations sur mesure adaptées à vos
-            processus métiers et à votre secteur d&apos;activité.
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+            Nos experts conçoivent et déploient des automatisations sur mesure
+            adaptées à vos processus métiers et à votre secteur d&apos;activité.
           </p>
           <div className="mt-8">
             <CTAButton
               intent="automation"
               label={aiSection.ctaLabel}
               block="ai-section"
-              size="md"
+              size="lg"
+              onDark
             />
           </div>
         </div>
 
-        <ul className="space-y-4" aria-label="Capacités IA d'Alliance Consultants">
-          {aiSection.bullets.map((bullet, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span
-                className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-blue-400"
-                aria-hidden="true"
-              >
-                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 12 12">
-                  <path d="M3.707 5.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L5 6.586 3.707 5.293z" />
-                </svg>
+        <div className="relative">
+          <div
+            aria-hidden="true"
+            className="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-primary-light/30 via-primary/20 to-transparent blur-2xl"
+          />
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm sm:p-8">
+            <div className="flex items-center gap-1.5 pb-5">
+              <span className="size-2.5 rounded-full bg-rose-400/70" />
+              <span className="size-2.5 rounded-full bg-amber-300/70" />
+              <span className="size-2.5 rounded-full bg-emerald-400/70" />
+              <span className="ml-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-slate-400">
+                workflow.ia
               </span>
-              <span className="text-gray-300">{bullet}</span>
-            </li>
-          ))}
-        </ul>
+            </div>
+            <ul
+              className="space-y-3.5"
+              aria-label="Capacités IA d'Alliance Consultants"
+            >
+              {aiSection.bullets.map((bullet, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-3 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-primary-light/15 text-[10px] font-bold text-primary-light"
+                  >
+                    ✓
+                  </span>
+                  <span className="text-sm leading-relaxed text-slate-200">
+                    {bullet}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </Section>
   );

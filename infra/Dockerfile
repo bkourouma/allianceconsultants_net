@@ -22,8 +22,10 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-# Schema + seed for `prisma migrate deploy` and one-off `tsx prisma/seed.ts`
+# Schema + seed for `prisma db push` and one-off `tsx prisma/seed.ts`
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+# bcryptjs is only used by seed.ts so Next's tracer skips it; copy it explicitly
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/bcryptjs ./node_modules/bcryptjs
 
 USER nextjs
 EXPOSE 3000

@@ -68,8 +68,6 @@ jobs:
           }
           dc down 2>/dev/null || true
           dc up -d
-          # Shared reverse proxy network on this VPS
-          docker network connect app_medicpro-network allianceconsultants-nginx 2>/dev/null || true
           echo "Waiting for services to start..."
           sleep 15
           # Sync Prisma schema against the running DB (no migrations dir is committed).

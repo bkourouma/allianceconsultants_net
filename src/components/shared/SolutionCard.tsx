@@ -44,7 +44,22 @@ export function SolutionCard({ solution }: SolutionCardProps) {
 
       <div className="flex flex-1 flex-col p-6 lg:p-7">
         <h3 className="text-xl font-bold tracking-tight text-slate-900">
-          {solution.name}
+          {solution.externalUrl ? (
+            <a
+              href={solution.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
+            >
+              {solution.name}
+              <span aria-hidden="true" className="ml-1 text-xs text-slate-400">
+                ↗
+              </span>
+              <span className="sr-only"> (ouvre le site du produit dans un nouvel onglet)</span>
+            </a>
+          ) : (
+            solution.name
+          )}
         </h3>
 
         <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">

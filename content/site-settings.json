@@ -37,8 +37,8 @@
       { "label": "DocuPro Suite", "href": "/solutions/docupro-suite" },
       { "label": "MedicPro", "href": "/solutions/medicpro" },
       { "label": "CliniquePro", "href": "/solutions/cliniquepro" },
-      { "label": "ImmoTopia.cloud", "href": "/solutions/immotopia-cloud" },
-      { "label": "Annonces Web", "href": "/solutions/annonces-web" },
+      { "label": "ImmoTopia", "href": "/solutions/immotopia-cloud" },
+      { "label": "Immo-Annonces.fr", "href": "/solutions/annonces-web" },
       { "label": "École Digitale", "href": "/solutions/ecole-digitale" }
     ],
     "services": [

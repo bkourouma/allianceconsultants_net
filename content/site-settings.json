@@ -34,12 +34,12 @@
   ],
   "footerMenu": {
     "solutions": [
-      { "label": "DocuPro Suite", "href": "/solutions/docupro-suite" },
+      { "label": "DocuPro Suite", "href": "https://docupro-new.allianceconsultants.net/" },
       { "label": "MedicPro", "href": "/solutions/medicpro" },
-      { "label": "CliniquePro", "href": "/solutions/cliniquepro" },
-      { "label": "ImmoTopia", "href": "/solutions/immotopia-cloud" },
+      { "label": "CliniquePro", "href": "https://cliniquepro.allianceconsultants.net/" },
+      { "label": "ImmoTopia", "href": "https://immotopia.cloud/" },
       { "label": "Immo-Annonces.fr", "href": "/solutions/annonces-web" },
-      { "label": "École Digitale", "href": "/solutions/ecole-digitale" }
+      { "label": "École Digitale", "href": "https://ecoledigitale.allianceconsultants.net/" }
     ],
     "services": [
       { "label": "Développement spécifique", "href": "/services/developpement-specifique" },
@@ -62,6 +62,13 @@
     "legal": [
       { "label": "Mentions légales", "href": "/mentions-legales" },
       { "label": "Politique de confidentialité", "href": "/privacy" }
+    ],
+    "social": [
+      { "label": "Alliance Consultants", "href": "https://www.facebook.com/ACC225/" },
+      { "label": "IA – MasterClassx", "href": "https://www.facebook.com/profile.php?id=61590686939181" },
+      { "label": "DocuPro", "href": "https://www.facebook.com/profile.php?id=61590575882666" },
+      { "label": "CliniquePro", "href": "https://www.facebook.com/profile.php?id=61590811132929" },
+      { "label": "Immo-Annonces.fr", "href": "https://www.facebook.com/profile.php?id=61590568354514" }
     ]
   }
 }

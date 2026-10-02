@@ -1,8 +1,6 @@
 "use client";
 
-import { trackEvent } from "@/lib/matomo";
 import { cn } from "@/lib/utils";
-import type { MouseEvent } from "react";
 
 type Intent = "demo" | "contact" | "training" | "automation" | "diagnostic";
 type Block =
@@ -12,13 +10,6 @@ type Block =
   | "service-card"
   | "training-section"
   | "final-cta";
-type MatomoCategory =
-  | "Hero"
-  | "Solutions"
-  | "IA"
-  | "Services"
-  | "Trainings"
-  | "FinalCTA";
 
 interface CTAButtonProps {
   intent: Intent;
@@ -33,15 +24,6 @@ interface CTAButtonProps {
   onDark?: boolean;
   className?: string;
 }
-
-const BLOCK_CATEGORY_MAP: Record<Block, MatomoCategory> = {
-  hero: "Hero",
-  "solution-card": "Solutions",
-  "ai-section": "IA",
-  "service-card": "Services",
-  "training-section": "Trainings",
-  "final-cta": "FinalCTA",
-};
 
 const BASE =
   "inline-flex items-center justify-center rounded-lg font-semibold no-underline transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary";
@@ -82,18 +64,9 @@ export function CTAButton({
 
   const href = `/contact-demo?${params.toString()}`;
 
-  function handleClick(e: MouseEvent<HTMLAnchorElement>) {
-    const category = BLOCK_CATEGORY_MAP[block];
-    const action = "ClickCTA";
-    const name = solutionSlug ? `${intent}:${solutionSlug}` : intent;
-    trackEvent(category, action, name);
-    (e.currentTarget as HTMLAnchorElement).dataset.tracked = "true";
-  }
-
   return (
     <a
       href={href}
-      onClick={handleClick}
       className={cn(BASE, SIZE[size], variantClasses(variant, onDark), className)}
     >
       {label}

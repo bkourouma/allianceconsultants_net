@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { TrainingCard } from "@/components/shared/TrainingCard";
 import { CTAButton } from "@/components/shared/CTAButton";
-import { trackEvent } from "@/lib/matomo";
 import type { Homepage, Training } from "@/lib/validators/content";
 
 interface TrainingsSectionProps {
@@ -22,10 +21,6 @@ export function TrainingsSection({
   trainingsSection,
   trainings,
 }: TrainingsSectionProps) {
-  function handleCatalogueClick() {
-    trackEvent("Trainings", "ClickCTA", "catalogue");
-  }
-
   return (
     <Section bg="white" aria-labelledby="trainings-title">
       <div className="mx-auto max-w-3xl text-center">
@@ -68,7 +63,6 @@ export function TrainingsSection({
       <div className="mt-12 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
         <Link
           href="/formations"
-          onClick={handleCatalogueClick}
           className="inline-flex h-11 items-center justify-center rounded-lg border-2 border-primary px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           Voir le catalogue

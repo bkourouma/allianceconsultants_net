@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { trackEvent } from "@/lib/matomo";
 import type { Service } from "@/lib/validators/content";
 
 interface ServiceCardProps {
@@ -18,10 +17,6 @@ const ICON_MAP: Record<string, string> = {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   const icon = service.iconKey ? (ICON_MAP[service.iconKey] ?? "💼") : "💼";
-
-  function handleClick() {
-    trackEvent("Services", "ClickCard", service.slug);
-  }
 
   return (
     <article className="group flex gap-5 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg lg:p-7">
@@ -55,7 +50,6 @@ export function ServiceCard({ service }: ServiceCardProps) {
         <div className="mt-5">
           <Link
             href={`/services/${service.slug}`}
-            onClick={handleClick}
             className="text-sm font-semibold text-primary transition-colors hover:text-primary-dark focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
           >
             En savoir plus →

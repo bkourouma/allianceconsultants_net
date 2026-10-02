@@ -1,6 +1,6 @@
 import { GlobalHeader } from "@/components/layout/GlobalHeader";
 import { GlobalFooter } from "@/components/layout/GlobalFooter";
-import { MatomoTracker } from "@/components/shared/MatomoTracker";
+import { UmamiTracker } from "@/components/shared/UmamiTracker";
 import { getSiteSettings } from "@/lib/content";
 
 export default async function SiteLayout({
@@ -24,7 +24,7 @@ export default async function SiteLayout({
         {children}
       </main>
       <GlobalFooter settings={settings} />
-      <MatomoTracker />
+      <UmamiTracker />
     </>
   );
 }

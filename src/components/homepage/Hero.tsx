@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { ReassuranceBadges } from "@/components/shared/ReassuranceBadges";
-import { trackEvent } from "@/lib/matomo";
 import type { Homepage } from "@/lib/validators/content";
 
 interface HeroProps {
@@ -12,39 +10,8 @@ interface HeroProps {
 }
 
 export function Hero({ hero }: HeroProps) {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    let fired50 = false;
-    let fired100 = false;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const ratio = entry.intersectionRatio;
-          if (ratio >= 0.5 && !fired50) {
-            fired50 = true;
-            trackEvent("Hero", "ScrollDepth", "50%");
-          }
-          if (ratio >= 1 && !fired100) {
-            fired100 = true;
-            trackEvent("Hero", "ScrollDepth", "100%");
-          }
-        }
-      },
-      { threshold: [0.5, 1] },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       aria-labelledby="hero-title"
       className="relative isolate overflow-hidden bg-slate-950 text-white"
     >

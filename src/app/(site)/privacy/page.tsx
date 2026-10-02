@@ -8,8 +8,8 @@ import { buildMetadata } from "@/lib/seo";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
 
-const LAST_UPDATED = "2026-06-04";
-const LAST_UPDATED_LABEL = "4 juin 2026";
+const LAST_UPDATED = "2026-10-02";
+const LAST_UPDATED_LABEL = "2 octobre 2026";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -154,9 +154,10 @@ export default async function PrivacyPage() {
               </li>
               <li>
                 <strong>Données de navigation</strong>&nbsp;: pages consultées,
-                pages de provenance, type d&apos;appareil et de navigateur,
-                adresse IP tronquée, collectées via nos outils de mesure
-                d&apos;audience.
+                pages de provenance, pays, région et ville approximatifs, type
+                d&apos;appareil, de navigateur et d&apos;écran, collectées via
+                notre outil de mesure d&apos;audience Umami (sans cookie, votre
+                adresse IP n&apos;est pas conservée).
               </li>
               <li>
                 <strong>Données techniques</strong>&nbsp;: journaux serveurs et
@@ -260,9 +261,13 @@ export default async function PrivacyPage() {
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-700">
               Notre site utilise des cookies strictement nécessaires à son
-              fonctionnement, ainsi que, sous réserve de votre consentement,
-              des cookies de mesure d&apos;audience pour améliorer
-              l&apos;expérience proposée.
+              fonctionnement. Sa fréquentation est mesurée avec Umami, un outil
+              libre que nous hébergeons nous-mêmes&nbsp;: sans cookie, sans
+              conserver votre adresse IP, et sans envoyer de données à un
+              service de mesure d&apos;audience tiers. Il enregistre les pages
+              consultées, la page d&apos;origine, le pays, la région et la
+              ville approximatifs, ainsi que le type d&apos;appareil, de
+              navigateur et d&apos;écran.
             </p>
             <p className="mt-4 text-base leading-relaxed text-slate-700">
               Vous pouvez à tout moment configurer votre navigateur pour bloquer

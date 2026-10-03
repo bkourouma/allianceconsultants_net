@@ -10,8 +10,8 @@ export interface StationNavItem {
 }
 
 export const DEFAULT_STATION_NAV: StationNavItem[] = [
-  { id: "valeur", label: "Valeur" },
-  { id: "pour-qui", label: "Pour qui" },
+  { id: "proposition-de-valeur", label: "Valeur" },
+  { id: "cibles", label: "Pour qui" },
   { id: "problemes", label: "Problèmes résolus" },
   { id: "fonctionnalites", label: "Fonctionnalités" },
   { id: "faq", label: "FAQ" },

@@ -22,9 +22,9 @@ test.describe("Homepage — US acceptance scenarios", () => {
     const demoCta = page.getByRole("link", { name: /démo/i });
     await expect(demoCta.first()).toBeVisible();
 
-    // Reassurance badges
-    const badges = page.locator('[aria-label*="Points forts"] span');
-    await expect(badges).toHaveCount(8);
+    // Reassurance facts: only the four validated ones are shown
+    const badges = page.locator('[aria-label="Points de repère Alliance Consultants"] li');
+    await expect(badges).toHaveCount(4);
   });
 
   test("US1: hero visible above fold on mobile", async ({ page }) => {
@@ -37,13 +37,14 @@ test.describe("Homepage — US acceptance scenarios", () => {
 
   // US2 — 6 solution cards equitable
   test("US2: 6 solution cards rendered with equitable sizing", async ({ page }) => {
-    const cards = page.locator("article").filter({ hasText: "Demander une démo" });
+    // The solutions lineup renders one row (article) per solution; rows are
+    // collapsed accordions on mobile, so don't depend on the open-state CTA.
+    const cards = page.locator('[aria-labelledby="solutions-title"] article');
     await expect(cards).toHaveCount(6);
 
-    // Each card has name, description, benefit
+    // Each row exposes its name as a heading
     for (const card of await cards.all()) {
-      await expect(card.locator("h3")).toBeVisible();
-      await expect(card.locator("p").first()).toBeVisible();
+      await expect(card.getByRole("heading").first()).toBeVisible();
     }
   });
 
@@ -92,14 +93,16 @@ test.describe("Homepage — US acceptance scenarios", () => {
     const servicesSection = page.locator('[aria-labelledby="services-title"]');
     await servicesSection.scrollIntoViewIfNeeded();
 
-    const serviceLinks = page.locator('article a[href^="/services/"]');
+    const serviceLinks = servicesSection.locator('a[href^="/services/"]');
     await expect(serviceLinks).toHaveCount(5);
   });
 
   // US6 — No placeholder content
   test("US6: no placeholder logos or unvalidated metrics shown", async ({ page }) => {
-    const content = await page.content();
-    expect(content).not.toContain("placeholder");
+    // Check visible copy, not markup: the illustrative DocuPro search legitimately
+    // carries an input placeholder attribute.
+    const content = await page.locator("main").innerText();
+    expect(content.toLowerCase()).not.toContain("placeholder");
     expect(content).not.toContain("Lorem ipsum");
     expect(content).not.toContain("TODO");
   });

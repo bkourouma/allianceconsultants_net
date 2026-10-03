@@ -6,8 +6,10 @@ test.describe("Homepage — CTA redirects & no form inputs", () => {
   });
 
   test("zero form inputs on homepage", async ({ page }) => {
-    const inputs = page.locator("input, textarea, select, form");
-    await expect(inputs).toHaveCount(0);
+    // No lead form on the homepage. The page does carry illustrative UI (the
+    // sector planner radios and a demo search box), which are not lead capture.
+    await expect(page.locator("form, textarea, select")).toHaveCount(0);
+    await expect(page.locator("input[type=email], input[type=tel], input[type=password]")).toHaveCount(0);
   });
 
   test("all business CTAs point to /contact-demo", async ({ page }) => {

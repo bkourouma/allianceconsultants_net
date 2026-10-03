@@ -104,8 +104,8 @@ export default async function SolutionsIndexPage() {
             items={[{ label: "Accueil", href: "/" }, { label: "Solutions" }]}
             className="text-ink-soft"
           />
-          <h1 className="t-display mt-10 max-w-[14ch] text-ink lg:mt-14">
-            Une ligne par métier
+          <h1 className="t-display mt-10 max-w-[18ch] text-ink lg:mt-14">
+            Nos solutions, une ligne par métier
           </h1>
           <div className="mt-6 md:max-w-[52%]">
           <p className="t-lead">

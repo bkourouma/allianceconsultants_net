@@ -82,7 +82,8 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
     siteUrl: SITE_URL,
   });
 
-  const line = getLine(solution.slug);
+
+  const line = getLine(solution.slug);
   const scopeClass = line ? `line-${line.id}` : undefined;
   const proofFilled = hasProof(solution.proof);
 
@@ -115,12 +116,12 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
         text={solution.valueProposition}
         title={`Ce que ${solution.name} change pour vous`}
       />
-      <BenefitList benefits={solution.benefits} />
       <TargetAudience
         items={solution.targetAudience}
         problemsSolved={solution.problemsSolved}
       />
       <FeatureGrid groups={solution.featureGroups} />
+      <BenefitList benefits={solution.benefits} />
 
       {proofFilled && solution.useCases && solution.useCases.length > 0 && (
         <UseCases useCases={solution.useCases} />

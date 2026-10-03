@@ -74,7 +74,7 @@ export function HistoryTimeline({ history, className }: HistoryTimelineProps) {
         />
       </div>
 
-      <ol className="relative space-y-9 lg:absolute lg:inset-x-3 lg:inset-y-0 lg:space-y-0">
+      <ol aria-label="Histoire d'Alliance Consultants" className="relative space-y-9 lg:absolute lg:inset-x-3 lg:inset-y-0 lg:space-y-0">
         {history.map((m, i) => {
           const x = ((m.year - first) / span) * 100;
           const reached = p >= x / 100 - 0.001;

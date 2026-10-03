@@ -13,7 +13,7 @@ interface BenefitListProps {
  */
 export function BenefitList({ benefits }: BenefitListProps) {
   return (
-    <Section bg="gray" padding="sm" aria-labelledby="benefices-title">
+    <Section id="benefices" bg="gray" padding="sm" aria-labelledby="benefices-title">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         <h2 id="benefices-title" className="t-h3 max-w-[18ch] text-ink lg:sticky lg:top-40 lg:self-start">
           Ce que vous en retirez, concrètement

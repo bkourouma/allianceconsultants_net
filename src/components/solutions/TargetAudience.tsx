@@ -51,7 +51,7 @@ export function TargetAudience({
 
   return (
     <>
-      <Section id="pour-qui" bg="gray" padding="md" aria-labelledby="pour-qui-title">
+      <Section id="cibles" bg="gray" padding="md" aria-labelledby="pour-qui-title">
         <SectionHead id="pour-qui-title" title="Pour qui ?" />
         <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
           <div

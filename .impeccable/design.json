@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-03T00:00:00Z",
+  "title": "Design System: Alliance Consultants — RÉSEAU",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "primary", "displayName": "Ink Navy", "canonical": "#0b1b3a", "tonalRamp": ["#050d1e", "#0b1b3a", "#1d2c4d", "#3a4764", "#5b6784", "#8f98ae", "#d5dbea", "#f3f5fa"] },
+      "brand": { "role": "primary", "displayName": "Brand Signal Blue", "canonical": "#1457f5", "tonalRamp": ["#0a2c7d", "#0d3ca8", "#1457f5", "#4577f7", "#7799f9", "#a3bbfb", "#d1ddfd", "#eef2fe"] },
+      "line-docupro": { "role": "secondary", "displayName": "DocuPro Blue", "canonical": "#1457f5", "tonalRamp": ["#0a2c7d", "#0d3ca8", "#1457f5", "#4577f7", "#7799f9", "#a3bbfb", "#d1ddfd", "#eef2fe"] },
+      "line-medicpro": { "role": "secondary", "displayName": "MedicPro Green", "canonical": "#098240", "tonalRamp": ["#04411f", "#06582c", "#098240", "#38a066", "#6bbd91", "#9bd5b4", "#cdeadb", "#ecf7f1"] },
+      "line-cliniquepro": { "role": "secondary", "displayName": "CliniquePro Teal", "canonical": "#00789a", "tonalRamp": ["#003c4d", "#005369", "#00789a", "#33a0bc", "#66bad0", "#99d2e0", "#cce8ef", "#ebf6f9"] },
+      "line-immotopia": { "role": "secondary", "displayName": "Immotopia Orange", "canonical": "#f26a1b", "tonalRamp": ["#7a3005", "#a84610", "#f26a1b", "#f58b4d", "#f8a97c", "#fbc7a8", "#fde3d3", "#fef4ed"] },
+      "line-annonces": { "role": "secondary", "displayName": "Annonces Magenta", "canonical": "#e0245e", "tonalRamp": ["#700f2f", "#9d1844", "#e0245e", "#e8537f", "#ee80a0", "#f4a9c0", "#f9d4df", "#fdeef3"] },
+      "line-ecole": { "role": "secondary", "displayName": "École Yellow", "canonical": "#f5b800", "tonalRamp": ["#7a5c00", "#a88000", "#f5b800", "#f8c933", "#fad866", "#fce699", "#fef3cc", "#fffaeb"] },
+      "line-academie": { "role": "tertiary", "displayName": "Académie Violet", "canonical": "#6d3be0", "tonalRamp": ["#37146f", "#4c24a3", "#6d3be0", "#8f69e8", "#ae91ee", "#cbbbf4", "#e5ddf9", "#f5f1fd"] },
+      "enamel": { "role": "neutral", "displayName": "Cool Enamel", "canonical": "#f3f5fa", "tonalRamp": ["#5b6784", "#8f98ae", "#b4bccd", "#d5dbea", "#e4e8f2", "#ecf0f7", "#f3f5fa", "#ffffff"] },
+      "night": { "role": "neutral", "displayName": "Night Navy", "canonical": "#07122b", "tonalRamp": ["#030816", "#07122b", "#0e2149", "#1a3269", "#2d4a8a", "#5a74ad", "#9aabd0", "#d5dbea"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Homepage H1 only; signage-scale, tight." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles (t-h2)." },
+      "title": { "displayName": "Title", "purpose": "Card and panel headings (t-h3)." },
+      "lead": { "displayName": "Lead", "purpose": "One sentence under a heading, 62ch max." },
+      "body": { "displayName": "Body", "purpose": "Running text, 68ch max." },
+      "label": { "displayName": "Station label", "purpose": "Diagram station names and sector captions." }
+    },
+    "shadows": [
+      { "name": "rule-underline", "value": "0 1px 0 #d5dbea", "purpose": "Resting line card edge." },
+      { "name": "menu-open", "value": "0 18px 30px -18px rgba(11,27,58,0.28)", "purpose": "Header mega-panel." },
+      { "name": "card-lift", "value": "0 10px 28px -20px rgba(7,18,43,0.55)", "purpose": "Lineup card hover." },
+      { "name": "preview-frame", "value": "0 24px 48px -28px rgba(7,18,43,0.6)", "purpose": "Illustrative product preview frame." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "All state transitions and scroll reveals (300ms controls, 700ms reveals)." },
+      { "name": "fade-up", "value": "0.6s ease-out both, translateY(8px) to 0", "purpose": "Entrance." },
+      { "name": "hero-mesh", "value": "18s ease-in-out infinite", "purpose": "Slow drift of the hero background mesh." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Pill CTA",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink pill with an accent arrow roundel; the demo request.",
+      "html": "<a class=\"ds-cta\" href=\"#\">Demander une démo<span class=\"ds-cta-r\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 8h10M9 4l4 4-4 4\"/></svg></span></a>",
+      "css": ".ds-cta{--accent:#1457f5;--on-accent:#fff;display:inline-flex;align-items:center;gap:12px;height:44px;padding:0 6px 0 20px;border-radius:9999px;background:#0b1b3a;color:#fff;font-weight:700;font-size:15px;text-decoration:none;transition:background-color .3s cubic-bezier(.16,1,.3,1)}.ds-cta:hover{background:#0e2149}.ds-cta:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.ds-cta-r{display:grid;place-items:center;width:32px;height:32px;border-radius:9999px;background:var(--accent);color:var(--on-accent);transition:transform .3s cubic-bezier(.16,1,.3,1)}.ds-cta:hover .ds-cta-r{transform:translateX(2px) rotate(-8deg)}"
+    },
+    {
+      "name": "Secondary Pill",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined ink pill for the secondary action.",
+      "html": "<a class=\"ds-ghost\" href=\"#\">Voir les solutions</a>",
+      "css": ".ds-ghost{display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:9999px;box-shadow:inset 0 0 0 2px #0b1b3a;color:#0b1b3a;font-weight:700;font-size:15px;text-decoration:none;transition:background-color .3s,color .3s}.ds-ghost:hover{background:#0b1b3a;color:#fff}.ds-ghost:focus-visible{outline:3px solid #1457f5;outline-offset:3px}"
+    },
+    {
+      "name": "Line Roundel",
+      "kind": "chip",
+      "description": "Coloured circle with a one-letter glyph; identifies a product line.",
+      "html": "<span class=\"ds-roundel\" style=\"background:#098240\">M</span>",
+      "css": ".ds-roundel{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:9999px;color:#fff;font-family:'Bricolage Grotesque','Segoe UI',sans-serif;font-weight:800;font-size:16px}"
+    },
+    {
+      "name": "Line Card",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Panel with a full accent band, roundel and name, then pitch and actions.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-h\"><span class=\"ds-card-r\">M</span><div><h3>MedicPro</h3><p>Pharma &amp; réglementaire</p></div></div><div class=\"ds-card-b\"><p>Suivi des AMM, visas, produits, stocks et ventes multi-pays.</p></div></article>",
+      "css": ".ds-card{--accent:#098240;--on-accent:#fff;width:320px;border-radius:8px;overflow:hidden;background:#fff;color:#0b1b3a;box-shadow:0 1px 0 #d5dbea;font-family:Figtree,'Segoe UI',sans-serif}.ds-card-h{display:flex;align-items:center;gap:12px;padding:16px;background:var(--accent);color:var(--on-accent)}.ds-card-r{display:grid;place-items:center;width:40px;height:40px;border-radius:9999px;background:var(--on-accent);color:var(--accent);font-weight:800;font-size:18px}.ds-card h3{margin:0;font-family:'Bricolage Grotesque','Segoe UI',sans-serif;font-weight:800;font-size:24px;line-height:1;letter-spacing:-.03em}.ds-card-h p{margin:4px 0 0;font-size:13px;font-weight:600}.ds-card-b{padding:16px;font-size:15px;color:#3a4764;line-height:1.35}.ds-card-b p{margin:0}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "48px field with ink focus border and brand ring.",
+      "html": "<label class=\"ds-l\">E-mail professionnel<span aria-hidden=\"true\"> *</span><input class=\"ds-in\" type=\"email\"></label>",
+      "css": ".ds-l{display:block;font-family:Figtree,'Segoe UI',sans-serif;font-size:14px;font-weight:700;color:#0b1b3a}.ds-in{display:block;box-sizing:border-box;width:100%;height:48px;margin-top:6px;padding:0 14px;border:1px solid rgba(91,103,132,.7);border-radius:8px;background:#fff;color:#0b1b3a;font-size:16px;transition:border-color .2s}.ds-in:focus{outline:none;border-color:#0b1b3a;box-shadow:0 0 0 3px rgba(20,87,245,.3)}"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "refersTo": "segmented-control",
+      "description": "Pill group on enamel; the selected option fills with ink.",
+      "html": "<div class=\"ds-seg\"><span class=\"ds-seg-o ds-on\">Démo</span><span class=\"ds-seg-o\">Contact</span><span class=\"ds-seg-o\">Formation</span></div>",
+      "css": ".ds-seg{display:inline-flex;gap:4px;padding:4px;border-radius:9999px;background:#f3f5fa;font-family:Figtree,'Segoe UI',sans-serif}.ds-seg-o{display:flex;align-items:center;min-height:44px;padding:0 16px;border-radius:9999px;font-size:14px;font-weight:600;color:#3a4764;cursor:pointer}.ds-seg-o:hover{color:#0b1b3a}.ds-on{background:#0b1b3a;color:#fff}"
+    },
+    {
+      "name": "Route Nav",
+      "kind": "nav",
+      "description": "Nav items as stations on a hairline track; the active station fills with the route colour.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-n ds-n-on\">Solutions</a><a class=\"ds-n\">Services</a><a class=\"ds-n\">Formations</a><a class=\"ds-n\">À propos</a></nav>",
+      "css": ".ds-nav{--route:#1457f5;position:relative;display:flex;height:56px;font-family:Figtree,'Segoe UI',sans-serif}.ds-nav:after{content:'';position:absolute;left:8px;right:8px;bottom:12px;height:1px;background:#d5dbea}.ds-n{position:relative;display:flex;align-items:center;padding:0 10px 14px;font-size:15px;font-weight:600;color:#3a4764}.ds-n:hover{color:#0b1b3a}.ds-n:before{content:'';position:absolute;left:50%;bottom:7px;width:11px;height:11px;transform:translateX(-50%);border-radius:9999px;border:2px solid #5b6784;background:#fff;z-index:1}.ds-n-on{color:#0b1b3a}.ds-n-on:before{width:14px;height:14px;bottom:5px;border-color:var(--route);background:var(--route)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Daylight Station Signage",
+    "overview": "Alliance is drawn as a transit network, not a catalogue. Each solution is a colour-coded line, each module a station, services are interchanges, formations form the circular Académie line, and the demo request is the terminus. The ground is a cool enamel with white signage panels, ink-navy type and hairline rules; one night-navy family is reserved for contrast sections. Colour is spent at page scale: thick strokes, section spines, full colour bands, never sprinkled accents.\n\nDisplay type is large and tight (Bricolage Grotesque, 800, tracking -0.035em); text is Figtree. Controls are fully round pills, content panels are modestly rounded (8px), and structure is drawn with 1px rules. The recognisable silhouette with content removed: coloured parallel strokes bending at 45 degrees with ringed stations.",
+    "keyCharacteristics": [
+      "One accent per scope: --accent / --on-accent are set per product line and everything inside inherits them.",
+      "Ink-navy is the structural colour (type, primary buttons, rules); lines carry meaning.",
+      "Flat panels, hairline rules; shadows only on lifted previews and open menus.",
+      "Station vocabulary: ringed dots, white dots with ink ring, coloured roundels with a one-letter glyph.",
+      "Reveal-on-scroll and route spine motion, all disabled under reduced motion."
+    ],
+    "rules": [
+      { "name": "The One Line Rule", "body": "Inside any scope exactly one line colour is active, delivered through --accent. Never place two line colours as competing accents in the same card; a multi-line view shows them as parallel strokes, not as decoration.", "section": "colors" },
+      { "name": "The Ink On Yellow Rule", "body": "Text on orange and yellow is ink, never white. Take the on-colour from --on-accent.", "section": "colors" },
+      { "name": "The Tight Display Rule", "body": "Display never exceeds 6rem and tracking never goes below -0.04em; headings use text-wrap: balance.", "section": "typography" },
+      { "name": "The Soft Lift Rule", "body": "Shadows are tinted with night navy, long blur and negative spread; no hard offset shadows.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do scope --accent to one line per section or card and take text colour from --on-accent.",
+      "Do build controls as full pills and panels at 8px radius with 1px rules.",
+      "Do keep every reveal and animation inside the reduced-motion fallback (visible by default, JS opts in).",
+      "Do reserve Night for contrast sections; use white text on it and #c4d2ff for secondary labels.",
+      "Do pair every colour signal with text (line name, station label); keep 44px minimum touch targets."
+    ],
+    "donts": [
+      "Don't use the legacy admin tokens (--color-primary, --color-dark, Inter) on public pages.",
+      "Don't centre a hero over a row of equal icon cards, or alternate grey and white sections.",
+      "Don't use emoji as icons; icons are Lucide strokes (2px) or the roundel glyphs.",
+      "Don't use hard offset shadows or scatter line colours as decoration.",
+      "Don't invent figures, clients or claims in diagrams or previews."
+    ]
+  }
+}

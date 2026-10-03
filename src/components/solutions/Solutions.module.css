@@ -1,0 +1,42 @@
+/* Focus ring colours per ground. Specificity is bumped (repeated class) so the
+   rule beats the unlayered `.site-root :focus-visible` regardless of order. */
+.focusInk.focusInk :focus-visible {
+  outline-color: var(--color-ink);
+}
+.focusOnAccent.focusOnAccent.focusOnAccent :focus-visible {
+  outline-color: var(--on-accent);
+}
+.focusNight.focusNight.focusNight :focus-visible {
+  outline-color: #ffffff;
+}
+.focusInkForce.focusInkForce.focusInkForce.focusInkForce :focus-visible {
+  outline-color: var(--color-ink);
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.panelIn {
+  animation: panelIn 420ms var(--ease-out-expo) both;
+}
+
+.noScrollbar {
+  scrollbar-width: none;
+}
+.noScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panelIn {
+    animation: none;
+  }
+}

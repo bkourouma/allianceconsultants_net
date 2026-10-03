@@ -302,3 +302,50 @@ export type Service = z.infer<typeof ServiceSchema>;
 export type Training = z.infer<typeof TrainingSchema>;
 export type Reference = z.infer<typeof ReferenceSchema>;
 export type MenuItem = z.infer<typeof MenuItemSchema>;
+
+// ============================================================================
+// Assistant IA (feature 003) — content/assistant.json
+// Textes éditoriaux de l'assistant : accroche proactive, message d'ouverture,
+// réponses rapides et axes de découverte par page. Validé au build.
+// ============================================================================
+
+export const AssistantTopicSchema = z.object({
+  /** Identifiant de page : chemin sans slash initial ("solutions/cliniquepro"), "home" ou "default". */
+  id: z.string().regex(/^(default|home|[a-z0-9-]+(\/[a-z0-9-]+)?)$/),
+  kind: z.enum(["default", "home", "section", "solution", "service", "training"]),
+  /** Libellé utilisé dans les prompts ("CliniquePro", "nos services"). */
+  label: z.string().min(2).max(60),
+  /** Ligne de réseau (couleur d'accent) — facultatif. */
+  line: z
+    .enum(["docupro", "medicpro", "cliniquepro", "immotopia", "annonces", "ecole", "academie"])
+    .optional(),
+  /** Bulle d'accroche proactive, affichée après quelques actions du visiteur. */
+  nudge: z.string().min(20).max(140),
+  /** Premier message de l'assistant lorsque le visiteur ouvre la conversation depuis cette page. */
+  opener: z.string().min(40).max(420),
+  /** Réponses rapides proposées sous le message d'ouverture. */
+  replies: z.array(z.string().min(2).max(40)).min(2).max(4),
+  /** Axes de découverte transmis au modèle (jamais affichés au visiteur). */
+  focus: z.string().min(20).max(600),
+});
+
+export const AssistantConfigSchema = z
+  .object({
+    name: z.string().min(2).max(40),
+    /** URL Calendly de prise de rendez-vous (https://calendly.com/…). `null` : repli sur le formulaire de contact. */
+    calendlyUrl: z
+      .string()
+      .url()
+      .regex(/^https:\/\/calendly\.com\//, "L'URL doit commencer par https://calendly.com/")
+      .nullable(),
+    topics: z.array(AssistantTopicSchema).min(2),
+  })
+  .refine((c) => c.topics.some((t) => t.id === "default"), {
+    message: 'Il faut un sujet "default"',
+  })
+  .refine((c) => new Set(c.topics.map((t) => t.id)).size === c.topics.length, {
+    message: "Identifiants de sujet dupliqués",
+  });
+
+export type AssistantTopic = z.infer<typeof AssistantTopicSchema>;
+export type AssistantConfig = z.infer<typeof AssistantConfigSchema>;

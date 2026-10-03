@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import { ProjectReferenceCard } from "@/components/references/ProjectReferenceCard";
+import { HistoryTimeline } from "@/components/homepage/lower/HistoryTimeline";
 import type { Homepage, Reference } from "@/lib/validators/content";
 import type { PublicProjectReference } from "@/lib/projectReferences";
 
@@ -9,6 +11,8 @@ interface ReferencesSectionProps {
   references: Reference[];
   projectReferences?: PublicProjectReference[];
 }
+
+const FOUNDED = 2003;
 
 export function ReferencesSection({
   referencesSection,
@@ -25,89 +29,80 @@ export function ReferencesSection({
       r.type === "TESTIMONIAL" &&
       r.testimonialQuote,
   );
+  const years = new Date().getFullYear() - FOUNDED;
 
   return (
-    <Section bg="white" aria-labelledby="references-title">
-      <div className="mx-auto max-w-3xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-          Références &amp; histoire
-        </p>
-        <h2
-          id="references-title"
-          className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
-        >
+    <Section
+      bg="gray"
+      aria-labelledby="references-title"
+      className="border-t border-rule"
+    >
+      <div className="max-w-3xl">
+        <h2 id="references-title" className="t-h2">
           {referencesSection.title}
         </h2>
+        <p className="t-lead mt-4 max-w-[52ch]">
+          {years} ans d&apos;histoire, des premiers projets de dématérialisation
+          à l&apos;offre SaaS d&apos;aujourd&apos;hui.
+        </p>
       </div>
 
-      <div className="mx-auto mt-14 max-w-2xl">
-        <ol
-          className="relative space-y-8 border-l border-slate-200 pl-8"
-          aria-label="Histoire d'Alliance Consultants"
-        >
-          {referencesSection.history.map((milestone) => (
-            <li key={milestone.year} className="relative">
-              <span
-                aria-hidden="true"
-                className="absolute -left-[37px] top-1 grid size-5 place-items-center rounded-full bg-white ring-4 ring-white"
-              >
-                <span className="size-3 rounded-full bg-gradient-to-br from-primary to-primary-dark shadow-md" />
-              </span>
-              <span className="sr-only">{milestone.year}</span>
-              <time
-                dateTime={String(milestone.year)}
-                className="block text-sm font-semibold uppercase tracking-[0.16em] text-primary"
-              >
-                {milestone.year}
-              </time>
-              <p className="mt-1 text-base font-medium leading-relaxed text-slate-800 sm:text-lg">
-                {milestone.label}
-              </p>
-            </li>
-          ))}
-        </ol>
-      </div>
+      <HistoryTimeline
+        className="mt-10 lg:mt-14"
+        history={referencesSection.history}
+      />
 
       {validatedLogos.length > 0 && (
-        <div className="mt-20">
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-            Ils nous font confiance
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 sm:gap-x-12">
-            {/* eslint-disable @next/next/no-img-element */}
+        <div className="mt-16 lg:mt-24">
+          <h3 className="t-h3">Ils nous font confiance</h3>
+          <ul className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-rule ring-1 ring-rule sm:grid-cols-3 lg:grid-cols-5">
             {validatedLogos.map((ref) => (
-              <img
+              <li
                 key={ref.id}
-                src={ref.logoUrl}
-                alt={ref.clientName}
-                loading="lazy"
-                className="h-10 w-auto object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
-              />
+                className="grid min-h-24 place-items-center bg-panel p-5"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ref.logoUrl}
+                  alt={ref.clientName}
+                  loading="lazy"
+                  className="h-10 w-auto max-w-full object-contain opacity-75 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                />
+              </li>
             ))}
-            {/* eslint-enable @next/next/no-img-element */}
-          </div>
+          </ul>
         </div>
       )}
 
       {testimonials.length > 0 && (
-        <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-6 lg:mt-24 lg:grid-cols-3">
           {testimonials.map((ref) => (
             <figure
               key={ref.id}
-              className="flex flex-col rounded-2xl border border-slate-200/70 bg-slate-50 p-6 lg:p-7"
+              className="flex flex-col rounded-lg bg-panel p-6 ring-1 ring-rule lg:p-7"
             >
-              <blockquote className="flex-1 text-base leading-relaxed text-slate-700">
+              <blockquote className="flex-1 font-display text-xl font-semibold leading-snug tracking-tight text-ink text-pretty">
                 &ldquo;{ref.testimonialQuote}&rdquo;
               </blockquote>
-              <figcaption className="mt-5 border-t border-slate-200 pt-4">
-                <p className="text-sm font-semibold text-slate-900">
-                  {ref.testimonialAuthor}
-                </p>
-                {ref.testimonialRole && (
-                  <p className="mt-0.5 text-sm text-slate-500">
-                    {ref.testimonialRole}
-                  </p>
-                )}
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-rule pt-4">
+                <span
+                  aria-hidden
+                  className="grid size-9 shrink-0 place-items-center rounded-full bg-ink text-sm font-extrabold text-white"
+                >
+                  {(ref.testimonialAuthor ?? ref.clientName)
+                    .charAt(0)
+                    .toUpperCase()}
+                </span>
+                <span>
+                  <span className="block text-sm font-bold text-ink">
+                    {ref.testimonialAuthor}
+                  </span>
+                  {ref.testimonialRole && (
+                    <span className="block text-sm text-ink-mute">
+                      {ref.testimonialRole}
+                    </span>
+                  )}
+                </span>
               </figcaption>
             </figure>
           ))}
@@ -115,25 +110,25 @@ export function ReferencesSection({
       )}
 
       {projectReferences.length > 0 && (
-        <div className="mt-20">
+        <div className="mt-16 lg:mt-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                Réalisations clés
-              </p>
-              <h3 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                Des projets concrets, des résultats mesurables
-              </h3>
-            </div>
+            <h3 className="t-h3">Réalisations clés</h3>
             <Link
               href="/references"
-              className="text-sm font-semibold text-primary hover:underline"
+              className="group inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink"
             >
-              Toutes les références →
+              <span className="underline decoration-ink/30 underline-offset-4 transition-colors group-hover:decoration-ink">
+                Toutes les références
+              </span>
+              <ArrowRight
+                aria-hidden
+                className="size-4 transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5"
+                strokeWidth={2}
+              />
             </Link>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {projectReferences.map((ref) => (
               <ProjectReferenceCard key={ref.id} reference={ref} />
             ))}

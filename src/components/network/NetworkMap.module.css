@@ -1,0 +1,99 @@
+/* RÉSEAU map — local keyframes + states. No dependency on globals. */
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  touch-action: manipulation;
+}
+
+.dim {
+  transition: opacity 420ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Intro: lines draw in once (content is visible without the animation). */
+.draw {
+  stroke-dasharray: 1;
+  animation: draw 1300ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) backwards;
+  animation-delay: var(--d, 0ms);
+}
+.fade {
+  animation: fade 600ms ease-out backwards;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fade {
+  from { opacity: 0; }
+}
+
+/* Route being traced: marching dots on the chosen line. */
+.flow {
+  animation: flow 1400ms linear infinite;
+}
+@keyframes flow {
+  to { stroke-dashoffset: -15; }
+}
+
+.pop {
+  transition: transform 260ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.node {
+  cursor: pointer;
+  outline: none;
+}
+.node:focus-visible .pop,
+.node:focus-visible circle:not([fill="transparent"]),
+.node:focus-visible rect:not([fill="transparent"]) {
+  stroke: #1457f5;
+}
+.node:focus-visible {
+  outline: 3px solid #1457f5;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.terminus {
+  cursor: pointer;
+  outline: none;
+}
+.terminus:hover .terminusArrow,
+.terminus:focus-visible .terminusArrow {
+  transform: translate(832px, 280px);
+}
+.terminusArrow {
+  transition: transform 260ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+.terminus:focus-visible {
+  outline: 3px solid #1457f5;
+  outline-offset: 5px;
+  border-radius: 8px;
+}
+
+.tip {
+  animation: tipIn 160ms ease-out both;
+}
+@keyframes tipIn {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip {
+    animation: none;
+  }
+  .draw,
+  .fade,
+  .flow {
+    animation: none;
+  }
+  .dim,
+  .pop,
+  .terminusArrow {
+    transition: none;
+  }
+}

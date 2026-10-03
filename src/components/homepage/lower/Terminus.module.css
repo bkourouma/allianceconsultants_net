@@ -1,0 +1,22 @@
+.stroke {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.roundel {
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage:hover .roundel {
+  transform: scale(1.012);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roundel {
+    transition: none;
+  }
+  .stage:hover .roundel {
+    transform: none;
+  }
+}

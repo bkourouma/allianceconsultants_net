@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { BlogIndexCard } from "@/components/blog/BlogIndexCard";
-import { BlogTagBadge } from "@/components/blog/BlogTagBadge";
+import { BlogBreadcrumb } from "@/components/blog/BlogBreadcrumb";
+import { BlogEmptyState } from "@/components/blog/BlogEmptyState";
+import { BlogFilterBar } from "@/components/blog/BlogFilterBar";
+import { BlogPagination } from "@/components/blog/BlogPagination";
+import { BlogPostList } from "@/components/blog/BlogPostList";
+import { tagLine } from "@/components/blog/post-utils";
 import {
   BLOG_PAGE_SIZE,
   listAllPublishedTags,
   listPublishedPosts,
 } from "@/lib/blog";
+import { lineStyle } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
+import { getReadingMinutes } from "../../_reading-times";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -69,7 +74,9 @@ export default async function BlogTagPage({ params, searchParams }: PageProps) {
   if (!tag) notFound();
 
   const { items, total } = await listPublishedPosts({ page, tag: tag.slug });
+  const readingMinutes = await getReadingMinutes(items.map((p) => p.id));
   const totalPages = Math.max(1, Math.ceil(total / BLOG_PAGE_SIZE));
+  const line = tagLine(tag.slug);
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -87,123 +94,58 @@ export default async function BlogTagPage({ params, searchParams }: PageProps) {
   };
 
   return (
-    <>
+    <div style={lineStyle(line.id)}>
       <JsonLd data={breadcrumbJsonLd} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%)",
-          }}
+      <header className="wrap pb-8 pt-6 sm:pt-10 lg:pb-12">
+        <BlogBreadcrumb
+          items={[
+            { label: "Accueil", href: "/" },
+            { label: "Blog", href: "/blog" },
+            { label: tag.label },
+          ]}
         />
-        <div className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-16">
-          <nav aria-label="Fil d'Ariane" className="mb-6">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-              <li>
-                <Link href="/" className="hover:text-primary">Accueil</Link>
-              </li>
-              <li aria-hidden className="text-slate-300">/</li>
-              <li>
-                <Link href="/blog" className="hover:text-primary">Blog</Link>
-              </li>
-              <li aria-hidden className="text-slate-300">/</li>
-              <li className="font-medium text-slate-700">{tag.label}</li>
-            </ol>
-          </nav>
 
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Tag
-          </p>
-          <h1 className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
-            {tag.label}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            {total} article{total > 1 ? "s" : ""} publié{total > 1 ? "s" : ""} sous ce tag.
-          </p>
-
-          {tags.length > 0 ? (
-            <div className="mt-8 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Autres tags :
-              </span>
-              <Link
-                href="/blog"
-                className="inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-primary"
-              >
-                Tous
-              </Link>
-              {tags.map((t) => (
-                <BlogTagBadge key={t.slug} tag={t} active={t.slug === tag.slug} />
-              ))}
-            </div>
-          ) : null}
+        <div className="mt-8 flex items-start gap-4 sm:gap-6">
+          <span
+            aria-hidden
+            className="mt-1 grid size-12 shrink-0 place-items-center rounded-full font-display text-xl font-extrabold sm:size-16 sm:text-2xl lg:size-20 lg:text-3xl"
+            style={{ background: line.color, color: line.onColor }}
+          >
+            {tag.label.trim().charAt(0).toUpperCase() || "#"}
+          </span>
+          <div className="min-w-0">
+            <h1 className="t-display text-ink">{tag.label}</h1>
+            <p className="t-lead t-num mt-4">
+              {total} article{total > 1 ? "s" : ""} publié{total > 1 ? "s" : ""} sous ce tag.
+            </p>
+          </div>
         </div>
-      </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="mt-10 border-t border-ink/15 pt-6">
+          <BlogFilterBar tags={tags} activeSlug={tag.slug} />
+        </div>
+      </header>
+
+      <section aria-label="Articles" className="wrap pb-16 pt-2 sm:pb-24">
         {items.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-            <p className="text-slate-600">Aucun article pour ce tag.</p>
-          </div>
+          <BlogEmptyState title="Aucun article pour ce tag" showRss={false} backToAll />
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((p) => (
-              <BlogIndexCard key={p.id} post={p} />
-            ))}
-          </div>
+          <BlogPostList
+            items={items}
+            featureFirst={page === 1}
+            readingMinutes={readingMinutes}
+          />
         )}
 
         {totalPages > 1 ? (
-          <Pagination page={page} totalPages={totalPages} tagSlug={tag.slug} />
+          <BlogPagination
+            page={page}
+            totalPages={totalPages}
+            basePath={`/blog/tags/${tag.slug}`}
+          />
         ) : null}
       </section>
-    </>
-  );
-}
-
-function Pagination({
-  page,
-  totalPages,
-  tagSlug,
-}: {
-  page: number;
-  totalPages: number;
-  tagSlug: string;
-}) {
-  function buildHref(p: number) {
-    return p > 1 ? `/blog/tags/${tagSlug}?page=${p}` : `/blog/tags/${tagSlug}`;
-  }
-  return (
-    <nav
-      aria-label="Pagination"
-      className="mt-10 flex items-center justify-between text-sm"
-    >
-      <span className="text-slate-500">
-        Page {page} sur {totalPages}
-      </span>
-      <div className="flex gap-2">
-        {page > 1 ? (
-          <Link
-            href={buildHref(page - 1)}
-            rel="prev"
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            ← Précédents
-          </Link>
-        ) : null}
-        {page < totalPages ? (
-          <Link
-            href={buildHref(page + 1)}
-            rel="next"
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            Suivants →
-          </Link>
-        ) : null}
-      </div>
-    </nav>
+    </div>
   );
 }

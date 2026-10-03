@@ -34,7 +34,8 @@ test.describe("/solutions index", () => {
     await page.goto("/solutions");
     await expect(page.locator("h1")).toHaveText(/Nos solutions/i);
     for (const slug of SLUGS) {
-      const link = page.locator(`a[href="/solutions/${slug}"]`);
+      // Scope to <main>: the header's Solutions mega-panel also links here but is closed.
+      const link = page.locator("main").locator(`a[href="/solutions/${slug}"]`);
       await expect(link.first()).toBeVisible();
     }
   });

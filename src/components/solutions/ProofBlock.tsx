@@ -1,89 +1,98 @@
 import Image from "next/image";
 import { Section } from "@/components/ui/Section";
 import type { SolutionProof, SolutionUseCase } from "@/lib/validators/content";
+import { SectionHead } from "./SectionHead";
+import s from "./Solutions.module.css";
 
 interface ProofBlockProps {
   proof?: SolutionProof;
   useCasesFallback?: SolutionUseCase[];
 }
 
-function isEmpty(proof?: SolutionProof): boolean {
-  if (!proof) return true;
+export function hasProof(proof?: SolutionProof): boolean {
+  if (!proof) return false;
   return (
-    (proof.logos?.length ?? 0) === 0 &&
-    (proof.stats?.length ?? 0) === 0 &&
-    (proof.testimonials?.length ?? 0) === 0
+    (proof.logos?.length ?? 0) > 0 ||
+    (proof.stats?.length ?? 0) > 0 ||
+    (proof.testimonials?.length ?? 0) > 0
   );
 }
 
+/**
+ * Night panel. Shows validated proof (logos, stats, testimonials) when the
+ * content has any; otherwise falls back to real use cases from the MDX.
+ * Nothing here is invented.
+ */
 export function ProofBlock({ proof, useCasesFallback }: ProofBlockProps) {
-  const empty = isEmpty(proof);
+  const filled = hasProof(proof);
 
-  if (empty && (!useCasesFallback || useCasesFallback.length === 0)) {
+  if (!filled && (!useCasesFallback || useCasesFallback.length === 0)) {
     return null;
   }
 
   return (
-    <Section bg="dark">
-      <div className="mx-auto max-w-3xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">
-          {empty ? "Sur le terrain" : "Preuves & références"}
-        </p>
-        <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-          {empty ? "Quelques cas d'usage" : "Adopté par des organisations exigeantes"}
-        </h2>
-      </div>
+    <Section
+      id="preuves"
+      bg="dark"
+      padding="md"
+      aria-labelledby="proof-title"
+      className={s.focusNight}
+    >
+      <SectionHead
+        id="proof-title"
+        onDark
+        title={filled ? "Preuves et références" : "Sur le terrain"}
+      />
 
-      {empty && useCasesFallback && (
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
+      {!filled && useCasesFallback && (
+        <ol className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {useCasesFallback.map((uc) => (
-            <article
-              key={uc.title}
-              className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 lg:p-7"
-            >
-              <h3 className="text-lg font-bold tracking-tight text-white">
+            <li key={uc.title} className="relative border-t-2 border-white/40 pt-8">
+              <span
+                aria-hidden
+                className="absolute -top-[13px] left-0 size-6 rounded-full border-[5px] border-[var(--accent)] bg-night"
+              />
+              <h3 className="font-display text-xl font-bold leading-snug tracking-[-0.01em] text-white">
                 {uc.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                {uc.summary}
-              </p>
-            </article>
+              <p className="t-body mt-3 text-white/75">{uc.summary}</p>
+            </li>
           ))}
-        </div>
+        </ol>
       )}
 
-      {!empty && (
+      {filled && (
         <>
           {proof?.stats && proof.stats.length > 0 && (
-            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {proof.stats.map((s) => (
+            <dl className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+              {proof.stats.map((st) => (
                 <div
-                  key={`${s.value}-${s.label}`}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm"
+                  key={`${st.value}-${st.label}`}
+                  className="border-t-2 border-white/40 pt-4"
                 >
-                  <p className="bg-gradient-to-br from-white via-primary-light to-primary bg-clip-text text-4xl font-bold tracking-tight text-transparent lg:text-5xl">
-                    {s.value}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-300">{s.label}</p>
+                  <dt className="text-sm text-white/75">{st.label}</dt>
+                  <dd className="t-num mt-1 font-display text-3xl font-extrabold tracking-[-0.02em] text-white">
+                    {st.value}
+                  </dd>
                 </div>
               ))}
-            </div>
+            </dl>
           )}
 
           {proof?.testimonials && proof.testimonials.length > 0 && (
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <div className="mt-12 grid gap-10 md:grid-cols-2">
               {proof.testimonials.map((t) => (
                 <blockquote
                   key={`${t.author}-${t.quote.slice(0, 24)}`}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 lg:p-8"
+                  className="border-t-2 border-white/40 pt-5"
                 >
-                  <p className="text-base italic leading-relaxed text-slate-100 sm:text-lg">
-                    &ldquo;{t.quote}&rdquo;
+                  <p className="font-display text-xl font-semibold leading-snug text-white">
+                    «&nbsp;{t.quote}&nbsp;»
                   </p>
-                  <footer className="mt-5 border-t border-white/10 pt-4 text-sm font-medium text-slate-300">
+                  <footer className="mt-4 text-sm font-medium text-white/75">
                     {t.author}
-                    {t.role ? ` — ${t.role}` : ""}
-                    {t.organization ? `, ${t.organization}` : ""}
+                    {t.role ? `, ${t.role}` : ""}
+                    {t.organization ? ` · ${t.organization}` : ""}
                   </footer>
                 </blockquote>
               ))}
@@ -91,22 +100,20 @@ export function ProofBlock({ proof, useCasesFallback }: ProofBlockProps) {
           )}
 
           {proof?.logos && proof.logos.length > 0 && (
-            <div className="mt-12">
-              <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                Quelques organisations qui nous font confiance
-              </p>
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+            <div className="mt-12 border-t-2 border-white/40 pt-6">
+              <ul className="flex flex-wrap items-center gap-x-10 gap-y-6">
                 {proof.logos.map((logo) => (
-                  <Image
-                    key={logo.name}
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={128}
-                    height={64}
-                    className="h-10 w-auto object-contain opacity-60 grayscale invert transition duration-300 hover:opacity-100"
-                  />
+                  <li key={logo.name}>
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      width={128}
+                      height={64}
+                      className="h-10 w-auto object-contain opacity-80 brightness-0 invert"
+                    />
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           )}
         </>

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Section } from "@/components/ui/Section";
-import { TrainingCard } from "@/components/shared/TrainingCard";
 import { JsonLd } from "@/components/shared/JsonLd";
+import { CTAButton } from "@/components/shared/CTAButton";
+import { Breadcrumb } from "@/components/services/Breadcrumb";
+import { Terminus } from "@/components/services/Terminus";
+import { AcademyArt } from "@/components/formations/AcademyArt";
+import { FormationExplorer } from "@/components/formations/FormationExplorer";
 import { getTrainings } from "@/lib/content";
+import { ACADEMIE } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 
 const SITE_URL =
@@ -44,63 +47,70 @@ export default async function FormationsIndexPage() {
   };
 
   return (
-    <>
+    <div className="line-academie">
       <JsonLd data={breadcrumb} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%)",
-          }}
-        />
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8 lg:pb-24 lg:pt-16">
-          <nav aria-label="Fil d'Ariane" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-              <li>
-                <Link
-                  href="/"
-                  className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
-                >
-                  Accueil
-                </Link>
-              </li>
-              <li aria-hidden="true" className="text-slate-300">
-                /
-              </li>
-              <li className="font-medium text-slate-700">Formations</li>
-            </ol>
-          </nav>
-
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Montée en compétences
-          </p>
-          <h1 className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            Nos formations
+      {/* Violet field hero */}
+      <section className="relative isolate overflow-hidden bg-[var(--accent)] text-[var(--on-accent)]">
+        <AcademyArt className="pointer-events-none absolute -right-28 top-1/2 -z-10 hidden h-[34rem] w-auto -translate-y-1/2 md:block lg:right-0" />
+        <div className="wrap pb-14 pt-8 md:pb-24 md:pt-10">
+          <Breadcrumb
+            onDark
+            items={[{ label: "Accueil", href: "/" }, { label: "Formations" }]}
+          />
+          <h1 className="t-display mt-10 max-w-[14ch] text-white md:mt-16">
+            Nos formations : la ligne Académie
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-white/90 sm:text-xl">
             Programmes professionnels en intelligence artificielle,
             automatisation, développement, gestion de projet et bases de
-            données — disponibles en présentiel, distanciel ou intra-entreprise.
+            données — disponibles en présentiel, distanciel ou
+            intra-entreprise.
           </p>
         </div>
       </section>
 
-      <Section bg="gray" padding="md">
-        {trainings.length === 0 ? (
-          <p className="text-center text-slate-600">
-            Aucune formation disponible pour le moment.
-          </p>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {trainings.map((training) => (
-              <TrainingCard key={training.slug} training={training} />
-            ))}
-          </div>
-        )}
-      </Section>
-    </>
+      <section aria-label="Liste des formations" className="py-14 md:py-20">
+        <div className="wrap">
+          {trainings.length === 0 ? (
+            <p className="text-ink-soft">
+              Aucune formation disponible pour le moment.
+            </p>
+          ) : (
+            <FormationExplorer
+              trainings={trainings.map((t) => ({
+                slug: t.slug,
+                title: t.title,
+                shortDescription: t.shortDescription,
+                category: t.category,
+                modalities: t.modalities,
+              }))}
+            />
+          )}
+        </div>
+      </section>
+
+      <div className="pb-16 md:pb-24">
+        <div className="wrap">
+          <Terminus
+            titleId="formations-terminus"
+            title="Inscrivez vos équipes à la bonne station."
+            colors={[ACADEMIE.color, "#b7a0f5"]}
+            actions={
+              <CTAButton
+                intent="training"
+                label="Demander un devis / S'inscrire"
+                block="training-section"
+                size="lg"
+                onDark
+              />
+            }
+          >
+            Programme et tarifs sur demande : dites-nous votre besoin et la
+            modalité qui vous convient.
+          </Terminus>
+        </div>
+      </div>
+    </div>
   );
 }

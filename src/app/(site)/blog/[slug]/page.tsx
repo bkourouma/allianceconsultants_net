@@ -1,19 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
+import { ArticleBody } from "@/components/blog/ArticleBody";
+import { ArticleToc } from "@/components/blog/ArticleToc";
 import { BlogArticleHero } from "@/components/blog/BlogArticleHero";
 import { BlogIndexCard } from "@/components/blog/BlogIndexCard";
+import { BlogTagBadge } from "@/components/blog/BlogTagBadge";
+import { BlogTerminus } from "@/components/blog/BlogTerminus";
+import { ReadingProgress } from "@/components/blog/ReadingProgress";
+import { ShareActions } from "@/components/blog/ShareActions";
+import {
+  postLineId,
+  prepareArticle,
+  readingMinutesFromHtml,
+} from "@/components/blog/post-utils";
 import {
   getPublishedPostBySlug,
   listRelatedPosts,
 } from "@/lib/blog";
 import { getSiteSettings } from "@/lib/content";
+import { lineStyle } from "@/lib/network";
 import {
   buildArticleJsonLd,
   buildBlogBreadcrumbJsonLd,
   buildMetadata,
 } from "@/lib/seo";
+import { getReadingMinutes } from "../_reading-times";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -57,6 +71,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+const ARTICLE_ID = "article-body";
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getPublishedPostBySlug(slug);
@@ -68,6 +84,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     listRelatedPosts(post.id, post.tags.map((t) => t.slug), 3),
     getSiteSettings(),
   ]);
+  const relatedMinutes = await getReadingMinutes(related.map((p) => p.id));
 
   const url = `${SITE_URL}/blog/${slug}`;
   const articleJsonLd = buildArticleJsonLd({
@@ -87,62 +104,82 @@ export default async function BlogPostPage({ params }: PageProps) {
     postSlug: post.slug,
   });
 
+  // bodyHtml is sanitised at write time (lib/sanitize.ts); prepareArticle only
+  // adds heading ids / figure wrappers on top and derives the contents list.
+  const { html, toc } = prepareArticle(post.bodyHtml);
+  const minutes = readingMinutesFromHtml(post.bodyHtml);
+
   return (
-    <>
+    <div style={lineStyle(postLineId(post.slug))}>
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
+      <ReadingProgress targetId={ARTICLE_ID} />
 
-      <BlogArticleHero post={post} />
+      <BlogArticleHero post={post} readingMinutes={minutes} />
 
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-        <div
-          className="prose prose-slate max-w-none prose-headings:scroll-mt-32 prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
-          dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
-        />
+      <div className="wrap pb-14 lg:pb-20">
+        <div className="lg:grid lg:grid-cols-[14rem_minmax(0,46rem)] lg:justify-center lg:gap-16">
+          <aside className="mb-8 lg:sticky lg:top-28 lg:mb-0 lg:self-start">
+            <ArticleToc items={toc} />
+            <div className="mt-8 hidden lg:block">
+              <p className="mb-3 text-sm font-bold text-ink">Partager</p>
+              <ShareActions url={url} title={post.title} variant="rail" />
+            </div>
+          </aside>
 
-        <aside className="mt-12 rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Discutons de votre projet
-          </p>
-          <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-            Vous voulez approfondir ce sujet pour votre organisation ?
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-700">
-            Nos consultants vous accompagnent : diagnostic digital,
-            automatisation, formations, intégration SaaS. Échangeons sur votre
-            contexte.
-          </p>
-          <Link
-            href={`/contact-demo?intent=contact&fromPage=${encodeURIComponent(`/blog/${slug}`)}&fromBlock=blog-cta`}
-            className="mt-5 inline-flex h-11 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-          >
-            Prendre contact
-          </Link>
-        </aside>
-      </article>
+          <article aria-label={post.title} className="min-w-0">
+            <ArticleBody html={html} id={ARTICLE_ID} />
+
+            <footer className="mt-12 border-t border-ink/15 pt-6">
+              {post.tags.length > 0 ? (
+                <ul className="mb-6 flex flex-wrap gap-1.5">
+                  {post.tags.map((t) => (
+                    <li key={t.slug}>
+                      <BlogTagBadge tag={t} />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <p className="mb-3 text-sm font-bold text-ink">Partager cet article</p>
+              <ShareActions url={url} title={post.title} variant="bar" />
+            </footer>
+          </article>
+        </div>
+      </div>
+
+      <div className="wrap pb-16 lg:pb-24">
+        <BlogTerminus />
+      </div>
 
       {related.length > 0 ? (
-        <section className="bg-slate-50 py-12 lg:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-8 flex items-end justify-between">
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                Articles connexes
-              </h2>
-              <Link
-                href="/blog"
-                className="text-sm font-semibold text-primary hover:underline"
-              >
-                Tous les articles →
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((p) => (
-                <BlogIndexCard key={p.id} post={p} />
-              ))}
-            </div>
+        <section aria-labelledby="related-title" className="wrap pb-20 lg:pb-28">
+          <div className="flex flex-wrap items-end justify-between gap-4 pb-6">
+            <h2
+              id="related-title"
+              className="t-h2 text-ink"
+            >
+              À lire ensuite
+            </h2>
+            <Link
+              href="/blog"
+              className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 hover:decoration-4"
+            >
+              Tous les articles
+              <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
+            </Link>
           </div>
+          <ul className="border-b border-ink/15">
+            {related.map((p, i) => (
+              <li key={p.id}>
+                <BlogIndexCard
+                  post={{ ...p, readingMinutes: relatedMinutes[p.id] }}
+                  emphasis={i % 2 === 0 ? "lg" : "sm"}
+                />
+              </li>
+            ))}
+          </ul>
         </section>
       ) : null}
-    </>
+    </div>
   );
 }

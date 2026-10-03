@@ -9,6 +9,7 @@ import {
   ServiceSchema,
   TrainingSchema,
   ReferenceSchema,
+  AssistantConfigSchema,
   type SiteSettings,
   type Homepage,
   type Solution,
@@ -16,6 +17,7 @@ import {
   type Service,
   type Training,
   type Reference,
+  type AssistantConfig,
 } from "./validators/content";
 
 const ROOT = path.join(process.cwd(), "content");
@@ -23,6 +25,11 @@ const ROOT = path.join(process.cwd(), "content");
 export async function getSiteSettings(): Promise<SiteSettings> {
   const raw = await fs.readFile(path.join(ROOT, "site-settings.json"), "utf-8");
   return SiteSettingsSchema.parse(JSON.parse(raw));
+}
+
+export async function getAssistantConfig(): Promise<AssistantConfig> {
+  const raw = await fs.readFile(path.join(ROOT, "assistant.json"), "utf-8");
+  return AssistantConfigSchema.parse(JSON.parse(raw));
 }
 
 export async function getHomepage(): Promise<Homepage & { body: string }> {

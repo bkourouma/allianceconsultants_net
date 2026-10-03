@@ -1,67 +1,63 @@
 import { CTAButton } from "@/components/shared/CTAButton";
+import { TerminusStage } from "@/components/homepage/lower/TerminusStage";
+import styles from "@/components/homepage/lower/Terminus.module.css";
 import type { Homepage } from "@/lib/validators/content";
 
 interface FinalCTAProps {
   finalCta: Homepage["finalCta"];
 }
 
+/**
+ * The terminus: all six lines converge into one roundel.
+ * Contrast section on the night-navy ground.
+ */
 export function FinalCTA({ finalCta }: FinalCTAProps) {
   return (
     <section
       aria-labelledby="final-cta-title"
-      className="relative isolate overflow-hidden bg-gradient-to-br from-primary via-primary to-primary-dark text-white"
+      className="relative overflow-hidden bg-night text-white"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-30"
-        style={{
-          backgroundImage:
-            "radial-gradient(60% 50% at 80% 0%, rgba(255,255,255,0.25), transparent 70%), radial-gradient(50% 60% at 10% 100%, rgba(255,255,255,0.18), transparent 70%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,1) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 80%)",
-        }}
-      />
-
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2
-            id="final-cta-title"
-            className="text-balance text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl"
+      <TerminusStage>
+        <div className="relative z-10 w-full px-[max(1rem,4vw)] pb-14 sm:w-auto sm:p-0">
+          <div
+            className={`${styles.roundel} relative z-10 flex w-full flex-col items-center justify-center rounded-[2.5rem] bg-ink px-6 py-10 text-center ring-[10px] ring-white sm:aspect-square sm:size-[500px] sm:rounded-full sm:p-0 lg:size-[560px]`}
           >
-            {finalCta.title}
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
-            Nos experts vous répondent sous 24 h. Démo personnalisée, sans
-            engagement.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <CTAButton
-              intent="demo"
-              label={finalCta.label}
-              block="final-cta"
-              size="lg"
-              onDark
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-3 rounded-[inherit] ring-1 ring-white/20"
             />
-            <CTAButton
-              intent="contact"
-              label="Nous écrire"
-              block="final-cta"
-              size="lg"
-              variant="secondary"
-              onDark
-            />
+            <div className="relative sm:max-w-[22rem] lg:max-w-[25rem]">
+              <h2
+                id="final-cta-title"
+                className="font-display text-[clamp(1.75rem,1.3rem+1.6vw,2.6rem)] font-extrabold leading-[1.05] tracking-tight text-balance"
+              >
+                {finalCta.title}
+              </h2>
+              <p className="mx-auto mt-4 max-w-[34ch] text-base leading-relaxed text-white/80">
+                Nos experts vous répondent sous 24 à 48 heures ouvrées. Démo personnalisée, sans
+                engagement.
+              </p>
+              <div className="mt-7 flex flex-col items-center gap-3">
+                <CTAButton
+                  intent="demo"
+                  label={finalCta.label}
+                  block="final-cta"
+                  size="lg"
+                  onDark
+                />
+                <CTAButton
+                  intent="contact"
+                  label="Nous écrire"
+                  block="final-cta"
+                  size="md"
+                  variant="secondary"
+                  onDark
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </TerminusStage>
     </section>
   );
 }

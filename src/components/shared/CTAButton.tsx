@@ -26,12 +26,12 @@ interface CTAButtonProps {
 }
 
 const BASE =
-  "inline-flex items-center justify-center rounded-lg font-semibold no-underline transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary";
+  "group/cta inline-flex items-center justify-center rounded-full font-bold no-underline transition-[background-color,color,box-shadow,transform] duration-300 ease-[var(--ease-out-expo)] active:translate-y-px";
 
 const SIZE: Record<NonNullable<CTAButtonProps["size"]>, string> = {
-  sm: "h-9 px-3 text-sm gap-1.5",
-  md: "h-11 px-5 text-sm gap-2",
-  lg: "h-12 px-6 text-base gap-2",
+  sm: "h-9 pl-4 pr-1.5 text-sm gap-2",
+  md: "h-11 pl-5 pr-1.5 text-[0.9375rem] gap-3",
+  lg: "h-14 pl-7 pr-2 text-base gap-4",
 };
 
 function variantClasses(
@@ -40,12 +40,12 @@ function variantClasses(
 ): string {
   if (variant === "primary") {
     return onDark
-      ? "bg-white text-primary hover:bg-slate-100 shadow-sm"
-      : "bg-primary text-white hover:bg-primary-dark shadow-sm";
+      ? "bg-white text-ink hover:bg-enamel"
+      : "bg-ink text-white hover:bg-night-2";
   }
   return onDark
-    ? "border-2 border-white/80 text-white hover:bg-white hover:text-primary focus-visible:ring-white"
-    : "border-2 border-primary text-primary hover:bg-primary hover:text-white";
+    ? "bg-transparent text-white ring-2 ring-inset ring-white/70 hover:bg-white hover:text-ink"
+    : "bg-transparent text-ink ring-2 ring-inset ring-ink hover:bg-ink hover:text-white";
 }
 
 export function CTAButton({
@@ -70,6 +70,12 @@ export function CTAButton({
       className={cn(BASE, SIZE[size], variantClasses(variant, onDark), className)}
     >
       {label}
+      <span
+        aria-hidden
+        className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5 group-hover/cta:rotate-[-8deg]"
+      >
+        <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+      </span>
     </a>
   );
 }

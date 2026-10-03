@@ -13,4 +13,5 @@ Data model: [specs/002-backoffice-blog/data-model.md](specs/002-backoffice-blog/
 Previously shipped:
 - feature 001 — Page d'accueil corporate (specs/001-page-accueil-corporate/).
 - feature 001 — Pages détaillées des solutions corporate (specs/001-pages-corporate-solutions/).
+- feature 003 — Assistant IA proactif : qualification, coordonnées, démo Calendly (specs/003-assistant-ia/).
 <!-- SPECKIT END -->

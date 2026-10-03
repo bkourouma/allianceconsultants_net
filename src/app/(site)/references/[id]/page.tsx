@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { ProjectReferenceCard } from "@/components/references/ProjectReferenceCard";
+import { PillLink } from "@/components/about/PillLink";
 import {
   getPublishedProjectReferenceById,
   listLatestPublishedProjectReferences,
 } from "@/lib/projectReferences";
 import { getSiteSettings } from "@/lib/content";
+import { lineStyle } from "@/lib/network";
 import {
   buildCaseStudyJsonLd,
   buildMetadata,
   buildReferencesBreadcrumbJsonLd,
 } from "@/lib/seo";
+import { ReferenceTicket, lineForSector } from "../ReferenceTicket";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -85,110 +88,133 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
   });
 
   const others = latest.filter((r) => r.id !== id).slice(0, 3);
+  const line = lineForSector(ref.sector);
+
+  const stations: { title: string; body: string }[] = [
+    { title: "Problématique", body: ref.problem },
+    { title: "Solution proposée", body: ref.solution },
+  ];
+  if (ref.impact) stations.push({ title: "Impact / résultat", body: ref.impact });
 
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={caseStudyJsonLd} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-primary-dark text-white">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-40"
-          style={{
-            backgroundImage:
-              "radial-gradient(50% 60% at 100% 0%, rgba(255,255,255,0.18), transparent 60%)",
-          }}
-        />
-        <div className="mx-auto max-w-5xl px-4 pb-14 pt-10 sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
-          <nav className="text-sm text-white/70">
-            <Link href="/references" className="hover:text-white">
-              ← Toutes les références
-            </Link>
-          </nav>
+      {/* ───────── En-tête : la ligne du secteur ───────── */}
+      <section className="bg-enamel" style={lineStyle(line.id)}>
+        <div className="h-3 bg-[var(--accent)]" aria-hidden />
+        <div className="wrap pb-12 pt-8 lg:pb-16 lg:pt-10">
+          <Link
+            href="/references"
+            className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink underline-offset-4 hover:underline"
+          >
+            <ArrowLeft aria-hidden className="size-4" strokeWidth={2} />
+            Toutes les références
+          </Link>
 
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            {ref.logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={ref.logoUrl}
-                alt={`Logo ${ref.companyName}`}
-                className="h-14 max-w-[10rem] rounded-md bg-white/95 object-contain px-3 py-1.5"
-              />
-            ) : null}
-            {ref.sector ? (
-              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/85">
-                {ref.sector}
-              </span>
-            ) : null}
-          </div>
-
-          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-            {ref.companyName}
-          </p>
-          <h1 className="mt-3 text-balance text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
+          <h1 className="t-display mt-6 max-w-[20ch] text-ink lg:mt-8">
             {ref.projectTitle}
           </h1>
-
-          <dl className="mt-6 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
-            <KeyValue label="Année">{ref.year}</KeyValue>
-            <KeyValue label="Durée">{ref.duration}</KeyValue>
-          </dl>
+          <p className="t-lead mt-5 font-medium text-ink">
+            {ref.companyName}
+          </p>
         </div>
       </section>
 
-      <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <Block title="Problématique" tone="neutral">
-          {ref.problem}
-        </Block>
+      {/* ───────── Corps : fiche d'identité + stations ───────── */}
+      <section className="bg-panel py-14 lg:py-20" style={lineStyle(line.id)}>
+        <div className="wrap grid gap-12 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-20">
+          <aside aria-label="Fiche d'identité du projet" className="lg:sticky lg:top-32 lg:self-start">
+            <div className="overflow-hidden rounded-lg ring-1 ring-rule">
+              <div className="flex items-center gap-3 bg-[var(--accent)] p-5 text-[var(--on-accent)]">
+                {ref.logoUrl ? (
+                  <span className="grid h-14 max-w-[10rem] place-items-center rounded-[4px] bg-white px-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={ref.logoUrl}
+                      alt={`Logo ${ref.companyName}`}
+                      className="max-h-10 max-w-full object-contain"
+                    />
+                  </span>
+                ) : (
+                  <span
+                    aria-hidden
+                    className="grid size-14 place-items-center rounded-full bg-white font-display text-xl font-extrabold text-ink"
+                  >
+                    {ref.companyName.charAt(0).toUpperCase()}
+                  </span>
+                )}
+                {ref.sector ? (
+                  <p className="text-sm font-bold leading-tight">
+                    {ref.sector}
+                  </p>
+                ) : null}
+              </div>
+              <dl className="divide-y divide-dashed divide-rule bg-panel px-5">
+                <Row label="Client">{ref.companyName}</Row>
+                <Row label="Année">{ref.year}</Row>
+                <Row label="Durée">{ref.duration}</Row>
+              </dl>
+            </div>
+          </aside>
 
-        <Block title="Solution proposée" tone="primary">
-          {ref.solution}
-        </Block>
+          <div>
+            <ol className="relative grid gap-12">
+              <span
+                aria-hidden
+                className="absolute bottom-3 left-[0.6875rem] top-3 w-1.5 rounded-full bg-[var(--accent)]"
+              />
+              {stations.map((s) => (
+                <li key={s.title} className="relative pl-12">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 top-0.5 block size-7 rounded-full border-[5px] border-ink bg-panel"
+                  />
+                  <h2 className="t-h3 text-ink">{s.title}</h2>
+                  <div className="mt-4 grid max-w-[68ch] gap-4 text-[1.0625rem] leading-relaxed text-ink-soft">
+                    {renderParagraphs(s.body)}
+                  </div>
+                </li>
+              ))}
+            </ol>
 
-        {ref.impact ? (
-          <Block title="Impact / résultat" tone="success">
-            {ref.impact}
-          </Block>
-        ) : null}
-
-        <aside className="mt-12 rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Un projet similaire à mener ?
-          </p>
-          <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-            Discutons de votre contexte
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-700">
-            Nos consultants vous accompagnent pour cadrer, prototyper et
-            déployer votre projet de transformation digitale.
-          </p>
-          <Link
-            href={`/contact-demo?intent=contact&fromPage=${encodeURIComponent(`/references/${id}`)}&fromBlock=references-cta`}
-            className="mt-5 inline-flex h-11 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-          >
-            Prendre contact
-          </Link>
-        </aside>
-      </article>
+            <aside className="mt-16 rounded-lg bg-night p-7 text-white sm:p-9">
+              <h2 className="t-h3 text-white">Un projet similaire à mener ?</h2>
+              <p className="mt-3 max-w-[52ch] text-white/80">
+                Discutons de votre contexte. Nos consultants vous accompagnent
+                pour cadrer, prototyper et déployer votre projet de
+                transformation digitale.
+              </p>
+              <div className="mt-6">
+                <PillLink
+                  onDark
+                  href={`/contact-demo?intent=contact&from=references&block=references-cta`}
+                >
+                  Prendre contact
+                </PillLink>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
 
       {others.length > 0 ? (
-        <section className="bg-slate-50 py-12 lg:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-8 flex items-end justify-between">
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                Autres références
-              </h2>
+        <section className="bg-enamel py-14 lg:py-20">
+          <div className="wrap">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+              <h2 className="t-h3 text-ink">Autres références</h2>
               <Link
                 href="/references"
-                className="text-sm font-semibold text-primary hover:underline"
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink underline underline-offset-4 hover:decoration-2"
               >
-                Toutes les références →
+                Toutes les références
+                <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
               {others.map((r) => (
-                <ProjectReferenceCard key={r.id} reference={r} />
+                <ReferenceTicket key={r.id} reference={r} />
               ))}
             </div>
           </div>
@@ -198,7 +224,7 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
   );
 }
 
-function KeyValue({
+function Row({
   label,
   children,
 }: {
@@ -206,42 +232,12 @@ function KeyValue({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 backdrop-blur-sm">
-      <dt className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/60">
-        {label}
-      </dt>
-      <dd className="mt-1 text-base font-medium text-white">{children}</dd>
+    <div className="py-4">
+      <dt className="t-station text-ink-mute">{label}</dt>
+      <dd className="mt-1 font-display text-lg font-bold leading-snug text-ink">
+        {children}
+      </dd>
     </div>
-  );
-}
-
-function Block({
-  title,
-  tone,
-  children,
-}: {
-  title: string;
-  tone: "neutral" | "primary" | "success";
-  children: string;
-}) {
-  const toneCls =
-    tone === "primary"
-      ? "border-primary/15 bg-primary/[0.04]"
-      : tone === "success"
-        ? "border-emerald-200/70 bg-emerald-50/40"
-        : "border-slate-200/70 bg-white";
-
-  return (
-    <section
-      className={`mb-8 rounded-2xl border ${toneCls} p-6 sm:p-8 last:mb-0`}
-    >
-      <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-        {title}
-      </h2>
-      <div className="prose prose-slate mt-4 max-w-none text-base leading-relaxed text-slate-700">
-        {renderParagraphs(children)}
-      </div>
-    </section>
   );
 }
 
@@ -268,7 +264,7 @@ function renderParagraphs(input: string): React.ReactNode {
   function flushList() {
     if (listBuffer.length === 0) return;
     blocks.push(
-      <ul key={`ul-${key++}`} className="list-disc pl-5">
+      <ul key={`ul-${key++}`} className="list-disc space-y-1.5 pl-5 marker:text-ink">
         {listBuffer.map((item, i) => (
           <li key={i}>{item}</li>
         ))}

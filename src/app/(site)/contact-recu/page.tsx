@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Check, TriangleAlert } from "lucide-react";
+import { PillLink } from "@/components/about/PillLink";
+import { getLine } from "@/lib/network";
+import { Arrival } from "./Arrival";
 
 export const metadata: Metadata = {
   title: "Demande envoyée — Alliance Consultants",
@@ -18,75 +21,83 @@ export default async function ContactRecuPage({ searchParams }: PageProps) {
   const mailKo = params.mail === "ko";
 
   return (
-    <section className="relative isolate flex min-h-[80vh] items-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-        style={{
-          backgroundImage:
-            "radial-gradient(60% 50% at 80% 10%, rgba(59,130,246,0.18), transparent 70%), radial-gradient(50% 50% at 20% 100%, rgba(16,185,129,0.12), transparent 70%)",
-        }}
-      />
+    <>
+      <section className="bg-enamel">
+        <Arrival
+          color={getLine("docupro")!.color}
+          stripe={getLine("ecole")!.color}
+        />
 
-      <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto max-w-2xl rounded-3xl border border-slate-200/70 bg-white/80 p-8 text-center shadow-xl backdrop-blur-sm sm:p-12">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-          </div>
+        <div className="wrap pb-16 pt-8 lg:pb-24 lg:pt-12">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+            <div>
+              <span className="grid size-14 place-items-center rounded-full bg-ink text-white">
+                <Check aria-hidden className="size-7" strokeWidth={2.5} />
+              </span>
+              <h1 className="t-display mt-6 max-w-[16ch] text-ink">
+                Merci, votre demande a bien été reçue
+              </h1>
+              <p className="t-lead mt-6">
+                Notre équipe commerciale revient vers vous sous
+                24&nbsp;à&nbsp;48&nbsp;heures ouvrées pour échanger sur votre
+                besoin et organiser une démonstration.
+              </p>
 
-          <h1 className="mt-6 text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Merci, votre demande a bien été reçue
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-            Notre équipe commerciale revient vers vous sous 24&nbsp;à&nbsp;48&nbsp;heures
-            ouvrées pour échanger sur votre besoin et organiser une démonstration.
-          </p>
+              {mailKo ? (
+                <div
+                  role="note"
+                  className="mt-6 flex max-w-[60ch] gap-3 rounded-lg bg-panel p-4 text-sm text-ink ring-1 ring-rule"
+                >
+                  <TriangleAlert
+                    aria-hidden
+                    className="mt-0.5 size-5 shrink-0 text-ink"
+                    strokeWidth={1.75}
+                  />
+                  <p>
+                    Votre demande a bien été enregistrée. Si vous ne recevez pas
+                    d&apos;accusé par e-mail, notre équipe vous recontactera
+                    directement.
+                  </p>
+                </div>
+              ) : null}
 
-          {reference && (
-            <p className="mt-6 text-sm text-slate-600">
-              Référence de votre demande&nbsp;:{" "}
-              <code className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-slate-800">
-                {reference}
-              </code>
-            </p>
-          )}
+              <div className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4">
+                <PillLink href="/solutions" size="lg">
+                  Voir toutes nos solutions
+                </PillLink>
+                <PillLink href="/" size="lg" variant="secondary">
+                  Retour à l&apos;accueil
+                </PillLink>
+              </div>
+            </div>
 
-          {mailKo && (
-            <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-              Votre demande a bien été enregistrée. Si vous ne recevez pas
-              d&apos;accusé par e-mail, notre équipe vous recontactera
-              directement.
-            </p>
-          )}
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <Link
-              href="/solutions"
-              className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            >
-              Voir toutes nos solutions
-            </Link>
-            <Link
-              href="/"
-              className="inline-flex h-12 items-center justify-center rounded-lg border-2 border-primary px-6 text-base font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            >
-              Retour à l&apos;accueil
-            </Link>
+            {reference ? (
+              <div className="self-start">
+                <div className="relative overflow-hidden rounded-lg bg-panel ring-1 ring-rule">
+                  <div className="bg-ink px-6 py-4 text-white">
+                    <p className="t-station">Arrivée au terminus</p>
+                  </div>
+                  <div
+                    aria-hidden
+                    className="relative border-t-2 border-dashed border-rule"
+                  >
+                    <span className="absolute left-0 top-0 size-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-enamel" />
+                    <span className="absolute right-0 top-0 size-5 translate-x-1/2 -translate-y-1/2 rounded-full bg-enamel" />
+                  </div>
+                  <div className="px-6 py-6">
+                    <p className="text-sm text-ink-soft">
+                      Référence de votre demande&nbsp;:
+                    </p>
+                    <p className="mt-2 break-all font-mono text-lg font-bold text-ink">
+                      {reference}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

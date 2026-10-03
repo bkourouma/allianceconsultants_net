@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/blog/post-utils.ts"
+        ],
+        "createdAt": "2026-10-03T00:40:17.527Z",
+        "reason": "agent: false positive, regex/HTML-string literals in a sanitised-HTML post-processor, not rendered <img> elements"
+      }
+    ]
+  }
+}

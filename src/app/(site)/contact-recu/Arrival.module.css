@@ -1,0 +1,51 @@
+.train {
+  animation: arrive 2.8s var(--ease-out-expo) 0.2s both;
+  will-change: transform;
+}
+
+.windows {
+  animation: lights 0.6s ease-out 2.6s both;
+}
+
+.sign {
+  animation: sign-in 0.7s var(--ease-out-expo) 2.3s both;
+}
+
+@keyframes arrive {
+  from {
+    transform: translateX(-110vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes lights {
+  from {
+    fill: #aab4cc;
+  }
+  to {
+    fill: #ffffff;
+  }
+}
+
+@keyframes sign-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .train,
+  .windows,
+  .sign {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+}

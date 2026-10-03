@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Section } from "@/components/ui/Section";
-import { ServiceCard } from "@/components/shared/ServiceCard";
 import { JsonLd } from "@/components/shared/JsonLd";
+import { CTAButton } from "@/components/shared/CTAButton";
+import { Breadcrumb } from "@/components/services/Breadcrumb";
+import { ServiceFinder } from "@/components/services/ServiceFinder";
+import { ServicesHeroArt } from "@/components/services/ServicesHeroArt";
+import { Terminus } from "@/components/services/Terminus";
 import { getServices } from "@/lib/content";
+import { LINES } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 
 const SITE_URL =
@@ -47,40 +50,16 @@ export default async function ServicesIndexPage() {
     <>
       <JsonLd data={breadcrumb} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%)",
-          }}
-        />
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8 lg:pb-24 lg:pt-16">
-          <nav aria-label="Fil d'Ariane" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-              <li>
-                <Link
-                  href="/"
-                  className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
-                >
-                  Accueil
-                </Link>
-              </li>
-              <li aria-hidden="true" className="text-slate-300">
-                /
-              </li>
-              <li className="font-medium text-slate-700">Services</li>
-            </ol>
-          </nav>
-
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Expertise & accompagnement
-          </p>
-          <h1 className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            Nos services
+      <section className="relative isolate overflow-hidden">
+        <ServicesHeroArt className="pointer-events-none absolute -right-10 top-0 -z-10 hidden h-full w-auto max-w-[44%] md:block lg:right-4" />
+        <div className="wrap pb-12 pt-8 md:pb-20 md:pt-10">
+          <Breadcrumb
+            items={[{ label: "Accueil", href: "/" }, { label: "Services" }]}
+          />
+          <h1 className="t-display mt-10 max-w-[16ch] text-ink md:mt-16">
+            Nos services, vos correspondances
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          <p className="t-lead mt-6 md:max-w-[46ch]">
             Du développement spécifique à la dématérialisation, en passant par
             l&apos;automatisation IA et l&apos;AMOA : nous accompagnons les
             organisations africaines à chaque étape de leur transformation
@@ -89,19 +68,55 @@ export default async function ServicesIndexPage() {
         </div>
       </section>
 
-      <Section bg="gray" padding="md">
-        {services.length === 0 ? (
-          <p className="text-center text-slate-600">
-            Aucun service disponible pour le moment.
-          </p>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-            {services.map((service) => (
-              <ServiceCard key={service.slug} service={service} />
-            ))}
-          </div>
-        )}
-      </Section>
+      <section aria-label="Liste des services" className="pb-16 md:pb-24">
+        <div className="wrap">
+          {services.length === 0 ? (
+            <p className="text-ink-soft">
+              Aucun service disponible pour le moment.
+            </p>
+          ) : (
+            <ServiceFinder
+              services={services.map((s) => ({
+                slug: s.slug,
+                title: s.title,
+                shortDescription: s.shortDescription,
+              }))}
+            />
+          )}
+        </div>
+      </section>
+
+      <div className="pb-16 md:pb-24">
+        <div className="wrap">
+          <Terminus
+            titleId="services-terminus"
+            title="Un besoin ? Descendons à la bonne station."
+            colors={LINES.map((l) => l.color)}
+            actions={
+              <>
+                <CTAButton
+                  intent="contact"
+                  label="Demander un échange"
+                  block="final-cta"
+                  size="lg"
+                  onDark
+                />
+                <CTAButton
+                  intent="automation"
+                  label="Automatiser un processus"
+                  block="final-cta"
+                  size="lg"
+                  variant="secondary"
+                  onDark
+                />
+              </>
+            }
+          >
+            Décrivez votre contexte : nous vous indiquons le service et la
+            solution qui correspondent.
+          </Terminus>
+        </div>
+      </div>
     </>
   );
 }

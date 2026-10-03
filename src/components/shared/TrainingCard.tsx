@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, GraduationCap } from "lucide-react";
 import type { Training } from "@/lib/validators/content";
 
 interface TrainingCardProps {
@@ -22,36 +23,52 @@ export function TrainingCard({ training }: TrainingCardProps) {
     .map(([key]) => MODALITY_LABELS[key]);
 
   return (
-    <article className="group flex flex-col rounded-2xl border border-slate-200/70 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg lg:p-7">
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-        {training.category}
-      </p>
-      <h3 className="mt-3 text-lg font-bold leading-snug tracking-tight text-slate-900">
-        {training.title}
-      </h3>
-      <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+    <article className="line-academie group relative flex h-full flex-col rounded-lg bg-panel p-5 ring-1 ring-rule transition-[transform,box-shadow] duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-16px_rgba(11,27,58,0.35)]">
+      <div className="flex items-start gap-3">
+        <span
+          aria-hidden
+          className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)]"
+        >
+          <GraduationCap className="size-5" strokeWidth={1.75} />
+        </span>
+        <div>
+          <h3 className="font-display text-lg font-bold leading-snug tracking-tight text-balance text-ink">
+            <Link
+              href={`/formations/${training.slug}`}
+              className="after:absolute after:inset-0"
+            >
+              {training.title}
+            </Link>
+          </h3>
+          <p className="mt-0.5 text-sm font-semibold text-ink-mute">
+            {training.category}
+          </p>
+        </div>
+      </div>
+
+      <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft">
         {training.shortDescription}
       </p>
 
-      <div className="mt-5 flex flex-wrap gap-1.5">
+      <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Modalités">
         {activeModalities.map((label) => (
-          <span
+          <li
             key={label}
-            className="inline-flex items-center rounded-full bg-primary/[0.08] px-2.5 py-1 text-xs font-medium text-primary"
+            className="rounded-full bg-enamel px-2.5 py-1 text-xs font-bold text-ink ring-1 ring-inset ring-rule"
           >
             {label}
-          </span>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <div className="mt-6 border-t border-slate-100 pt-5">
-        <Link
-          href={`/formations/${training.slug}`}
-          className="text-sm font-semibold text-primary transition-colors hover:text-primary-dark focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
-        >
-          Voir le programme →
-        </Link>
-      </div>
+      <p className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-ink">
+        Voir le programme
+        <ArrowRight
+          aria-hidden
+          className="size-4 transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5"
+          strokeWidth={2}
+        />
+      </p>
     </article>
   );
 }

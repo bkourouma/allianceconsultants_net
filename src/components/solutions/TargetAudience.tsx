@@ -1,66 +1,149 @@
+"use client";
+
+import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { ArrowDown } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import type { TargetAudienceItem } from "@/lib/validators/content";
+import { SectionHead } from "./SectionHead";
+import { ProblemsSolved } from "./ProblemsSolved";
+import { cn } from "@/lib/utils";
+import s from "./Solutions.module.css";
 
 interface TargetAudienceProps {
   items: TargetAudienceItem[];
-  problemsSolved: string[];
+  /** When given, the "Problèmes résolus" section is rendered right after. */
+  problemsSolved?: string[];
 }
 
 export function TargetAudience({
   items,
   problemsSolved,
 }: TargetAudienceProps) {
-  return (
-    <Section bg="gray">
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Pour qui&nbsp;?
-          </h2>
-          <p className="mt-3 text-sm text-slate-500">
-            Les organisations qui en tirent le plus de valeur.
-          </p>
-          <ul className="mt-8 space-y-4">
-            {items.map((item) => (
-              <li
-                key={item.label}
-                className="rounded-xl border border-slate-200/70 bg-white p-5 transition hover:border-primary/30 hover:shadow-sm"
-              >
-                <h3 className="text-base font-semibold text-slate-900">
-                  {item.label}
-                </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
-                  {item.description}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
+  const [index, setIndex] = useState(0);
+  const uid = useId();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const count = items.length;
 
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Problèmes adressés
-          </h2>
-          <p className="mt-3 text-sm text-slate-500">
-            Ce que la solution résout concrètement.
-          </p>
-          <ul className="mt-8 space-y-3">
-            {problemsSolved.map((p) => (
-              <li key={p} className="flex items-start gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-bold text-primary"
+  function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    let next = index;
+    switch (e.key) {
+      case "ArrowDown":
+      case "ArrowRight":
+        next = (index + 1) % count;
+        break;
+      case "ArrowUp":
+      case "ArrowLeft":
+        next = (index - 1 + count) % count;
+        break;
+      case "Home":
+        next = 0;
+        break;
+      case "End":
+        next = count - 1;
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    setIndex(next);
+    tabRefs.current[next]?.focus();
+  }
+
+  return (
+    <>
+      <Section id="pour-qui" bg="gray" padding="md" aria-labelledby="pour-qui-title">
+        <SectionHead id="pour-qui-title" title="Pour qui ?" />
+        <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
+          <div
+            role="tablist"
+            aria-label="Profils concernés"
+            aria-orientation="vertical"
+            onKeyDown={onKeyDown}
+            className="relative flex flex-col gap-1"
+          >
+            <span
+              aria-hidden
+              className="absolute bottom-6 left-[19px] top-6 w-1.5 bg-[var(--accent)]"
+            />
+            {items.map((item, i) => {
+              const selected = i === index;
+              return (
+                <button
+                  key={item.label}
+                  ref={(el) => {
+                    tabRefs.current[i] = el;
+                  }}
+                  role="tab"
+                  type="button"
+                  id={`${uid}-tab-${i}`}
+                  aria-selected={selected}
+                  aria-controls={`${uid}-panel-${i}`}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => setIndex(i)}
+                  className={cn(
+                    "relative flex min-h-14 items-center gap-4 rounded-md px-2.5 py-2.5 text-left transition-colors duration-300",
+                    selected
+                      ? "bg-panel ring-2 ring-ink"
+                      : "hover:bg-panel/70",
+                  )}
                 >
-                  ✓
-                </span>
-                <span className="text-base leading-relaxed text-slate-700">
-                  {p}
-                </span>
-              </li>
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "relative z-10 size-6 shrink-0 rounded-full border-[5px] transition-[background-color,transform] duration-300 ease-[var(--ease-out-expo)]",
+                      selected
+                        ? "scale-110 border-ink bg-[var(--accent)]"
+                        : "border-[var(--accent)] bg-panel",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "font-display text-base font-bold leading-snug sm:text-[1.0625rem]",
+                      selected ? "text-ink" : "text-ink-soft",
+                    )}
+                  >
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="relative">
+            {items.map((item, i) => (
+              <div
+                key={item.label}
+                role="tabpanel"
+                id={`${uid}-panel-${i}`}
+                aria-labelledby={`${uid}-tab-${i}`}
+                hidden={i !== index}
+                className={cn(
+                  "relative h-full rounded-md bg-panel p-6 pt-9 sm:p-8 sm:pt-11 lg:p-10 lg:pt-12",
+                  i === index && s.panelIn,
+                )}
+              >
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 top-0 h-2 rounded-t-md bg-[var(--accent)]"
+                />
+                <h3 className="t-h3 text-ink">{item.label}</h3>
+                <p className="t-lead mt-4">{item.description}</p>
+                <a
+                  href="#fonctionnalites"
+                  className="mt-8 inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-bold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+                >
+                  Voir les stations qui vous concernent
+                  <ArrowDown aria-hidden className="size-4" strokeWidth={2} />
+                </a>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+
+      {problemsSolved && problemsSolved.length > 0 && (
+        <ProblemsSolved items={problemsSolved} />
+      )}
+    </>
   );
 }

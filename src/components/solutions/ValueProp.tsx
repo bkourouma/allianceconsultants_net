@@ -1,17 +1,19 @@
 import { Section } from "@/components/ui/Section";
+import { SectionHead } from "./SectionHead";
 
 interface ValuePropProps {
   text: string;
+  /** Optional heading; defaults to a neutral one. */
+  title?: string;
 }
 
-export function ValueProp({ text }: ValuePropProps) {
+export function ValueProp({ text, title = "La valeur en clair" }: ValuePropProps) {
   return (
-    <Section bg="white" padding="md">
-      <div className="mx-auto max-w-4xl">
-        <p className="text-balance text-center text-xl font-medium leading-relaxed text-slate-800 sm:text-2xl lg:text-3xl">
-          {text}
-        </p>
-      </div>
+    <Section id="valeur" bg="gray" padding="md" aria-labelledby="valeur-title">
+      <SectionHead id="valeur-title" title={title} />
+      <p className="mt-8 max-w-[34ch] text-balance font-display text-[clamp(1.375rem,1rem+1.7vw,2.375rem)] font-semibold leading-[1.22] tracking-[-0.015em] text-ink sm:max-w-[40ch] lg:max-w-[46ch]">
+        {text}
+      </p>
     </Section>
   );
 }

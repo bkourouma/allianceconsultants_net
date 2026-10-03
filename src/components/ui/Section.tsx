@@ -15,11 +15,10 @@ const PADDING_CLASS: Record<NonNullable<SectionProps["padding"]>, string> = {
 };
 
 const BG_CLASS: Record<NonNullable<SectionProps["bg"]>, string> = {
-  white: "bg-white text-slate-900",
-  gray: "bg-slate-50 text-slate-900",
-  dark: "bg-slate-950 text-white",
-  primary:
-    "bg-gradient-to-br from-primary via-primary to-primary-dark text-white",
+  white: "bg-panel text-ink",
+  gray: "bg-enamel text-ink",
+  dark: "bg-night text-white",
+  primary: "bg-ink text-white",
 };
 
 export const Section = forwardRef<HTMLElement, SectionProps>(
@@ -41,7 +40,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
         {...props}
       >
         {container ? (
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="wrap">
             {children}
           </div>
         ) : (

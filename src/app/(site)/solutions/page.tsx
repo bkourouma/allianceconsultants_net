@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Section } from "@/components/ui/Section";
-import { SolutionCard } from "@/components/shared/SolutionCard";
+import { CTAButton } from "@/components/shared/CTAButton";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { getSolutions } from "@/lib/content";
+import { Breadcrumb } from "@/components/solutions/Breadcrumb";
+import {
+  SolutionsFinder,
+  type LineEntry,
+} from "@/components/solutions/SolutionsFinder";
+import { getSolutionDetailBySlug, getSolutions } from "@/lib/content";
+import { LINES, getLine } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 
 const SITE_URL =
@@ -23,6 +27,24 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function SolutionsIndexPage() {
   const solutions = await getSolutions();
+  const details = await Promise.all(
+    solutions.map((sol) => getSolutionDetailBySlug(sol.slug)),
+  );
+
+  const lines: LineEntry[] = solutions.map((sol, i) => {
+    const detail = details[i];
+    return {
+      slug: sol.slug,
+      name: sol.name,
+      sector: getLine(sol.slug)?.sector ?? sol.category,
+      category: sol.category,
+      mainBenefit: sol.mainBenefit,
+      shortDescription: sol.shortDescription,
+      stations: detail?.featureGroups.map((g) => g.title) ?? [],
+      audience: detail?.targetAudience.map((a) => a.label) ?? [],
+      externalUrl: sol.externalUrl ?? null,
+    };
+  });
 
   const breadcrumb = {
     "@context": "https://schema.org",
@@ -47,54 +69,71 @@ export default async function SolutionsIndexPage() {
     <>
       <JsonLd data={breadcrumb} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%)",
-          }}
-        />
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8 lg:pb-24 lg:pt-16">
-          <nav aria-label="Fil d'Ariane" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-              <li>
-                <Link
-                  href="/"
-                  className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
-                >
-                  Accueil
-                </Link>
-              </li>
-              <li aria-hidden="true" className="text-slate-300">
-                /
-              </li>
-              <li className="font-medium text-slate-700">Solutions</li>
-            </ol>
-          </nav>
+      <section className="relative isolate overflow-hidden bg-enamel text-ink">
+        {/* The six lines leaving the page: decorative. */}
+        <svg
+          aria-hidden
+          viewBox="0 0 520 260"
+          preserveAspectRatio="xMaxYMid slice"
+          className="pointer-events-none absolute bottom-0 right-0 -z-10 hidden h-[58%] w-[44%] max-w-[640px] md:block min-[1400px]:top-0 min-[1400px]:h-full min-[1400px]:w-[48%]"
+          fill="none"
+          strokeWidth="12"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {LINES.map((l, i) => {
+            const y = 150 + i * 22;
+            return (
+              <g key={l.id}>
+                <path d={`M0 ${y} H170 L250 ${y - 80} H520`} stroke={l.color} />
+                <circle
+                  cx={360 + (i % 2) * 70}
+                  cy={y - 80}
+                  r="9"
+                  fill="#fff"
+                  stroke="#0b1b3a"
+                  strokeWidth="4"
+                />
+              </g>
+            );
+          })}
+        </svg>
 
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Plateformes SaaS métiers
-          </p>
-          <h1 className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            Nos solutions SaaS
+        <div className="wrap pb-12 pt-6 lg:pb-16">
+          <Breadcrumb
+            items={[{ label: "Accueil", href: "/" }, { label: "Solutions" }]}
+            className="text-ink-soft"
+          />
+          <h1 className="t-display mt-10 max-w-[14ch] text-ink lg:mt-14">
+            Une ligne par métier
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          <div className="mt-6 md:max-w-[52%]">
+          <p className="t-lead">
             Une famille de plateformes métier pensées pour les organisations
             africaines : gestion documentaire, santé, immobilier, diffusion
-            d&apos;annonces et formation digitale.
+            d&apos;annonces et formation digitale. Dites‑nous votre métier,
+            nous vous indiquons la ligne.
           </p>
+          </div>
         </div>
       </section>
 
-      <Section bg="gray" padding="md">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {solutions.map((solution) => (
-            <SolutionCard key={solution.slug} solution={solution} />
-          ))}
+      <SolutionsFinder lines={lines} />
+
+      <section className="bg-enamel py-14 lg:py-20">
+        <div className="wrap flex flex-wrap items-center justify-between gap-x-10 gap-y-6">
+          <h2 className="t-h3 max-w-[28ch] text-ink">
+            Votre besoin ne tient pas dans une seule ligne&nbsp;?
+          </h2>
+          <CTAButton
+            intent="contact"
+            label="Parlez-nous de votre contexte"
+            block="final-cta"
+            from="solutions-index"
+            size="lg"
+          />
         </div>
-      </Section>
+      </section>
     </>
   );
 }

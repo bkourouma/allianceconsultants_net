@@ -12,6 +12,31 @@
     var(--font-sans-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;
 
+
+  /* ───────── RÉSEAU design world (feature: redesign) ───────── */
+  --color-ink: #0b1b3a;
+  --color-ink-soft: #3a4764;
+  --color-ink-mute: #5b6784;
+  --color-enamel: #f3f5fa;
+  --color-panel: #ffffff;
+  --color-rule: #d5dbea;
+  --color-night: #07122b;
+  --color-night-2: #0e2149;
+  --color-brand: #1457f5;
+
+  --color-line-docupro: #1457f5;
+  --color-line-medicpro: #098240;
+  --color-line-cliniquepro: #00789a;
+  --color-line-immotopia: #f26a1b;
+  --color-line-annonces: #e0245e;
+  --color-line-ecole: #f5b800;
+  --color-line-academie: #6d3be0;
+
+  --font-display: var(--font-display-bricolage), "Segoe UI", system-ui, sans-serif;
+  --font-text: var(--font-text-figtree), "Segoe UI", system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
   --animate-hero-mesh: hero-mesh 18s ease-in-out infinite;
 
   @keyframes hero-mesh {
@@ -90,4 +115,119 @@ body {
 
 .skip-link:focus {
   top: 0;
+}
+
+
+/* ───────────────────────── RÉSEAU world ─────────────────────────
+   Scope: everything under .site-root (public site). Admin is untouched. */
+
+.site-root {
+  font-family: var(--font-text);
+  background: var(--color-enamel);
+  color: var(--color-ink);
+  --accent: var(--color-brand);
+  --on-accent: #ffffff;
+  min-height: 100dvh;
+  --site-header-h: 4rem;
+}
+@media (min-width: 1024px) {
+  .site-root { --site-header-h: 4.5rem; }
+}
+
+.site-root ::selection {
+  background: var(--color-ink);
+  color: #fff;
+}
+
+.site-root :focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.site-root {
+  scrollbar-color: var(--color-ink-mute) var(--color-enamel);
+  scrollbar-width: thin;
+}
+
+/* Scope an accent to one line: <section class="line-medicpro"> */
+.line-docupro     { --accent: var(--color-line-docupro);     --on-accent: #fff; }
+.line-medicpro    { --accent: var(--color-line-medicpro);    --on-accent: #fff; }
+.line-cliniquepro { --accent: var(--color-line-cliniquepro); --on-accent: #fff; }
+.line-immotopia   { --accent: var(--color-line-immotopia);   --on-accent: var(--color-ink); }
+.line-annonces    { --accent: var(--color-line-annonces);    --on-accent: #fff; }
+.line-ecole       { --accent: var(--color-line-ecole);       --on-accent: var(--color-ink); }
+.line-academie    { --accent: var(--color-line-academie);    --on-accent: #fff; }
+
+/* Layout wrapper: 1280 max, fluid gutters */
+.wrap {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* Type scale (display ≤ 6rem, tracking ≥ -0.04em) */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 1.6rem + 4.6vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.t-h2 {
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: clamp(2rem, 1.3rem + 2.8vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.t-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.t-lead {
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-inline-size: 62ch;
+  text-wrap: pretty;
+}
+.t-body { max-inline-size: 68ch; text-wrap: pretty; }
+.t-num { font-variant-numeric: tabular-nums; }
+
+/* Station label: small caps-ish signage text used inside diagrams */
+.t-station {
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+
+/* Scroll reveal. Visible by default; JS opts in via [data-reveal-ready]. */
+[data-reveal-ready] [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms var(--ease-out-expo),
+    transform 700ms var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal-ready] [data-reveal][data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal-ready] [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

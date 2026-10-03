@@ -1,5 +1,6 @@
 import { Section } from "@/components/ui/Section";
 import type { SolutionUseCase } from "@/lib/validators/content";
+import { SectionHead } from "./SectionHead";
 
 interface UseCasesProps {
   useCases: SolutionUseCase[];
@@ -8,40 +9,18 @@ interface UseCasesProps {
 export function UseCases({ useCases }: UseCasesProps) {
   if (!useCases.length) return null;
   return (
-    <Section bg="white">
-      <div className="mx-auto max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-          Sur le terrain
-        </p>
-        <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-          Cas d&apos;usage
-        </h2>
-        <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-          Quelques exemples concrets d&apos;utilisation de la solution.
-        </p>
-      </div>
-
-      <div className="mt-14 grid gap-6 md:grid-cols-2">
-        {useCases.map((uc, i) => (
-          <article
-            key={uc.title}
-            className="relative flex flex-col rounded-2xl border border-slate-200/70 bg-gradient-to-br from-white to-slate-50 p-6 lg:p-8"
-          >
-            <span
-              aria-hidden="true"
-              className="text-5xl font-bold leading-none text-primary/15 lg:text-6xl"
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <h3 className="mt-4 text-xl font-bold tracking-tight text-slate-900">
+    <Section id="cas-usage" bg="gray" padding="md" aria-labelledby="usecases-title">
+      <SectionHead id="usecases-title" title="Cas d’usage" />
+      <ol className="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+        {useCases.map((uc) => (
+          <li key={uc.title} className="border-t-2 border-ink pt-5">
+            <h3 className="font-display text-xl font-bold leading-snug tracking-[-0.01em] text-ink">
               {uc.title}
             </h3>
-            <p className="mt-3 text-base leading-relaxed text-slate-600">
-              {uc.summary}
-            </p>
-          </article>
+            <p className="t-body mt-3 text-ink-soft">{uc.summary}</p>
+          </li>
         ))}
-      </div>
+      </ol>
     </Section>
   );
 }

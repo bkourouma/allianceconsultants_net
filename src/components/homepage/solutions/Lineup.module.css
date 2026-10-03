@@ -1,0 +1,53 @@
+/* Accordion panel: animates height via grid rows, never display:none-flips.
+   Closed content is visibility:hidden (out of tab order + a11y tree). */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 480ms var(--ease-out-expo),
+    visibility 0s linear 480ms;
+}
+.panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The row's colour field: background + text swap with a short, calm ease. */
+.row {
+  transition:
+    background-color 360ms var(--ease-out-expo),
+    color 360ms var(--ease-out-expo);
+}
+
+/* Focus rings must stay visible on a full colour field (global ring = accent).
+   Higher specificity than `.site-root :focus-visible`. */
+article.row :focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+article.row[data-open="true"] :focus-visible {
+  outline-color: var(--on-accent);
+}
+/* the head button sits flush against the row's clipped edge: ring goes inside */
+article.row .headBtn:focus-visible {
+  outline-offset: -6px;
+}
+/* inside the white preview window, rings go back to ink */
+article.row .preview :focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel[data-open="true"],
+  .row {
+    transition: none;
+  }
+}

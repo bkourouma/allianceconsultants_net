@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Section } from "@/components/ui/Section";
 import { JsonLd } from "@/components/shared/JsonLd";
 import {
   ContactDemoForm,
@@ -156,167 +155,53 @@ export default async function ContactDemoPage({ searchParams }: PageProps) {
 
   const localBusiness = buildLocalBusinessJsonLd(settings, SITE_URL);
 
-  const phoneHref = (p: string) => `tel:${p.replace(/\s+/g, "")}`;
-  const whatsappDigits = settings.contact.whatsapp?.replace(/\D/g, "");
-
   return (
     <>
       <JsonLd data={breadcrumb} />
       <JsonLd data={localBusiness} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%)",
-          }}
-        />
-        <div className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-16">
-          <nav aria-label="Fil d'Ariane" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <section className="bg-enamel pb-14 pt-8 lg:pb-20 lg:pt-12">
+        <div className="wrap">
+          <nav aria-label="Fil d'Ariane">
+            <ol className="flex flex-wrap items-center gap-2 text-sm text-ink-mute">
               <li>
                 <Link
                   href="/"
-                  className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
+                  className="font-medium underline-offset-4 hover:text-ink hover:underline"
                 >
                   Accueil
                 </Link>
               </li>
-              <li aria-hidden="true" className="text-slate-300">
-                /
+              <li aria-hidden="true">/</li>
+              <li className="font-semibold text-ink">
+                {copy.eyebrow}
               </li>
-              <li className="font-medium text-slate-700">Contact &amp; Démo</li>
             </ol>
           </nav>
 
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            {copy.eyebrow}
-          </p>
-          <h1 className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            {heroTitle}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            {copy.description}
-          </p>
-        </div>
-      </section>
+          <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-16">
+            <h1 className="t-display max-w-[18ch] text-ink">{heroTitle}</h1>
+            <p className="t-lead">{copy.description}</p>
+          </div>
 
-      <Section bg="white" padding="md">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_0.9fr] lg:gap-14">
-          <div>
+          <div className="mt-10 lg:mt-14">
             <ContactDemoForm
               intent={intent}
               solutionSlug={solutionSlug}
               fromBlock={fromBlock}
               ctaLabel={ctaLabel}
               offerings={offerings}
+              contact={{
+                email: settings.contact.email,
+                phones: settings.contact.phones,
+                whatsapp: settings.contact.whatsapp,
+                address: settings.contact.address.street,
+                hours: "Lundi – Vendredi, 8 h – 18 h (GMT)",
+              }}
             />
           </div>
-
-          <aside className="space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Nous joindre directement
-              </h2>
-              <dl className="mt-5 space-y-4 text-sm text-slate-700">
-                <div>
-                  <dt className="font-medium text-slate-900">E-mail</dt>
-                  <dd className="mt-1">
-                    <a
-                      href={`mailto:${settings.contact.email}`}
-                      className="text-primary underline-offset-4 hover:underline"
-                    >
-                      {settings.contact.email}
-                    </a>
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-slate-900">Téléphone</dt>
-                  <dd className="mt-1 space-y-1">
-                    {settings.contact.phones.map((p) => (
-                      <div key={p}>
-                        <a
-                          href={phoneHref(p)}
-                          className="text-primary underline-offset-4 hover:underline"
-                        >
-                          {p}
-                        </a>
-                      </div>
-                    ))}
-                  </dd>
-                </div>
-                {whatsappDigits && (
-                  <div>
-                    <dt className="font-medium text-slate-900">WhatsApp</dt>
-                    <dd className="mt-1">
-                      <a
-                        href={`https://wa.me/${whatsappDigits}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline-offset-4 hover:underline"
-                      >
-                        {settings.contact.whatsapp}
-                      </a>
-                    </dd>
-                  </div>
-                )}
-                <div>
-                  <dt className="font-medium text-slate-900">Adresse</dt>
-                  <dd className="mt-1">{settings.contact.address.street}</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-slate-900">Horaires</dt>
-                  <dd className="mt-1">
-                    Lundi&nbsp;–&nbsp;Vendredi, 8&nbsp;h&nbsp;–&nbsp;18&nbsp;h (GMT)
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Ce que vous obtiendrez
-              </h2>
-              <ul className="mt-4 space-y-3 text-sm text-slate-600">
-                <li className="flex gap-3">
-                  <Check /> Un échange qualifié avec un consultant senior
-                </li>
-                <li className="flex gap-3">
-                  <Check /> Une démonstration adaptée à votre contexte
-                </li>
-                <li className="flex gap-3">
-                  <Check /> Une estimation indicative et un plan d&apos;action
-                </li>
-                <li className="flex gap-3">
-                  <Check /> Aucune relance commerciale intrusive
-                </li>
-              </ul>
-            </div>
-          </aside>
         </div>
-      </Section>
+      </section>
     </>
-  );
-}
-
-function Check() {
-  return (
-    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    </span>
   );
 }

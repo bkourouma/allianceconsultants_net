@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { BlogIndexCard } from "@/components/blog/BlogIndexCard";
-import { BlogTagBadge } from "@/components/blog/BlogTagBadge";
+import { BlogEmptyState } from "@/components/blog/BlogEmptyState";
+import { BlogFilterBar } from "@/components/blog/BlogFilterBar";
+import { BlogPagination } from "@/components/blog/BlogPagination";
+import { BlogPostList } from "@/components/blog/BlogPostList";
+import { RouteCover } from "@/components/blog/RouteCover";
 import { listAllPublishedTags, listPublishedPosts, BLOG_PAGE_SIZE } from "@/lib/blog";
 import { buildBlogBreadcrumbJsonLd, buildMetadata } from "@/lib/seo";
+import { getReadingMinutes } from "./_reading-times";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -47,6 +50,7 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
     listPublishedPosts({ page, tag: tagSlug }),
     listAllPublishedTags(),
   ]);
+  const readingMinutes = await getReadingMinutes(items.map((p) => p.id));
 
   const totalPages = Math.max(1, Math.ceil(total / BLOG_PAGE_SIZE));
   const breadcrumbJsonLd = buildBlogBreadcrumbJsonLd({ siteUrl: SITE_URL });
@@ -55,122 +59,53 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
     <>
       <JsonLd data={breadcrumbJsonLd} />
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(60% 50% at 100% 0%, rgba(59,130,246,0.18), transparent 70%)",
-          }}
-        />
-        <div className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            Blog Alliance
-          </p>
-          <h1 className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
-            Idées et retours d&apos;expérience
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            Transformation digitale, IA, automatisation, dématérialisation des
-            archives, gestion des SaaS métier : ce que nous apprenons sur le
-            terrain auprès des organisations africaines.
-          </p>
-
-          {tags.length > 0 ? (
-            <div className="mt-8 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Filtrer :
-              </span>
-              <Link
-                href="/blog"
-                className={
-                  !tagSlug
-                    ? "inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white"
-                    : "inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-primary"
-                }
-              >
-                Tous
-              </Link>
-              {tags.map((t) => (
-                <BlogTagBadge
-                  key={t.slug}
-                  tag={t}
-                  active={tagSlug === t.slug}
-                />
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        {items.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-            <p className="text-slate-600">
-              Aucun article publié pour le moment. Revenez bientôt !
+      <header className="wrap pb-8 pt-10 sm:pt-14 lg:pb-12 lg:pt-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+          <div>
+            <h1 className="t-display max-w-[14ch] text-ink">
+              Idées et retours d&rsquo;expérience
+            </h1>
+            <p className="t-lead mt-6">
+              Transformation digitale, IA, automatisation, dématérialisation des
+              archives, gestion des SaaS métier : ce que nous apprenons sur le
+              terrain auprès des organisations africaines.
             </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((p) => (
-              <BlogIndexCard key={p.id} post={p} />
-            ))}
+          <div
+            aria-hidden
+            className="relative hidden aspect-[16/9] overflow-hidden rounded-[8px] lg:block"
+          >
+            <RouteCover slug="blog-alliance-consultants" tone="enamel" weight={17} className="absolute inset-0" />
           </div>
+        </div>
+
+        {tags.length > 0 ? (
+          <div className="mt-10 border-t border-ink/15 pt-6">
+            <BlogFilterBar tags={tags} />
+          </div>
+        ) : (
+          <div className="mt-10 border-t border-ink/15" />
+        )}
+      </header>
+
+      <section aria-label="Articles" className="wrap pb-16 pt-2 sm:pb-24">
+        {items.length === 0 ? (
+          <BlogEmptyState title="Le premier article arrive bientôt">
+            Nous préparons nos premiers retours d&apos;expérience. Le flux RSS vous
+            préviendra dès leur publication.
+          </BlogEmptyState>
+        ) : (
+          <BlogPostList
+            items={items}
+            featureFirst={page === 1}
+            readingMinutes={readingMinutes}
+          />
         )}
 
         {totalPages > 1 ? (
-          <Pagination page={page} totalPages={totalPages} tag={tagSlug} />
+          <BlogPagination page={page} totalPages={totalPages} basePath="/blog" />
         ) : null}
       </section>
     </>
-  );
-}
-
-function Pagination({
-  page,
-  totalPages,
-  tag,
-}: {
-  page: number;
-  totalPages: number;
-  tag?: string;
-}) {
-  function buildHref(p: number) {
-    const sp = new URLSearchParams();
-    if (tag) sp.set("tag", tag);
-    if (p > 1) sp.set("page", String(p));
-    const qs = sp.toString();
-    return `/blog${qs ? `?${qs}` : ""}`;
-  }
-  return (
-    <nav
-      aria-label="Pagination"
-      className="mt-10 flex items-center justify-between text-sm"
-    >
-      <span className="text-slate-500">
-        Page {page} sur {totalPages}
-      </span>
-      <div className="flex gap-2">
-        {page > 1 ? (
-          <Link
-            href={buildHref(page - 1)}
-            rel="prev"
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            ← Précédents
-          </Link>
-        ) : null}
-        {page < totalPages ? (
-          <Link
-            href={buildHref(page + 1)}
-            rel="next"
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            Suivants →
-          </Link>
-        ) : null}
-      </div>
-    </nav>
   );
 }

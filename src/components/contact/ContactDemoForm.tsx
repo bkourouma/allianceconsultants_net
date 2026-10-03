@@ -2,9 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldError } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRight, Check, CircleAlert, Loader2 } from "lucide-react";
 import { LeadInputSchema, type LeadInput } from "@/lib/validators/lead";
+import { getLine, lineStyle } from "@/lib/network";
+import { cn } from "@/lib/utils";
+import {
+  TripSummary,
+  type ContactInfo,
+  type TripSelection,
+} from "./TripSummary";
+
+export type { ContactInfo } from "./TripSummary";
 
 export interface OfferingOption {
   value: string;
@@ -19,9 +29,105 @@ interface ContactDemoFormProps {
   fromBlock?: string;
   ctaLabel?: string;
   offerings: OfferingOption[];
+  /** Direct contact details, shown in the « Votre trajet » panel. */
+  contact?: ContactInfo;
 }
 
 type FormStatus = "idle" | "submitting" | "error";
+
+const INTENT_OPTIONS: {
+  value: LeadInput["intent"];
+  label: string;
+  station: string;
+  description: string;
+  cta: string;
+}[] = [
+  {
+    value: "demo",
+    label: "Démo",
+    station: "Démonstration",
+    description: "Une démonstration adaptée à votre contexte.",
+    cta: "Demander ma démo",
+  },
+  {
+    value: "contact",
+    label: "Contact",
+    station: "Échange",
+    description: "Un échange qualifié avec un consultant senior.",
+    cta: "Envoyer ma demande",
+  },
+  {
+    value: "training",
+    label: "Formation",
+    station: "Plan de formation",
+    description: "Un échange qualifié avec un consultant senior.",
+    cta: "Demander un devis formation",
+  },
+  {
+    value: "automation",
+    label: "Automatisation",
+    station: "Cadrage",
+    description: "Un échange qualifié avec un consultant senior.",
+    cta: "Demander un cadrage",
+  },
+  {
+    value: "diagnostic",
+    label: "Diagnostic",
+    station: "Diagnostic",
+    description: "Un échange sans engagement avec un consultant senior.",
+    cta: "Demander mon diagnostic",
+  },
+];
+
+const FIELD_LABELS: Record<string, string> = {
+  name: "nom",
+  email: "e-mail",
+  phone: "téléphone",
+  organization: "organisation",
+  message: "message",
+  consent: "consentement",
+  solutionSlug: "solution",
+  intent: "type de demande",
+};
+
+const FIELD_MESSAGES: Record<string, { invalid: string; tooLong?: string }> = {
+  name: {
+    invalid: "Indiquez votre nom et prénom (2 caractères minimum).",
+    tooLong: "Ce nom est trop long : 120 caractères maximum.",
+  },
+  email: {
+    invalid:
+      "Saisissez une adresse e-mail valide, par exemple prenom@organisation.com.",
+    tooLong: "Cette adresse est trop longue : 200 caractères maximum.",
+  },
+  phone: {
+    invalid:
+      "Indiquez un numéro joignable (6 caractères minimum), avec l'indicatif si possible.",
+    tooLong: "Ce numéro est trop long : 40 caractères maximum.",
+  },
+  organization: {
+    invalid: "Vérifiez le nom de l'organisation.",
+    tooLong: "Ce nom est trop long : 160 caractères maximum.",
+  },
+  message: {
+    invalid: "Vérifiez votre message.",
+    tooLong: "Message trop long : 4 000 caractères maximum. Résumez l'essentiel.",
+  },
+  solutionSlug: {
+    invalid:
+      "Choisissez l'une des solutions proposées, ou « Je ne sais pas encore ».",
+  },
+};
+
+function fieldMessage(field: string, err?: FieldError): string | undefined {
+  if (!err) return undefined;
+  const m = FIELD_MESSAGES[field];
+  if (!m) return err.message;
+  if (err.type === "too_big" && m.tooLong) return m.tooLong;
+  return m.invalid;
+}
+
+const ERROR_COLOR = "text-[#b4123f]";
 
 export function ContactDemoForm({
   intent,
@@ -30,6 +136,7 @@ export function ContactDemoForm({
   fromBlock = "contact-demo-page",
   ctaLabel = "Envoyer ma demande",
   offerings,
+  contact,
 }: ContactDemoFormProps) {
   const router = useRouter();
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -40,6 +147,8 @@ export function ContactDemoForm({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isValid },
   } = useForm<LeadInput>({
     resolver: zodResolver(LeadInputSchema),
@@ -58,6 +167,38 @@ export function ContactDemoForm({
       honeypot: "",
     },
   });
+
+  const chosenSlug = watch("solutionSlug");
+  const chosenIntent = watch("intent") ?? intent;
+  const intentMeta =
+    INTENT_OPTIONS.find((o) => o.value === chosenIntent) ?? INTENT_OPTIONS[0];
+
+  const solutions = offerings.filter((o) => o.group === "Solutions");
+  const services = offerings.filter((o) => o.group === "Services");
+
+  const chosenOffering = chosenSlug
+    ? offerings.find((o) => o.value === chosenSlug)
+    : undefined;
+  const chosenLine = chosenOffering
+    ? chosenOffering.group === "Solutions"
+      ? getLine(chosenOffering.value)
+      : undefined
+    : undefined;
+  const selection: TripSelection = chosenLine
+    ? { kind: "line", line: chosenLine }
+    : chosenOffering
+      ? { kind: "service", label: chosenOffering.label }
+      : null;
+
+  function pickOffering(value: string) {
+    setValue("solutionSlug", value === "" ? undefined : value, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  }
+
+  const submitLabel =
+    chosenIntent === intent ? ctaLabel : intentMeta.cta;
 
   async function onSubmit(values: LeadInput) {
     setStatus("submitting");
@@ -80,18 +221,19 @@ export function ContactDemoForm({
       if (!res.ok || !json?.ok) {
         if (res.status === 429) {
           setServerErrorMessage(
-            "Vous avez soumis plusieurs demandes en peu de temps. Merci de patienter quelques minutes.",
+            "Vous avez soumis plusieurs demandes en peu de temps. Merci de patienter quelques minutes, puis de réessayer.",
           );
         } else if (json?.errors) {
           setServerErrorMessage(
             "Certaines informations sont incorrectes : " +
-              Object.entries(json.errors)
-                .map(([k, v]) => `${k} (${v})`)
-                .join(", "),
+              Object.keys(json.errors)
+                .map((k) => FIELD_LABELS[k] ?? k)
+                .join(", ") +
+              ". Vérifiez ces champs puis réessayez.",
           );
         } else {
           setServerErrorMessage(
-            "Une erreur est survenue lors de l'envoi. Merci de réessayer.",
+            "Une erreur est survenue lors de l'envoi. Merci de réessayer dans quelques instants.",
           );
         }
         setStatus("error");
@@ -104,234 +246,477 @@ export function ContactDemoForm({
       router.push(`/contact-recu${qs ? `?${qs}` : ""}`);
     } catch {
       setServerErrorMessage(
-        "Connexion réseau impossible. Merci de réessayer dans quelques instants.",
+        "Connexion réseau impossible. Vérifiez votre connexion puis réessayez dans quelques instants.",
       );
       setStatus("error");
     }
   }
 
+  const submitting = status === "submitting";
+  const disabled = submitting || !isValid;
+
   return (
-    <form
-      action="/api/lead"
-      method="post"
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
-      className="grid gap-5 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8 lg:p-10"
-    >
-      <input type="hidden" {...register("intent")} value={intent} readOnly />
-      <input type="hidden" {...register("fromPage")} value={fromPage} readOnly />
-      <input
-        type="hidden"
-        {...register("fromBlock")}
-        value={fromBlock}
-        readOnly
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_23.5rem] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,1fr)_26rem]">
+      <TripSummary
+        selection={selection}
+        intentStation={intentMeta.station}
+        intentDescription={intentMeta.description}
+        contact={contact}
+        className="order-first lg:sticky lg:top-28 lg:order-last"
       />
 
-      <div
-        aria-hidden="true"
-        className="absolute -left-[10000px] size-px overflow-hidden"
+      <form
+        action="/api/lead"
+        method="post"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="relative order-last grid gap-8 overflow-hidden rounded-lg bg-panel p-5 ring-1 ring-rule sm:p-8 lg:order-first lg:p-10"
       >
-        <label htmlFor="contact-honeypot">Ne pas remplir</label>
-        <input
-          id="contact-honeypot"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-          {...register("honeypot")}
+        <span
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-1.5 transition-colors duration-500"
+          style={{ background: chosenLine?.color ?? "var(--color-ink)" }}
         />
-      </div>
 
-      <Field
-        id="contact-offering"
-        label="Produit ou service concerné"
-        error={errors.solutionSlug?.message}
-      >
-        <select
-          id="contact-offering"
-          defaultValue={solutionSlug ?? ""}
+        <input type="hidden" {...register("fromPage")} value={fromPage} readOnly />
+        <input
+          type="hidden"
+          {...register("fromBlock")}
+          value={fromBlock}
+          readOnly
+        />
+        <input
+          type="hidden"
           {...register("solutionSlug", {
             setValueAs: (v: string) => (v === "" ? undefined : v),
           })}
-          className={inputClass}
-        >
-          <option value="">— Sélectionnez (facultatif) —</option>
-          <optgroup label="Solutions SaaS">
-            {offerings
-              .filter((o) => o.group === "Solutions")
-              .map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-          </optgroup>
-          <optgroup label="Services">
-            {offerings
-              .filter((o) => o.group === "Services")
-              .map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-          </optgroup>
-        </select>
-      </Field>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field
-          id="contact-name"
-          label="Nom et prénom"
-          error={errors.name?.message}
-          required
-        >
-          <input
-            id="contact-name"
-            type="text"
-            autoComplete="name"
-            required
-            {...register("name")}
-            className={inputClass}
-          />
-        </Field>
-        <Field
-          id="contact-email"
-          label="E-mail professionnel"
-          error={errors.email?.message}
-          required
-        >
-          <input
-            id="contact-email"
-            type="email"
-            autoComplete="email"
-            required
-            {...register("email")}
-            className={inputClass}
-          />
-        </Field>
-        <Field
-          id="contact-phone"
-          label="Téléphone"
-          error={errors.phone?.message}
-          required
-        >
-          <input
-            id="contact-phone"
-            type="tel"
-            autoComplete="tel"
-            required
-            {...register("phone")}
-            className={inputClass}
-          />
-        </Field>
-        <Field
-          id="contact-organization"
-          label="Organisation"
-          error={errors.organization?.message}
-        >
-          <input
-            id="contact-organization"
-            type="text"
-            autoComplete="organization"
-            {...register("organization")}
-            className={inputClass}
-          />
-        </Field>
-      </div>
-
-      <Field
-        id="contact-message"
-        label="Votre besoin en quelques mots"
-        error={errors.message?.message}
-      >
-        <textarea
-          id="contact-message"
-          rows={5}
-          {...register("message")}
-          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-base text-slate-900 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
-      </Field>
 
-      <div>
-        <label className="flex items-start gap-3 text-sm text-slate-700">
-          <input
-            type="checkbox"
-            required
-            value="true"
-            {...register("consent")}
-            className="mt-0.5 size-4 shrink-0 accent-primary"
-          />
-          <span className="leading-relaxed">
-            J&apos;accepte qu&apos;Alliance Consultants utilise les informations
-            ci-dessus pour traiter ma demande. Mes données ne seront pas cédées
-            à des tiers.
-          </span>
-        </label>
-        {errors.consent && (
-          <p className="mt-2 text-sm text-rose-600" role="alert">
-            Le consentement est requis.
-          </p>
-        )}
-      </div>
-
-      {serverErrorMessage && (
         <div
-          role="alert"
-          className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800"
+          aria-hidden="true"
+          className="absolute -left-[10000px] size-px overflow-hidden"
         >
-          {serverErrorMessage}
+          <label htmlFor="contact-honeypot">Ne pas remplir</label>
+          <input
+            id="contact-honeypot"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            {...register("honeypot")}
+          />
         </div>
-      )}
 
-      <div className="flex flex-wrap items-center gap-4 pt-2">
-        <button
-          type="submit"
-          disabled={status === "submitting" || !isValid}
-          className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {status === "submitting" ? "Envoi en cours…" : ctaLabel}
-        </button>
-        <p className="text-xs text-slate-500">
-          Pas d&apos;engagement — réponse sous 24 à 48 h ouvrées.
+        <p className="text-sm text-ink-soft">
+          Les champs marqués d&apos;un{" "}
+          <span aria-hidden className="font-bold text-ink">
+            *
+          </span>
+          <span className="sr-only">astérisque</span> sont obligatoires.
         </p>
-      </div>
-    </form>
+
+        {/* Type de demande */}
+        <fieldset className="min-w-0">
+          <legend className="mb-3 text-sm font-bold text-ink">
+            Type de demande
+          </legend>
+          <div className="grid grid-cols-2 gap-1 rounded-[1.375rem] bg-enamel p-1 sm:grid-cols-5 sm:rounded-full">
+            {INTENT_OPTIONS.map((o) => (
+              <label key={o.value} className="block cursor-pointer">
+                <input
+                  type="radio"
+                  value={o.value}
+                  {...register("intent")}
+                  className="peer sr-only"
+                />
+                <span className="flex min-h-11 items-center justify-center rounded-full px-3 text-center text-sm font-semibold text-ink-soft transition-colors duration-200 hover:text-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+                  {o.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        {/* Solution d'intérêt */}
+        <fieldset className="min-w-0">
+          <legend className="text-sm font-bold text-ink">
+            Solution d&apos;intérêt
+          </legend>
+          <p className="mt-1 text-sm text-ink-soft">
+            Facultatif. Votre choix colore votre trajet.
+          </p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {solutions.map((o) => {
+              const line = getLine(o.value);
+              const selected = chosenSlug === o.value;
+              return (
+                <label key={o.value} className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="offering-picker"
+                    value={o.value}
+                    checked={selected}
+                    onChange={() => pickOffering(o.value)}
+                    className="peer sr-only"
+                  />
+                  <span
+                    className={cn(
+                      "inline-flex min-h-11 items-center gap-2 rounded-full py-1 pl-1.5 pr-4 text-sm font-bold ring-1 transition-colors duration-200 peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand",
+                      selected
+                        ? "ring-transparent"
+                        : "bg-panel text-ink ring-ink-mute/50 hover:ring-2 hover:ring-ink",
+                    )}
+                    style={
+                      selected && line
+                        ? { background: line.color, color: line.onColor }
+                        : selected
+                          ? { background: "var(--color-ink)", color: "#fff" }
+                          : undefined
+                    }
+                  >
+                    <span
+                      aria-hidden
+                      className="grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold"
+                      style={
+                        selected
+                          ? { background: "#fff", color: "#0b1b3a" }
+                          : line
+                            ? { background: line.color, color: line.onColor }
+                            : { background: "var(--color-ink)", color: "#fff" }
+                      }
+                    >
+                      {selected ? (
+                        <Check className="size-4" strokeWidth={3} />
+                      ) : (
+                        o.label.charAt(0)
+                      )}
+                    </span>
+                    {o.label}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+
+          {services.length > 0 ? (
+            <>
+              <p className="mt-5 text-sm font-semibold text-ink-soft">
+                Ou un service (correspondance)
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {services.map((o) => {
+                  const selected = chosenSlug === o.value;
+                  return (
+                    <label key={o.value} className="cursor-pointer">
+                      <input
+                        type="radio"
+                        name="offering-picker"
+                        value={o.value}
+                        checked={selected}
+                        onChange={() => pickOffering(o.value)}
+                        className="peer sr-only"
+                      />
+                      <span
+                        className={cn(
+                          "inline-flex min-h-11 items-center gap-2 rounded-full py-1 pl-3 pr-4 text-sm font-bold ring-1 transition-colors duration-200 peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand",
+                          selected
+                            ? "bg-ink text-white ring-transparent"
+                            : "bg-panel text-ink ring-ink-mute/50 hover:ring-2 hover:ring-ink",
+                        )}
+                      >
+                        <span
+                          aria-hidden
+                          className={cn(
+                            "size-4 rounded-full border-[3px] bg-panel",
+                            selected ? "border-white" : "border-ink",
+                          )}
+                        />
+                        {o.label}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </>
+          ) : null}
+
+          <div className="mt-3">
+            <label className="cursor-pointer">
+              <input
+                type="radio"
+                name="offering-picker"
+                value=""
+                checked={!chosenSlug}
+                onChange={() => pickOffering("")}
+                className="peer sr-only"
+              />
+              <span className="inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold text-ink-soft underline-offset-4 transition-colors hover:text-ink peer-checked:text-ink peer-checked:underline peer-checked:decoration-2 peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+                Je ne sais pas encore
+              </span>
+            </label>
+          </div>
+          {errors.solutionSlug ? (
+            <FieldError id="contact-offering-error">
+              {fieldMessage("solutionSlug", errors.solutionSlug)}
+            </FieldError>
+          ) : null}
+        </fieldset>
+
+        {/* Coordonnées */}
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field
+            id="contact-name"
+            label="Nom et prénom"
+            error={fieldMessage("name", errors.name)}
+            required
+          >
+            <input
+              id="contact-name"
+              type="text"
+              autoComplete="name"
+              required
+              aria-required="true"
+              aria-invalid={errors.name ? true : undefined}
+              aria-describedby={errors.name ? "contact-name-error" : undefined}
+              {...register("name")}
+              className={inputClass(!!errors.name)}
+            />
+          </Field>
+          <Field
+            id="contact-email"
+            label="E-mail professionnel"
+            error={fieldMessage("email", errors.email)}
+            required
+          >
+            <input
+              id="contact-email"
+              type="email"
+              autoComplete="email"
+              required
+              aria-required="true"
+              aria-invalid={errors.email ? true : undefined}
+              aria-describedby={errors.email ? "contact-email-error" : undefined}
+              {...register("email")}
+              className={inputClass(!!errors.email)}
+            />
+          </Field>
+          <Field
+            id="contact-phone"
+            label="Téléphone"
+            hint="Avec l'indicatif du pays, par exemple +225."
+            error={fieldMessage("phone", errors.phone)}
+            required
+          >
+            <input
+              id="contact-phone"
+              type="tel"
+              autoComplete="tel"
+              required
+              aria-required="true"
+              aria-invalid={errors.phone ? true : undefined}
+              aria-describedby={
+                errors.phone ? "contact-phone-error" : "contact-phone-hint"
+              }
+              {...register("phone")}
+              className={inputClass(!!errors.phone)}
+            />
+          </Field>
+          <Field
+            id="contact-organization"
+            label="Organisation"
+            optional
+            error={fieldMessage("organization", errors.organization)}
+          >
+            <input
+              id="contact-organization"
+              type="text"
+              autoComplete="organization"
+              aria-invalid={errors.organization ? true : undefined}
+              aria-describedby={
+                errors.organization ? "contact-organization-error" : undefined
+              }
+              {...register("organization")}
+              className={inputClass(!!errors.organization)}
+            />
+          </Field>
+        </div>
+
+        <Field
+          id="contact-message"
+          label="Votre besoin en quelques mots"
+          optional
+          error={fieldMessage("message", errors.message)}
+        >
+          <textarea
+            id="contact-message"
+            rows={5}
+            aria-invalid={errors.message ? true : undefined}
+            aria-describedby={errors.message ? "contact-message-error" : undefined}
+            {...register("message")}
+            className={cn(
+              "w-full rounded-lg border bg-panel px-3.5 py-3 text-base text-ink transition-colors placeholder:text-ink-mute focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-brand/30",
+              errors.message ? "border-[#b4123f]" : "border-ink-mute/70",
+            )}
+          />
+        </Field>
+
+        {/* Consentement */}
+        <div>
+          <label className="flex min-h-11 cursor-pointer items-start gap-3 text-[0.9375rem] text-ink-soft">
+            <input
+              type="checkbox"
+              required
+              aria-required="true"
+              aria-invalid={errors.consent ? true : undefined}
+              aria-describedby={errors.consent ? "contact-consent-error" : undefined}
+              {...register("consent")}
+              className="mt-0.5 size-5 shrink-0 accent-[#0b1b3a]"
+            />
+            <span className="leading-relaxed">
+              J&apos;accepte qu&apos;Alliance Consultants utilise les
+              informations ci-dessus pour traiter ma demande. Mes données ne
+              seront pas cédées à des tiers.{" "}
+              <span aria-hidden className="font-bold text-ink">
+                *
+              </span>
+            </span>
+          </label>
+          {errors.consent ? (
+            <FieldError id="contact-consent-error">
+              Cochez cette case pour que nous puissions traiter votre demande.
+            </FieldError>
+          ) : null}
+        </div>
+
+        {serverErrorMessage ? (
+          <div
+            role="alert"
+            className="flex gap-3 rounded-lg bg-[#fdeaf0] p-4 text-sm text-[#7a0c29]"
+          >
+            <CircleAlert
+              aria-hidden
+              className="mt-0.5 size-5 shrink-0"
+              strokeWidth={2}
+            />
+            <p>
+              {serverErrorMessage}{" "}
+              {contact ? (
+                <span>
+                  Vous pouvez aussi nous joindre directement : coordonnées dans
+                  « Votre trajet ».
+                </span>
+              ) : null}
+            </p>
+          </div>
+        ) : null}
+
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <button
+              type="submit"
+              disabled={disabled}
+              aria-disabled={disabled}
+              aria-describedby={
+                disabled && !submitting ? "contact-submit-hint" : undefined
+              }
+              style={chosenLine ? lineStyle(chosenLine.id) : undefined}
+              className="group/cta inline-flex h-14 items-center justify-center gap-4 rounded-full bg-ink pl-7 pr-2 text-base font-bold text-white transition-[background-color,opacity,transform] duration-300 ease-[var(--ease-out-expo)] hover:bg-night-2 active:translate-y-px disabled:cursor-not-allowed disabled:bg-ink-mute disabled:opacity-80"
+            >
+              {submitting ? "Envoi en cours…" : submitLabel}
+              <span
+                aria-hidden
+                className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-enabled/cta:group-hover/cta:translate-x-0.5"
+              >
+                {submitting ? (
+                  <Loader2 className="size-5 animate-spin" strokeWidth={2} />
+                ) : (
+                  <ArrowRight className="size-5" strokeWidth={2} />
+                )}
+              </span>
+            </button>
+            <p className="text-sm text-ink-soft">
+              Pas d&apos;engagement — réponse sous 24 à 48 h ouvrées.
+            </p>
+          </div>
+          {disabled && !submitting ? (
+            <p id="contact-submit-hint" className="text-sm text-ink-soft">
+              Pour activer l&apos;envoi : renseignez votre nom, un e-mail
+              valide, votre téléphone et cochez le consentement.
+            </p>
+          ) : null}
+        </div>
+      </form>
+    </div>
   );
 }
 
-const inputClass =
-  "h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base text-slate-900 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+function inputClass(invalid: boolean) {
+  return cn(
+    "h-12 w-full rounded-lg border bg-panel px-3.5 text-base text-ink transition-colors placeholder:text-ink-mute focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-brand/30",
+    invalid ? "border-[#b4123f]" : "border-ink-mute/70",
+  );
+}
+
+function FieldError({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <p
+      id={id}
+      role="alert"
+      className={cn("mt-2 flex items-start gap-2 text-sm font-medium", ERROR_COLOR)}
+    >
+      <CircleAlert
+        aria-hidden
+        className="mt-0.5 size-4 shrink-0"
+        strokeWidth={2}
+      />
+      <span>{children}</span>
+    </p>
+  );
+}
 
 function Field({
   id,
   label,
+  hint,
   error,
   required,
+  optional,
   children,
 }: {
   id: string;
   label: string;
+  hint?: string;
   error?: string;
   required?: boolean;
+  optional?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div className="block">
-      <label
-        htmlFor={id}
-        className="mb-1.5 block text-sm font-medium text-slate-800"
-      >
+      <label htmlFor={id} className="mb-1.5 block text-sm font-bold text-ink">
         {label}
-        {required && (
-          <span aria-hidden="true" className="ml-1 text-rose-500">
+        {required ? (
+          <span aria-hidden="true" className="ml-1 text-ink">
             *
           </span>
-        )}
+        ) : null}
+        {optional ? (
+          <span className="ml-2 font-medium text-ink-mute">(facultatif)</span>
+        ) : null}
       </label>
       {children}
-      {error && (
-        <p className="mt-1.5 text-sm text-rose-600" role="alert">
-          {error}
+      {hint && !error ? (
+        <p id={`${id}-hint`} className="mt-1.5 text-sm text-ink-mute">
+          {hint}
         </p>
-      )}
+      ) : null}
+      {error ? <FieldError id={`${id}-error`}>{error}</FieldError> : null}
     </div>
   );
 }

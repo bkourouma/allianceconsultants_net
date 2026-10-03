@@ -1,82 +1,54 @@
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { CTAButton } from "@/components/shared/CTAButton";
+import { getLine, lineStyle } from "@/lib/network";
 import type { Solution } from "@/lib/validators/content";
 
 interface SolutionCardProps {
   solution: Solution;
 }
 
-const ICON_MAP: Record<string, string> = {
-  document: "📄",
-  medical: "💊",
-  health: "👁️",
-  building: "🏢",
-  announcement: "📢",
-  school: "🎓",
-};
+const NEUTRAL_STYLE = {
+  "--accent": "#0b1b3a",
+  "--on-accent": "#ffffff",
+} as React.CSSProperties;
 
+/**
+ * Compact line card: a colour band with the product roundel + name, then a
+ * short pitch and the two actions. The homepage uses the richer lineup
+ * (components/homepage/solutions); this stays for lists elsewhere.
+ */
 export function SolutionCard({ solution }: SolutionCardProps) {
-  const icon = solution.iconKey ? (ICON_MAP[solution.iconKey] ?? "⚡") : "⚡";
+  const line = getLine(solution.slug);
+  const sector = line?.sector ?? solution.category;
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-xl">
-      <div className="relative h-28 overflow-hidden bg-gradient-to-br from-primary via-primary to-primary-dark">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.4), transparent 60%)",
-          }}
-        />
-        <div className="relative flex h-full items-center justify-between px-6">
-          <span
-            aria-hidden="true"
-            className="grid size-14 place-items-center rounded-xl bg-white/15 text-3xl shadow-inner backdrop-blur-sm"
-          >
-            {icon}
-          </span>
-          <span className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/80">
-            {solution.category}
-          </span>
+    <article
+      style={line ? lineStyle(line.id) : NEUTRAL_STYLE}
+      className="flex flex-col overflow-hidden rounded-lg bg-panel text-ink shadow-[0_1px_0_var(--color-rule)]"
+    >
+      <div className="flex items-center gap-3 bg-[var(--accent)] px-4 py-4 text-[var(--on-accent)]">
+        <span
+          aria-hidden
+          className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--on-accent)] font-display text-lg font-extrabold leading-none text-[var(--accent)]"
+        >
+          {solution.name.charAt(0)}
+        </span>
+        <div className="min-w-0">
+          <h3 className="m-0 break-words font-display text-2xl font-extrabold leading-none tracking-[-0.03em] text-balance">
+            {solution.name}
+          </h3>
+          <p className="m-0 mt-1 text-[0.8125rem] font-semibold leading-tight">{sector}</p>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-6 lg:p-7">
-        <h3 className="text-xl font-bold tracking-tight text-slate-900">
-          {solution.externalUrl ? (
-            <a
-              href={solution.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
-            >
-              {solution.name}
-              <span aria-hidden="true" className="ml-1 text-xs text-slate-400">
-                ↗
-              </span>
-              <span className="sr-only"> (ouvre le site du produit dans un nouvel onglet)</span>
-            </a>
-          ) : (
-            solution.name
-          )}
-        </h3>
-
-        <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+      <div className="flex flex-1 flex-col gap-3 p-4">
+        <p className="m-0 flex-1 text-[0.9375rem] leading-snug text-ink-soft">
           {solution.shortDescription}
         </p>
+        <p className="m-0 text-[0.9375rem] font-bold leading-snug">{solution.mainBenefit}</p>
 
-        <p className="mt-4 flex items-start gap-2 text-sm font-medium text-primary-dark">
-          <span
-            aria-hidden="true"
-            className="mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] text-primary"
-          >
-            ✓
-          </span>
-          <span>{solution.mainBenefit}</span>
-        </p>
-
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-slate-100 pt-5">
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-rule pt-4">
           <CTAButton
             intent="demo"
             label="Demander une démo"
@@ -86,10 +58,23 @@ export function SolutionCard({ solution }: SolutionCardProps) {
           />
           <Link
             href={`/solutions/${solution.slug}`}
-            className="text-sm font-medium text-slate-600 transition-colors hover:text-primary focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4"
+            className="inline-flex min-h-11 items-center text-sm font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-[var(--accent)]"
           >
-            En savoir plus →
+            En savoir plus
+            <span className="sr-only"> sur {solution.name}</span>
           </Link>
+          {solution.externalUrl && (
+            <a
+              href={solution.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-ink-soft underline underline-offset-4 hover:text-ink"
+            >
+              Site du produit
+              <ExternalLink aria-hidden className="size-3.5" strokeWidth={2} />
+              <span className="sr-only"> (ouvre le site du produit dans un nouvel onglet)</span>
+            </a>
+          )}
         </div>
       </div>
     </article>

@@ -1,75 +1,73 @@
-import Image from "next/image";
-import Link from "next/link";
 import type { PublishedPostDetail } from "@/lib/blog";
+import { BlogBreadcrumb } from "./BlogBreadcrumb";
 import { BlogTagBadge } from "./BlogTagBadge";
+import { PostCover } from "./PostCover";
+import { PostMeta } from "./PostMeta";
+import { frTypo } from "./post-utils";
 
-export function BlogArticleHero({ post }: { post: PublishedPostDetail }) {
+/** Article header: breadcrumb, tag roundels, display title, lead, byline, cover. */
+export function BlogArticleHero({
+  post,
+  readingMinutes,
+}: {
+  post: PublishedPostDetail;
+  readingMinutes?: number;
+}) {
+  const initial = post.authorName?.trim().charAt(0).toUpperCase();
   return (
-    <header className="relative isolate overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-        style={{
-          backgroundImage:
-            "radial-gradient(60% 50% at 90% 0%, rgba(59,130,246,0.18), transparent 70%)",
-        }}
+    <header className="wrap pb-10 pt-6 sm:pt-10 lg:pb-14">
+      <BlogBreadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Blog", href: "/blog" },
+          { label: post.title },
+        ]}
       />
-      <div className="mx-auto max-w-3xl px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pb-14 lg:pt-16">
-        <nav aria-label="Fil d'Ariane" className="mb-6">
-          <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-            <li>
-              <Link href="/" className="hover:text-primary">
-                Accueil
-              </Link>
+
+      {post.tags.length > 0 ? (
+        <ul className="mt-8 flex flex-wrap gap-1.5">
+          {post.tags.map((t) => (
+            <li key={t.slug}>
+              <BlogTagBadge tag={t} />
             </li>
-            <li aria-hidden className="text-slate-300">/</li>
-            <li>
-              <Link href="/blog" className="hover:text-primary">
-                Blog
-              </Link>
-            </li>
-            <li aria-hidden className="text-slate-300">/</li>
-            <li className="font-medium text-slate-700 line-clamp-1">{post.title}</li>
-          </ol>
-        </nav>
+          ))}
+        </ul>
+      ) : null}
 
-        {post.tags.length > 0 ? (
-          <div className="flex flex-wrap gap-1.5">
-            {post.tags.map((t) => (
-              <BlogTagBadge key={t.slug} tag={t} />
-            ))}
-          </div>
+      <h1 className="mt-5 max-w-4xl text-balance font-display text-[clamp(2.125rem,1.4rem+3.3vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-ink">
+        {frTypo(post.title)}
+      </h1>
+
+      {post.excerpt ? <p className="t-lead mt-5">{post.excerpt}</p> : null}
+
+      <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+        {post.authorName ? (
+          <p className="inline-flex items-center gap-3 text-[0.9375rem] font-bold text-ink">
+            <span
+              aria-hidden
+              className="grid size-9 place-items-center rounded-full bg-[var(--accent)] font-display text-sm font-extrabold text-[var(--on-accent)]"
+            >
+              {initial}
+            </span>
+            <span>
+              <span className="sr-only">Auteur : </span>
+              {post.authorName}
+            </span>
+          </p>
         ) : null}
-
-        <h1 className="mt-4 text-balance text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-          {post.title}
-        </h1>
-
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500">
-          <time dateTime={post.publishedAt.toISOString()}>
-            Publié le{" "}
-            {post.publishedAt.toLocaleDateString("fr-FR", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
-          {post.authorName ? <span>· par {post.authorName}</span> : null}
-        </div>
-
-        {post.coverUrl ? (
-          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-            <Image
-              src={post.coverUrl}
-              alt={post.coverAlt ?? post.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          </div>
-        ) : null}
+        <PostMeta date={post.publishedAt} readingMinutes={readingMinutes} />
       </div>
+
+      <PostCover
+        slug={post.slug}
+        coverUrl={post.coverUrl}
+        coverAlt={post.coverAlt}
+        title={post.title}
+        tone="night"
+        priority
+        sizes="(min-width:1280px) 1200px, 100vw"
+        className="mt-9 aspect-[2/1] sm:aspect-[21/9]"
+      />
     </header>
   );
 }

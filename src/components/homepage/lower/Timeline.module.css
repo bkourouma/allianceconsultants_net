@@ -1,0 +1,19 @@
+/* Progress fill of the history line. Scroll-driven on desktop (--p is 0..1),
+   always complete on phones where the line is vertical and static. */
+.fill {
+  transform: scaleX(var(--p, 1));
+  transform-origin: left center;
+  transition: transform 220ms linear;
+}
+
+@media (max-width: 1023.98px) {
+  .fill {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+}

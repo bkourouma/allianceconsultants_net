@@ -122,6 +122,11 @@ body {
    Scope: everything under .site-root (public site). Admin is untouched. */
 
 .site-root {
+  /* next/font defines --font-*-bricolage/figtree on this wrapper, so the
+     stacks must be resolved here: the @theme copies live on :root, where
+     those variables don't exist, and would silently fall back to Inter. */
+  --font-display: var(--font-display-bricolage), "Segoe UI", system-ui, sans-serif;
+  --font-text: var(--font-text-figtree), "Segoe UI", system-ui, sans-serif;
   font-family: var(--font-text);
   background: var(--color-enamel);
   color: var(--color-ink);

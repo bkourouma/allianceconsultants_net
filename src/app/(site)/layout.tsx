@@ -3,6 +3,7 @@ import { GlobalHeader } from "@/components/layout/GlobalHeader";
 import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { UmamiTracker } from "@/components/shared/UmamiTracker";
 import { RouteSpine } from "@/components/fx/RouteSpine";
+import { AssistantWidget } from "@/components/assistant/AssistantWidget";
 import { getSiteSettings } from "@/lib/content";
 
 const display = Bricolage_Grotesque({
@@ -49,6 +50,7 @@ export default async function SiteLayout({
       <RouteSpine />
       <GlobalFooter settings={settings} />
       <UmamiTracker />
+      <AssistantWidget />
     </div>
   );
 }

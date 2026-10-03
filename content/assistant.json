@@ -1,0 +1,243 @@
+{
+  "name": "Assistant Alliance",
+  "calendlyUrl": "https://calendly.com/immotopia/consultation-alliance-computer-consultants",
+  "topics": [
+    {
+      "id": "default",
+      "kind": "default",
+      "label": "Alliance Consultants",
+      "nudge": "Une question sur nos solutions ? Je suis là pour vous orienter.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Dites-moi ce que vous cherchez à améliorer dans votre organisation : je vous oriente vers la bonne solution.",
+      "replies": ["Gérer mes documents", "Gérer une clinique", "Gérer des biens immobiliers", "Former mon équipe"],
+      "focus": "Identifier le secteur et la fonction du visiteur, puis l'orienter vers la ou les solutions adaptées."
+    },
+    {
+      "id": "home",
+      "kind": "home",
+      "label": "l'accueil",
+      "nudge": "Vous découvrez nos solutions ? Dites-moi votre métier, je vous indique la plus adaptée.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous explorez notre site : dans quel secteur travaillez-vous ? Je peux vous orienter vers la solution qui correspond à votre activité.",
+      "replies": ["Santé / clinique", "Immobilier", "Archives et documents", "École / formation"],
+      "focus": "Identifier le secteur et la fonction du visiteur, puis l'orienter vers la ou les solutions adaptées."
+    },
+    {
+      "id": "solutions",
+      "kind": "section",
+      "label": "nos solutions",
+      "nudge": "Vous comparez nos solutions ? Dites-moi votre activité, je vous oriente.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous passez en revue nos solutions : quel est votre secteur d'activité, et quel problème voulez-vous résoudre en priorité ?",
+      "replies": ["Santé / clinique", "Immobilier", "Archives et documents", "École / formation"],
+      "focus": "Comprendre le besoin prioritaire du visiteur et lui recommander une solution précise, en expliquant pourquoi."
+    },
+    {
+      "id": "solutions/docupro-suite",
+      "kind": "solution",
+      "label": "DocuPro Suite",
+      "line": "docupro",
+      "nudge": "Je vois que vous regardez DocuPro Suite. Vous cherchez à mieux gérer vos documents ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à DocuPro Suite : vous êtes responsable des archives, du courrier ou de l'organisation d'une structure ? Et comment vos documents circulent-ils aujourd'hui : papier, dossiers partagés, un outil de GED ?",
+      "replies": ["Oui, j'en suis responsable", "Je compare des solutions", "J'ai un projet de numérisation"],
+      "focus": "Type et volume de documents (courriers, dossiers, factures), circulation papier ou numérique, besoin de circuits de validation, difficulté à retrouver l'information, archives papier existantes à numériser (relier au service Dématérialisation des archives et aux scanners)."
+    },
+    {
+      "id": "solutions/medicpro",
+      "kind": "solution",
+      "label": "MedicPro",
+      "line": "medicpro",
+      "nudge": "Vous regardez MedicPro. Vous suivez des enregistrements de produits pharmaceutiques ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous consultez MedicPro : êtes-vous laboratoire, distributeur ou conseil en réglementation pharmaceutique ? Et comment suivez-vous aujourd'hui vos AMM, visas et échéances ?",
+      "replies": ["Laboratoire / fabricant", "Distributeur / grossiste", "Conseil réglementaire"],
+      "focus": "Rôle de l'organisation dans la chaîne pharmaceutique, nombre de produits et de pays suivis, outil actuel de suivi des AMM, visas et échéances, suivi des stocks et ventes. MedicPro est un outil de gestion réglementaire pharmaceutique, pas un logiciel médical."
+    },
+    {
+      "id": "solutions/cliniquepro",
+      "kind": "solution",
+      "label": "CliniquePro",
+      "line": "cliniquepro",
+      "nudge": "Je vois que vous vous intéressez à CliniquePro. Vous dirigez une clinique ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à CliniquePro : vous êtes propriétaire ou responsable d'une clinique ? Et comment gérez-vous aujourd'hui vos patients, vos rendez-vous et votre caisse : papier, Excel, un autre logiciel ?",
+      "replies": ["Je dirige une clinique", "Je suis médecin", "Je gère l'administration"],
+      "focus": "Rôle du visiteur (propriétaire, médecin, administratif), taille de la clinique (praticiens, patients par jour), outil actuel pour dossiers patients, agenda, caisse, honoraires et assurances, principale difficulté (ressaisies, suivi des encaissements, visibilité sur l'activité)."
+    },
+    {
+      "id": "solutions/immotopia-cloud",
+      "kind": "solution",
+      "label": "ImmoTopia.cloud",
+      "line": "immotopia",
+      "nudge": "Vous regardez ImmoTopia.cloud. Vous gérez un parc immobilier ou une agence ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à ImmoTopia.cloud : êtes-vous agence, promoteur, syndic ou propriétaire de plusieurs biens ? Et comment gérez-vous aujourd'hui vos biens, vos locataires et vos loyers ?",
+      "replies": ["Agence immobilière", "Syndic / copropriété", "Propriétaire de plusieurs biens"],
+      "focus": "Type d'activité (agence, promoteur, syndic, propriétaire), nombre de biens ou de lots gérés, outil actuel pour la gestion locative, les loyers et les copropriétés, besoin de CRM et de suivi commercial."
+    },
+    {
+      "id": "solutions/annonces-web",
+      "kind": "solution",
+      "label": "Immo-Annonces.fr",
+      "line": "annonces",
+      "nudge": "Vous regardez Immo-Annonces.fr. Vous souhaitez diffuser ou trouver des biens ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous consultez Immo-Annonces.fr : vous êtes agence, promoteur ou propriétaire et vous voulez diffuser des annonces ? Comment faites-vous connaître vos biens aujourd'hui ?",
+      "replies": ["Agence ou promoteur", "Propriétaire", "Je cherche un bien"],
+      "focus": "Profil du visiteur (professionnel ou particulier), canaux de diffusion actuels, volume de biens à publier. Si le visiteur cherche seulement un bien à louer ou acheter, le renvoyer vers le site Immo-Annonces.fr sans chercher à lui vendre une démo."
+    },
+    {
+      "id": "solutions/ecole-digitale",
+      "kind": "solution",
+      "label": "École Digitale",
+      "line": "ecole",
+      "nudge": "Vous regardez École Digitale. Vous dirigez ou administrez un établissement ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à École Digitale : vous êtes directeur, fondateur ou administrateur d'un établissement ? Et comment gérez-vous aujourd'hui les inscriptions, les notes et les paiements de scolarité ?",
+      "replies": ["Directeur d'établissement", "Fondateur / promoteur", "Centre de formation"],
+      "focus": "Type d'établissement et nombre d'élèves, outil actuel pour inscriptions, notes, présences et paiements, besoin de communication avec les parents, établissement unique ou réseau de plusieurs sites."
+    },
+    {
+      "id": "services",
+      "kind": "section",
+      "label": "nos services",
+      "nudge": "Un projet à mener ? Dites-moi où vous en êtes, je vous indique le bon service.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous regardez nos services : quel projet avez-vous en tête, et où en êtes-vous (idée, cahier des charges, projet en cours) ?",
+      "replies": ["Une application sur mesure", "Automatiser un processus", "Numériser des archives"],
+      "focus": "Comprendre le projet, son stade d'avancement et son enjeu, puis recommander le service adapté parmi les cinq services."
+    },
+    {
+      "id": "services/developpement-specifique",
+      "kind": "service",
+      "label": "le développement spécifique",
+      "nudge": "Une application sur mesure en projet ? Parlez-m'en en deux mots.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous consultez notre offre de développement spécifique : quel besoin voulez-vous couvrir, et que faites-vous à la place aujourd'hui (Excel, un logiciel existant, rien du tout) ?",
+      "replies": ["Remplacer des fichiers Excel", "Une application métier", "Relier des outils existants"],
+      "focus": "Processus ou métier visé, outil actuel et ses limites, nombre d'utilisateurs, web ou mobile, calendrier souhaité, existence d'un cahier des charges."
+    },
+    {
+      "id": "services/automatisation-ia-processus-metiers",
+      "kind": "service",
+      "label": "l'automatisation IA des processus",
+      "nudge": "Vous pensez à automatiser un processus avec l'IA ? Je peux vous aider à cadrer.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que l'automatisation par l'IA vous intéresse : quel processus vous fait perdre le plus de temps aujourd'hui (saisie, validation, relances, reporting…) et combien de personnes y participent ?",
+      "replies": ["Saisie et documents", "Validation et relances", "Reporting"],
+      "focus": "Processus répétitif le plus coûteux, outils déjà utilisés (messagerie, Excel, ERP), fréquence et volume, personnes concernées. Proposer un diagnostic ou un cadrage plutôt que de promettre des gains chiffrés."
+    },
+    {
+      "id": "services/assistance-maitrise-ouvrage",
+      "kind": "service",
+      "label": "l'assistance à maîtrise d'ouvrage",
+      "nudge": "Un projet numérique à cadrer ou à piloter ? Dites-moi où vous en êtes.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous regardez notre assistance à maîtrise d'ouvrage : avez-vous un projet numérique à cadrer, ou un projet déjà lancé que vous voulez mieux piloter ?",
+      "replies": ["Je démarre un projet", "Un projet est en difficulté", "Je choisis un prestataire"],
+      "focus": "Stade du projet, nature du projet (logiciel, ERP, site, transformation), prestataire déjà choisi ou non, difficulté principale (cahier des charges, suivi, recette)."
+    },
+    {
+      "id": "services/dematerialisation-archives",
+      "kind": "service",
+      "label": "la dématérialisation des archives",
+      "nudge": "Des archives papier à numériser ? Je peux vous orienter.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à la dématérialisation des archives : de quels documents s'agit-il (dossiers du personnel, factures, dossiers patients, courriers…) et quel volume approximatif représentent-ils ?",
+      "replies": ["Archives papier à numériser", "Je cherche une GED", "Je ne sais pas par où commencer"],
+      "focus": "Nature et volume des archives, lieu de stockage actuel, besoin de recherche rapide, obligations de conservation, outil de GED souhaité (relier à DocuPro Suite) et matériel de numérisation (relier aux scanners professionnels)."
+    },
+    {
+      "id": "services/scanners-professionnels",
+      "kind": "service",
+      "label": "les scanners professionnels",
+      "nudge": "Vous cherchez un scanner professionnel ? Je peux vous aider à choisir.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous regardez nos scanners professionnels : quel volume de pages devez-vous numériser par jour, et de quel type de documents s'agit-il ?",
+      "replies": ["Quelques centaines de pages par jour", "Plusieurs milliers de pages par jour", "Je ne sais pas encore"],
+      "focus": "Volume quotidien de pages, formats et état des documents, logiciel de GED déjà en place, besoin de formation et de support, budget non communiqué par l'assistant (ne jamais donner de prix)."
+    },
+    {
+      "id": "formations",
+      "kind": "section",
+      "label": "nos formations",
+      "nudge": "Une formation pour vous ou votre équipe ? Dites-moi votre besoin.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous regardez nos formations : est-ce pour vous-même ou pour une équipe, et sur quel sujet (IA, automatisation, GED, bases de données, gestion de projet) ?",
+      "replies": ["Pour moi", "Pour mon équipe", "Pour toute l'entreprise"],
+      "focus": "Public concerné, niveau de départ, nombre de participants, sujet prioritaire, modalité souhaitée (présentiel, à distance, en intra-entreprise), échéance. Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "formations/ia-entreprise",
+      "kind": "training",
+      "label": "la formation IA pour entreprises",
+      "line": "academie",
+      "nudge": "Une formation à l'IA pour votre équipe ? Dites-moi à qui elle s'adresse.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que la formation IA pour entreprises vous intéresse : est-ce pour vous ou pour une équipe ? Quels métiers seraient concernés (direction, RH, finance, commercial…) ?",
+      "replies": ["Pour moi", "Pour mon équipe", "Pour toute l'entreprise"],
+      "focus": "Public, métiers concernés, niveau actuel avec l'IA, cas d'usage visés, nombre de participants. Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "formations/developpement-web-dotnet-ia",
+      "kind": "training",
+      "label": "la formation développement web & IA",
+      "line": "academie",
+      "nudge": "Vous regardez la formation développement web & IA. Pour qui est-elle ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous regardez la formation développement web et IA (.NET / React) : est-ce pour vous ou pour former une équipe de développeurs ? Quel est le niveau de départ ?",
+      "replies": ["Je suis développeur", "Je forme une équipe", "Je me reconvertis"],
+      "focus": "Profil du ou des apprenants, niveau actuel en développement, technologies utilisées en entreprise, objectif (monter en compétence, nouveau projet). Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "formations/automatisation-n8n-processus-ia",
+      "kind": "training",
+      "label": "la formation n8n & IA",
+      "line": "academie",
+      "nudge": "La formation n8n & IA vous intéresse ? Dites-moi ce que vous voulez automatiser.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que la formation d'automatisation avec n8n et l'IA vous intéresse : quelles tâches voulez-vous automatiser, et pour qui (vous, une équipe, un service informatique) ?",
+      "replies": ["Mes tâches répétitives", "Pour mon équipe", "Pour le service informatique"],
+      "focus": "Tâches à automatiser, profil technique des apprenants, outils déjà utilisés. Relier au service d'automatisation IA si le visiteur préfère déléguer. Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "formations/sql-server",
+      "kind": "training",
+      "label": "la formation SQL Server",
+      "line": "academie",
+      "nudge": "La formation SQL Server vous intéresse ? Dites-moi votre besoin.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous regardez la formation SQL Server : s'agit-il d'administrer des bases existantes ou de développer dessus ? Et combien de personnes seraient concernées ?",
+      "replies": ["Administration", "Développement", "Les deux"],
+      "focus": "Profil des apprenants (administrateurs, développeurs), version et usage actuel de SQL Server, nombre de participants. Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "formations/ged-archivage",
+      "kind": "training",
+      "label": "la formation GED & archivage",
+      "line": "academie",
+      "nudge": "La formation GED & archivage vous intéresse ? Parlons de votre contexte.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que la formation GED et archivage numérique vous intéresse : êtes-vous en charge des archives d'une structure ? Avez-vous déjà un projet de dématérialisation ?",
+      "replies": ["Je gère les archives", "Un projet est prévu", "Pour mon équipe"],
+      "focus": "Rôle du visiteur, projet de dématérialisation en cours ou prévu, outil de GED existant (relier à DocuPro Suite). Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "formations/gestion-projet",
+      "kind": "training",
+      "label": "la formation gestion de projet digital",
+      "line": "academie",
+      "nudge": "La formation gestion de projet digital vous intéresse ? Dites-moi pour qui.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que la formation gestion de projet digital et agile vous intéresse : est-ce pour vous ou pour vos chefs de projet ? Quel type de projets pilotez-vous ?",
+      "replies": ["Pour moi", "Pour mes chefs de projet", "Pour une équipe IT"],
+      "focus": "Profil des apprenants, types de projets pilotés, méthode actuelle, nombre de participants. Ne jamais annoncer de durée ni de tarif."
+    },
+    {
+      "id": "blog",
+      "kind": "section",
+      "label": "le blog",
+      "nudge": "Cet article vous parle ? Dites-moi ce que vous cherchez à améliorer chez vous.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Un de nos articles vous a retenu : quel sujet cherchez-vous à traiter dans votre organisation ? Je peux vous orienter vers la solution ou le service qui s'y rapporte.",
+      "replies": ["Gérer mes documents", "Automatiser avec l'IA", "Digitaliser mon activité"],
+      "focus": "Comprendre pourquoi le visiteur lit le blog, le problème qu'il cherche à résoudre, puis relier ce problème à une solution ou un service, sans forcer."
+    },
+    {
+      "id": "references",
+      "kind": "section",
+      "label": "nos références",
+      "nudge": "Vous cherchez des références ? Dites-moi votre secteur, je vous guide.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous regardez nos références : dans quel secteur travaillez-vous, et quel type de projet cherchez-vous à comparer ?",
+      "replies": ["Santé", "Immobilier", "Documents et archives"],
+      "focus": "Secteur et type de projet du visiteur. Ne jamais citer de nom de client ni de chiffre : renvoyer vers la page Références et proposer qu'un consultant présente des cas comparables lors d'un échange."
+    },
+    {
+      "id": "a-propos",
+      "kind": "section",
+      "label": "à propos",
+      "nudge": "Envie d'en savoir plus sur Alliance Consultants ? Posez-moi vos questions.",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous faites connaissance avec nous : que souhaitez-vous savoir, et quel projet avez-vous en tête ?",
+      "replies": ["Qui est Alliance Consultants ?", "Quelles solutions proposez-vous ?", "Je cherche un partenaire"],
+      "focus": "Répondre aux questions sur la société (fondée en 2003 à Abidjan, éditeur et intégrateur africain), puis comprendre le projet du visiteur."
+    }
+  ]
+}

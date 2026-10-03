@@ -1,0 +1,36 @@
+/* Indicateur de saisie de l'assistant : trois points qui s'éclaircissent tour à tour, sans mouvement.
+   Sous prefers-reduced-motion, la règle globale de globals.css coupe l'animation : les points restent fixes. */
+.dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  min-height: 1.5rem;
+}
+
+.dot {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 9999px;
+  background: var(--color-ink-mute);
+  opacity: 0.35;
+  animation: dot-pulse 1.4s var(--ease-out-expo) infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes dot-pulse {
+  0%,
+  70%,
+  100% {
+    opacity: 0.35;
+  }
+  25% {
+    opacity: 1;
+  }
+}

@@ -9,6 +9,7 @@ import {
   ServiceSchema,
   TrainingSchema,
   ReferenceSchema,
+  AssistantConfigSchema,
 } from "../src/lib/validators/content";
 
 const ROOT = path.join(process.cwd(), "content");
@@ -228,6 +229,36 @@ async function validateSolutionsDetail(): Promise<void> {
   }
 }
 
+/**
+ * Assistant IA (feature 003) : content/assistant.json doit référencer des pages qui existent
+ * (un sujet orphelin enverrait une accroche pour une page disparue).
+ */
+async function validateAssistant(): Promise<void> {
+  const config = await validateJson(path.join(ROOT, "assistant.json"), AssistantConfigSchema);
+  if (!config) return;
+
+  const contentDirByKind: Record<string, { dir: string; route: string }> = {
+    solution: { dir: "solutions", route: "solutions" },
+    service: { dir: "services", route: "services" },
+    training: { dir: "trainings", route: "formations" },
+  };
+
+  for (const topic of config.topics) {
+    const target = contentDirByKind[topic.kind];
+    if (!target) continue;
+    const [segment, slug] = topic.id.split("/");
+    if (segment !== target.route || !slug) {
+      fail(`assistant.json: le sujet "${topic.id}" doit être de la forme ${target.route}/<slug>`);
+      continue;
+    }
+    try {
+      await fs.access(path.join(ROOT, target.dir, `${slug}.mdx`));
+    } catch {
+      fail(`assistant.json: le sujet "${topic.id}" ne correspond à aucun fichier content/${target.dir}/${slug}.mdx`);
+    }
+  }
+}
+
 async function main() {
   console.log("🔍 Validating content…\n");
 
@@ -237,6 +268,7 @@ async function main() {
   await validateDir(path.join(ROOT, "services"), ServiceSchema);
   await validateDir(path.join(ROOT, "trainings"), TrainingSchema);
   await validateDir(path.join(ROOT, "references"), ReferenceSchema);
+  await validateAssistant();
 
   console.log("\n🔍 Validating solutions detail (feature 001-pages-corporate-solutions)…\n");
   await validateSolutionsDetail();

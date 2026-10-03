@@ -11,8 +11,8 @@ import { Toc, type TocItem } from "./Toc";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
 
-const LAST_UPDATED = "2026-10-02";
-const LAST_UPDATED_LABEL = "2 octobre 2026";
+const LAST_UPDATED = "2026-10-03";
+const LAST_UPDATED_LABEL = "3 octobre 2026";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -41,13 +41,14 @@ const SECTIONS: TocItem[] = [
     title: "6. Transferts hors Union européenne",
   },
   { id: "cookies-traceurs", title: "7. Cookies et traceurs" },
-  { id: "securite", title: "8. Sécurité" },
-  { id: "vos-droits", title: "9. Vos droits" },
+  { id: "assistant-ia", title: "8. Assistant IA et prise de rendez-vous" },
+  { id: "securite", title: "9. Sécurité" },
+  { id: "vos-droits", title: "10. Vos droits" },
   {
     id: "modifications",
-    title: "10. Modifications de la présente politique",
+    title: "11. Modifications de la présente politique",
   },
-  { id: "nous-contacter", title: "11. Nous contacter" },
+  { id: "nous-contacter", title: "12. Nous contacter" },
 ];
 
 const P = "mt-4";
@@ -208,6 +209,12 @@ export default async function PrivacyPage() {
                   n&apos;est pas conservée).
                 </li>
                 <li>
+                  <strong className="text-ink">Échanges avec l&apos;assistant IA</strong>
+                  &nbsp;: les messages que vous lui écrivez et, si vous les
+                  lui confiez, les informations de contact du formulaire
+                  (voir la section 8).
+                </li>
+                <li>
                   <strong className="text-ink">Données techniques</strong>
                   &nbsp;: journaux serveurs et identifiants techniques,
                   conservés à des fins de sécurité et de lutte contre la
@@ -293,7 +300,9 @@ export default async function PrivacyPage() {
                 africaine, nous nous assurons que ces transferts sont encadrés
                 par des garanties appropriées (clauses contractuelles types,
                 décisions d&apos;adéquation, mesures techniques
-                complémentaires).
+                complémentaires). C&apos;est notamment le cas de notre
+                assistant IA (voir la section 8), dont le prestataire est
+                établi aux États-Unis.
               </p>
             </article>
 
@@ -315,6 +324,59 @@ export default async function PrivacyPage() {
                 essentiels n&apos;affecte pas l&apos;accès aux contenus du
                 site.
               </p>
+            </article>
+
+            <article aria-labelledby="assistant-ia">
+              <H2 id="assistant-ia" />
+              <p className={P}>
+                Notre assistant IA répond à vos questions sur nos solutions et
+                peut vous proposer de laisser vos coordonnées, puis de réserver
+                une démonstration. C&apos;est un programme automatisé, pas une
+                personne.
+              </p>
+              <ul className={UL}>
+                <li>
+                  <strong className="text-ink">Ce qu&apos;il utilise</strong>
+                  &nbsp;: les messages que vous lui écrivez, la page d&apos;où
+                  vous l&apos;ouvrez et un aperçu de votre parcours (rubriques
+                  consultées, durée de lecture approximative). Ce parcours est
+                  conservé dans votre navigateur (stockage de session, effacé à
+                  la fermeture de l&apos;onglet) et n&apos;est transmis
+                  qu&apos;au moment où vous écrivez à l&apos;assistant. Il ne
+                  sert pas à la mesure d&apos;audience.
+                </li>
+                <li>
+                  <strong className="text-ink">Qui traite vos messages</strong>
+                  &nbsp;: pour rédiger ses réponses, vos messages sont transmis
+                  à notre prestataire d&apos;intelligence artificielle,
+                  Anthropic (États-Unis), agissant comme sous-traitant. Ne
+                  saisissez pas de données sensibles (santé, mots de passe,
+                  numéros de carte ou de pièce d&apos;identité).
+                </li>
+                <li>
+                  <strong className="text-ink">Ce que nous conservons</strong>
+                  &nbsp;: nous ne gardons pas l&apos;historique de la
+                  conversation. Si vous remplissez le formulaire de
+                  coordonnées, vos informations, un résumé de l&apos;échange
+                  et les pages consultées sont enregistrés comme toute demande
+                  de contact (durée : section 4). Le formulaire comporte une
+                  case de consentement, jamais pré-cochée.
+                </li>
+                <li>
+                  <strong className="text-ink">Réservation</strong>
+                  &nbsp;: la prise de rendez-vous est assurée par Calendly,
+                  service tiers, chargé uniquement lorsque vous cliquez sur
+                  « Choisir un créneau ». Calendly peut déposer ses propres
+                  cookies et vous demande votre choix à l&apos;ouverture ; sa
+                  politique de confidentialité s&apos;applique alors.
+                </li>
+                <li>
+                  <strong className="text-ink">Limites</strong>
+                  &nbsp;: les réponses de l&apos;assistant sont informatives et
+                  peuvent comporter des erreurs. Caractéristiques, tarifs et
+                  délais sont confirmés par un consultant.
+                </li>
+              </ul>
             </article>
 
             <article aria-labelledby="securite">

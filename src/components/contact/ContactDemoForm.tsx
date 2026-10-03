@@ -8,6 +8,7 @@ import { ArrowRight, Check, CircleAlert, Loader2 } from "lucide-react";
 import { LeadInputSchema, type LeadInput } from "@/lib/validators/lead";
 import { getLine, lineStyle } from "@/lib/network";
 import { cn } from "@/lib/utils";
+import { Field, FieldErrorMessage, inputClass } from "./FormField";
 import {
   TripSummary,
   type ContactInfo,
@@ -126,8 +127,6 @@ function fieldMessage(field: string, err?: FieldError): string | undefined {
   if (err.type === "too_big" && m.tooLong) return m.tooLong;
   return m.invalid;
 }
-
-const ERROR_COLOR = "text-[#b4123f]";
 
 export function ContactDemoForm({
   intent,
@@ -456,9 +455,9 @@ export function ContactDemoForm({
             </label>
           </div>
           {errors.solutionSlug ? (
-            <FieldError id="contact-offering-error">
+            <FieldErrorMessage id="contact-offering-error">
               {fieldMessage("solutionSlug", errors.solutionSlug)}
-            </FieldError>
+            </FieldErrorMessage>
           ) : null}
         </fieldset>
 
@@ -582,9 +581,9 @@ export function ContactDemoForm({
             </span>
           </label>
           {errors.consent ? (
-            <FieldError id="contact-consent-error">
+            <FieldErrorMessage id="contact-consent-error">
               Cochez cette case pour que nous puissions traiter votre demande.
-            </FieldError>
+            </FieldErrorMessage>
           ) : null}
         </div>
 
@@ -646,77 +645,6 @@ export function ContactDemoForm({
           ) : null}
         </div>
       </form>
-    </div>
-  );
-}
-
-function inputClass(invalid: boolean) {
-  return cn(
-    "h-12 w-full rounded-lg border bg-panel px-3.5 text-base text-ink transition-colors placeholder:text-ink-mute focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-brand/30",
-    invalid ? "border-[#b4123f]" : "border-ink-mute/70",
-  );
-}
-
-function FieldError({
-  id,
-  children,
-}: {
-  id: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <p
-      id={id}
-      role="alert"
-      className={cn("mt-2 flex items-start gap-2 text-sm font-medium", ERROR_COLOR)}
-    >
-      <CircleAlert
-        aria-hidden
-        className="mt-0.5 size-4 shrink-0"
-        strokeWidth={2}
-      />
-      <span>{children}</span>
-    </p>
-  );
-}
-
-function Field({
-  id,
-  label,
-  hint,
-  error,
-  required,
-  optional,
-  children,
-}: {
-  id: string;
-  label: string;
-  hint?: string;
-  error?: string;
-  required?: boolean;
-  optional?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="block">
-      <label htmlFor={id} className="mb-1.5 block text-sm font-bold text-ink">
-        {label}
-        {required ? (
-          <span aria-hidden="true" className="ml-1 text-ink">
-            *
-          </span>
-        ) : null}
-        {optional ? (
-          <span className="ml-2 font-medium text-ink-mute">(facultatif)</span>
-        ) : null}
-      </label>
-      {children}
-      {hint && !error ? (
-        <p id={`${id}-hint`} className="mt-1.5 text-sm text-ink-mute">
-          {hint}
-        </p>
-      ) : null}
-      {error ? <FieldError id={`${id}-error`}>{error}</FieldError> : null}
     </div>
   );
 }

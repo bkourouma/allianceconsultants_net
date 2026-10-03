@@ -1,49 +1,28 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { NextRequest } from "next/server";
 
-// Le SDK Anthropic est remplacé : on vérifie ce que la route lui envoie et ce qu'elle renvoie au navigateur.
-const streamMock = vi.fn();
+// OpenRouter est simulé : on vérifie ce que la route lui envoie et ce qu'elle renvoie au navigateur.
+const fetchMock = vi.fn();
 
-vi.mock("@anthropic-ai/sdk", () => {
-  class APIError extends Error {
-    status = 500;
-  }
-  class Anthropic {
-    static APIError = APIError;
-    messages = { stream: (...args: unknown[]) => streamMock(...args) };
-  }
-  return { default: Anthropic };
-});
+const data = (obj: unknown) => `data: ${JSON.stringify(obj)}\n\n`;
+const chunk = (delta: Record<string, unknown>, finish: string | null = null) =>
+  data({ model: "deepseek/deepseek-v4-flash", choices: [{ delta, finish_reason: finish }] });
 
-type FinalMessage = {
-  content: unknown[];
-  stop_reason: string;
-  model: string;
-  usage: { input_tokens: number; output_tokens: number; cache_read_input_tokens: number };
-};
-
-function fakeStream(deltas: string[], final: FinalMessage | Error) {
-  const handlers: Record<string, (d: string) => void> = {};
-  return {
-    on(event: string, cb: (d: string) => void) {
-      handlers[event] = cb;
-      return this;
-    },
-    abort: vi.fn(),
-    async finalMessage() {
-      if (final instanceof Error) throw final;
-      for (const d of deltas) handlers.text?.(d);
-      return final;
-    },
-  };
+function sse(...parts: string[]) {
+  const encoder = new TextEncoder();
+  return new Response(
+    new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const part of parts) controller.enqueue(encoder.encode(part));
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        controller.close();
+      },
+    }),
+    { status: 200, headers: { "content-type": "text/event-stream" } },
+  );
 }
 
-const okFinal = (content: unknown[], stop = "tool_use"): FinalMessage => ({
-  content,
-  stop_reason: stop,
-  model: "claude-opus-5-5",
-  usage: { input_tokens: 10, output_tokens: 5, cache_read_input_tokens: 0 },
-});
+const textReply = (text: string) => sse(chunk({ content: text }), chunk({}, "stop"));
 
 const state = { contactFormShown: false, contactCaptured: false, bookingShown: false, bookingDone: false };
 
@@ -85,14 +64,38 @@ async function events(res: Response) {
     .map((line) => JSON.parse(line) as { t: string; d?: string; actions?: unknown[]; code?: string });
 }
 
-const ENV_KEYS = ["ANTHROPIC_API_KEY", "ASSISTANT_MODEL", "ASSISTANT_RATE_LIMIT_PER_10MIN", "ASSISTANT_DAILY_CAP"];
+/** Corps JSON de la dernière requête envoyée à OpenRouter. */
+function sentBody() {
+  const init = fetchMock.mock.calls[0]![1] as RequestInit;
+  return JSON.parse(init.body as string) as {
+    model: string;
+    max_tokens: number;
+    tool_choice: string;
+    stream: boolean;
+    reasoning: unknown;
+    provider: Record<string, unknown>;
+    tools: { function: { name: string } }[];
+    messages: { role: string; content: string }[];
+  };
+}
+
+const ENV_KEYS = [
+  "OPENROUTER_API_KEY",
+  "OPENROUTER_BASE_URL",
+  "OPENROUTER_DATA_COLLECTION",
+  "OPENROUTER_PROVIDER_ONLY",
+  "ASSISTANT_MODEL",
+  "ASSISTANT_RATE_LIMIT_PER_10MIN",
+  "ASSISTANT_DAILY_CAP",
+];
 let savedEnv: Record<string, string | undefined> = {};
 
 beforeEach(() => {
-  streamMock.mockReset();
+  fetchMock.mockReset();
+  vi.stubGlobal("fetch", fetchMock);
   savedEnv = Object.fromEntries(ENV_KEYS.map((k) => [k, process.env[k]]));
-  process.env.ANTHROPIC_API_KEY = "test-key";
-  delete process.env.ASSISTANT_MODEL;
+  for (const k of ENV_KEYS) delete process.env[k];
+  process.env.OPENROUTER_API_KEY = "sk-or-test";
   vi.spyOn(console, "info").mockImplementation(() => {});
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
@@ -102,27 +105,28 @@ afterEach(() => {
     if (savedEnv[k] === undefined) delete process.env[k];
     else process.env[k] = savedEnv[k];
   }
+  vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
 
 describe("POST /api/assistant/chat — garde-fous", () => {
   it("répond 503 sans clé API (le widget bascule sur le formulaire)", async () => {
-    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env.OPENROUTER_API_KEY;
     const POST = await loadRoute();
     const res = await POST(request(validBody));
     expect(res.status).toBe(503);
-    expect(streamMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("refuse un appel venu d'un autre site", async () => {
     const POST = await loadRoute();
     const res = await POST(request(validBody, { origin: "https://autre-site.example" }));
     expect(res.status).toBe(403);
-    expect(streamMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("accepte l'origine du site", async () => {
-    streamMock.mockReturnValue(fakeStream(["Ok"], okFinal([{ type: "text", text: "Ok" }], "end_turn")));
+    fetchMock.mockResolvedValue(textReply("Ok"));
     const POST = await loadRoute();
     const res = await POST(request(validBody, { origin: "http://localhost:3000" }));
     expect(res.status).toBe(200);
@@ -137,12 +141,12 @@ describe("POST /api/assistant/chat — garde-fous", () => {
     const POST = await loadRoute();
     const res = await POST(request(body));
     expect(res.status).toBe(400);
-    expect(streamMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("limite le débit par adresse IP", async () => {
     process.env.ASSISTANT_RATE_LIMIT_PER_10MIN = "2";
-    streamMock.mockImplementation(() => fakeStream(["Ok"], okFinal([{ type: "text", text: "Ok" }], "end_turn")));
+    fetchMock.mockImplementation(async () => textReply("Ok"));
     const POST = await loadRoute();
     const same = { "x-forwarded-for": "10.77.0.1" };
     expect((await POST(request(validBody, same))).status).toBe(200);
@@ -152,7 +156,7 @@ describe("POST /api/assistant/chat — garde-fous", () => {
 
   it("applique un plafond quotidien global", async () => {
     process.env.ASSISTANT_DAILY_CAP = "1";
-    streamMock.mockImplementation(() => fakeStream(["Ok"], okFinal([{ type: "text", text: "Ok" }], "end_turn")));
+    fetchMock.mockImplementation(async () => textReply("Ok"));
     const POST = await loadRoute();
     expect((await POST(request(validBody))).status).toBe(200);
     expect((await POST(request(validBody))).status).toBe(429);
@@ -160,12 +164,15 @@ describe("POST /api/assistant/chat — garde-fous", () => {
 });
 
 describe("POST /api/assistant/chat — appel au modèle", () => {
-  it("envoie un prompt mis en cache, des outils d'interface et un historique commençant par le visiteur", async () => {
-    streamMock.mockReturnValue(
-      fakeStream(["Merci. ", "Combien de médecins ?"], okFinal([
-        { type: "text", text: "Merci. Combien de médecins ?" },
-        { type: "tool_use", id: "t1", name: "suggest_replies", input: { replies: ["1 à 3", "4 à 10"] } },
-      ])),
+  it("envoie une consigne système, des outils d'interface et un historique commençant par le visiteur", async () => {
+    fetchMock.mockResolvedValue(
+      sse(
+        chunk({ content: "Merci. " }),
+        chunk({ content: "Combien de médecins ?" }),
+        chunk({ tool_calls: [{ index: 0, id: "c1", function: { name: "suggest_replies", arguments: '{"replies":["1 à 3",' } }] }),
+        chunk({ tool_calls: [{ index: 0, function: { arguments: '"4 à 10"]}' } }] }),
+        chunk({}, "tool_calls"),
+      ),
     );
     const POST = await loadRoute();
     const res = await POST(request(validBody));
@@ -174,26 +181,25 @@ describe("POST /api/assistant/chat — appel au modèle", () => {
     expect(res.headers.get("content-type")).toContain("application/x-ndjson");
     expect(res.headers.get("x-accel-buffering")).toBe("no");
 
-    const params = streamMock.mock.calls[0]![0] as {
-      model: string;
-      max_tokens: number;
-      output_config?: { effort: string };
-      tool_choice: { type: string };
-      tools: { name: string }[];
-      system: { text: string; cache_control?: { type: string } }[];
-      messages: { role: string; content: string }[];
-    };
-    expect(params.model).toBe("claude-opus-5-5");
-    expect(params.output_config).toEqual({ effort: "low" });
-    expect(params.tool_choice).toEqual({ type: "auto" });
-    expect(params.tools.map((t) => t.name)).toEqual(["suggest_replies", "show_contact_form", "show_demo_booking"]);
-    // Partie stable en cache, contexte visiteur après.
-    expect(params.system[0]!.cache_control).toEqual({ type: "ephemeral" });
-    expect(params.system[1]!.cache_control).toBeUndefined();
-    expect(params.system[1]!.text).toContain("CliniquePro");
-    expect(params.system[1]!.text).toContain("Bonjour, vous dirigez une clinique ?");
-    // L'ouverture statique (rôle assistant) est sortie de l'historique : le premier message est celui du visiteur.
-    expect(params.messages).toEqual([{ role: "user", content: "Oui, avec 4 médecins." }]);
+    const [url, init] = fetchMock.mock.calls[0]! as [string, RequestInit & { headers: Record<string, string> }];
+    expect(url).toBe("https://openrouter.ai/api/v1/chat/completions");
+    expect(init.headers.Authorization).toBe("Bearer sk-or-test");
+
+    const body = sentBody();
+    expect(body.model).toBe("deepseek/deepseek-v4-flash");
+    expect(body.stream).toBe(true);
+    expect(body.tool_choice).toBe("auto");
+    expect(body.reasoning).toEqual({ enabled: false });
+    expect(body.provider).toEqual({ require_parameters: true, data_collection: "deny" });
+    expect(body.tools.map((t) => t.function.name)).toEqual(["suggest_replies", "show_contact_form", "show_demo_booking"]);
+
+    // Une seule consigne système : prompt stable, puis contexte du visiteur (parcours, ouverture déjà affichée).
+    expect(body.messages[0]!.role).toBe("system");
+    expect(body.messages[0]!.content).toContain("# BASE DE CONNAISSANCES");
+    expect(body.messages[0]!.content).toContain("# CONTEXTE DE CETTE CONVERSATION");
+    expect(body.messages[0]!.content).toContain("Bonjour, vous dirigez une clinique ?");
+    // L'ouverture statique (rôle assistant) est sortie de l'historique : le premier échange est celui du visiteur.
+    expect(body.messages.slice(1)).toEqual([{ role: "user", content: "Oui, avec 4 médecins." }]);
 
     const out = await events(res);
     expect(out.filter((e) => e.t === "text").map((e) => e.d).join("")).toBe("Merci. Combien de médecins ?");
@@ -201,51 +207,104 @@ describe("POST /api/assistant/chat — appel au modèle", () => {
     expect(out[out.length - 1]).toEqual({ t: "done" });
   });
 
-  it("n'ajoute pas `effort` pour un modèle qui ne le supporte pas", async () => {
-    process.env.ASSISTANT_MODEL = "claude-haiku-4-5";
-    streamMock.mockReturnValue(fakeStream(["Ok"], okFinal([{ type: "text", text: "Ok" }], "end_turn")));
+  it("garde le préfixe de la consigne identique d'un visiteur à l'autre (cache de prompt des hébergeurs)", async () => {
+    fetchMock.mockImplementation(async () => textReply("Ok"));
     const POST = await loadRoute();
     await (await POST(request(validBody))).text();
-    const params = streamMock.mock.calls[0]![0] as { model: string; output_config?: unknown };
-    expect(params.model).toBe("claude-haiku-4-5");
-    expect(params.output_config).toBeUndefined();
+    await (await POST(request({ ...validBody, topicId: "solutions/medicpro" }))).text();
+
+    const systems = fetchMock.mock.calls.map((c) => JSON.parse((c[1] as RequestInit).body as string).messages[0].content as string);
+    const stable = (s: string) => s.slice(0, s.indexOf("# CONTEXTE DE CETTE CONVERSATION"));
+    expect(stable(systems[0]!)).toBe(stable(systems[1]!));
+    expect(systems[0]).not.toBe(systems[1]);
+  });
+
+  it("applique le modèle, la confidentialité et les hébergeurs choisis par l'environnement", async () => {
+    process.env.ASSISTANT_MODEL = "deepseek/deepseek-v3.2";
+    process.env.OPENROUTER_DATA_COLLECTION = "allow";
+    process.env.OPENROUTER_PROVIDER_ONLY = " deepinfra , parasail ,";
+    process.env.OPENROUTER_BASE_URL = "http://localhost:4010/v1";
+    fetchMock.mockResolvedValue(textReply("Ok"));
+    const POST = await loadRoute();
+    await (await POST(request(validBody))).text();
+
+    expect(fetchMock.mock.calls[0]![0]).toBe("http://localhost:4010/v1/chat/completions");
+    const body = sentBody();
+    expect(body.model).toBe("deepseek/deepseek-v3.2");
+    expect(body.provider).toEqual({
+      require_parameters: true,
+      data_collection: "allow",
+      only: ["deepinfra", "parasail"],
+    });
+  });
+
+  it("toute valeur autre que « allow » garde le filtre de confidentialité", async () => {
+    process.env.OPENROUTER_DATA_COLLECTION = "n'importe quoi";
+    fetchMock.mockResolvedValue(textReply("Ok"));
+    const POST = await loadRoute();
+    await (await POST(request(validBody))).text();
+    expect(sentBody().provider.data_collection).toBe("deny");
   });
 
   it("applique l'état : pas de formulaire si les coordonnées sont déjà recueillies", async () => {
-    streamMock.mockReturnValue(
-      fakeStream(["Voici"], okFinal([
-        { type: "text", text: "Voici" },
-        { type: "tool_use", id: "t1", name: "show_contact_form", input: { summary: "Résumé." } },
-      ])),
+    fetchMock.mockResolvedValue(
+      sse(
+        chunk({ content: "Voici" }),
+        chunk({ tool_calls: [{ index: 0, id: "c1", function: { name: "show_contact_form", arguments: '{"summary":"Résumé."}' } }] }),
+        chunk({}, "tool_calls"),
+      ),
     );
     const POST = await loadRoute();
-    const res = await POST(
-      request({ ...validBody, state: { ...state, contactFormShown: true, contactCaptured: true } }),
-    );
+    const res = await POST(request({ ...validBody, state: { ...state, contactFormShown: true, contactCaptured: true } }));
     const out = await events(res);
     expect(out.find((e) => e.t === "actions")?.actions).toEqual([{ type: "demo_booking" }]);
   });
 
-  it("signale un refus du modèle sans exposer de détail", async () => {
-    streamMock.mockReturnValue(fakeStream([], okFinal([], "refusal")));
+  it("accepte une réponse réduite à un appel d'outil (sans texte)", async () => {
+    fetchMock.mockResolvedValue(
+      sse(
+        chunk({ tool_calls: [{ index: 0, id: "c1", function: { name: "show_demo_booking", arguments: "" } }] }),
+        chunk({}, "tool_calls"),
+      ),
+    );
+    const POST = await loadRoute();
+    const out = await events(await POST(request(validBody)));
+    expect(out).toEqual([{ t: "actions", actions: [{ type: "demo_booking" }] }, { t: "done" }]);
+  });
+
+  it("signale un filtrage de contenu sans exposer de détail", async () => {
+    fetchMock.mockResolvedValue(sse(chunk({}, "content_filter")));
     const POST = await loadRoute();
     const out = await events(await POST(request(validBody)));
     expect(out).toEqual([{ t: "error", code: "refused" }]);
   });
 
   it("signale une panne du service et ne journalise aucune donnée du visiteur", async () => {
-    const Anthropic = (await import("@anthropic-ai/sdk")).default as unknown as { APIError: new () => Error };
-    streamMock.mockReturnValue(fakeStream([], new Anthropic.APIError()));
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ error: { message: "No endpoints found matching your data policy" } }), {
+        status: 404,
+        headers: { "content-type": "application/json" },
+      }),
+    );
     const POST = await loadRoute();
     const out = await events(await POST(request(validBody)));
     expect(out).toEqual([{ t: "error", code: "unavailable" }]);
 
     const logged = JSON.stringify((console.error as unknown as { mock: { calls: unknown[] } }).mock.calls);
+    expect(logged).toContain("404");
     expect(logged).not.toContain("médecins");
+    expect(logged).not.toContain("sk-or-test");
+  });
+
+  it("signale une panne réseau", async () => {
+    fetchMock.mockRejectedValue(new TypeError("fetch failed"));
+    const POST = await loadRoute();
+    const out = await events(await POST(request(validBody)));
+    expect(out).toEqual([{ t: "error", code: "unavailable" }]);
   });
 
   it("traite une réponse vide comme une panne", async () => {
-    streamMock.mockReturnValue(fakeStream([], okFinal([], "end_turn")));
+    fetchMock.mockResolvedValue(sse(chunk({}, "stop")));
     const POST = await loadRoute();
     const out = await events(await POST(request(validBody)));
     expect(out).toEqual([{ t: "error", code: "unavailable" }]);

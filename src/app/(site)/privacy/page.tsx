@@ -301,8 +301,8 @@ export default async function PrivacyPage() {
                 par des garanties appropriées (clauses contractuelles types,
                 décisions d&apos;adéquation, mesures techniques
                 complémentaires). C&apos;est notamment le cas de notre
-                assistant IA (voir la section 8), dont le prestataire est
-                établi aux États-Unis.
+                assistant IA (voir la section 8), dont les prestataires
+                peuvent être établis hors de l&apos;Union européenne.
               </p>
             </article>
 
@@ -348,10 +348,13 @@ export default async function PrivacyPage() {
                 <li>
                   <strong className="text-ink">Qui traite vos messages</strong>
                   &nbsp;: pour rédiger ses réponses, vos messages sont transmis
-                  à notre prestataire d&apos;intelligence artificielle,
-                  Anthropic (États-Unis), agissant comme sous-traitant. Ne
-                  saisissez pas de données sensibles (santé, mots de passe,
-                  numéros de carte ou de pièce d&apos;identité).
+                  à OpenRouter (États-Unis), passerelle d&apos;accès aux
+                  modèles d&apos;intelligence artificielle, qui les achemine
+                  vers un hébergeur du modèle DeepSeek. Nous demandons à
+                  OpenRouter de ne retenir que des hébergeurs déclarant ne
+                  pas conserver ni réutiliser les messages. Ne saisissez pas
+                  de données sensibles (santé, mots de passe, numéros de
+                  carte ou de pièce d&apos;identité).
                 </li>
                 <li>
                   <strong className="text-ink">Ce que nous conservons</strong>

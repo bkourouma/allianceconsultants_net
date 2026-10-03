@@ -1,5 +1,5 @@
-import type Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
+import type { OpenRouterTool, ToolCall } from "./openrouter";
 import type { AssistantAction, ChatState } from "./protocol";
 
 /**
@@ -8,48 +8,57 @@ import type { AssistantAction, ChatState } from "./protocol";
  * formulaire de coordonnées, réservation de démo). Aucun outil ne peut donc écrire en base :
  * les coordonnées ne partent que du formulaire, rempli et validé par le visiteur.
  */
-export const ASSISTANT_TOOLS: Anthropic.Tool[] = [
+export const ASSISTANT_TOOLS: OpenRouterTool[] = [
   {
-    name: "suggest_replies",
-    description:
-      "Affiche 2 à 4 réponses rapides cliquables sous ton message. À utiliser quand ta question appelle un choix ou une réponse courte. Ne pas utiliser pour une réponse libre (chiffres, noms) ni avec show_contact_form.",
-    input_schema: {
-      type: "object",
-      properties: {
-        replies: {
-          type: "array",
-          items: { type: "string", maxLength: 40 },
-          minItems: 2,
-          maxItems: 4,
-          description:
-            "Réponses que le visiteur pourrait donner, à la première personne, 40 caractères maximum chacune.",
+    type: "function",
+    function: {
+      name: "suggest_replies",
+      description:
+        "Affiche 2 à 4 réponses rapides cliquables sous ton message. À utiliser quand ta question appelle un choix ou une réponse courte. Ne pas utiliser pour une réponse libre (chiffres, noms) ni avec show_contact_form.",
+      parameters: {
+        type: "object",
+        properties: {
+          replies: {
+            type: "array",
+            items: { type: "string", maxLength: 40 },
+            minItems: 2,
+            maxItems: 4,
+            description:
+              "Réponses que le visiteur pourrait donner, à la première personne, 40 caractères maximum chacune.",
+          },
         },
+        required: ["replies"],
       },
-      required: ["replies"],
     },
   },
   {
-    name: "show_contact_form",
-    description:
-      "Affiche le formulaire de coordonnées (nom, organisation, e-mail, téléphone, consentement). À appeler une fois le besoin compris, après avoir expliqué en une ou deux phrases que c'est sans engagement et pour préparer une démonstration adaptée. Ne l'appelle pas si les coordonnées sont déjà recueillies.",
-    input_schema: {
-      type: "object",
-      properties: {
-        summary: {
-          type: "string",
-          maxLength: 900,
-          description:
-            "Résumé factuel pour l'équipe commerciale : profil et organisation du visiteur, situation actuelle, difficultés, solution(s) d'intérêt, attentes. 600 caractères conseillés, en français, sans jugement.",
+    type: "function",
+    function: {
+      name: "show_contact_form",
+      description:
+        "Affiche le formulaire de coordonnées (nom, organisation, e-mail, téléphone, consentement). À appeler une fois le besoin compris, après avoir expliqué en une ou deux phrases que c'est sans engagement et pour préparer une démonstration adaptée. Ne l'appelle pas si les coordonnées sont déjà recueillies.",
+      parameters: {
+        type: "object",
+        properties: {
+          summary: {
+            type: "string",
+            maxLength: 900,
+            description:
+              "Résumé factuel pour l'équipe commerciale : profil et organisation du visiteur, situation actuelle, difficultés, solution(s) d'intérêt, attentes. 600 caractères conseillés, en français, sans jugement.",
+          },
         },
+        required: ["summary"],
       },
-      required: ["summary"],
     },
   },
   {
-    name: "show_demo_booking",
-    description:
-      "Ouvre la réservation d'un créneau de démonstration. À utiliser uniquement si le visiteur refuse de laisser ses coordonnées mais veut réserver, ou s'il les a déjà laissées et demande à réserver.",
-    input_schema: { type: "object", properties: {} },
+    type: "function",
+    function: {
+      name: "show_demo_booking",
+      description:
+        "Ouvre la réservation d'un créneau de démonstration. À utiliser uniquement si le visiteur refuse de laisser ses coordonnées mais veut réserver, ou s'il les a déjà laissées et demande à réserver.",
+      parameters: { type: "object", properties: {} },
+    },
   },
 ];
 
@@ -58,29 +67,38 @@ const RepliesInput = z.object({
 });
 const ContactFormInput = z.object({ summary: z.string().trim().min(1).max(900) });
 
+/** Arguments JSON d'un appel d'outil ; une chaîne vide équivaut à `{}` (outil sans paramètre). */
+function parseArguments(call: ToolCall): unknown {
+  const raw = call.arguments.trim();
+  if (!raw) return {};
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Convertit les appels d'outils du modèle en actions d'interface, en appliquant l'état connu :
  * on ne redemande pas des coordonnées déjà recueillies, ni un formulaire déjà affiché.
- * Une seule action par tour (formulaire > réservation > réponses rapides).
+ * Une seule action par tour (formulaire > réservation > réponses rapides). Les arguments
+ * invalides (JSON tronqué, mauvais types) sont ignorés : le modèle n'est jamais cru sur parole.
  */
-export function actionsFromContent(
-  content: Anthropic.ContentBlock[],
-  state: ChatState,
-): AssistantAction[] {
+export function actionsFromToolCalls(calls: ToolCall[], state: ChatState): AssistantAction[] {
   let replies: string[] | null = null;
   let summary: string | null = null;
   let booking = false;
 
-  for (const block of content) {
-    if (block.type !== "tool_use") continue;
-    if (block.name === "suggest_replies") {
-      const parsed = RepliesInput.safeParse(block.input);
+  for (const call of calls) {
+    const input = parseArguments(call);
+    if (call.name === "suggest_replies") {
+      const parsed = RepliesInput.safeParse(input);
       if (parsed.success) replies = parsed.data.replies;
-    } else if (block.name === "show_contact_form") {
-      const parsed = ContactFormInput.safeParse(block.input);
+    } else if (call.name === "show_contact_form") {
+      const parsed = ContactFormInput.safeParse(input);
       if (parsed.success) summary = parsed.data.summary;
-    } else if (block.name === "show_demo_booking") {
-      booking = true;
+    } else if (call.name === "show_demo_booking") {
+      if (input !== null) booking = true;
     }
   }
 

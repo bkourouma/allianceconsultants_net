@@ -4,7 +4,9 @@ import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { UmamiTracker } from "@/components/shared/UmamiTracker";
 import { RouteSpine } from "@/components/fx/RouteSpine";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
+import { JsonLd } from "@/components/shared/JsonLd";
 import { getSiteSettings } from "@/lib/content";
+import { buildSiteGraphJsonLd } from "@/lib/seo";
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -28,6 +30,7 @@ export default async function SiteLayout({
 
   return (
     <div className={`site-root ${display.variable} ${text.variable}`}>
+      <JsonLd data={buildSiteGraphJsonLd(settings)} />
       <a href="#main-content" className="skip-link">
         Aller au contenu principal
       </a>

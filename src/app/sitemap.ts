@@ -1,85 +1,77 @@
 import type { MetadataRoute } from "next";
 import { listAllPublishedTags, listPublishedPostsForSitemap } from "@/lib/blog";
 import { listPublishedProjectReferencesForSitemap } from "@/lib/projectReferences";
-import { getAllSolutionDetailSlugs } from "@/lib/content";
+import {
+  getAllServiceSlugs,
+  getAllSolutionDetailSlugs,
+  getAllTrainingSlugs,
+} from "@/lib/content";
+import { LEGAL_NOTICE_LAST_UPDATED, PRIVACY_LAST_UPDATED } from "@/lib/legal";
+import { SITE_URL } from "@/lib/seo";
 
-const BASE_URL = "https://allianceconsultants.net";
+// Rendu à chaque requête : en statique, le sitemap serait figé au build (sans
+// base de données) et n'afficherait jamais les articles publiés après le déploiement.
+export const dynamic = "force-dynamic";
+
+/**
+ * Seules les dates réellement connues sont publiées : `lastModified` vient de
+ * la base (articles, références) ou des pages légales datées. Les pages
+ * issues de fichiers MDX n'en ont pas de fiable (la date des fichiers est celle
+ * du déploiement), donc elle est omise plutôt qu'inventée. `priority` et
+ * `changeFrequency` sont ignorés par Google et Bing : on ne les émet pas.
+ */
+type Entry = MetadataRoute.Sitemap[number];
 
 const staticRoutes = [
-  { url: "/", priority: 1.0, changeFrequency: "weekly" as const },
-  { url: "/solutions", priority: 0.9, changeFrequency: "weekly" as const },
-  { url: "/services", priority: 0.8, changeFrequency: "monthly" as const },
-  { url: "/formations", priority: 0.8, changeFrequency: "monthly" as const },
-  { url: "/references", priority: 0.7, changeFrequency: "monthly" as const },
-  { url: "/blog", priority: 0.7, changeFrequency: "weekly" as const },
-  { url: "/a-propos", priority: 0.6, changeFrequency: "monthly" as const },
-  { url: "/contact-demo", priority: 0.9, changeFrequency: "monthly" as const },
+  "/",
+  "/solutions",
+  "/services",
+  "/formations",
+  "/references",
+  "/blog",
+  "/a-propos",
+  "/contact-demo",
 ];
 
+const legalRoutes: { path: string; lastModified: string }[] = [
+  { path: "/privacy", lastModified: PRIVACY_LAST_UPDATED },
+  { path: "/mentions-legales", lastModified: LEGAL_NOTICE_LAST_UPDATED },
+];
+
+const entry = (path: string, lastModified?: Date | string): Entry => ({
+  url: `${SITE_URL}${path}`,
+  ...(lastModified ? { lastModified } : {}),
+});
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
+  const [solutionSlugs, serviceSlugs, trainingSlugs] = await Promise.all([
+    getAllSolutionDetailSlugs().catch(() => [] as string[]),
+    getAllServiceSlugs().catch(() => [] as string[]),
+    getAllTrainingSlugs().catch(() => [] as string[]),
+  ]);
 
-  const staticEntries = staticRoutes.map(({ url, priority, changeFrequency }) => ({
-    url: `${BASE_URL}${url}`,
-    lastModified: now,
-    changeFrequency,
-    priority,
-  }));
+  // En cas de DB indisponible (preview, build sans Postgres), on dégrade
+  // gracieusement et on n'ajoute que les pages issues des fichiers.
+  const posts = await listPublishedPostsForSitemap().catch(() => []);
+  const refs = await listPublishedProjectReferencesForSitemap().catch(() => []);
+  const tags = await listAllPublishedTags().catch(() => []);
 
-  const solutionSlugs = await getAllSolutionDetailSlugs().catch(() => [] as string[]);
-  const solutionEntries = solutionSlugs.map((slug) => ({
-    url: `${BASE_URL}/solutions/${slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  let blogEntries: MetadataRoute.Sitemap = [];
-  try {
-    const posts = await listPublishedPostsForSitemap();
-    blogEntries = posts.map((p) => ({
-      url: `${BASE_URL}/blog/${p.slug}`,
-      lastModified: p.updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    }));
-  } catch {
-    // En cas de DB indisponible (preview, build sans Postgres), on
-    // dégrade gracieusement et on n'ajoute que les pages statiques.
-    blogEntries = [];
-  }
-
-  let referenceEntries: MetadataRoute.Sitemap = [];
-  try {
-    const refs = await listPublishedProjectReferencesForSitemap();
-    referenceEntries = refs.map((r) => ({
-      url: `${BASE_URL}/references/${r.id}`,
-      lastModified: r.updatedAt,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }));
-  } catch {
-    referenceEntries = [];
-  }
-
-  let tagEntries: MetadataRoute.Sitemap = [];
-  try {
-    const tags = await listAllPublishedTags();
-    tagEntries = tags.map((t) => ({
-      url: `${BASE_URL}/blog/tags/${t.slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.5,
-    }));
-  } catch {
-    tagEntries = [];
-  }
+  // Date de l'index du blog : la dernière modification d'un article publié.
+  const latestPostUpdate = posts.reduce<Date | undefined>(
+    (latest, p) => (!latest || p.updatedAt > latest ? p.updatedAt : latest),
+    undefined,
+  );
 
   return [
-    ...staticEntries,
-    ...solutionEntries,
-    ...blogEntries,
-    ...tagEntries,
-    ...referenceEntries,
+    ...staticRoutes.map((path) =>
+      entry(path, path === "/blog" ? latestPostUpdate : undefined),
+    ),
+    ...solutionSlugs.map((slug) => entry(`/solutions/${slug}`)),
+    ...serviceSlugs.map((slug) => entry(`/services/${slug}`)),
+    ...trainingSlugs.map((slug) => entry(`/formations/${slug}`)),
+    ...posts.map((p) => entry(`/blog/${p.slug}`, p.updatedAt)),
+    ...tags.map((t) => entry(`/blog/tags/${t.slug}`)),
+    ...refs.map((r) => entry(`/references/${r.id}`, r.updatedAt)),
+    ...legalRoutes.map((r) => entry(r.path, r.lastModified)),
   ];
 }

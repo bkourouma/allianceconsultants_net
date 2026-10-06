@@ -36,6 +36,25 @@ export const SiteSettingsSchema = z.object({
     youtube: z.string().url().nullable().optional(),
     x: z.string().url().nullable().optional(),
   }),
+  /**
+   * Identification légale affichée sur /mentions-legales. Chaque champ est
+   * optionnel : seules les informations renseignées sont publiées.
+   */
+  legal: z
+    .object({
+      legalForm: z.string().min(2).optional(),
+      registration: z.string().min(2).optional(),
+      shareCapital: z.string().min(2).optional(),
+      publicationDirector: z.string().min(2).optional(),
+      host: z
+        .object({
+          name: z.string().min(2),
+          address: z.string().min(2).optional(),
+          url: z.string().url().optional(),
+        })
+        .optional(),
+    })
+    .optional(),
   primaryMenu: z.array(MenuItemSchema).min(1),
   footerMenu: z.record(z.string(), z.array(MenuItemSchema)),
 });

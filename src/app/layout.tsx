@@ -17,6 +17,22 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allianceconsultants.net"),
+  // Valeurs de repli pour les pages qui ne passent pas par `buildMetadata`
+  // (pages utilitaires, erreurs, espace admin). Les pages du site fixent leur
+  // propre titre complet via `buildMetadata`.
+  title: {
+    default: "Alliance Consultants — SaaS & IA pour l'Afrique",
+    template: "%s | Alliance Consultants",
+  },
+  description:
+    "Éditeur et intégrateur africain de solutions SaaS, IA et métiers pour les organisations de l'Afrique francophone.",
+  applicationName: "Alliance Consultants",
+  openGraph: {
+    siteName: "Alliance Consultants",
+    locale: "fr_FR",
+    type: "website",
+  },
+  alternates: { types: { "application/rss+xml": "/feed.xml" } },
   icons: {
     icon: [
       { url: "/favicon.ico" },

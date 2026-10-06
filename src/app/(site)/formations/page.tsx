@@ -20,7 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Formations professionnelles en IA, automatisation, développement, gestion de projet et SQL Server, en présentiel, distanciel ou intra-entreprise.",
       siteUrl: `${SITE_URL}/formations`,
     }),
-    alternates: { canonical: `${SITE_URL}/formations` },
   };
 }
 

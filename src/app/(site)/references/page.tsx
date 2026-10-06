@@ -26,7 +26,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Découvrez les références d'Alliance Consultants : projets de transformation digitale, dématérialisation, IA et SaaS métier menés pour des organisations africaines.",
       siteUrl: `${SITE_URL}/references`,
     }),
-    alternates: { canonical: `${SITE_URL}/references` },
   };
 }
 

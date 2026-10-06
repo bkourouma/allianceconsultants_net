@@ -13,7 +13,7 @@ import {
   listPublishedPosts,
 } from "@/lib/blog";
 import { lineStyle } from "@/lib/network";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildPaginationMetadata } from "@/lib/seo";
 import { getReadingMinutes } from "../../_reading-times";
 
 const SITE_URL =
@@ -33,10 +33,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const [{ slug }, sp] = await Promise.all([params, searchParams]);
+  const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
   const tags = await listAllPublishedTags().catch(() => []);
   const tag = tags.find((t) => t.slug === slug);
   const url = `${SITE_URL}/blog/tags/${slug}`;
@@ -52,16 +52,20 @@ export async function generateMetadata({
     };
   }
 
+  const totalPages = Math.max(1, Math.ceil(tag.count / BLOG_PAGE_SIZE));
+  const title = `${tag.label} — Articles | Blog Alliance Consultants`;
+
   return {
     ...buildMetadata({
-      title: `${tag.label} — Articles | Blog Alliance Consultants`,
+      title: page > 1 ? `${title} (page ${page})` : title,
       description: `Articles classés sous « ${tag.label} » : retours d'expérience, méthodes et bonnes pratiques sur la transformation digitale en Afrique francophone.`,
       siteUrl: url,
     }),
-    alternates: {
-      canonical: url,
-      types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
-    },
+    ...buildPaginationMetadata({
+      basePath: `/blog/tags/${slug}`,
+      page,
+      totalPages,
+    }),
   };
 }
 

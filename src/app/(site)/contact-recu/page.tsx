@@ -5,7 +5,7 @@ import { getLine } from "@/lib/network";
 import { Arrival } from "./Arrival";
 
 export const metadata: Metadata = {
-  title: "Demande envoyée — Alliance Consultants",
+  title: { absolute: "Demande envoyée — Alliance Consultants" },
   description:
     "Votre demande a bien été reçue. Notre équipe revient vers vous très rapidement.",
   robots: { index: false, follow: false },

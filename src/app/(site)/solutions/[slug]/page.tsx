@@ -61,7 +61,6 @@ export async function generateMetadata({
       ogImage: solution.ogImage,
       siteUrl: url,
     }),
-    alternates: { canonical: url },
   };
 }
 

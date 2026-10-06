@@ -10,7 +10,7 @@ import { TerminusMark } from "@/components/about/TerminusMark";
 import { Reveal } from "@/components/fx/Reveal";
 import { getSiteSettings } from "@/lib/content";
 import { ACADEMIE, LINES, getLine } from "@/lib/network";
-import { buildMetadata, buildOrganizationJsonLd } from "@/lib/seo";
+import { buildMetadata, buildWebPageJsonLd } from "@/lib/seo";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -23,7 +23,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Depuis 2003, Alliance Consultants accompagne les organisations d'Afrique francophone dans leur transformation digitale : SaaS métiers, IA, dématérialisation et formations.",
       siteUrl: `${SITE_URL}/a-propos`,
     }),
-    alternates: { canonical: `${SITE_URL}/a-propos` },
   };
 }
 
@@ -160,12 +159,18 @@ export default async function AboutPage() {
     ],
   };
 
-  const orgJsonLd = buildOrganizationJsonLd(settings, SITE_URL);
+  const aboutPageJsonLd = buildWebPageJsonLd({
+    type: "AboutPage",
+    name: "À propos d'Alliance Consultants",
+    description: settings.brand.tagline,
+    url: `${SITE_URL}/a-propos`,
+    siteUrl: SITE_URL,
+  });
 
   return (
     <>
       <JsonLd data={breadcrumb} />
-      <JsonLd data={orgJsonLd} />
+      <JsonLd data={aboutPageJsonLd} />
 
       {/* ───────── Départ : l'histoire ───────── */}
       <section className="bg-enamel pt-8 lg:pt-12">

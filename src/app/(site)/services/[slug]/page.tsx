@@ -53,7 +53,6 @@ export async function generateMetadata({
       description: service.seoDescription ?? service.shortDescription,
       siteUrl: url,
     }),
-    alternates: { canonical: url },
   };
 }
 

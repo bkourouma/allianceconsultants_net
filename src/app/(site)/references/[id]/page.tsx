@@ -52,7 +52,6 @@ export async function generateMetadata({
       ogImage: ref.logoUrl ?? undefined,
       siteUrl: url,
     }),
-    alternates: { canonical: url },
   };
 }
 

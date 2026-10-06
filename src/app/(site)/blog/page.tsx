@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { BlogEmptyState } from "@/components/blog/BlogEmptyState";
@@ -7,7 +8,11 @@ import { BlogPagination } from "@/components/blog/BlogPagination";
 import { BlogPostList } from "@/components/blog/BlogPostList";
 import { RouteCover } from "@/components/blog/RouteCover";
 import { listAllPublishedTags, listPublishedPosts, BLOG_PAGE_SIZE } from "@/lib/blog";
-import { buildBlogBreadcrumbJsonLd, buildMetadata } from "@/lib/seo";
+import {
+  buildBlogBreadcrumbJsonLd,
+  buildMetadata,
+  buildPaginationMetadata,
+} from "@/lib/seo";
 import { getReadingMinutes } from "./_reading-times";
 
 const SITE_URL =
@@ -15,28 +20,37 @@ const SITE_URL =
 
 export const revalidate = 60;
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    ...buildMetadata({
-      title: "Blog Alliance Consultants — IA, automatisation, SaaS",
-      description:
-        "Articles, retours d'expérience et bonnes pratiques sur la transformation digitale, l'IA, l'automatisation et les solutions SaaS métier en Afrique francophone.",
-      siteUrl: `${SITE_URL}/blog`,
-    }),
-    alternates: {
-      canonical: `${SITE_URL}/blog`,
-      types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
-    },
-  };
+function parsePage(raw: string | undefined): number {
+  return Math.max(1, Number.parseInt(raw ?? "1", 10) || 1);
 }
+
+// Partagé entre `generateMetadata` et la page : une seule requête par rendu.
+const loadPosts = cache((page: number) => listPublishedPosts({ page }));
 
 interface PageProps {
   searchParams: Promise<{ page?: string; tag?: string }>;
 }
 
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const page = parsePage((await searchParams).page);
+  const { total } = await loadPosts(page);
+  const totalPages = Math.max(1, Math.ceil(total / BLOG_PAGE_SIZE));
+  const title = "Blog Alliance Consultants — IA, automatisation, SaaS";
+
+  return {
+    ...buildMetadata({
+      title: page > 1 ? `${title} (page ${page})` : title,
+      description:
+        "Articles, retours d'expérience et bonnes pratiques sur la transformation digitale, l'IA, l'automatisation et les solutions SaaS métier en Afrique francophone.",
+      siteUrl: `${SITE_URL}/blog`,
+    }),
+    ...buildPaginationMetadata({ basePath: "/blog", page, totalPages }),
+  };
+}
+
 export default async function BlogIndexPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const page = Math.max(1, Number.parseInt(params.page ?? "1", 10) || 1);
+  const page = parsePage(params.page);
   const tagSlug = params.tag?.trim() || undefined;
 
   if (tagSlug) {
@@ -47,7 +61,7 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
   }
 
   const [{ items, total }, tags] = await Promise.all([
-    listPublishedPosts({ page, tag: tagSlug }),
+    loadPosts(page),
     listAllPublishedTags(),
   ]);
   const readingMinutes = await getReadingMinutes(items.map((p) => p.id));

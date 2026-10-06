@@ -4,15 +4,16 @@ import { Link2 } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { RouteBand } from "@/components/about/RouteBand";
 import { getSiteSettings } from "@/lib/content";
+import {
+  PRIVACY_LAST_UPDATED as LAST_UPDATED,
+  PRIVACY_LAST_UPDATED_LABEL as LAST_UPDATED_LABEL,
+} from "@/lib/legal";
 import { getLine } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 import { Toc, type TocItem } from "./Toc";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
-
-const LAST_UPDATED = "2026-10-03";
-const LAST_UPDATED_LABEL = "3 octobre 2026";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -23,7 +24,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Politique de confidentialité d'Alliance Consultants : données collectées, finalités, durées de conservation, droits RGPD, cookies et contact du responsable de traitement.",
       siteUrl: `${SITE_URL}/privacy`,
     }),
-    alternates: { canonical: `${SITE_URL}/privacy` },
   };
 }
 

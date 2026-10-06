@@ -6,7 +6,7 @@ import {
   type OfferingOption,
 } from "@/components/contact/ContactDemoForm";
 import { getServices, getSiteSettings, getSolutions } from "@/lib/content";
-import { buildLocalBusinessJsonLd, buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import type { LeadInput } from "@/lib/validators/lead";
 
 const SITE_URL =
@@ -20,7 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Demandez une démo personnalisée de nos solutions SaaS, un diagnostic ou un échange avec nos consultants. Réponse sous 24 à 48 heures ouvrées.",
       siteUrl: `${SITE_URL}/contact-demo`,
     }),
-    alternates: { canonical: `${SITE_URL}/contact-demo` },
   };
 }
 
@@ -153,12 +152,19 @@ export default async function ContactDemoPage({ searchParams }: PageProps) {
     ],
   };
 
-  const localBusiness = buildLocalBusinessJsonLd(settings, SITE_URL);
+  const contactPageJsonLd = buildWebPageJsonLd({
+    type: "ContactPage",
+    name: "Contact & Démo — Alliance Consultants",
+    description:
+      "Demandez une démo personnalisée de nos solutions SaaS, un diagnostic ou un échange avec nos consultants.",
+    url: `${SITE_URL}/contact-demo`,
+    siteUrl: SITE_URL,
+  });
 
   return (
     <>
       <JsonLd data={breadcrumb} />
-      <JsonLd data={localBusiness} />
+      <JsonLd data={contactPageJsonLd} />
 
       <section className="bg-enamel pb-14 pt-8 lg:pb-20 lg:pt-12">
         <div className="wrap">

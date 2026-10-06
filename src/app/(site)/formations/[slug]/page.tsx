@@ -49,7 +49,6 @@ export async function generateMetadata({
       description: training.shortDescription,
       siteUrl: url,
     }),
-    alternates: { canonical: url },
   };
 }
 

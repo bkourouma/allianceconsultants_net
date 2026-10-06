@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { getHomepage, getSiteSettings, getSolutions, getServices, getTrainings, getReferences } from "@/lib/content";
+import { getHomepage, getSolutions, getServices, getTrainings, getReferences } from "@/lib/content";
 import { listLatestPublishedProjectReferences } from "@/lib/projectReferences";
-import {
-  buildMetadata,
-  buildOrganizationJsonLd,
-  buildWebSiteJsonLd,
-  buildLocalBusinessJsonLd,
-} from "@/lib/seo";
-import { JsonLd } from "@/components/shared/JsonLd";
+import { buildMetadata } from "@/lib/seo";
 import { Hero } from "@/components/homepage/Hero";
 import { SolutionsSection } from "@/components/homepage/SolutionsSection";
 import { AISection } from "@/components/homepage/AISection";
@@ -32,7 +26,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage() {
   const [
     homepage,
-    settings,
     solutions,
     services,
     trainings,
@@ -40,7 +33,6 @@ export default async function HomePage() {
     projectReferences,
   ] = await Promise.all([
     getHomepage(),
-    getSiteSettings(),
     getSolutions({ homepageOnly: true }),
     getServices({ homepageOnly: true }),
     getTrainings({ homepageOnly: true }),
@@ -50,16 +42,9 @@ export default async function HomePage() {
     listLatestPublishedProjectReferences(6).catch(() => []),
   ]);
 
-  const orgJsonLd = buildOrganizationJsonLd(settings, SITE_URL);
-  const websiteJsonLd = buildWebSiteJsonLd(SITE_URL);
-  const localBusinessJsonLd = buildLocalBusinessJsonLd(settings, SITE_URL);
-
+  // Organization + WebSite sont émis par le layout du site (graphe commun).
   return (
     <>
-      <JsonLd data={orgJsonLd} />
-      <JsonLd data={websiteJsonLd} />
-      <JsonLd data={localBusinessJsonLd} />
-
       {/* US1 — Hero principal */}
       <Hero hero={homepage.hero} />
 

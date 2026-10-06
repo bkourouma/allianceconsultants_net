@@ -21,7 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Découvrez l'écosystème de solutions SaaS d'Alliance Consultants : GED, santé, immobilier, annonces et formation digitale en Afrique francophone.",
       siteUrl: `${SITE_URL}/solutions`,
     }),
-    alternates: { canonical: `${SITE_URL}/solutions` },
   };
 }
 

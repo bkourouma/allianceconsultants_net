@@ -20,7 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Développement spécifique, automatisation IA, AMOA, dématérialisation et scanners professionnels : nos services pour les organisations africaines.",
       siteUrl: `${SITE_URL}/services`,
     }),
-    alternates: { canonical: `${SITE_URL}/services` },
   };
 }
 

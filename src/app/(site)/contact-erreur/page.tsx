@@ -4,7 +4,7 @@ import { PillLink } from "@/components/about/PillLink";
 import { getSiteSettings } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Erreur — Alliance Consultants",
+  title: { absolute: "Erreur — Alliance Consultants" },
   description: "Une erreur est survenue lors de l'envoi de votre demande.",
   robots: { index: false, follow: false },
 };

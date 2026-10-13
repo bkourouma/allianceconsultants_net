@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getHomepage, getSiteSettings, getSolutions, getServices, getTrainings, getReferences } from "@/lib/content";
 import { listLatestPublishedProjectReferences } from "@/lib/projectReferences";
+import { listPublishedPostsBySlugs } from "@/lib/blog";
 import {
   buildMetadata,
   buildOrganizationJsonLd,
@@ -13,11 +14,16 @@ import { SolutionsSection } from "@/components/homepage/SolutionsSection";
 import { AISection } from "@/components/homepage/AISection";
 import { TrainingsSection } from "@/components/homepage/TrainingsSection";
 import { ServicesSection } from "@/components/homepage/ServicesSection";
+import { GuidesSection } from "@/components/homepage/GuidesSection";
 import { ReferencesSection } from "@/components/homepage/ReferencesSection";
 import { TechMethodSection } from "@/components/homepage/TechMethodSection";
 import { FinalCTA } from "@/components/homepage/FinalCTA";
 
 const SITE_URL = "https://allianceconsultants.net";
+
+// Les articles de la section « guides » viennent de la base : on régénère la
+// page régulièrement (le build Docker n'a pas accès à la base).
+export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const homepage = await getHomepage();
@@ -30,16 +36,16 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
+  const homepage = await getHomepage();
   const [
-    homepage,
     settings,
     solutions,
     services,
     trainings,
     references,
     projectReferences,
+    guidePosts,
   ] = await Promise.all([
-    getHomepage(),
     getSiteSettings(),
     getSolutions({ homepageOnly: true }),
     getServices({ homepageOnly: true }),
@@ -48,6 +54,10 @@ export default async function HomePage() {
     // En cas d'indisponibilité de la DB (preview, build sans Postgres),
     // on dégrade gracieusement vers une liste vide.
     listLatestPublishedProjectReferences(6).catch(() => []),
+    // Même chose pour les guides : sans base, la section est simplement omise.
+    homepage.guidesSection
+      ? listPublishedPostsBySlugs(homepage.guidesSection.slugs).catch(() => [])
+      : [],
   ]);
 
   const orgJsonLd = buildOrganizationJsonLd(settings, SITE_URL);
@@ -74,6 +84,11 @@ export default async function HomePage() {
 
       {/* US5 — Services experts */}
       <ServicesSection services={services} />
+
+      {/* Guides — articles qui répondent aux recherches des visiteurs */}
+      {homepage.guidesSection ? (
+        <GuidesSection guidesSection={homepage.guidesSection} posts={guidePosts} />
+      ) : null}
 
       {/* US6 — Références & crédibilité */}
       <ReferencesSection

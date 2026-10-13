@@ -68,19 +68,10 @@ export const SERVICE_META: Record<string, ServiceMeta> = {
   "dematerialisation-archives": {
     lines: ["docupro", "medicpro", "cliniquepro"],
     journey: [
+      "Conseil et méthode",
       "Numérisation",
-      "Indexation",
-      "Archivage électronique",
-      "Plan de classement sur mesure",
-    ],
-  },
-  "scanners-professionnels": {
-    lines: ["docupro"],
-    journey: [
-      "Sélection du matériel",
-      "Fourniture",
-      "Intégration",
-      "Formation et support",
+      "Indexation, plan de classement et archivage",
+      "Intégration à la GED DocuPro Suite",
     ],
   },
 };
@@ -105,12 +96,7 @@ export const NEEDS: { id: string; label: string; slugs: string[] }[] = [
   {
     id: "numeriser",
     label: "Numériser mes archives",
-    slugs: ["dematerialisation-archives", "scanners-professionnels"],
-  },
-  {
-    id: "materiel",
-    label: "M'équiper en scanners",
-    slugs: ["scanners-professionnels"],
+    slugs: ["dematerialisation-archives"],
   },
 ];
 

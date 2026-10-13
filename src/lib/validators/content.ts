@@ -67,6 +67,14 @@ export const HomepageSchema = z.object({
     title: z.string().min(2),
     intro: z.string().optional(),
   }),
+  guidesSection: z
+    .object({
+      title: z.string().min(2),
+      intro: z.string().optional(),
+      /** Slugs d'articles de blog ; seuls ceux qui existent et sont publiés s'affichent. */
+      slugs: z.array(z.string().regex(/^[a-z0-9-]+$/)).min(1).max(6),
+    })
+    .optional(),
   aiSection: z.object({
     title: z.string().min(2),
     bullets: z.array(z.string()).min(5),

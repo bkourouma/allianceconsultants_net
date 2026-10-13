@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { Prisma, PostStatus } from "@prisma/client";
+import { Prisma, type PostStatus } from "@prisma/client";
 import { ensureUniqueBlogPostSlug, slugify } from "@/lib/slug";
 import { sanitizeBlogHtml } from "@/lib/sanitize";
 import {
@@ -107,6 +107,7 @@ async function persistNewPost(input: BlogPostInput, authorId: string) {
       seoTitle: input.seoTitle ?? null,
       seoDescription: input.seoDescription ?? null,
       ogImage: input.ogImage ?? null,
+      faq: input.faq && input.faq.length > 0 ? input.faq : Prisma.DbNull,
       status: input.status,
       publishedAt,
       authorId,
@@ -145,6 +146,9 @@ export async function updateBlogPost(id: string, rawInput: unknown) {
       ? { seoDescription: patch.seoDescription }
       : {}),
     ...(patch.ogImage !== undefined ? { ogImage: patch.ogImage } : {}),
+    ...(patch.faq !== undefined
+      ? { faq: patch.faq && patch.faq.length > 0 ? patch.faq : Prisma.DbNull }
+      : {}),
   };
 
   if (patch.status) {

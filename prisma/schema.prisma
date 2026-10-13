@@ -101,6 +101,9 @@ model BlogPost {
   seoTitle       String?
   seoDescription String?
   ogImage        String?
+  // Questions fréquentes de l'article : [{ "question": "...", "answer": "..." }].
+  // Affichées en fin d'article et publiées en JSON-LD FAQPage (voir src/lib/blog-faq.ts).
+  faq            Json?
   status         PostStatus     @default(DRAFT)
   publishedAt    DateTime?
   createdAt      DateTime       @default(now())

@@ -50,7 +50,7 @@ describe("Content frontmatter validation", () => {
 
   it("all service MDX files pass ServiceSchema", async () => {
     const entries = await loadMdxFrontmatter(path.join(ROOT, "services"));
-    expect(entries.length).toBeGreaterThanOrEqual(5);
+    expect(entries.length).toBeGreaterThanOrEqual(4);
 
     for (const entry of entries as { file: string; data: unknown }[]) {
       const result = ServiceSchema.safeParse(entry.data);
@@ -58,12 +58,12 @@ describe("Content frontmatter validation", () => {
     }
   });
 
-  it("exactly 5 services have showOnHomepage: true", async () => {
+  it("exactly 4 services have showOnHomepage: true", async () => {
     const entries = await loadMdxFrontmatter(path.join(ROOT, "services"));
     const shown = (entries as { file: string; data: { showOnHomepage?: boolean } }[]).filter(
       (e) => e.data.showOnHomepage === true
     );
-    expect(shown).toHaveLength(5);
+    expect(shown).toHaveLength(4);
   });
 
   it("all training MDX files pass TrainingSchema", async () => {

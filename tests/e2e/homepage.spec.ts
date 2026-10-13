@@ -88,13 +88,13 @@ test.describe("Homepage — US acceptance scenarios", () => {
     expect(href).toContain("intent=training");
   });
 
-  // US5 — 5 services cards
-  test("US5: 5 service cards with title, description and link", async ({ page }) => {
+  // US5 — 4 services cards
+  test("US5: 4 service cards with title, description and link", async ({ page }) => {
     const servicesSection = page.locator('[aria-labelledby="services-title"]');
     await servicesSection.scrollIntoViewIfNeeded();
 
     const serviceLinks = servicesSection.locator('a[href^="/services/"]');
-    await expect(serviceLinks).toHaveCount(5);
+    await expect(serviceLinks).toHaveCount(4);
   });
 
   // US6 — No placeholder content

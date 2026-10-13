@@ -62,10 +62,30 @@ export function stripHtml(html: string): string {
     .trim();
 }
 
-/** Reading time in whole minutes (≥ 1) at ~220 words per minute. */
-export function readingMinutesFromHtml(html: string): number {
-  const words = stripHtml(html).split(" ").filter(Boolean).length;
-  return Math.max(1, Math.ceil(words / 220));
+/** Reading speed used for the "N min de lecture" label (French prose). */
+export const WORDS_PER_MINUTE = 220;
+
+/** Real word count of the visible text of an HTML body (+ optional extra text, e.g. the FAQ). */
+export function countWords(html: string, extraText = ""): number {
+  const text = `${stripHtml(html)} ${extraText}`;
+  return text.split(/\s+/).filter(Boolean).length;
+}
+
+/**
+ * Reading time in whole minutes (≥ 1), always derived from the real word
+ * count: it follows the length of the article automatically.
+ */
+export function readingMinutesFromWords(words: number): number {
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+}
+
+export function readingMinutesFromHtml(html: string, extraText = ""): number {
+  return readingMinutesFromWords(countWords(html, extraText));
+}
+
+/** Plain text of a FAQ, so that its words count towards the reading time. */
+export function faqToText(faq: { question: string; answer: string }[] | null | undefined): string {
+  return (faq ?? []).map((e) => `${e.question} ${e.answer}`).join(" ");
 }
 
 export interface TocItem {

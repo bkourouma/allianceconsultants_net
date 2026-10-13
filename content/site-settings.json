@@ -45,8 +45,7 @@
       { "label": "Développement spécifique", "href": "/services/developpement-specifique" },
       { "label": "Automatisation IA", "href": "/services/automatisation-ia-processus-metiers" },
       { "label": "AMOA", "href": "/services/assistance-maitrise-ouvrage" },
-      { "label": "Dématérialisation", "href": "/services/dematerialisation-archives" },
-      { "label": "Scanners professionnels", "href": "/services/scanners-professionnels" }
+      { "label": "Numérisation & dématérialisation", "href": "/services/dematerialisation-archives" }
     ],
     "formations": [
       { "label": "Formation IA entreprise", "href": "/formations/ia-entreprise" },

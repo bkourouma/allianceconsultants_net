@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { ArticleBody } from "@/components/blog/ArticleBody";
+import { ArticleFaq } from "@/components/blog/ArticleFaq";
 import { ArticleToc } from "@/components/blog/ArticleToc";
 import { BlogArticleHero } from "@/components/blog/BlogArticleHero";
 import { BlogIndexCard } from "@/components/blog/BlogIndexCard";
@@ -12,9 +13,11 @@ import { BlogTerminus } from "@/components/blog/BlogTerminus";
 import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { ShareActions } from "@/components/blog/ShareActions";
 import {
+  countWords,
+  faqToText,
   postLineId,
   prepareArticle,
-  readingMinutesFromHtml,
+  readingMinutesFromWords,
 } from "@/components/blog/post-utils";
 import {
   getPublishedPostBySlug,
@@ -25,6 +28,7 @@ import { lineStyle } from "@/lib/network";
 import {
   buildArticleJsonLd,
   buildBlogBreadcrumbJsonLd,
+  buildFaqJsonLd,
   buildMetadata,
 } from "@/lib/seo";
 import { getReadingMinutes } from "../_reading-times";
@@ -87,17 +91,23 @@ export default async function BlogPostPage({ params }: PageProps) {
   const relatedMinutes = await getReadingMinutes(related.map((p) => p.id));
 
   const url = `${SITE_URL}/blog/${slug}`;
+  const rawImage = post.ogImage ?? post.coverUrl ?? undefined;
+  const wordCount = countWords(post.bodyHtml, faqToText(post.faq));
   const articleJsonLd = buildArticleJsonLd({
     title: post.title,
     description: post.seoDescription ?? post.excerpt,
     url,
-    image: post.ogImage ?? post.coverUrl ?? undefined,
+    image: rawImage ? new URL(rawImage, SITE_URL).toString() : undefined,
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
     authorName: post.authorName,
     organizationName: settings.brand.name,
     organizationLogo: new URL(settings.brand.logoUrl, SITE_URL).toString(),
+    organizationUrl: new URL("/", SITE_URL).origin,
+    wordCount,
+    keywords: post.tags.map((t) => t.label),
   });
+  const faqJsonLd = post.faq.length > 0 ? buildFaqJsonLd(post.faq) : null;
   const breadcrumbJsonLd = buildBlogBreadcrumbJsonLd({
     siteUrl: SITE_URL,
     postTitle: post.title,
@@ -107,12 +117,16 @@ export default async function BlogPostPage({ params }: PageProps) {
   // bodyHtml is sanitised at write time (lib/sanitize.ts); prepareArticle only
   // adds heading ids / figure wrappers on top and derives the contents list.
   const { html, toc } = prepareArticle(post.bodyHtml);
-  const minutes = readingMinutesFromHtml(post.bodyHtml);
+  if (post.faq.length > 0) {
+    toc.push({ id: "questions-frequentes", text: "Questions fréquentes", level: 2 });
+  }
+  const minutes = readingMinutesFromWords(wordCount);
 
   return (
     <div style={lineStyle(postLineId(post.slug))}>
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
+      {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
       <ReadingProgress targetId={ARTICLE_ID} />
 
       <BlogArticleHero post={post} readingMinutes={minutes} />
@@ -129,6 +143,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           <article aria-label={post.title} className="min-w-0">
             <ArticleBody html={html} id={ARTICLE_ID} />
+            <ArticleFaq entries={post.faq} />
 
             <footer className="mt-12 border-t border-ink/15 pt-6">
               {post.tags.length > 0 ? (

@@ -65,7 +65,6 @@ const LEFT: BandDef[] = [
       { id: "docupro-ged", label: ["Docu-GED"] },
       { id: "docupro-courriers", label: ["Docu-Courriers"] },
       { id: "docupro-flow", label: ["Docu-Flow"] },
-      { id: "svc-scan", label: ["Scanners"], service: true },
       { id: "svc-demat", label: ["Dématérialisation"], service: true },
     ],
   },

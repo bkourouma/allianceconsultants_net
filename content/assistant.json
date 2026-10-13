@@ -37,7 +37,7 @@
       "nudge": "Je vois que vous regardez DocuPro Suite. Vous cherchez à mieux gérer vos documents ?",
       "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à DocuPro Suite : vous êtes responsable des archives, du courrier ou de l'organisation d'une structure ? Et comment vos documents circulent-ils aujourd'hui : papier, dossiers partagés, un outil de GED ?",
       "replies": ["Oui, j'en suis responsable", "Je compare des solutions", "J'ai un projet de numérisation"],
-      "focus": "Type et volume de documents (courriers, dossiers, factures), circulation papier ou numérique, besoin de circuits de validation, difficulté à retrouver l'information, archives papier existantes à numériser (relier au service Dématérialisation des archives et aux scanners)."
+      "focus": "Type et volume de documents (courriers, dossiers, factures), circulation papier ou numérique, besoin de circuits de validation, difficulté à retrouver l'information, archives papier existantes à numériser (relier au service Numérisation et dématérialisation des archives)."
     },
     {
       "id": "solutions/medicpro",
@@ -96,7 +96,7 @@
       "nudge": "Un projet à mener ? Dites-moi où vous en êtes, je vous indique le bon service.",
       "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Vous regardez nos services : quel projet avez-vous en tête, et où en êtes-vous (idée, cahier des charges, projet en cours) ?",
       "replies": ["Une application sur mesure", "Automatiser un processus", "Numériser des archives"],
-      "focus": "Comprendre le projet, son stade d'avancement et son enjeu, puis recommander le service adapté parmi les cinq services."
+      "focus": "Comprendre le projet, son stade d'avancement et son enjeu, puis recommander le service adapté parmi les quatre services."
     },
     {
       "id": "services/developpement-specifique",
@@ -128,20 +128,11 @@
     {
       "id": "services/dematerialisation-archives",
       "kind": "service",
-      "label": "la dématérialisation des archives",
+      "label": "la numérisation et la dématérialisation des archives",
       "nudge": "Des archives papier à numériser ? Je peux vous orienter.",
-      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à la dématérialisation des archives : de quels documents s'agit-il (dossiers du personnel, factures, dossiers patients, courriers…) et quel volume approximatif représentent-ils ?",
+      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à la numérisation et à la dématérialisation des archives : de quels documents s'agit-il (dossiers du personnel, factures, dossiers patients, courriers…) et quel volume approximatif représentent-ils ?",
       "replies": ["Archives papier à numériser", "Je cherche une GED", "Je ne sais pas par où commencer"],
-      "focus": "Nature et volume des archives, lieu de stockage actuel, besoin de recherche rapide, obligations de conservation, outil de GED souhaité (relier à DocuPro Suite) et matériel de numérisation (relier aux scanners professionnels)."
-    },
-    {
-      "id": "services/scanners-professionnels",
-      "kind": "service",
-      "label": "les scanners professionnels",
-      "nudge": "Vous cherchez un scanner professionnel ? Je peux vous aider à choisir.",
-      "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous regardez nos scanners professionnels : quel volume de pages devez-vous numériser par jour, et de quel type de documents s'agit-il ?",
-      "replies": ["Quelques centaines de pages par jour", "Plusieurs milliers de pages par jour", "Je ne sais pas encore"],
-      "focus": "Volume quotidien de pages, formats et état des documents, logiciel de GED déjà en place, besoin de formation et de support, budget non communiqué par l'assistant (ne jamais donner de prix)."
+      "focus": "Nature et volume des archives, lieu de stockage actuel, besoin de recherche rapide, obligations de conservation, outil de GED souhaité (relier à DocuPro Suite). Alliance Consultants ne vend pas de scanners : si le visiteur parle de matériel, expliquer que nous le conseillons sur la méthode de numérisation et l'intégration à la GED, sans proposer d'achat."
     },
     {
       "id": "formations",

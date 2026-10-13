@@ -1,4 +1,4 @@
-import { PrismaClient, type PostStatus } from "@prisma/client";
+import { Prisma, PrismaClient, type PostStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -84,7 +84,21 @@ interface SeedPost {
   seoTitle: string;
   seoDescription: string;
   publishedDaysAgo: number;
+  /**
+   * Thématique de l'article : sert aussi à choisir les 3 articles de « À lire
+   * ensuite » (les tags rares comme "ged" ou "sante" pèsent plus que les tags
+   * larges "solutions", "services", "formations"). Donner 2 à 3 tags dont au
+   * moins un tag thématique précis.
+   */
   tagSlugs: string[];
+  /**
+   * FAQ de l'article (facultatif). Si présente, la page affiche une section
+   * « Questions fréquentes » sous le corps de l'article et publie le JSON-LD
+   * FAQPage. Réponses en TEXTE BRUT (10 à 1 500 caractères), ne pas répéter
+   * la FAQ dans bodyHtml. Détails : src/lib/blog-faq.ts.
+   *   faq: [{ question: "Combien de pages par jour ... ?", answer: "..." }],
+   */
+  faq?: { question: string; answer: string }[];
 }
 
 /**
@@ -939,7 +953,7 @@ const POSTS: SeedPost[] = [
     seoDescription:
       "Scanners de bureau, départementaux ou de production : guide de choix d'un scanner professionnel selon le volume et l'usage métier.",
     publishedDaysAgo: 13,
-    tagSlugs: ["services"],
+    tagSlugs: ["services", "ged"],
   },
   {
     slug: "scanners-production-integration-formation-support",
@@ -975,7 +989,7 @@ const POSTS: SeedPost[] = [
     seoDescription:
       "Au-delà du matériel : intégration logicielle, formation et support pour réussir un projet de dématérialisation avec scanners de production.",
     publishedDaysAgo: 30,
-    tagSlugs: ["services"],
+    tagSlugs: ["services", "ged"],
   },
 
   // =========================================================================
@@ -1413,25 +1427,45 @@ async function seedBlogPosts(
 
     const existing = await prisma.blogPost.findUnique({
       where: { slug: p.slug },
-      select: { id: true },
+      select: {
+        id: true,
+        title: true,
+        excerpt: true,
+        bodyHtml: true,
+        seoTitle: true,
+        seoDescription: true,
+        faq: true,
+        status: true,
+        authorId: true,
+      },
     });
 
-    const data = {
+    const content = {
       title: p.title,
       excerpt: p.excerpt,
       bodyHtml: p.bodyHtml,
       seoTitle: p.seoTitle,
       seoDescription: p.seoDescription,
       status: "PUBLISHED" as PostStatus,
-      publishedAt,
       authorId,
     };
+    const faq = p.faq && p.faq.length > 0 ? p.faq : Prisma.DbNull;
 
     if (existing) {
-      await prisma.blogPost.update({
-        where: { id: existing.id },
-        data,
-      });
+      // La date de publication d'un article existant ne bouge jamais, et
+      // `updatedAt` (dateModified du JSON-LD, lastmod du sitemap) n'est mis à
+      // jour que si le contenu a réellement changé.
+      const unchanged =
+        (Object.keys(content) as (keyof typeof content)[]).every(
+          (k) => existing[k] === content[k],
+        ) &&
+        JSON.stringify(existing.faq ?? null) === JSON.stringify(p.faq?.length ? p.faq : null);
+      if (!unchanged) {
+        await prisma.blogPost.update({
+          where: { id: existing.id },
+          data: { ...content, faq },
+        });
+      }
       await prisma.blogPostTag.deleteMany({ where: { postId: existing.id } });
       if (tagIds.length > 0) {
         await prisma.blogPostTag.createMany({
@@ -1439,12 +1473,14 @@ async function seedBlogPosts(
           skipDuplicates: true,
         });
       }
-      updated += 1;
+      if (!unchanged) updated += 1;
     } else {
       const post = await prisma.blogPost.create({
         data: {
-          ...data,
+          ...content,
+          faq,
           slug: p.slug,
+          publishedAt,
         },
       });
       if (tagIds.length > 0) {
@@ -1458,7 +1494,7 @@ async function seedBlogPosts(
   }
 
   console.log(
-    `[seed] Articles blog : ${created} créés, ${updated} mis à jour (total ${POSTS.length}).`,
+    `[seed] Articles blog : ${created} créés, ${updated} mis à jour, ${POSTS.length - created - updated} inchangés (total ${POSTS.length}).`,
   );
 }
 

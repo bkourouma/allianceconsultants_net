@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 type Block =
   | { kind: "h2" | "h3"; text: string }
@@ -45,21 +46,35 @@ function parse(body: string): Block[] {
   return blocks;
 }
 
+/** **gras** and [texte](/chemin-interne) — internal links only. */
 function inline(text: string): ReactNode[] {
-  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-    part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={i} className="font-semibold text-ink">
-        {part.slice(2, -2)}
-      </strong>
-    ) : (
-      part
-    ),
-  );
+  return text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\(\/[^)\s]*\))/g).map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold text-ink">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    const link = /^\[([^\]]+)\]\((\/[^)\s]*)\)$/.exec(part);
+    if (link) {
+      return (
+        <Link
+          key={i}
+          href={link[2]}
+          className="font-semibold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 hover:decoration-4"
+        >
+          {link[1]}
+        </Link>
+      );
+    }
+    return part;
+  });
 }
 
 /**
  * Renders the (light) markdown body of a service / training file:
- * ## / ### headings, paragraphs, bullet lists, **bold**.
+ * ## / ### headings, paragraphs, bullet lists, **bold**, [internal](/links).
  */
 export function RichBody({ body }: { body: string }) {
   const blocks = parse(body);

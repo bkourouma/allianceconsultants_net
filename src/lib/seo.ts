@@ -61,15 +61,42 @@ export function buildMetadata({
 // JSON-LD helpers — Site-wide (WebSite + LocalBusiness)
 // ============================================================================
 
+/**
+ * Racine du site SANS « / » final, comme la balise canonical de l'accueil
+ * (Next.js écrit toujours la canonical de la racine sans slash, comme celles
+ * de toutes les autres pages) : ainsi canonical, JSON-LD et og:url disent
+ * la même chose.
+ */
+function rootUrl(siteUrl: string): string {
+  return new URL("/", siteUrl).origin;
+}
+
+/**
+ * Adresse postale à partir des seules données du dépôt (site-settings.json).
+ * `street` ne contient aujourd'hui que « Abidjan, Côte d'Ivoire » : tant que
+ * ce n'est pas une vraie rue, on ne le publie pas comme `streetAddress`.
+ */
+function buildPostalAddress(settings: SiteSettings): Record<string, unknown> {
+  const { street, city, country } = settings.contact.address;
+  const streetRepeatsCity = street.toLowerCase().includes(city.toLowerCase());
+  return {
+    "@type": "PostalAddress",
+    ...(streetRepeatsCity ? {} : { streetAddress: street }),
+    addressLocality: city,
+    addressCountry: country,
+  };
+}
+
 export function buildWebSiteJsonLd(siteUrl: string): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Alliance Consultants",
-    url: siteUrl,
+    url: rootUrl(siteUrl),
     inLanguage: "fr-FR",
     publisher: {
       "@type": "Organization",
+      "@id": `${rootUrl(siteUrl)}#organization`,
       name: "Alliance Consultants",
     },
     potentialAction: {
@@ -97,21 +124,16 @@ export function buildLocalBusinessJsonLd(
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "@id": `${siteUrl}#localbusiness`,
+    "@id": `${rootUrl(siteUrl)}#localbusiness`,
     name: settings.brand.name,
     description: settings.brand.tagline,
-    url: siteUrl,
+    url: rootUrl(siteUrl),
     image: new URL(settings.brand.logoUrl, siteUrl).toString(),
     logo: new URL(settings.brand.logoUrl, siteUrl).toString(),
     telephone: settings.contact.phones[0],
     email: settings.contact.email,
     priceRange: "$$",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: settings.contact.address.street,
-      addressLocality: settings.contact.address.city,
-      addressCountry: settings.contact.address.country,
-    },
+    address: buildPostalAddress(settings),
     areaServed: [
       { "@type": "Place", name: "Côte d'Ivoire" },
       { "@type": "Place", name: "Afrique francophone" },
@@ -178,9 +200,10 @@ export function buildOrganizationJsonLd(
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${rootUrl(siteUrl)}#organization`,
     name: settings.brand.name,
     alternateName: settings.brand.alternateName ?? "Alliance Computer Consultants",
-    url: siteUrl,
+    url: rootUrl(siteUrl),
     logo: new URL(settings.brand.logoUrl, siteUrl).toString(),
     description: settings.brand.tagline,
     foundingDate: String(settings.brand.foundingYear),
@@ -188,12 +211,9 @@ export function buildOrganizationJsonLd(
       { "@type": "Place", name: "Côte d'Ivoire" },
       { "@type": "Place", name: "Afrique francophone" },
     ],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: settings.contact.address.street,
-      addressLocality: settings.contact.address.city,
-      addressCountry: settings.contact.address.country,
-    },
+    address: buildPostalAddress(settings),
+    telephone: settings.contact.phones[0],
+    email: settings.contact.email,
     contactPoint: settings.contact.phones.map((telephone, index) => ({
       "@type": "ContactPoint",
       contactType: "sales",
@@ -288,6 +308,16 @@ export function buildBreadcrumbJsonLd({
 // JSON-LD helpers — Blog (feature 002-backoffice-blog)
 // ============================================================================
 
+/**
+ * Les comptes d'administration du blog (« Admin Alliance »…) ne sont pas des
+ * auteurs éditoriaux : on ne les publie pas comme `Person` dans le JSON-LD.
+ */
+export function isNominativeAuthor(name?: string | null): name is string {
+  const n = name?.trim();
+  if (!n) return false;
+  return !/(admin|alliance|consultants|équipe|equipe|rédaction|redaction)/i.test(n);
+}
+
 export function buildArticleJsonLd({
   title,
   description,
@@ -298,33 +328,49 @@ export function buildArticleJsonLd({
   authorName,
   organizationName,
   organizationLogo,
+  organizationUrl,
+  wordCount,
+  keywords,
 }: {
   title: string;
   description: string;
   url: string;
+  /** URL absolue de l'image principale ; à défaut, le logo de l'organisation. */
   image?: string;
   publishedAt: Date;
+  /** Dernière modification réelle de l'article (colonne `updatedAt`). */
   updatedAt: Date;
+  /** Auteur nominatif ; sans lui, l'auteur est l'organisation. */
   authorName?: string | null;
   organizationName: string;
   organizationLogo: string;
+  organizationUrl?: string;
+  wordCount?: number;
+  keywords?: string[];
 }): Record<string, unknown> {
+  const organization = {
+    "@type": "Organization",
+    name: organizationName,
+    ...(organizationUrl ? { url: organizationUrl } : {}),
+  };
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: title,
     description,
+    inLanguage: "fr-FR",
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    ...(image ? { image: [image] } : {}),
+    image: [image ?? organizationLogo],
     datePublished: publishedAt.toISOString(),
-    dateModified: updatedAt.toISOString(),
-    author: authorName
-      ? { "@type": "Person", name: authorName }
-      : { "@type": "Organization", name: organizationName },
+    dateModified: (updatedAt < publishedAt ? publishedAt : updatedAt).toISOString(),
+    ...(wordCount ? { wordCount } : {}),
+    ...(keywords && keywords.length > 0 ? { keywords: keywords.join(", ") } : {}),
+    author: isNominativeAuthor(authorName)
+      ? { "@type": "Person", name: authorName.trim() }
+      : organization,
     publisher: {
-      "@type": "Organization",
-      name: organizationName,
+      ...organization,
       logo: { "@type": "ImageObject", url: organizationLogo },
     },
   };

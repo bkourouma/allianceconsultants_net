@@ -167,11 +167,11 @@ export async function listRelatedPosts(
 }
 
 export async function listPublishedPostsForSitemap(): Promise<
-  { slug: string; updatedAt: Date }[]
+  { slug: string; updatedAt: Date; publishedAt: Date | null }[]
 > {
   return prisma.blogPost.findMany({
     where: { status: "PUBLISHED", publishedAt: { lte: new Date() } },
-    select: { slug: true, updatedAt: true },
+    select: { slug: true, updatedAt: true, publishedAt: true },
     orderBy: { publishedAt: "desc" },
   });
 }

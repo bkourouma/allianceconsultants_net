@@ -793,37 +793,97 @@ export const POSTS: SeedPost[] = [
     slug: "developpement-specifique-vs-saas-standard",
     title: "Développement spécifique vs SaaS standard : quand choisir le sur-mesure ?",
     excerpt:
-      "Cinq critères pour décider entre un SaaS standard et un développement spécifique : différenciation, intégration, conformité, coût total et délai.",
-    bodyHtml: html({
-      intro:
-        "Faut-il acheter un SaaS du marché ou développer une solution sur mesure ? La question revient dans tous nos diagnostics. Il n'y a pas de réponse universelle : tout dépend de la nature du processus à outiller et du niveau de différenciation visé.",
-      sections: [
-        {
-          h2: "Quand le SaaS standard suffit",
-          p: "Comptabilité, paie, RH généralistes : ces processus sont normés et bien couverts par des éditeurs établis. Le SaaS reste presque toujours le bon choix.",
-        },
-        {
-          h2: "Quand le sur-mesure devient pertinent",
-          p: "Le développement spécifique se justifie dans cinq situations :",
-          bullets: [
-            "Le processus est un avantage concurrentiel différenciant",
-            "L'intégration au système existant est complexe",
-            "Les exigences réglementaires locales sont fortes",
-            "Le coût total d'un SaaS dépasse le coût de développement",
-            "Aucun éditeur ne couvre correctement le besoin",
-          ],
-        },
-        {
-          h2: "Le modèle hybride",
-          p: "Souvent, la meilleure réponse est hybride : SaaS pour les fonctions standard et briques spécifiques pour les processus stratégiques, reliés par API.",
-        },
-      ],
-      outro:
-        "Notre équipe AMOA peut vous aider à formaliser la décision : étude comparative, calcul du coût total sur 5 ans, prototype rapide pour valider les hypothèses.",
-    }),
-    seoTitle: "Développement spécifique vs SaaS — quel choix ?",
+      "Logiciel standard, paramétrage ou développement spécifique ? Cinq critères, un tableau de décision SaaS / sur mesure / hybride, le délai à prévoir et la conduite du changement.",
+    bodyHtml: `<p>Faut-il acheter un SaaS du marché ou faire développer un logiciel sur mesure ? La question revient dans presque tous nos diagnostics, et elle est souvent mal posée : on compare un prix d'abonnement à un prix de projet, alors que la vraie différence se joue sur la nature du processus à outiller, sur les intégrations nécessaires et sur la capacité de l'organisation à adopter l'outil. Il n'y a pas de réponse universelle. Voici une grille de lecture concrète, pensée pour les PME et les administrations d'Afrique francophone.</p>
+<h2>Qu'est-ce qu'un développement spécifique ?</h2>
+<p>Dans ce contexte, un <strong>développement spécifique</strong> (ou logiciel sur mesure) est une application conçue à partir de vos processus, de vos règles de gestion et de vos contraintes, plutôt qu'adaptée à partir d'un produit existant. Pour bien le situer, il faut le comparer aux deux autres voies possibles :</p>
+<ul>
+<li><strong>Le logiciel standard (SaaS)</strong> : un produit édité pour un grand nombre de clients, utilisable rapidement, qui évolue au rythme de son éditeur. Vous adaptez votre organisation au logiciel.</li>
+<li><strong>Le paramétrage</strong> : on configure un produit existant (champs, workflows, droits, états) sans toucher à son code. C'est une zone intermédiaire, limitée par ce que l'éditeur a prévu de rendre configurable.</li>
+<li><strong>Le développement spécifique</strong> : on construit ce qui n'existe pas, ou ce qu'aucun produit ne couvre correctement. Vous adaptez le logiciel à votre organisation, et vous en maîtrisez la feuille de route.</li>
+</ul>
+<p>Un projet de développement spécifique ne signifie pas tout reconstruire : il s'appuie en général sur des briques éprouvées (authentification, paiement, messagerie). Notre offre de <a href="/services/developpement-specifique">développement spécifique et SaaS métier</a> couvre la conception, le développement et le déploiement de ce type d'application.</p>
+<h2>Quand le SaaS standard suffit</h2>
+<p>Comptabilité générale, paie, outils collaboratifs, RH généralistes : ces processus sont normés et bien couverts par des éditeurs établis. Le SaaS reste alors presque toujours le bon choix. Vous bénéficiez d'un produit éprouvé, d'une mise en service rapide et de mises à jour incluses. Le risque principal est de plier l'organisation à l'outil sur des points où elle se différencie.</p>
+<h2>Les 5 situations où le sur-mesure devient pertinent</h2>
+<p>Le développement spécifique se justifie rarement pour un seul de ces critères pris isolément. Plus vous en cochez, plus la balance penche vers le sur-mesure ou vers le modèle hybride.</p>
+<h3>1. Le processus est un avantage concurrentiel</h3>
+<p>Si la manière dont vous traitez un dossier, tarifez un service ou suivez un client est précisément ce qui vous distingue, un logiciel standard vous alignera sur les concurrents qui utilisent le même produit. Un outil conçu autour de votre méthode la protège et permet de la faire évoluer sans attendre la feuille de route d'un éditeur. Posez-vous la question : si un concurrent utilisait le même logiciel que nous, perdrions-nous un avantage ?</p>
+<h3>2. L'intégration au système existant est complexe</h3>
+<p>Un SaaS fonctionne bien quand il peut vivre seul. Dès qu'il doit échanger avec un ERP maison, une base métier ancienne, un outil de paiement mobile ou des fichiers au format imposé par une administration, les connecteurs standard montrent leurs limites. Le coût caché d'une intégration mal maîtrisée (ressaisies, exports manuels, erreurs de rapprochement) pèse vite plus lourd que l'abonnement.</p>
+<h3>3. Les exigences de conformité locales sont fortes</h3>
+<p>Certains secteurs imposent des règles précises : traçabilité réglementaire, hébergement ou localisation des données, formats d'état officiels, circuits de validation propres à une administration. Les éditeurs internationaux couvrent rarement ces particularités locales. Avant de choisir, vérifiez auprès de l'éditeur, par écrit, ce qui est réellement couvert, et ce qui relèverait d'un développement complémentaire.</p>
+<h3>4. Le coût total sur 5 ans dépasse celui d'un développement</h3>
+<p>Un abonnement par utilisateur paraît léger au départ, puis croît avec les effectifs, les modules complémentaires et les options. Le bon réflexe est de raisonner en coût total sur 5 ans : abonnements, intégrations, personnalisations, formation et coût de sortie. Comparez-le au coût d'un développement, de sa maintenance et de ses évolutions. Selon le nombre d'utilisateurs et la durée d'usage, l'écart peut aller dans un sens comme dans l'autre : c'est un calcul à faire, pas une intuition.</p>
+<h3>5. Aucun éditeur ne couvre correctement le besoin</h3>
+<p>Il arrive qu'aucun produit du marché ne corresponde à votre activité, ou que ceux qui existent soient pensés pour d'autres contextes (moyens de paiement, langues, organisation du travail, connectivité). Dans ce cas, forcer un outil inadapté coûte plus cher en contournements que de construire un outil juste, en commençant par l'essentiel.</p>
+<h2>SaaS standard, sur mesure, hybride : le tableau de décision</h2>
+<p>Le tableau suivant résume les arbitrages de manière qualitative. Il ne remplace pas un chiffrage, qui dépend de votre contexte.</p>
+<table>
+<thead>
+<tr><th>Critère</th><th>SaaS standard</th><th>Sur mesure</th><th>Hybride</th></tr>
+</thead>
+<tbody>
+<tr><td>Délai de mise en service</td><td>Rapide</td><td>Plus long (cadrage + MVP)</td><td>Intermédiaire</td></tr>
+<tr><td>Coût initial</td><td>Faible</td><td>Plus élevé</td><td>Modéré</td></tr>
+<tr><td>Coût sur 5 ans</td><td>Croît avec les utilisateurs</td><td>Maintenance et évolutions</td><td>Mixte, à chiffrer</td></tr>
+<tr><td>Souplesse fonctionnelle</td><td>Limitée au paramétrable</td><td>Totale</td><td>Forte sur le cœur métier</td></tr>
+<tr><td>Dépendance à l'éditeur</td><td>Forte</td><td>Faible</td><td>Partielle</td></tr>
+<tr><td>Maintenance</td><td>Assurée par l'éditeur</td><td>À organiser par contrat</td><td>Partagée</td></tr>
+</tbody>
+</table>
+<p>Souvent, la meilleure réponse est <strong>hybride</strong> : un SaaS pour les fonctions standard (comptabilité, paie, messagerie) et des briques spécifiques pour les processus stratégiques, reliées par API. Vous gardez la rapidité du standard là où elle suffit, et la maîtrise là où elle compte.</p>
+<h2>Combien de temps pour un développement spécifique ?</h2>
+<p>C'est la première inquiétude des dirigeants, et elle est légitime : un projet long et opaque est un projet risqué. Notre réponse tient dans la méthode. <a href="/blog/developpement-specifique-methode-mvp-recette">Notre méthode en 3 phases</a> (cadrage et spécification, MVP, recette et mise en production) prévoit 4 à 6 semaines de cadrage, puis 8 à 12 semaines pour un premier MVP déployé sur un environnement pilote, avec des démonstrations régulières. Un premier outil utilisable arrive donc en 3 à 4 mois, puis s'enrichit par incréments. À comparer honnêtement avec la mise en service d'un SaaS, plus rapide, mais qui ne couvrira peut-être qu'une partie de votre besoin.</p>
+<h2>Conduite du changement : le point que les deux options sous-estiment</h2>
+<p>Qu'il soit acheté ou développé, un logiciel ne produit de la valeur que s'il est utilisé. Un SaaS déployé sans accompagnement est contourné ; un développement spécifique livré sans formation reste sous-exploité. La conduite du changement se prépare dès le cadrage :</p>
+<ul>
+<li><strong>Formation</strong> : parcours par profil, super-utilisateurs identifiés, supports adaptés aux usages réels ;</li>
+<li><strong>Adoption</strong> : communication interne, déploiement progressif (par site ou par direction), retours des premiers utilisateurs intégrés avant la généralisation ;</li>
+<li><strong>Support</strong> : un point d'entrée clair pour les questions et les incidents, et un suivi des usages après la mise en production.</li>
+</ul>
+<p>C'est aussi le rôle de l'<a href="/services/assistance-maitrise-ouvrage">assistance à maîtrise d'ouvrage</a>, qui porte le point de vue des utilisateurs face aux prestataires. Les livrables d'un projet bien conduit, dont le plan de formation et le plan de réversibilité, sont détaillés dans notre article sur <a href="/blog/amoa-5-livrables-projet-saas">les 5 livrables AMOA d'un projet SaaS</a>.</p>
+<h2>Checklist : avant de trancher</h2>
+<ul>
+<li>Le processus concerné est-il un facteur de différenciation, ou une fonction standard ?</li>
+<li>Quels systèmes doivent échanger avec le nouvel outil, et par quels moyens ?</li>
+<li>Quelles obligations réglementaires locales doivent être couvertes, et un éditeur les garantit-il par écrit ?</li>
+<li>Avons-nous chiffré le coût total sur 5 ans, y compris intégration, formation et sortie ?</li>
+<li>Avons-nous vérifié qu'aucun produit du marché ne couvre l'essentiel du besoin ?</li>
+<li>Qui portera l'adoption côté utilisateurs, et avec quel plan de formation ?</li>
+</ul>
+<h2>En pratique</h2>
+<p>Notre équipe AMOA peut vous aider à formaliser la décision : étude comparative, calcul du coût total sur 5 ans, prototype rapide pour valider les hypothèses avant de s'engager. Pour en discuter à partir de votre situation, <a href="/contact-demo">contactez-nous</a>.</p>`,
+    faq: [
+      {
+        question: "Quelle est la différence entre développement spécifique et paramétrage ?",
+        answer:
+          "Le paramétrage configure un logiciel existant (champs, workflows, droits) dans les limites prévues par l'éditeur. Le développement spécifique construit ou étend le logiciel lui-même pour répondre à un besoin que le produit ne couvre pas. Le paramétrage est plus rapide mais plafonne ; le développement spécifique demande plus d'investissement mais ne connaît pas ce plafond.",
+      },
+      {
+        question: "Un logiciel sur mesure est-il toujours plus cher qu'un SaaS ?",
+        answer:
+          "Le coût initial est en général plus élevé. Mais le SaaS facture un abonnement qui croît avec les utilisateurs et les options, et les intégrations ajoutent un coût. C'est pourquoi nous recommandons de comparer le coût total sur 5 ans (abonnements, intégrations, formation, sortie) avec celui d'un développement et de sa maintenance.",
+      },
+      {
+        question: "Combien de temps faut-il pour développer une application spécifique ?",
+        answer:
+          "Notre méthode prévoit 4 à 6 semaines de cadrage, puis 8 à 12 semaines pour livrer un premier MVP sur un environnement pilote. Un premier outil utilisable est donc disponible en 3 à 4 mois, puis enrichi par incréments successifs.",
+      },
+      {
+        question: "Peut-on combiner un SaaS et un développement spécifique ?",
+        answer:
+          "Oui, c'est souvent la meilleure option. Le SaaS couvre les fonctions standard (comptabilité, paie, messagerie) et des briques spécifiques prennent en charge les processus qui vous différencient, reliées par API. Vous évitez de tout reconstruire tout en gardant la maîtrise du cœur métier.",
+      },
+      {
+        question: "Comment réussir la conduite du changement d'un nouveau logiciel ?",
+        answer:
+          "Préparez-la dès le cadrage : formation par profil avec des super-utilisateurs, déploiement progressif par site ou par direction, communication interne et support identifié après la mise en production. Cela vaut pour un SaaS comme pour un développement spécifique : sans adoption, l'outil ne produit pas de valeur.",
+      },
+    ],
+    seoTitle: "Développement spécifique ou SaaS : 5 critères pour choisir",
     seoDescription:
-      "Cinq critères pour décider entre SaaS standard et développement spécifique sur mesure : différenciation, conformité, coût total, intégration.",
+      "Développement spécifique ou SaaS standard ? 5 critères (différenciation, intégration, conformité, coût sur 5 ans), tableau de décision et modèle hybride.",
     publishedDaysAgo: 4,
     tagSlugs: ["services", "developpement"],
   },
@@ -831,35 +891,100 @@ export const POSTS: SeedPost[] = [
     slug: "developpement-specifique-methode-mvp-recette",
     title: "Cahier des charges, MVP, recette : notre méthode de développement spécifique",
     excerpt:
-      "De la spécification au déploiement : méthode itérative, MVP en 3 mois, recette utilisateur structurée et déploiement progressif.",
-    bodyHtml: html({
-      intro:
-        "Un projet de développement spécifique réussit rarement sur un cahier des charges écrit à plat puis livré 12 mois plus tard. Notre méthode privilégie l'itération courte, les démonstrations régulières et la mise en production progressive.",
-      sections: [
-        {
-          h2: "Phase 1 — Cadrage et spécification (4 à 6 semaines)",
-          p: "Atelier métier, cartographie des processus, priorisation des cas d'usage, maquette interactive validée avant tout développement.",
-        },
-        {
-          h2: "Phase 2 — MVP (8 à 12 semaines)",
-          p: "Une version fonctionnelle déployée sur un environnement pilote couvre les cas d'usage prioritaires.",
-          bullets: [
-            "Sprints de 2 semaines avec démo systématique",
-            "Code review et tests automatisés dès le départ",
-            "Documentation utilisateur produite au fil de l'eau",
-          ],
-        },
-        {
-          h2: "Phase 3 — Recette et mise en production",
-          p: "Recette utilisateur structurée par scénarios, formation des super-utilisateurs, déploiement progressif (par site, par direction).",
-        },
-      ],
-      outro:
-        "Cette méthode permet de livrer un premier outil utilisable en 3 à 4 mois et de l'enrichir par incréments tout en mesurant les gains métier.",
-    }),
-    seoTitle: "Méthode de développement spécifique — MVP & recette",
+      "De la spécification au déploiement : cadrage en 4 à 6 semaines, MVP en 8 à 12 semaines, recette utilisateur structurée et mise en production progressive.",
+    bodyHtml: `<p>Un projet de développement spécifique réussit rarement sur un cahier des charges écrit à plat, puis livré douze mois plus tard : entre-temps, les besoins ont bougé et les utilisateurs découvrent l'outil le jour de la livraison. Notre méthode privilégie l'itération courte, les démonstrations régulières et la mise en production progressive. Cet article détaille ses trois phases, ce que vous devez en attendre à chaque étape et ce que nous attendons de vous. Si vous hésitez encore entre un logiciel standard et du sur-mesure, commencez par <a href="/blog/developpement-specifique-vs-saas-standard">SaaS ou sur mesure : comment décider</a>.</p>
+<h2>Pourquoi un cahier des charges seul ne suffit pas</h2>
+<p>Le cahier des charges reste indispensable, mais il pose trois problèmes quand il est le seul pilier du projet :</p>
+<ul>
+<li>il décrit des besoins imaginés, que les utilisateurs ne peuvent juger qu'en manipulant un outil réel ;</li>
+<li>il fige un périmètre complet avant la première ligne de code, alors que les priorités évoluent ;</li>
+<li>il repousse la découverte des écarts à la fin du projet, quand les corriger coûte le plus cher.</li>
+</ul>
+<p>La méthode MVP (produit minimum viable) inverse la logique : on valide très tôt, sur un périmètre réduit, ce qui apporte de la valeur, puis on enrichit. Le cahier des charges devient un document vivant, construit avec les métiers pendant le cadrage et ajusté à chaque itération.</p>
+<h2>Les trois phases en un coup d'œil</h2>
+<table>
+<thead>
+<tr><th>Phase</th><th>Durée</th><th>Objectif</th><th>Livrables principaux</th></tr>
+</thead>
+<tbody>
+<tr><td>1. Cadrage et spécification</td><td>4 à 6 semaines</td><td>Comprendre et prioriser</td><td>Cartographie des processus, cas d'usage priorisés, maquette interactive validée</td></tr>
+<tr><td>2. MVP</td><td>8 à 12 semaines</td><td>Livrer l'essentiel, utilisable</td><td>Version fonctionnelle sur environnement pilote, documentation utilisateur</td></tr>
+<tr><td>3. Recette et mise en production</td><td>Selon le périmètre</td><td>Fiabiliser et déployer</td><td>Recette par scénarios, super-utilisateurs formés, déploiement progressif</td></tr>
+</tbody>
+</table>
+<h2>Phase 1 : cadrage et spécification (4 à 6 semaines)</h2>
+<p>Le cadrage est la phase la plus rentable du projet, car chaque erreur évitée ici ne sera jamais codée. Elle s'organise autour d'ateliers avec les équipes métier :</p>
+<ul>
+<li><strong>Atelier métier</strong> : comprendre le processus tel qu'il est vraiment pratiqué, y compris les contournements et les exceptions ;</li>
+<li><strong>Cartographie des processus</strong> : identifier les étapes, les acteurs, les documents échangés et les systèmes existants à relier ;</li>
+<li><strong>Priorisation des cas d'usage</strong> : séparer ce qui est indispensable au premier jour de ce qui peut attendre (par exemple avec une priorisation de type MoSCoW) ;</li>
+<li><strong>Maquette interactive</strong> : les utilisateurs cliquent dans une version simulée de l'outil et la valident avant tout développement.</li>
+</ul>
+<p>À l'issue de cette phase, le périmètre du MVP est arrêté par écrit, ainsi que les critères qui permettront de dire que la version est réussie. Si le projet est piloté par un maître d'ouvrage qui s'appuie sur un accompagnement externe, ce cadrage se prolonge naturellement dans les livrables décrits dans <a href="/blog/amoa-5-livrables-projet-saas">les 5 livrables AMOA d'un projet SaaS</a>.</p>
+<h2>Phase 2 : le MVP (8 à 12 semaines)</h2>
+<p>Une version fonctionnelle, déployée sur un environnement pilote, couvre les cas d'usage prioritaires. L'objectif n'est pas d'avoir un outil complet, mais un outil que de vrais utilisateurs peuvent essayer sur de vraies situations. Le travail se déroule ainsi :</p>
+<ul>
+<li>sprints de 2 semaines, chacun terminé par une démonstration aux utilisateurs clés ;</li>
+<li>revue de code et tests automatisés dès le départ, pour que l'outil reste évolutif ;</li>
+<li>documentation utilisateur produite au fil de l'eau, et non rédigée dans la précipitation à la fin ;</li>
+<li>retours des utilisateurs consignés et arbitrés à chaque démonstration : ce qui est ajouté, ce qui est reporté, ce qui est abandonné.</li>
+</ul>
+<h3>Ce que nous attendons de votre côté</h3>
+<p>Un projet de développement spécifique ne se délègue pas entièrement. Il suppose un référent métier disponible pour trancher rapidement, des utilisateurs clés présents aux démonstrations et un sponsor capable d'arbitrer entre les priorités. Les retards viennent bien plus souvent de décisions qui tardent que de difficultés techniques.</p>
+<h2>Phase 3 : recette et mise en production</h2>
+<p>La recette est le moment où l'outil est confronté à la réalité du terrain. Elle est structurée par scénarios plutôt que laissée au hasard des essais :</p>
+<ul>
+<li>des scénarios couvrant les cas nominaux et les cas limites, rédigés avec les métiers ;</li>
+<li>des critères d'acceptation explicites : chaque scénario est déclaré conforme ou non conforme ;</li>
+<li>un test de reprise des données existantes, si l'outil remplace un fichier ou un ancien logiciel ;</li>
+<li>un suivi des anomalies classées par gravité, avec un arbitrage clair entre ce qui bloque la mise en production et ce qui peut être corrigé ensuite.</li>
+</ul>
+<p>Vient ensuite la formation des super-utilisateurs, qui deviennent les relais de leurs collègues, puis un déploiement progressif (par site, par direction ou par équipe). Cette progressivité limite le risque : un problème découvert chez le premier groupe est corrigé avant d'atteindre tous les autres.</p>
+<h2>Checklist de recette</h2>
+<ul>
+<li>Les scénarios de test couvrent chaque cas d'usage du périmètre validé.</li>
+<li>Chaque anomalie est qualifiée (bloquante, majeure, mineure) et suivie jusqu'à sa clôture.</li>
+<li>Les droits d'accès par profil ont été vérifiés.</li>
+<li>La reprise des données a été testée sur un échantillon représentatif.</li>
+<li>Les super-utilisateurs sont formés et la documentation est livrée.</li>
+<li>Un plan de retour en arrière existe en cas de problème à la bascule.</li>
+<li>Le contrat de maintenance et le circuit de support sont définis.</li>
+</ul>
+<h2>Après la mise en production : évoluer par incréments</h2>
+<p>Cette méthode permet de livrer un premier outil utilisable en 3 à 4 mois, puis de l'enrichir par incréments successifs tout en observant l'usage réel. Les fonctionnalités reportées pendant le cadrage sont réexaminées à la lumière de ce que les utilisateurs font vraiment de l'outil. C'est cette boucle qui distingue un logiciel vivant d'un livrable qui vieillit dès sa livraison.</p>
+<p>La maintenance fait partie du projet dès le départ : correction des anomalies, mises à jour techniques et évolutions sont prévues par contrat, avec un point d'entrée unique pour le support. Un logiciel sur mesure dont personne ne s'occupe après la livraison perd vite sa valeur, quelle que soit la qualité du développement initial.</p>
+<h2>En pratique</h2>
+<p>Cette démarche est celle de notre offre de <a href="/services/developpement-specifique">développement spécifique et SaaS métier</a>. Vous avez un processus à outiller et vous voulez savoir par où commencer ? <a href="/contact-demo">Parlons-en</a> : un échange de cadrage permet de dire si votre besoin relève d'un standard, d'un paramétrage ou d'un développement sur mesure.</p>`,
+    faq: [
+      {
+        question: "Qu'est-ce qu'un MVP en développement logiciel ?",
+        answer:
+          "Un MVP (produit minimum viable) est une première version fonctionnelle qui couvre uniquement les cas d'usage prioritaires. Il est déployé sur un environnement pilote pour être testé par de vrais utilisateurs, ce qui permet de valider la valeur de l'outil avant d'investir dans l'ensemble du périmètre.",
+      },
+      {
+        question: "Combien de temps dure chaque phase de votre méthode ?",
+        answer:
+          "Le cadrage et la spécification durent 4 à 6 semaines, le MVP 8 à 12 semaines. La recette et la mise en production dépendent du périmètre et du nombre de sites ou d'équipes à déployer. Au total, un premier outil utilisable est disponible en 3 à 4 mois.",
+      },
+      {
+        question: "Un cahier des charges est-il encore nécessaire avec une méthode itérative ?",
+        answer:
+          "Oui, mais il change de nature. Il est construit avec les métiers pendant le cadrage, il fixe le périmètre du MVP et les critères de réussite, puis il est ajusté à chaque itération au lieu de rester figé pendant des mois.",
+      },
+      {
+        question: "Comment se déroule la recette utilisateur ?",
+        answer:
+          "Elle s'appuie sur des scénarios rédigés avec les métiers, couvrant les cas nominaux et les cas limites, avec des critères d'acceptation explicites. Les anomalies sont classées par gravité et suivies jusqu'à leur correction. Les super-utilisateurs sont ensuite formés avant un déploiement progressif.",
+      },
+      {
+        question: "Que doit fournir l'entreprise pendant le projet ?",
+        answer:
+          "Un référent métier disponible pour trancher rapidement, des utilisateurs clés présents aux démonstrations de fin de sprint et un sponsor capable d'arbitrer les priorités. La réactivité des décisions pèse davantage sur les délais que les difficultés techniques.",
+      },
+    ],
+    seoTitle: "Méthode de développement spécifique : MVP et recette",
     seoDescription:
-      "Spécification, MVP en 3 mois, recette utilisateur, déploiement progressif : la méthode Alliance pour réussir un développement spécifique.",
+      "Cadrage en 4 à 6 semaines, MVP en 8 à 12 semaines, recette par scénarios et déploiement progressif : la méthode Alliance pour un développement spécifique.",
     publishedDaysAgo: 19,
     tagSlugs: ["services", "developpement"],
   },
@@ -1067,45 +1192,116 @@ export const POSTS: SeedPost[] = [
     slug: "amoa-5-livrables-projet-saas",
     title: "AMOA : 5 livrables incontournables pour réussir un projet SaaS métier",
     excerpt:
-      "Cahier des charges, plan de tests, plan de déploiement, plan de formation, plan de réversibilité : les 5 livrables AMOA d'un projet SaaS.",
-    bodyHtml: html({
-      intro:
-        "Un projet SaaS métier réussi laisse derrière lui plus que du code en production : il produit un patrimoine documentaire qui sécurise l'organisation. Voici les cinq livrables AMOA que nous produisons systématiquement.",
-      sections: [
-        {
-          h2: "1. Cahier des charges fonctionnel",
-          p: "Rédigé en termes métier, priorisé MoSCoW, validé par les utilisateurs clés avant la mise en concurrence.",
-        },
-        {
-          h2: "2. Plan de tests de recette",
-          p: "Scénarios fonctionnels couvrant les cas nominaux et les cas limites, avec critères d'acceptation explicites.",
-          bullets: [
-            "Tests par persona métier",
-            "Tests de migration de données",
-            "Tests de performance et de charge",
-          ],
-        },
-        {
-          h2: "3. Plan de déploiement",
-          p: "Stratégie de bascule (big bang ou progressif), gestion des données historiques, plan B en cas d'échec.",
-        },
-        {
-          h2: "4. Plan de formation",
-          p: "Parcours de formation par profil, supports pédagogiques, plan de communication interne.",
-        },
-        {
-          h2: "5. Plan de réversibilité",
-          p: "Conditions et modalités de récupération des données et de désengagement du prestataire SaaS.",
-        },
-      ],
-      outro:
-        "Ces cinq livrables sont notre standard sur tout projet SaaS. Ils protègent l'organisation contre les mauvaises surprises et facilitent les audits internes.",
-    }),
-    seoTitle: "AMOA — 5 livrables clés d'un projet SaaS",
+      "Cahier des charges, plan de tests, plan de déploiement, plan de formation, plan de réversibilité : les 5 livrables AMOA d'un projet SaaS, avec une checklist pour les vérifier.",
+    bodyHtml: `<p>Un projet SaaS métier réussi laisse derrière lui plus que des utilisateurs connectés : il produit un patrimoine documentaire qui sécurise l'organisation, aide à décider, à former, à auditer et, le jour venu, à changer de solution. Ce patrimoine est le travail de l'<strong>assistance à maîtrise d'ouvrage</strong> (AMOA). Voici les cinq livrables que nous produisons systématiquement, ce que chacun contient et les questions à se poser pour vérifier qu'il est solide.</p>
+<h2>L'AMOA en deux mots</h2>
+<p>La maîtrise d'ouvrage, c'est vous : l'organisation qui exprime le besoin et valide le résultat. L'AMOA est l'accompagnement d'un expert indépendant, qui traduit les besoins métier en exigences claires, suit le prestataire (éditeur SaaS ou équipe de développement) et sécurise la recette et la mise en service. Son rôle est détaillé dans notre article <a href="/blog/amoa-pourquoi-confier-pilotage-projet-digital">pourquoi confier le pilotage de votre projet digital à un consultant indépendant</a>, et sur la page de notre service d'<a href="/services/assistance-maitrise-ouvrage">assistance à maîtrise d'ouvrage</a>.</p>
+<h2>1. Le cahier des charges fonctionnel</h2>
+<p>C'est le document fondateur : il décrit ce que la solution doit permettre de faire, sans prescrire comment la construire. Il est rédigé en termes métier, pour être compris des utilisateurs comme des prestataires. Un cahier des charges solide comporte :</p>
+<ul>
+<li>le contexte et les objectifs du projet, avec les indicateurs qui diront s'il a réussi ;</li>
+<li>la description des processus actuels et des processus cibles ;</li>
+<li>les exigences fonctionnelles, priorisées (par exemple selon la méthode MoSCoW : indispensable, souhaitable, utile, exclu) ;</li>
+<li>les exigences non fonctionnelles : sécurité, disponibilité, hébergement, langues, accessibilité ;</li>
+<li>les interfaces avec les systèmes existants.</li>
+</ul>
+<p>Il est validé par les utilisateurs clés <em>avant</em> la mise en concurrence des prestataires, de manière que toutes les offres répondent au même besoin et puissent être comparées. Si vous hésitez entre un produit du marché et un développement sur mesure, ce document sert aussi de base à la comparaison, comme nous l'expliquons dans <a href="/blog/developpement-specifique-vs-saas-standard">développement spécifique ou SaaS standard</a>.</p>
+<h2>2. Le plan de tests de recette</h2>
+<p>La recette est l'étape où vous décidez d'accepter, ou non, la solution. Le plan de tests la rend objective : plutôt que d'essayer l'outil au hasard, on déroule des scénarios écrits à l'avance, avec des critères d'acceptation explicites.</p>
+<h3>Ce que doit couvrir le plan</h3>
+<ul>
+<li>des scénarios fonctionnels sur les cas nominaux et sur les cas limites ;</li>
+<li>des tests par persona métier (comptable, responsable, agent de terrain), car chacun n'utilise pas l'outil de la même façon ;</li>
+<li>des tests de migration de données, pour vérifier que l'historique est repris sans perte ni doublon ;</li>
+<li>des tests de performance et de charge, représentatifs du nombre d'utilisateurs réel ;</li>
+<li>la grille de qualification des anomalies (bloquante, majeure, mineure) et la règle de décision associée.</li>
+</ul>
+<p>La logique de recette par scénarios est la même que celle de <a href="/blog/developpement-specifique-methode-mvp-recette">notre méthode de développement spécifique</a>.</p>
+<h2>3. Le plan de déploiement</h2>
+<p>Passer en production n'est pas un interrupteur. Le plan de déploiement organise la bascule pour que l'activité ne s'arrête pas :</p>
+<ul>
+<li>la stratégie de bascule : <em>big bang</em> (tout le monde le même jour) ou progressive (par site, direction ou équipe) ;</li>
+<li>la gestion des données historiques : ce qui est repris, archivé ou abandonné ;</li>
+<li>le calendrier, en évitant les périodes de forte activité (clôtures, campagnes) ;</li>
+<li>la cellule de support des premiers jours et le circuit de remontée des problèmes ;</li>
+<li>le <strong>plan B</strong> : les conditions dans lesquelles on revient à l'ancien fonctionnement, et comment.</li>
+</ul>
+<h2>4. Le plan de formation</h2>
+<p>Un outil qui n'est pas maîtrisé n'est pas adopté. Le plan de formation traite la conduite du changement de façon concrète :</p>
+<ul>
+<li>un parcours par profil (administrateur, saisie, validation, consultation), plutôt qu'une formation unique pour tous ;</li>
+<li>des supports pédagogiques adaptés aux usages réels : guides pas à pas, fiches rapides, vidéos courtes ;</li>
+<li>le repérage et la formation des super-utilisateurs, relais de proximité auprès de leurs collègues ;</li>
+<li>un plan de communication interne : pourquoi on change, ce que cela apporte, quand et à qui s'adresser ;</li>
+<li>un suivi après la mise en production pour repérer les difficultés d'usage.</li>
+</ul>
+<h2>5. Le plan de réversibilité</h2>
+<p>C'est le livrable que l'on néglige le plus, et celui qui protège le plus. Avec un SaaS, vos données vivent chez un tiers. Le plan de réversibilité décrit à l'avance les conditions de votre désengagement :</p>
+<ul>
+<li>les données récupérables et leur format (formats ouverts de préférence) ;</li>
+<li>les modalités et délais de restitution à la fin du contrat ;</li>
+<li>la suppression certifiée des données chez le prestataire après restitution ;</li>
+<li>l'accompagnement technique de la transition vers une autre solution ;</li>
+<li>la continuité du service pendant la période de transition.</li>
+</ul>
+<p>Ces conditions se négocient avant la signature, quand vous avez encore le choix du prestataire, et non au moment de la rupture.</p>
+<h2>Les 5 livrables en un coup d'œil</h2>
+<table>
+<thead>
+<tr><th>Livrable</th><th>Moment</th><th>Question à laquelle il répond</th></tr>
+</thead>
+<tbody>
+<tr><td>Cahier des charges fonctionnel</td><td>Avant la consultation</td><td>Que doit permettre la solution ?</td></tr>
+<tr><td>Plan de tests de recette</td><td>Avant la recette</td><td>Comment décider d'accepter la solution ?</td></tr>
+<tr><td>Plan de déploiement</td><td>Avant la bascule</td><td>Comment passer en production sans arrêter l'activité ?</td></tr>
+<tr><td>Plan de formation</td><td>Avant et après la bascule</td><td>Comment garantir que l'outil sera utilisé ?</td></tr>
+<tr><td>Plan de réversibilité</td><td>Avant la signature</td><td>Comment récupérer nos données si nous partons ?</td></tr>
+</tbody>
+</table>
+<p>Ces livrables s'enchaînent et se répondent : les exigences du cahier des charges alimentent les scénarios de recette, qui conditionnent la date de bascule, laquelle détermine le calendrier de formation. Les produire dans le désordre, ou les confier à des interlocuteurs différents sans les relier, est la source de la plupart des écarts constatés en fin de projet. C'est pourquoi nous les traitons comme un ensemble cohérent, tenu à jour par la même équipe tout au long du projet, de la consultation à la sortie éventuelle du dispositif.</p>
+<h2>Checklist : vos 5 livrables sont-ils solides ?</h2>
+<ul>
+<li>Le cahier des charges est-il signé par les utilisateurs clés, et non par la seule direction informatique ?</li>
+<li>Les exigences sont-elles priorisées, avec ce qui est exclu du périmètre ?</li>
+<li>Chaque scénario de recette a-t-il un critère d'acceptation écrit ?</li>
+<li>Le plan de déploiement prévoit-il explicitement un retour en arrière ?</li>
+<li>Chaque profil d'utilisateur a-t-il son parcours de formation ?</li>
+<li>Les conditions de sortie (données, délais, suppression) figurent-elles au contrat ?</li>
+</ul>
+<h2>En pratique</h2>
+<p>Ces cinq livrables sont notre standard sur tout projet SaaS. Ils protègent l'organisation contre les mauvaises surprises et facilitent les audits internes. Vous préparez un projet et voulez savoir s'ils sont en place ? <a href="/contact-demo">Échangeons sur votre situation</a>.</p>`,
+    faq: [
+      {
+        question: "Que signifie AMOA et à quoi sert-elle ?",
+        answer:
+          "AMOA signifie assistance à maîtrise d'ouvrage. Un expert indépendant vous aide à exprimer votre besoin, à suivre le prestataire, à organiser la recette et à sécuriser la mise en service. Il défend les intérêts de l'organisation tout au long du projet.",
+      },
+      {
+        question: "Quels sont les livrables d'une AMOA sur un projet SaaS ?",
+        answer:
+          "Nous en retenons cinq : le cahier des charges fonctionnel, le plan de tests de recette, le plan de déploiement, le plan de formation et le plan de réversibilité. Ensemble, ils couvrent l'expression du besoin, l'acceptation de la solution, la mise en production, l'adoption et la sortie éventuelle.",
+      },
+      {
+        question: "Pourquoi prévoir un plan de réversibilité avec un SaaS ?",
+        answer:
+          "Parce que vos données sont hébergées chez un tiers. Le plan de réversibilité fixe à l'avance le format et les délais de restitution des données, la suppression chez le prestataire et l'accompagnement de la transition. Il se négocie avant la signature du contrat, quand vous pouvez encore choisir.",
+      },
+      {
+        question: "Un cahier des charges doit-il être validé avant de consulter les prestataires ?",
+        answer:
+          "Oui. Validé par les utilisateurs clés avant la mise en concurrence, il garantit que tous les prestataires répondent au même besoin et que les offres sont comparables. Cela évite aussi de découvrir des exigences oubliées en cours de projet.",
+      },
+      {
+        question: "L'AMOA est-elle utile pour un petit projet ?",
+        answer:
+          "Le niveau d'accompagnement s'adapte à la taille du projet. Même modeste, un projet gagne à disposer d'un besoin écrit, de scénarios de recette et d'un plan de sortie. Ces documents peuvent alors être allégés, mais pas supprimés.",
+      },
+    ],
+    seoTitle: "AMOA : 5 livrables clés d'un projet SaaS métier",
     seoDescription:
-      "Cahier des charges, plan de tests, déploiement, formation, réversibilité : les 5 livrables AMOA incontournables d'un projet SaaS métier.",
+      "Cahier des charges, plan de tests, déploiement, formation, réversibilité : les 5 livrables AMOA d'un projet SaaS métier, avec checklist et FAQ.",
     publishedDaysAgo: 27,
-    tagSlugs: ["services"],
+    tagSlugs: ["services", "transformation-digitale"],
   },
 
   // =========================================================================
@@ -1874,41 +2070,109 @@ export const POSTS: SeedPost[] = [
     slug: "archivage-reglementaire-normes-bonnes-pratiques",
     title: "Archivage réglementaire : normes et bonnes pratiques pour organisations africaines",
     excerpt:
-      "Tour d'horizon des normes d'archivage électronique et bonnes pratiques applicables aux organisations africaines : NF Z42-013, ISO 14641, valeur probante.",
-    bodyHtml: html({
-      intro:
-        "L'archivage électronique à valeur probante répond à des exigences précises, parfois incompatibles avec une simple sauvegarde de fichiers. Voici un tour d'horizon des normes et bonnes pratiques applicables.",
-      sections: [
-        {
-          h2: "Le cadre normatif",
-          p: "Plusieurs normes encadrent l'archivage électronique probant.",
-          bullets: [
-            "NF Z42-013 — exigences techniques et organisationnelles",
-            "ISO 14641 — équivalent international",
-            "ISO 27001 — sécurité de l'information",
-          ],
-        },
-        {
-          h2: "Les principes clés",
-          p: "Authenticité, intégrité, intelligibilité et pérennité des documents archivés. Chacun se traduit par des contrôles techniques.",
-        },
-        {
-          h2: "Les bonnes pratiques",
-          p: "Empreintes cryptographiques, journalisation horodatée, conservation des formats ouverts, sauvegarde géo-redondante, plan de migration des supports.",
-        },
-        {
-          h2: "Les écueils fréquents",
-          p: "Confondre sauvegarde et archivage, négliger la migration des formats, oublier les durées de conservation différenciées par typologie.",
-        },
-      ],
-      outro:
-        "Notre équipe accompagne les organisations africaines dans la définition de leur politique d'archivage et dans le choix d'un système conforme. Un audit initial permet de cadrer le besoin.",
-    }),
-    seoTitle: "Archivage réglementaire — normes & bonnes pratiques",
+      "Tour d'horizon des normes d'archivage électronique (NF Z42-013, ISO 14641, ISO 15489) et des bonnes pratiques pour conserver des documents avec valeur probante.",
+    bodyHtml: `<p>L'archivage électronique à valeur probante répond à des exigences précises, parfois incompatibles avec une simple sauvegarde de fichiers. Lorsqu'un document doit pouvoir servir de preuve des années plus tard (contrat, facture, dossier du personnel, décision administrative), il ne suffit pas de le conserver : il faut démontrer qu'il n'a pas été modifié, qu'il reste lisible et qu'on sait qui l'a déposé, quand et pourquoi. Voici un tour d'horizon des normes de référence et des bonnes pratiques à mettre en œuvre dans une organisation africaine.</p>
+<h2>Archivage, sauvegarde, GED : ne pas confondre</h2>
+<p>Trois notions voisines sont souvent mélangées, avec des conséquences concrètes :</p>
+<ul>
+<li>la <strong>sauvegarde</strong> protège contre la perte de données : elle copie l'état actuel d'un système pour pouvoir le restaurer, et elle est écrasée au fil du temps ;</li>
+<li>la <strong>GED</strong> (gestion électronique des documents) organise les documents vivants : classement, recherche, versions, circuits de validation ;</li>
+<li>l'<strong>archivage</strong> conserve des documents figés pour une durée définie, avec des garanties d'intégrité, de traçabilité et de lisibilité dans le temps.</li>
+</ul>
+<p>Une GED peut intégrer une fonction d'archivage, mais ce n'est pas automatique : cela dépend de la façon dont elle est configurée et opérée. C'est l'un des points que nous abordons dans notre article sur <a href="/blog/ged-2026-questions-avant-docupro-suite">les questions à se poser avant de choisir une GED</a>.</p>
+<h2>Le cadre normatif : quelles normes connaître ?</h2>
+<p>Plusieurs normes encadrent la gestion des documents et l'archivage électronique. Elles sont volontaires : elles ne remplacent pas la réglementation de votre pays, mais elles fournissent un référentiel reconnu pour concevoir et auditer un système.</p>
+<table>
+<thead>
+<tr><th>Référence</th><th>Sujet</th><th>À retenir</th></tr>
+</thead>
+<tbody>
+<tr><td>NF Z42-013</td><td>Systèmes d'archivage électronique</td><td>Exigences techniques et organisationnelles pour conserver l'intégrité des documents</td></tr>
+<tr><td>ISO 14641</td><td>Archivage électronique</td><td>Spécifications de conception et d'exploitation d'un système de conservation, dans la continuité de la norme française</td></tr>
+<tr><td>ISO 15489</td><td>Gestion des documents d'activité</td><td>Principes de gestion des documents tout au long de leur cycle de vie</td></tr>
+<tr><td>ISO 27001</td><td>Sécurité de l'information</td><td>Cadre de management de la sécurité, applicable aux systèmes qui hébergent les archives</td></tr>
+<tr><td>ISO 14721 (OAIS)</td><td>Archivage à long terme</td><td>Modèle de référence pour la conservation pérenne de l'information</td></tr>
+<tr><td>ISO 19005 (PDF/A)</td><td>Format de conservation</td><td>Format de fichier PDF destiné à la conservation à long terme</td></tr>
+</tbody>
+</table>
+<p>Ne cherchez pas à tout appliquer d'un coup. Un bon point de départ est de vous appuyer sur les principes de gestion des documents (ISO 15489), puis sur les exigences de conservation (NF Z42-013, ISO 14641) pour les documents à valeur probante. Pour les obligations légales propres à votre pays (durées de conservation, valeur juridique de la copie numérique et de la signature électronique), rapprochez-vous de votre conseil juridique ou de l'autorité compétente : ces points relèvent du droit national et varient d'un pays à l'autre.</p>
+<h2>Les quatre principes clés</h2>
+<p>Au-delà des normes, quatre propriétés doivent être garanties pour un document archivé. Chacune se traduit par des contrôles techniques précis.</p>
+<h3>Authenticité</h3>
+<p>On doit pouvoir établir que le document est bien ce qu'il prétend être, et qu'il provient de son auteur. Cela passe par l'identification des déposants, la conservation des métadonnées d'origine et, selon les cas, la signature électronique.</p>
+<h3>Intégrité</h3>
+<p>Le contenu ne doit pas avoir été altéré depuis son versement. Les empreintes cryptographiques (le « hash » du fichier) permettent de le vérifier : si une empreinte recalculée diffère de l'empreinte d'origine, le document a été modifié.</p>
+<h3>Intelligibilité</h3>
+<p>Le document doit rester lisible et compréhensible : formats ouverts et documentés, métadonnées qui expliquent son contexte (date, auteur, dossier, typologie), plan de classement cohérent.</p>
+<h3>Pérennité</h3>
+<p>Il doit rester exploitable pendant toute sa durée de conservation, malgré l'obsolescence des supports, des logiciels et des formats. Cela suppose une surveillance régulière et un plan de migration.</p>
+<h2>Les bonnes pratiques à mettre en œuvre</h2>
+<ul>
+<li><strong>Empreintes cryptographiques</strong> calculées au versement et contrôlées périodiquement ;</li>
+<li><strong>Journalisation horodatée</strong> de chaque événement (dépôt, consultation, modification de métadonnées, élimination), non modifiable ;</li>
+<li><strong>Formats ouverts</strong> pour la conservation (PDF/A pour les documents, formats standard pour les images) ;</li>
+<li><strong>Sauvegarde géo-redondante</strong> : au moins une copie sur un site distinct de l'original ;</li>
+<li><strong>Gestion des droits</strong> : accès limité selon le profil, séparation entre ceux qui déposent, consultent et éliminent ;</li>
+<li><strong>Plan de migration des supports et des formats</strong>, avec calendrier de contrôle ;</li>
+<li><strong>Durées de conservation différenciées</strong> par typologie de document, avec le sort final prévu (élimination ou conservation définitive) ;</li>
+<li><strong>Procédure d'élimination documentée</strong>, validée par les responsables concernés.</li>
+</ul>
+<h2>Les écueils fréquents</h2>
+<p>Les mêmes erreurs reviennent dans la plupart des organisations :</p>
+<ul>
+<li>confondre sauvegarde et archivage, et croire qu'une copie sur disque externe constitue une preuve ;</li>
+<li>numériser sans plan de classement ni indexation, ce qui produit un volume impossible à exploiter (voir <a href="/blog/dematerialisation-fondamentaux-plan-classement">plan de classement, indexation et conservation</a>) ;</li>
+<li>négliger la migration des formats et des supports, jusqu'au jour où plus rien ne sait ouvrir les fichiers ;</li>
+<li>oublier de différencier les durées de conservation par typologie, et tout garder (ou tout éliminer) indistinctement ;</li>
+<li>laisser les droits d'accès trop larges, ou ne pas tracer les consultations.</li>
+</ul>
+<h2>Par où commencer ?</h2>
+<p>Le plus efficace est de procéder par étapes : inventorier les fonds et classer les documents selon leur valeur juridique et leur durée de conservation, définir le plan de classement, choisir les formats et les contrôles adaptés, puis mettre en place un système capable de les appliquer. Notre article <a href="/blog/dematerialisation-archives-par-ou-commencer">dématérialisation des archives : par où commencer</a> détaille cette démarche.</p>
+<h2>Checklist : votre archivage est-il prêt pour la valeur probante ?</h2>
+<ul>
+<li>Les typologies de documents à valeur probante sont identifiées.</li>
+<li>Une durée de conservation et un sort final sont définis pour chacune.</li>
+<li>Chaque document versé reçoit une empreinte et des métadonnées d'origine.</li>
+<li>Les événements sont journalisés avec horodatage, de façon non modifiable.</li>
+<li>Les formats de conservation sont ouverts et documentés.</li>
+<li>Une copie géographiquement distincte est maintenue.</li>
+<li>Un plan de contrôle et de migration est planifié.</li>
+<li>Les obligations légales nationales ont été vérifiées avec un conseil compétent.</li>
+</ul>
+<h2>En pratique</h2>
+<p>Notre équipe accompagne les organisations africaines dans la définition de leur politique d'archivage et dans le choix d'un système adapté. Notre service de <a href="/services/dematerialisation-archives">numérisation et dématérialisation des archives</a> couvre le conseil, la méthode, l'indexation et le plan de classement, puis l'intégration des documents à la GED <a href="/solutions/docupro-suite">DocuPro Suite</a>. Un audit initial permet de cadrer le besoin : <a href="/contact-demo">contactez-nous</a> pour en discuter.</p>`,
+    faq: [
+      {
+        question: "Quelle est la différence entre archivage électronique et sauvegarde ?",
+        answer:
+          "La sauvegarde copie l'état courant d'un système pour pouvoir le restaurer après une perte, et ses copies sont régulièrement remplacées. L'archivage conserve des documents figés pendant une durée définie, avec des garanties d'intégrité, de traçabilité et de lisibilité. Une sauvegarde seule ne constitue donc pas une preuve.",
+      },
+      {
+        question: "Quelles normes encadrent l'archivage électronique probant ?",
+        answer:
+          "Les références les plus courantes sont NF Z42-013 et ISO 14641 pour la conception et l'exploitation d'un système d'archivage électronique, ISO 15489 pour la gestion des documents d'activité et ISO 27001 pour la sécurité de l'information. Ce sont des normes volontaires : elles complètent la réglementation nationale sans la remplacer.",
+      },
+      {
+        question: "Comment prouver qu'un document archivé n'a pas été modifié ?",
+        answer:
+          "On calcule une empreinte cryptographique du document lors de son versement, puis on la recontrôle périodiquement. Si l'empreinte recalculée est identique, le document n'a pas changé. Cette vérification est complétée par une journalisation horodatée de tous les événements et, selon les cas, par une signature électronique.",
+      },
+      {
+        question: "Quel format de fichier choisir pour conserver des documents longtemps ?",
+        answer:
+          "Privilégiez des formats ouverts et documentés. Pour les documents, le PDF/A (norme ISO 19005) est conçu pour la conservation à long terme. Quel que soit le format, un plan de migration doit être prévu pour traiter l'obsolescence des logiciels et des supports.",
+      },
+      {
+        question: "Les durées de conservation sont-elles les mêmes pour tous les documents ?",
+        answer:
+          "Non. Elles dépendent de la typologie du document et des obligations légales de votre pays. Il faut les définir pour chaque catégorie avec le sort final prévu (élimination ou conservation définitive) et les faire valider par votre conseil juridique.",
+      },
+    ],
+    seoTitle: "Archivage réglementaire : normes et bonnes pratiques",
     seoDescription:
-      "NF Z42-013, ISO 14641, valeur probante : normes et bonnes pratiques d'archivage électronique pour organisations africaines.",
+      "NF Z42-013, ISO 14641, ISO 15489, valeur probante : normes d'archivage électronique, bonnes pratiques et checklist pour organisations africaines.",
     publishedDaysAgo: 33,
-    tagSlugs: ["formations", "ged"],
+    tagSlugs: ["services", "ged"],
   },
 ];
 

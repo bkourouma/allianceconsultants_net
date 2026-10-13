@@ -108,7 +108,7 @@ const MILESTONES: Milestone[] = [
     year: "2020",
     title: "Extension à la santé et à l'immobilier",
     description:
-      "Lancement de MedicPro et CliniquePro pour le secteur médical et d'ImmoTopia.cloud pour la gestion immobilière.",
+      "Lancement de MedicPro (gestion réglementaire pharmaceutique), de CliniquePro (cliniques, centres de santé et cabinets médicaux) et d'ImmoTopia.cloud pour la gestion immobilière.",
     color: getLine("medicpro")?.color ?? "#098240",
   },
   {

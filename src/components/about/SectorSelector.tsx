@@ -44,8 +44,14 @@ const SECTORS: Sector[] = [
   },
   {
     id: "sante",
-    label: "Établissements de santé (hôpitaux, cliniques)",
-    lines: ["cliniquepro", "medicpro", "docupro"],
+    label: "Cliniques, centres de santé et cabinets médicaux",
+    lines: ["cliniquepro", "docupro"],
+    services: [],
+  },
+  {
+    id: "pharma",
+    label: "Laboratoires et opérateurs pharmaceutiques",
+    lines: ["medicpro", "docupro"],
     services: [],
   },
   {

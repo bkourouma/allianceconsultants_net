@@ -103,7 +103,7 @@ export const LINE_GEO: Record<LineId, LineGeo> = {
     badge: { x: 22, w: 112 },
     stations: [
       { id: "cliniquepro-patients", name: "Patients et agenda", label: ["Patients", "& agenda"], at: [165, 440], side: "s", detail: ["Dossier patient centralisé", "Agenda partagé", "Recherche rapide patient", "Suivi des assurances rattachées"] },
-      { id: "cliniquepro-consultation", name: "Consultation et examens ophtalmologiques", label: ["Consultation", "& examens"], at: [340, 440], side: "s", detail: ["Modèles de consultation spécialisés", "Ordonnances de lunettes", "Suivi des actes et statuts"] },
+      { id: "cliniquepro-consultation", name: "Consultation et examens", label: ["Consultation", "& examens"], at: [340, 440], side: "s", detail: ["Modèles de consultation spécialisés", "Ordonnances", "Suivi des actes et statuts"] },
       { id: "cliniquepro-caisse", name: "Caisse, facturation et honoraires", label: ["Caisse &", "facturation"], at: [450, 440], side: "s", detail: ["Encaissement et suivi des paiements", "Facturation", "Honoraires médecins"] },
       { id: "cliniquepro-pilotage", name: "Pilotage et tableaux de bord", label: ["Pilotage"], at: [560, 440], side: "s", detail: ["Indicateurs d'activité", "Suivi par médecin", "Traçabilité des actions sensibles"] },
     ],
@@ -322,7 +322,7 @@ const lineRoute = (id: LineId, planner: string): RouteDef => {
 export const ROUTES: RouteDef[] = [
   lineRoute("docupro", "Archives & GED"),
   lineRoute("medicpro", "Pharma & réglementaire"),
-  lineRoute("cliniquepro", "Cliniques"),
+  lineRoute("cliniquepro", "Cliniques & cabinets"),
   lineRoute("immotopia", "Immobilier & syndic"),
   lineRoute("annonces", "Annonces immobilières"),
   lineRoute("ecole", "Écoles"),

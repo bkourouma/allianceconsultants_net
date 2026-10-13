@@ -61,7 +61,7 @@ export const LINES: readonly NetworkLine[] = [
     slug: "cliniquepro",
     name: "CliniquePro",
     sector: "Cliniques & santé",
-    pitch: "Patients, agenda, consultations et caisse d'une clinique ophtalmologique.",
+    pitch: "Patients, agenda, consultations et caisse d'une clinique, d'un centre de santé ou d'un cabinet.",
     color: "#00789a",
     onColor: "#ffffff",
   },

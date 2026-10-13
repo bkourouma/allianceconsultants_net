@@ -57,7 +57,7 @@
       "nudge": "Je vois que vous vous intéressez à CliniquePro. Vous dirigez une clinique ?",
       "opener": "Bonjour, je suis l'assistant IA d'Alliance Consultants. Je vois que vous vous intéressez à CliniquePro : vous êtes propriétaire ou responsable d'une clinique, d'un centre de santé ou d'un cabinet médical ? Et comment gérez-vous aujourd'hui vos patients, vos rendez-vous et votre caisse : papier, Excel, un autre logiciel ?",
       "replies": ["Je dirige une clinique", "Je suis médecin", "Je gère l'administration"],
-      "focus": "Rôle du visiteur (propriétaire, médecin, administratif), taille de la clinique (praticiens, patients par jour), outil actuel pour dossiers patients, agenda, caisse, honoraires et assurances, principale difficulté (ressaisies, suivi des encaissements, visibilité sur l'activité). CliniquePro s'adresse à toutes les cliniques, tous les centres de santé et tous les cabinets médicaux, quelle que soit la spécialité (l'ophtalmologie n'est qu'un exemple de modèles de consultation spécialisés)."
+      "focus": "Rôle du visiteur (propriétaire, médecin, administratif), taille de la clinique (praticiens, patients par jour), outil actuel pour dossiers patients, agenda, caisse, honoraires et assurances, principale difficulté (ressaisies, suivi des encaissements, visibilité sur l'activité). Pour toutes cliniques, centres de santé et cabinets, toutes spécialités. Calcule la prise en charge assurance (part assurance/part patient), fonctionne hors connexion, données hébergeables localement (Côte d'Ivoire ou sur site). Pas de module hospitalisation, laboratoire ni pharmacie."
     },
     {
       "id": "solutions/immotopia-cloud",

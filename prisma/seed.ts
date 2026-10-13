@@ -869,41 +869,119 @@ export const POSTS: SeedPost[] = [
   // =========================================================================
   {
     slug: "automatisation-ia-7-processus-pme",
-    title: "Automatisation IA : 7 processus métiers à automatiser en priorité dans une PME",
+    title: "Automatisation IA pour PME : 7 processus métiers à automatiser en priorité",
     excerpt:
-      "Sept processus à fort ROI à automatiser en priorité dans une PME africaine grâce à l'IA et à n8n : facturation, support, marketing, RH.",
-    bodyHtml: html({
-      intro:
-        "L'automatisation par l'IA n'est pas un luxe réservé aux grands groupes. Pour une PME, quelques chantiers ciblés peuvent libérer des dizaines d'heures par semaine. Voici les sept processus que nous automatisons le plus souvent chez nos clients.",
-      sections: [
-        {
-          h2: "Les processus à fort ROI",
-          p: "À chaque fois, le critère est le même : volume répétitif, règles claires, données structurées disponibles.",
-          bullets: [
-            "1. Saisie et catégorisation des factures fournisseurs (OCR + LLM)",
-            "2. Tri et qualification des demandes support entrantes",
-            "3. Génération de réponses standards à des e-mails fréquents",
-            "4. Extraction d'informations dans les contrats et CV",
-            "5. Production de comptes rendus de réunion à partir d'enregistrements",
-            "6. Veille concurrentielle et synthèse automatisée",
-            "7. Pré-qualification des leads commerciaux",
-          ],
-        },
-        {
-          h2: "La méthode d'automatisation",
-          p: "Pour chaque processus : cartographie, calcul du ROI, prototype en 2 semaines, déploiement et suivi des indicateurs.",
-        },
-        {
-          h2: "Les outils mobilisés",
-          p: "n8n pour l'orchestration, des LLMs (OpenAI, modèles open-source) pour le traitement, vos applications métier en cible via API.",
-        },
-      ],
-      outro:
-        "Un audit d'automatisation Alliance dure 5 jours et produit une feuille de route priorisée par ROI sur 12 mois. Idéal pour démarrer sans engagement long.",
-    }),
-    seoTitle: "Automatisation IA — 7 processus à prioriser en PME",
+      "Sept processus à fort ROI à automatiser en priorité dans une PME grâce à l'IA et à n8n : pour chacun, le problème, ce que fait l'automatisation et comment mesurer le résultat.",
+    bodyHtml: [
+      `<p>Dans beaucoup de PME africaines, des heures de travail partent chaque semaine dans des tâches répétitives : ressaisir des factures, trier des e-mails, relire des CV, rédiger des comptes rendus. L'<strong>automatisation IA pour PME</strong> consiste à confier ces tâches à des flux automatisés capables de lire des documents et des messages, pour laisser aux équipes la décision et la relation avec les clients. Voici les sept processus que nous automatisons le plus souvent, la façon de choisir le premier et les obstacles à anticiper.</p>`,
+
+      `<h2>Qu'est-ce que l'automatisation IA pour une PME ?</h2>`,
+      `<p>Trois notions sont souvent mélangées.</p>`,
+      `<ul>`,
+      `<li><strong>L'automatisation classique</strong> enchaîne des étapes selon des règles fixes : « quand une facture arrive dans cette boîte, la copier dans ce dossier et prévenir la comptabilité ».</li>`,
+      `<li><strong>L'IA</strong> (OCR, modèles de langage ou LLM) apporte ce que les règles fixes ne savent pas faire : lire un document scanné, comprendre un e-mail écrit librement, résumer un texte, en extraire des informations.</li>`,
+      `<li><strong>Un agent IA</strong> choisit lui-même ses étapes pour atteindre un objectif. C'est puissant, mais moins prévisible : en PME, on commence presque toujours par des workflows maîtrisés avec une validation humaine aux étapes sensibles.</li>`,
+      `</ul>`,
+      `<p>L'automatisation IA combine donc les deux premières briques : n8n pour l'enchaînement, l'IA pour la compréhension, vos applications métier en cible via leurs API. Détails techniques : <a href="/blog/n8n-llms-api-architectures-automatisation-ia">architectures-types n8n, LLMs et API</a>.</p>`,
+
+      `<h2>1. Saisie et catégorisation des factures fournisseurs</h2>`,
+      `<p><strong>Le problème.</strong> Les factures arrivent par e-mail, en PDF, en photo ou sur papier, dans des formats tous différents. Les ressaisir est long, source d'erreurs, et retarde l'enregistrement comptable.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> Un flux n8n surveille la boîte e-mail ou le dossier de dépôt. L'OCR lit le document, puis un LLM extrait le fournisseur, la date, les montants et propose une catégorie comptable, dans un format de sortie strict. Les données sont contrôlées puis écrites dans votre outil de comptabilité par API ; les anomalies vont au comptable.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Moins de temps de saisie, moins d'erreurs, un délai plus court entre la réception et l'enregistrement. Mesurez le temps de traitement par facture, le nombre de corrections manuelles et le délai d'enregistrement, avant et après, sur un échantillon.</p>`,
+
+      `<h2>2. Tri et qualification des demandes de support</h2>`,
+      `<p><strong>Le problème.</strong> Les demandes arrivent par e-mail, formulaire ou messagerie, et quelqu'un doit les lire une à une pour les classer.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> Chaque demande est classée par sujet, urgence et langue, rapprochée des demandes déjà ouvertes, puis dirigée vers la bonne personne. À partir de votre base de connaissances, le système propose un brouillon de réponse que l'agent relit avant envoi.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Suivez le délai de première réponse, la part de demandes correctement orientées dès le premier passage et la charge de tri de l'équipe. Des exemples détaillés figurent dans nos <a href="/blog/cas-usage-ia-pme-africaines-marketing-support-rh">cas d'usage IA pour PME africaines</a>.</p>`,
+
+      `<h2>3. Réponses standards aux e-mails fréquents</h2>`,
+      `<p><strong>Le problème.</strong> Les mêmes questions reviennent tous les jours (disponibilité, délais, statut d'une commande, documents à fournir) et chacune demande quelques minutes de rédaction.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> À partir de modèles que vous avez validés et des données de vos applications, le système prépare un brouillon dans le ton de l'entreprise. Un collaborateur relit, ajuste si besoin et envoie.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Des réponses plus rapides et plus homogènes. Mesurez le temps de réponse, la part de brouillons envoyés sans modification et les retours des clients.</p>`,
+
+      `<h2>4. Extraction d'informations dans les contrats et les CV</h2>`,
+      `<p><strong>Le problème.</strong> Les informations utiles (dates d'échéance, parties, clauses à surveiller, expérience et compétences d'un candidat) sont enfouies dans des PDF qu'il faut lire en entier.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> L'OCR et un LLM extraient les champs demandés vers un tableau structuré. Pour les contrats, le système alimente un calendrier d'échéances et alerte avant les dates clés. Pour les CV, il présente les profils selon les critères du poste, la décision finale restant celle du recruteur.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Un dépouillement plus rapide et des échéances moins souvent oubliées. Mesurez le temps de dépouillement par dossier et le nombre d'échéances manquées.</p>`,
+
+      `<h2>5. Comptes rendus de réunion à partir d'enregistrements</h2>`,
+      `<p><strong>Le problème.</strong> Personne ne veut rédiger le compte rendu, il arrive tard, et les décisions et les actions se perdent.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> L'enregistrement est transcrit, puis un LLM produit un résumé, la liste des décisions et les actions avec leur responsable et leur échéance. Le document est envoyé aux participants après relecture rapide, et les actions peuvent être créées dans votre outil de suivi de tâches.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Mesurez le délai d'envoi du compte rendu et la part d'actions réellement clôturées.</p>`,
+
+      `<h2>6. Veille concurrentielle et synthèse automatisée</h2>`,
+      `<p><strong>Le problème.</strong> La veille se fait quand on a le temps, donc rarement.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> n8n collecte régulièrement les sources que vous choisissez (sites de concurrents, actualités du secteur, appels d'offres). Un LLM écarte le bruit, résume l'essentiel et classe les informations par thème. Une synthèse est envoyée chaque semaine par e-mail ou sur votre messagerie.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Mesurez la régularité des envois, l'utilité perçue par les lecteurs et le temps libéré.</p>`,
+
+      `<h2>7. Pré-qualification des leads commerciaux</h2>`,
+      `<p><strong>Le problème.</strong> Les demandes arrivent du site, des salons ou des réseaux sociaux. Les commerciaux passent du temps sur des contacts peu qualifiés, et d'autres sont rappelés trop tard.</p>`,
+      `<p><strong>Ce que fait l'automatisation.</strong> Chaque demande est analysée, notée selon vos critères de qualification et affectée au bon commercial, avec un résumé du besoin. Un accusé de réception est envoyé immédiatement, et la fiche est créée dans votre outil de suivi commercial.</p>`,
+      `<p><strong>Résultat attendu et mesure.</strong> Suivez le délai de premier contact, la part de leads qualifiés et le taux de rendez-vous obtenus.</p>`,
+
+      `<h2>Comment choisir son premier processus</h2>`,
+      `<p>Le bon premier projet n'est pas le plus ambitieux, c'est celui qui réunit ces conditions :</p>`,
+      `<ul>`,
+      `<li><strong>Un volume répétitif</strong> : la tâche revient chaque jour ou chaque semaine, pour que le gain se voie.</li>`,
+      `<li><strong>Des règles claires</strong> : vous savez expliquer ce qu'une personne compétente fait, étape par étape.</li>`,
+      `<li><strong>Des données disponibles</strong> : les documents et les informations existent en numérique et sont accessibles.</li>`,
+      `<li><strong>Un risque maîtrisé</strong> : une erreur est rattrapable, et une validation humaine peut être prévue.</li>`,
+      `<li><strong>Un résultat mesurable</strong> : vous pouvez comparer la situation avant et après.</li>`,
+      `</ul>`,
+      `<p>Notre méthode suit toujours le même enchaînement : cartographie du processus, calcul du ROI, prototype en 2 semaines, déploiement, puis suivi des indicateurs. Pour classer plusieurs candidats, l'audit de 5 jours (voir plus bas) fait ce travail.</p>`,
+
+      `<h2>Les outils : n8n, OCR, LLM et API</h2>`,
+      `<p>n8n orchestre, l'OCR lit les documents scannés, les LLM (services du marché ou modèles open-source) comprennent et rédigent, les API écrivent dans vos applications métier. Les <a href="/blog/n8n-llms-api-architectures-automatisation-ia">trois architectures-types n8n, LLMs et API</a> couvrent la plupart de ces cas. Pour que vos équipes fassent ensuite évoluer leurs workflows : notre <a href="/formations/automatisation-n8n-processus-ia">formation à l'automatisation avec n8n</a> et notre <a href="/blog/formation-ia-entreprise-monter-equipes-en-competence">programme de formation IA en 6 semaines</a>.</p>`,
+
+      `<h2>Les obstacles fréquents : données, adoption, sécurité</h2>`,
+      `<ul>`,
+      `<li><strong>Les données.</strong> Documents illisibles, informations dispersées, habitudes de saisie différentes d'un collaborateur à l'autre : un nettoyage préalable est parfois nécessaire.</li>`,
+      `<li><strong>L'adoption.</strong> Une équipe qui craint d'être remplacée ou qui ne comprend pas l'outil le contournera. Associez les utilisateurs dès le cadrage et formez-les.</li>`,
+      `<li><strong>La sécurité et la confidentialité.</strong> Factures, contrats et CV contiennent des données sensibles. Il faut décider quel modèle d'IA les traite, qui y a accès et ce qui est journalisé. Une validation humaine reste utile aux étapes sensibles.</li>`,
+      `<li><strong>L'absence de mesure.</strong> Sans indicateur défini au départ, impossible de savoir si l'automatisation rapporte. Fixez les mesures avant le prototype.</li>`,
+      `</ul>`,
+
+      `<h2>Combien de temps et quel budget</h2>`,
+      `<p>Nous démarrons par un <strong>audit d'automatisation de 5 jours</strong> : cartographie de vos processus, calcul du ROI et feuille de route sur 12 mois, priorisée par ROI. Vient ensuite un <strong>prototype en 2 semaines</strong> sur le premier processus retenu, puis le déploiement et le suivi des indicateurs. Le budget dépend du nombre de processus, des volumes et des applications à connecter : c'est précisément ce que l'audit permet de chiffrer.</p>`,
+
+      `<h2>En pratique : faire appel à un consultant en automatisation</h2>`,
+      `<p>Un <strong>consultant en automatisation</strong> sert avant tout à choisir les bons processus, à mesurer le gain attendu et à éviter les projets qui s'arrêtent après la démonstration. C'est la mission de notre service d'<a href="/services/automatisation-ia-processus-metiers">automatisation IA pour PME</a> : audit de 5 jours, prototype, déploiement et suivi. Pour démarrer, vous pouvez <a href="/contact-demo?intent=automation&amp;from=blog&amp;block=final-cta">demander un audit d'automatisation</a>.</p>`,
+    ].join(""),
+    faq: [
+      {
+        question: "Qu'est-ce que l'automatisation IA pour une PME ?",
+        answer:
+          "C'est l'utilisation de flux automatisés (par exemple avec n8n), combinés à de l'IA (OCR, modèles de langage), pour prendre en charge des tâches répétitives comme le traitement des factures, le tri du support ou la pré-qualification des leads. Les équipes gardent la décision et valident les étapes sensibles.",
+      },
+      {
+        question: "Quelle différence entre automatisation, IA et agent IA ?",
+        answer:
+          "L'automatisation suit des règles fixes. L'IA apporte la compréhension de documents et de textes libres. Un agent IA choisit lui-même ses étapes pour atteindre un objectif, ce qui est moins prévisible. En PME, on commence généralement par des workflows maîtrisés combinant automatisation et IA, avec validation humaine.",
+      },
+      {
+        question: "Par quel processus commencer ?",
+        answer:
+          "Par un processus au volume répétitif, aux règles claires, dont les données sont disponibles en numérique et dont une erreur est rattrapable. Traitement des factures, tri des demandes de support et pré-qualification des leads sont des candidats fréquents. L'audit de 5 jours sert à les classer par ROI.",
+      },
+      {
+        question: "Combien de temps dure un projet d'automatisation ?",
+        answer:
+          "Nous commençons par un audit de 5 jours, puis réalisons un prototype en 2 semaines sur le premier processus retenu. Le déploiement et le suivi des indicateurs viennent ensuite. Le calendrier exact dépend du nombre de processus et des applications à connecter.",
+      },
+      {
+        question: "L'automatisation remplace-t-elle les employés ?",
+        answer:
+          "Non. Elle prend en charge les tâches répétitives (saisie, tri, extraction, premiers jets) pour libérer du temps. La décision, la relation client et la validation des cas sensibles restent humaines.",
+      },
+      {
+        question: "Que contient l'audit d'automatisation de 5 jours ?",
+        answer:
+          "La cartographie des processus étudiés, le calcul du ROI attendu pour chacun et une feuille de route sur 12 mois, priorisée par ROI. Il indique par où commencer et permet de démarrer sans engagement long.",
+      },
+    ],
+    seoTitle: "Automatisation IA PME : 7 processus à automatiser",
     seoDescription:
-      "Sept processus métiers à fort ROI à automatiser en PME africaine grâce à l'IA et n8n : factures, support, contrats, RH, marketing.",
+      "Automatisation IA pour PME : 7 processus à fort ROI (factures, support, contrats, RH, leads), la méthode et un audit de 5 jours avec nos consultants.",
     publishedDaysAgo: 6,
     tagSlugs: ["services", "ia", "automatisation"],
   },
@@ -914,7 +992,7 @@ export const POSTS: SeedPost[] = [
       "Trois architectures-types pour automatiser vos processus avec n8n, des LLMs et vos API métier : extraction, génération et orchestration.",
     bodyHtml: html({
       intro:
-        "Industrialiser l'automatisation par l'IA suppose de choisir une architecture solide : où s'exécute la logique, comment sont gérés les secrets, comment garantir la fiabilité. Voici trois patrons que nous mettons en place régulièrement.",
+        "Industrialiser l'automatisation par l'IA suppose de choisir une architecture solide : où s'exécute la logique, comment sont gérés les secrets, comment garantir la fiabilité. Voici trois patrons que nous mettons en place régulièrement. Ils servent de socle à l'<a href='/blog/automatisation-ia-7-processus-pme'>automatisation IA pour PME</a>, dont notre guide de référence détaille les sept processus prioritaires.",
       sections: [
         {
           h2: "Architecture 1 — Extraction structurée",
@@ -928,7 +1006,7 @@ export const POSTS: SeedPost[] = [
         },
         {
           h2: "Architecture 2 — Génération augmentée par contexte (RAG)",
-          p: "Pour générer une réponse en s'appuyant sur des documents internes : base de connaissances, support client, FAQ enrichie.",
+          p: "Pour générer une réponse en s'appuyant sur des documents internes : base de connaissances, support client, FAQ enrichie. Des exemples concrets figurent dans nos <a href='/blog/cas-usage-ia-pme-africaines-marketing-support-rh'>cas d'usage IA pour PME africaines</a>.",
         },
         {
           h2: "Architecture 3 — Orchestration multi-étapes",
@@ -936,7 +1014,7 @@ export const POSTS: SeedPost[] = [
         },
       ],
       outro:
-        "Ces trois patrons couvrent 80 % des cas d'usage IA en entreprise. Le reste relève d'architectures spécifiques que nous concevons sur mesure.",
+        "Ces trois patrons couvrent la plupart des cas d'usage IA en entreprise. Le reste relève d'architectures spécifiques que nous concevons sur mesure. Pour savoir quels processus automatiser en premier, consultez notre guide d'<a href='/blog/automatisation-ia-7-processus-pme'>automatisation IA pour PME</a>. Pour que vos équipes apprennent à construire ces workflows, voyez la <a href='/formations/automatisation-n8n-processus-ia'>formation à l'automatisation avec n8n</a>.",
     }),
     seoTitle: "Architectures n8n + LLMs — automatisation IA",
     seoDescription:
@@ -1433,53 +1511,68 @@ export const POSTS: SeedPost[] = [
         },
       ],
       outro:
-        "Le programme est délivré en présentiel ou hybride, par groupes de 8 à 12 participants. Idéal pour acculturer une équipe transverse avant un programme IA plus large.",
+        "Le programme est délivré en présentiel ou hybride, par groupes de 8 à 12 participants. Idéal pour acculturer une équipe transverse avant un programme IA plus large. Pour savoir quels processus automatiser ensuite, lisez notre guide d'<a href='/blog/automatisation-ia-7-processus-pme'>automatisation IA pour PME</a> et les <a href='/blog/cas-usage-ia-pme-africaines-marketing-support-rh'>cas d'usage IA pour PME africaines</a>. Le programme se prolonge avec la <a href='/formations/automatisation-n8n-processus-ia'>formation à l'automatisation avec n8n</a>.",
     }),
     seoTitle: "Formation IA entreprise — 6 semaines",
     seoDescription:
       "Six semaines pour faire monter vos équipes en compétence sur l'IA générative : prompt engineering, cas d'usage, gouvernance, pilote.",
     publishedDaysAgo: 3,
-    tagSlugs: ["formations", "ia"],
+    tagSlugs: ["formations", "ia", "automatisation"],
   },
   {
     slug: "cas-usage-ia-pme-africaines-marketing-support-rh",
     title: "Cas d'usage IA pour PME africaines : marketing, support, finance et RH",
     excerpt:
-      "Cas d'usage concrets et déployables : génération de contenus marketing, automatisation du support, analyse financière et RH.",
-    bodyHtml: html({
-      intro:
-        "Pour une PME africaine, la question n'est plus « faut-il faire de l'IA ? » mais « par où commencer ? ». Voici des cas d'usage concrets, à coût modéré, déployables en quelques semaines.",
-      sections: [
-        {
-          h2: "Marketing & communication",
-          p: "Génération de contenus localisés, déclinaison multilingue, suggestions d'objets d'e-mails, analyse des retombées.",
-          bullets: [
-            "Posts réseaux sociaux par persona et par marché",
-            "Newsletters personnalisées par segment",
-            "Brèves de veille concurrentielle",
-          ],
-        },
-        {
-          h2: "Support client",
-          p: "Catégorisation automatique des tickets, suggestion de réponses à partir d'une base de connaissances, escalade intelligente.",
-        },
-        {
-          h2: "Finance et comptabilité",
-          p: "OCR + LLM sur les factures fournisseurs, rapprochements automatisés, alertes sur anomalies de saisie.",
-        },
-        {
-          h2: "RH",
-          p: "Tri des CV par adéquation au poste, génération de comptes rendus d'entretien, suggestions de formations selon les compétences.",
-        },
-      ],
-      outro:
-        "Chaque cas d'usage se déploie en 4 à 6 semaines avec un ROI mesurable. Nous proposons un audit IA de 5 jours pour cartographier vos opportunités prioritaires.",
-    }),
-    seoTitle: "Cas d'usage IA — PME africaines",
+      "Douze cas d'usage IA concrets pour PME africaines, en marketing, support, finance et RH : la situation, l'outil et le résultat attendu, sans promesse chiffrée.",
+    bodyHtml: [
+      `<p>Pour une PME africaine, la question n'est plus « faut-il faire de l'IA ? » mais « par où commencer ? ». Voici douze cas d'usage concrets, à coût modéré, répartis entre le marketing, le support, la finance et les RH. Les exemples décrivent des situations types, volontairement anonymisées et sans chiffre de gain : les résultats varient selon le contexte, et nous préférons les mesurer chez vous plutôt que de les promettre. Ces cas s'inscrivent dans la démarche décrite dans notre guide d'<a href="/blog/automatisation-ia-7-processus-pme">automatisation IA pour PME</a>.</p>`,
+
+      `<h2>Cas d'usage IA pour le marketing et la communication</h2>`,
+      `<p>Le marketing est souvent le premier terrain d'essai de l'IA générative, parce que le risque est faible et que le gain de temps est visible. Dans tous les cas ci-dessous, une personne relit avant publication.</p>`,
+      `<h3>Des contenus localisés par marché</h3>`,
+      `<p>Une PME de distribution présente dans plusieurs pays doit publier sur les réseaux sociaux avec un ton et des références adaptés à chaque marché. Un LLM décline une même annonce par persona, par marché et par langue, à partir de consignes de marque que vous avez validées. Résultat attendu : un rythme de publication plus régulier et un ton cohérent.</p>`,
+      `<h3>Des newsletters adaptées à chaque segment</h3>`,
+      `<p>Une entreprise de services B2B envoie la même newsletter à tout son fichier. Après segmentation, un LLM adapte l'accroche et l'objet de l'e-mail à chaque segment, et n8n planifie l'envoi via votre outil d'e-mailing. Résultat attendu : des messages plus pertinents, dont vous suivez l'effet par les ouvertures et les clics.</p>`,
+      `<h3>Des brèves de veille concurrentielle</h3>`,
+      `<p>Une PME industrielle veut suivre ses concurrents sans y consacrer des heures. n8n collecte les sites et actualités choisis, puis un LLM écarte le bruit et rédige une brève hebdomadaire. Résultat attendu : une veille régulière que la direction commerciale lit réellement. Ce processus est détaillé dans notre guide sur les <a href="/blog/automatisation-ia-7-processus-pme">processus à automatiser en priorité</a>.</p>`,
+
+      `<h2>Support client</h2>`,
+      `<p>Le support concentre des volumes répétitifs, ce qui en fait un bon candidat pour l'automatisation, à condition de garder un humain pour les cas délicats.</p>`,
+      `<h3>La catégorisation automatique des tickets</h3>`,
+      `<p>Un distributeur d'équipements reçoit des demandes par e-mail, formulaire et messagerie. Un LLM les classe par sujet, urgence et langue, et n8n les affecte à la bonne équipe. Résultat attendu : la fin du tri manuel et des demandes urgentes repérées plus vite.</p>`,
+      `<h3>Des réponses suggérées à partir d'une base de connaissances</h3>`,
+      `<p>Une PME de services numériques répond sans cesse aux mêmes questions techniques. Le système retrouve les passages pertinents de votre documentation (approche dite RAG) et propose un brouillon que l'agent relit. Résultat attendu : des réponses plus rapides et plus homogènes d'un agent à l'autre.</p>`,
+      `<h3>Une escalade intelligente</h3>`,
+      `<p>Une PME de transport et de logistique veut que les litiges sensibles remontent tout de suite au responsable. Le système repère les signaux d'alerte (ton, mots clés, client stratégique) et transmet automatiquement le dossier avec un résumé. Résultat attendu : moins de réclamations qui s'enveniment faute d'avoir été vues à temps.</p>`,
+
+      `<h2>Finance et comptabilité</h2>`,
+      `<p>La finance combine des volumes importants et des règles précises : un terrain favorable, à condition de prévoir un contrôle humain sur les écritures.</p>`,
+      `<h3>Les factures fournisseurs, de l'OCR à la comptabilité</h3>`,
+      `<p>Une PME de négoce reçoit ses factures dans des formats variés. L'OCR lit le document, un LLM extrait les informations et propose une catégorie, et l'écriture est préparée dans l'outil comptable par API. Le comptable ne traite plus que les anomalies. Résultat attendu : moins de saisie et moins d'erreurs.</p>`,
+      `<h3>Les rapprochements automatisés</h3>`,
+      `<p>Une PME de distribution rapproche à la main commandes, bons de livraison et factures. Le système compare les documents et ne remonte que les écarts. Résultat attendu : une clôture mensuelle moins pesante, avec des écarts expliqués plutôt que découverts tardivement.</p>`,
+      `<h3>Les alertes sur les anomalies de saisie</h3>`,
+      `<p>Une entreprise de services veut repérer les doublons, les montants atypiques ou les fournisseurs inconnus avant le paiement. Des contrôles automatiques signalent ces cas au responsable. Résultat attendu : des erreurs corrigées avant qu'elles aient un effet sur la trésorerie.</p>`,
+
+      `<h2>Ressources humaines</h2>`,
+      `<p>Les RH manipulent des données personnelles : l'IA prépare et résume, mais la décision reste humaine, et les accès sont strictement contrôlés.</p>`,
+      `<h3>Le tri des CV selon l'adéquation au poste</h3>`,
+      `<p>Une PME de services reçoit de nombreuses candidatures pour chaque poste. L'OCR et un LLM extraient formation, expérience et compétences, puis présentent les profils au regard des critères du poste. Résultat attendu : un dépouillement plus rapide, la sélection finale restant celle du recruteur.</p>`,
+      `<h3>Des comptes rendus d'entretien structurés</h3>`,
+      `<p>Un responsable RH prend des notes en entretien, puis passe du temps à les mettre en forme. Un LLM transforme ces notes en compte rendu selon une grille commune, que le responsable relit et corrige. Résultat attendu : des comptes rendus comparables d'un candidat à l'autre.</p>`,
+      `<h3>Des suggestions de formations selon les compétences</h3>`,
+      `<p>Une PME qui développe ses équipes techniques veut relier compétences actuelles et besoins futurs. Le système croise un référentiel de compétences avec le catalogue de formations et propose des pistes, que le manager valide. Résultat attendu : des plans de formation mieux argumentés, par exemple vers la <a href="/formations/ia-entreprise">formation IA pour entreprises</a>.</p>`,
+
+      `<h2>Par où commencer ?</h2>`,
+      `<p>Choisissez un cas qui réunit un volume répétitif, des règles claires et des données disponibles, puis mesurez avant et après. Un cas d'usage se déploie généralement en 4 à 6 semaines. Pour cartographier vos opportunités et les classer par ROI, nous proposons un audit d'automatisation de 5 jours, point de départ de notre démarche d'<a href="/blog/automatisation-ia-7-processus-pme">automatisation IA pour PME</a>. Pour monter vos équipes en compétence, voir aussi la <a href="/blog/formation-ia-entreprise-monter-equipes-en-competence">formation IA en entreprise</a>.</p>`,
+
+      `<blockquote><p><strong>Besoin d'un consultant IA pour votre PME ?</strong> Nos consultants en automatisation vous accompagnent de l'audit de 5 jours au déploiement. Découvrez notre service d'<a href="/services/automatisation-ia-processus-metiers">automatisation IA pour PME</a> ou <a href="/contact-demo?intent=automation&amp;from=blog&amp;block=final-cta">demandez un audit</a>.</p></blockquote>`,
+    ].join(""),
+    seoTitle: "Cas d'usage IA pour PME africaines : 12 exemples",
     seoDescription:
-      "Cas d'usage IA concrets pour PME africaines : marketing, support, finance, RH. Déployables en quelques semaines avec ROI mesurable.",
+      "Cas d'usage IA pour le marketing, le support, la finance et les RH en PME africaine : 12 exemples concrets, outils et résultats attendus.",
     publishedDaysAgo: 17,
-    tagSlugs: ["formations", "ia", "automatisation"],
+    tagSlugs: ["services", "ia", "automatisation"],
   },
 
   // =========================================================================

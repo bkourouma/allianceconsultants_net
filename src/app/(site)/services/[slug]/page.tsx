@@ -19,7 +19,7 @@ import {
 import { extractTopics, isSafeClaim } from "@/components/services/text";
 import { getAllServiceSlugs, getServiceBySlug } from "@/lib/content";
 import { getLine } from "@/lib/network";
-import { buildMetadata } from "@/lib/seo";
+import { buildFaqJsonLd, buildMetadata } from "@/lib/seo";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -100,6 +100,12 @@ export default async function ServiceDetailPage({ params }: RouteProps) {
       : extractTopics(service.shortDescription);
   const cta = serviceCta(service.slug);
   const showBenefit = isSafeClaim(service.benefit);
+  const faqJsonLd = service.faq ? buildFaqJsonLd(service.faq) : null;
+  const faqItems: AccordionItem[] = (service.faq ?? []).map((entry, i) => ({
+    id: `faq-${i}`,
+    title: entry.question,
+    content: <p className="t-body">{entry.answer}</p>,
+  }));
 
   const accordion: AccordionItem[] = [];
   if (steps.length > 1) {
@@ -137,6 +143,7 @@ export default async function ServiceDetailPage({ params }: RouteProps) {
   return (
     <>
       <JsonLd data={breadcrumb} />
+      {faqJsonLd && <JsonLd data={faqJsonLd} />}
 
       {/* Hero — night field with the service's own line diagram */}
       <section className="relative isolate overflow-hidden bg-night text-white">
@@ -154,7 +161,7 @@ export default async function ServiceDetailPage({ params }: RouteProps) {
             ]}
           />
           <h1 className="t-h2 mt-10 max-w-[20ch] text-white md:mt-14">
-            {service.title}
+            {service.h1 ?? service.title}
           </h1>
           <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-white/85 sm:text-xl">
             {service.shortDescription}
@@ -188,6 +195,13 @@ export default async function ServiceDetailPage({ params }: RouteProps) {
               <p className="t-h3 mt-10 max-w-[32ch] border-t-2 border-ink pt-6 text-ink">
                 {service.benefit}
               </p>
+            )}
+
+            {faqItems.length > 0 && (
+              <section id="questions-frequentes" className="mt-14 scroll-mt-28">
+                <h2 className="t-h3 mb-5 text-ink">Questions fréquentes</h2>
+                <Accordion items={faqItems} />
+              </section>
             )}
 
             <h2 className="t-h3 mb-5 mt-14 text-ink">Le détail</h2>

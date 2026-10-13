@@ -277,6 +277,8 @@ export const ServiceSchema = z.object({
     .regex(/^[a-z0-9-]+$/)
     .max(60),
   title: z.string().min(2).max(80),
+  /** H1 de la page de détail si différent du titre court (cartes, fil d'Ariane). */
+  h1: z.string().min(10).max(100).optional(),
   shortDescription: z.string().min(20).max(220),
   benefit: z.string().min(10).max(160),
   iconKey: z.string().optional(),
@@ -284,6 +286,11 @@ export const ServiceSchema = z.object({
   showOnHomepage: z.boolean(),
   seoTitle: z.string().min(10).max(60).optional(),
   seoDescription: z.string().min(50).max(160).optional(),
+  /**
+   * Questions fréquentes (facultatif) : section visible « Questions
+   * fréquentes » sur la page + JSON-LD FAQPage. Réponses en texte brut.
+   */
+  faq: z.array(FaqEntrySchema).min(3).optional(),
 });
 
 export const TrainingSchema = z.object({

@@ -50,9 +50,10 @@ export const SERVICE_META: Record<string, ServiceMeta> = {
   "automatisation-ia-processus-metiers": {
     lines: ["docupro", "medicpro", "immotopia"],
     journey: [
-      "Analyse des processus",
-      "Modélisation",
-      "Automatisation (n8n, API, LLMs)",
+      "Audit de 5 jours",
+      "Prototype",
+      "Déploiement",
+      "Suivi des indicateurs",
     ],
   },
   "assistance-maitrise-ouvrage": {
@@ -110,6 +111,6 @@ export function serviceCta(slug: string): {
   label: string;
 } {
   return slug.includes("automatisation")
-    ? { intent: "automation", label: "Automatiser un processus" }
+    ? { intent: "automation", label: "Demander un audit" }
     : { intent: "contact", label: "Demander un échange" };
 }

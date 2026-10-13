@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Check } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import { CTAButton } from "@/components/shared/CTAButton";
@@ -18,7 +19,13 @@ export function AISection({ aiSection }: AISectionProps) {
       </h2>
       <p className="t-body mt-5 max-w-[60ch] text-base leading-relaxed text-white/80 sm:text-lg">
         Nos experts conçoivent et déploient des automatisations sur mesure
-        adaptées à vos processus métiers et à votre secteur d&apos;activité.
+        adaptées à vos processus métiers et à votre secteur d&apos;activité.{" "}
+        <Link
+          href="/services/automatisation-ia-processus-metiers"
+          className="font-semibold text-white underline decoration-2 underline-offset-4 hover:decoration-4"
+        >
+          Automatisation IA pour PME : l&apos;audit de 5 jours
+        </Link>
       </p>
 
       <div className="mt-8 flex flex-col gap-x-12 gap-y-7 lg:flex-row lg:items-center lg:justify-between">

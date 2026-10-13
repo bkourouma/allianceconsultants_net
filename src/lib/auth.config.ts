@@ -1,4 +1,10 @@
 import type { NextAuthConfig } from "next-auth";
+import {
+  ADMIN_HOME,
+  buildLoginPath,
+  normalizeAdminPath,
+  trustedOrigins,
+} from "@/lib/admin-callback";
 
 /**
  * Edge-safe NextAuth configuration.
@@ -26,9 +32,25 @@ export const authConfig = {
       }
 
       if (isOnAdmin) {
-        return isLoggedIn;
+        if (isLoggedIn) return true;
+        // Non connecté : redirection vers la page de connexion avec un `callbackUrl`
+        // réduit au CHEMIN demandé. Le comportement par défaut de NextAuth y recopie
+        // `nextUrl.href`, qui sous Docker contient l'hôte interne du conteneur
+        // (http://<id-conteneur>:3000/admin). L'origine du `Location` est celle de la
+        // requête ; Next la réécrit en relatif, sans dépendre d'en-têtes X-Forwarded-*.
+        const { pathname, search } = nextUrl;
+        return Response.redirect(new URL(buildLoginPath(pathname, search), nextUrl), 307);
       }
       return true;
+    },
+    // Après connexion / déconnexion : uniquement des chemins du backoffice (pas de
+    // redirection ouverte, pas d'adresse interne héritée d'un ancien lien).
+    redirect({ url, baseUrl }) {
+      const path = normalizeAdminPath(
+        url,
+        trustedOrigins(baseUrl, process.env.NEXT_PUBLIC_SITE_URL),
+      );
+      return `${baseUrl}${path ?? ADMIN_HOME}`;
     },
     session({ session, token }) {
       if (token?.sub && session.user) {

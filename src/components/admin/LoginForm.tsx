@@ -3,11 +3,24 @@
 import { useState, type FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { safeCallbackPath } from "@/lib/admin-callback";
+
+/** Chemin du backoffice contenu dans l'URL renvoyée par NextAuth (son origine importe peu). */
+function pathFromAuthUrl(url: string | null | undefined, fallback: string): string {
+  if (!url) return fallback;
+  try {
+    return safeCallbackPath(url, [new URL(url).origin]);
+  } catch {
+    return fallback;
+  }
+}
 
 export function LoginForm() {
   const params = useSearchParams();
   const router = useRouter();
-  const callbackUrl = params.get("callbackUrl") ?? "/admin";
+  // Chemin du backoffice uniquement : on ignore toute autre cible (redirection ouverte,
+  // ancien lien contenant l'adresse interne du serveur…).
+  const callbackUrl = safeCallbackPath(params.get("callbackUrl"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +43,8 @@ export function LoginForm() {
         setSubmitting(false);
         return;
       }
-      router.push(res.url ?? callbackUrl);
+      // On ne garde que le chemin : l'origine de `res.url` dépend des en-têtes du proxy.
+      router.push(pathFromAuthUrl(res.url, callbackUrl));
       router.refresh();
     } catch {
       setError("Une erreur inattendue est survenue. Réessayez plus tard.");

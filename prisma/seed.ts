@@ -43,7 +43,7 @@ async function ensureAdminUser(): Promise<{ id: string; email: string } | null> 
 // 2. Blog tags
 // ---------------------------------------------------------------------------
 
-const TAGS: { slug: string; label: string }[] = [
+export const TAGS: { slug: string; label: string }[] = [
   { slug: "solutions", label: "Solutions SaaS" },
   { slug: "services", label: "Services & Conseil" },
   { slug: "formations", label: "Formations" },
@@ -76,7 +76,7 @@ async function seedTags(): Promise<Record<string, string>> {
 // 3. Blog posts
 // ---------------------------------------------------------------------------
 
-interface SeedPost {
+export interface SeedPost {
   slug: string;
   title: string;
   excerpt: string;
@@ -121,7 +121,7 @@ function html(parts: {
   return `<p>${parts.intro}</p>${sections}<h2>En pratique</h2><p>${parts.outro}</p>`;
 }
 
-const POSTS: SeedPost[] = [
+export const POSTS: SeedPost[] = [
   // =========================================================================
   // SOLUTIONS — DocuPro Suite
   // =========================================================================
@@ -1699,11 +1699,15 @@ async function main() {
   await seedBlogPosts(admin.id, tagMap);
 }
 
-main()
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+// Garde : `scripts/apply-blog-posts.ts` importe ce fichier pour lire POSTS sans
+// lancer le seed.
+if (require.main === module) {
+  main()
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

@@ -203,76 +203,174 @@ export const POSTS: SeedPost[] = [
   // =========================================================================
   {
     slug: "medicpro-digitaliser-cabinet-medical",
-    title: "MedicPro : digitaliser un cabinet médical sans perdre la relation patient",
+    title: "Digitaliser un cabinet médical : méthode et logiciel (CliniquePro)",
     excerpt:
-      "Comment MedicPro accompagne la digitalisation des cabinets médicaux africains tout en préservant la qualité de la consultation et la confidentialité.",
+      "Dossier patient, agenda, consultation, facturation et assurances : la méthode pour digitaliser un cabinet médical ou une clinique, et les critères pour choisir la bonne solution.",
     bodyHtml: html({
       intro:
-        "Digitaliser un cabinet médical, ce n'est pas remplacer le carnet papier par un écran. C'est repenser le parcours patient — accueil, consultation, ordonnance, archivage — avec un outil qui s'efface devant la relation soignante.",
+        "Digitaliser un cabinet médical, ce n'est pas remplacer le carnet papier par un écran. C'est repenser le parcours du patient — accueil, rendez-vous, consultation, encaissement, suivi — pour que chaque information soit saisie une seule fois et retrouvée partout. Cet article propose une méthode et une checklist pour choisir un logiciel adapté à un cabinet médical, à un centre de santé ou à une clinique, quelle que soit la spécialité.",
       sections: [
         {
           h2: "Le risque d'une digitalisation mal conçue",
-          p: "Beaucoup d'outils transforment la consultation en saisie de formulaire. Le médecin regarde l'écran plutôt que le patient. MedicPro est conçu pour rester en arrière-plan.",
+          p: "Beaucoup d'outils transforment la consultation en saisie de formulaire : le médecin regarde l'écran plutôt que le patient. D'autres laissent l'accueil, la consultation et la caisse fonctionner comme des îlots séparés, ce qui oblige à ressaisir les mêmes informations. Une bonne solution relie ces étapes au lieu d'en ajouter une de plus.",
         },
         {
-          h2: "Les fonctionnalités clés de MedicPro",
-          p: "Un dossier patient unifié et accessible en quelques clics, avec :",
+          h2: "Ce qu'une solution de cabinet ou de clinique doit couvrir",
+          p: `C'est le périmètre de <a href="/solutions/cliniquepro">CliniquePro</a>, l'application web d'Alliance Consultants pour les cliniques, les centres de santé et les cabinets médicaux, toutes spécialités confondues :`,
           bullets: [
-            "Historique complet (consultations, ordonnances, examens)",
-            "Saisie rapide par modèles de consultation et raccourcis",
-            "Ordonnance électronique avec base de médicaments à jour",
-            "Statistiques pour le pilotage du cabinet",
+            "<strong>Dossier patient centralisé</strong> : identité, contact, historique, assurances rattachées, consentements, accès aux rendez-vous et aux paiements",
+            "<strong>Agenda partagé</strong> : création et suivi des rendez-vous par médecin, par type d'acte et par statut, avec recherche rapide d'un patient",
+            "<strong>Consultation</strong> : modèles de consultation spécialisés, ordonnances et suivi des actes",
+            "<strong>Caisse, facturation et honoraires</strong> : encaissement, factures patient et honoraires par médecin, reliés à la consultation",
+            "<strong>Assurances</strong> : suivi des prises en charge et des validations dans le même flux que la consultation",
+            "<strong>Pilotage</strong> : tableaux de bord d'activité et traçabilité des actions sensibles",
           ],
         },
         {
-          h2: "La confidentialité par défaut",
-          p: "Chaque accès au dossier est tracé. Les données sont chiffrées au repos et en transit. Les sauvegardes sont automatiques et restaurables en cas d'incident.",
+          h2: "Comment choisir une solution de digitalisation de cabinet médical",
+          p: "Avant de comparer des logiciels, passez-les au crible de cette checklist. Chaque point doit correspondre à un geste réel de votre cabinet :",
+          bullets: [
+            "<strong>Dossier patient unique</strong> : l'historique, les assurances et les paiements sont-ils réunis au même endroit, sans ressaisie ?",
+            "<strong>Agenda</strong> : partagé entre l'accueil et les médecins, avec les types d'actes que vous pratiquez ?",
+            "<strong>Facturation et assurances</strong> : le lien entre l'acte réalisé, la facture, l'encaissement et la prise en charge est-il direct ?",
+            "<strong>Modèles de consultation</strong> : correspondent-ils à votre spécialité, ou peuvent-ils être adaptés avec l'éditeur ?",
+            "<strong>Droits d'accès et traçabilité</strong> : chaque rôle (médecin, accueil, caisse, direction) voit-il uniquement ce dont il a besoin, et les actions sensibles sont-elles tracées ?",
+            "<strong>Formation et accompagnement</strong> : une formation par rôle et un support après la mise en service sont-ils prévus ?",
+            "<strong>Pilotage</strong> : disposez-vous d'indicateurs simples sur les patients, les rendez-vous, les encaissements et les honoraires ?",
+          ],
+        },
+        {
+          h2: "Les points à faire confirmer par l'éditeur",
+          p: `Certains critères dépendent de votre contexte et ne se jugent pas sur une fiche produit. Demandez des réponses écrites, quel que soit le logiciel envisagé : le fonctionnement en cas de connexion limitée ou de coupure (CliniquePro est une application web, utilisée depuis un navigateur), le lieu d'hébergement des données, la politique de sauvegarde, la conformité à la réglementation locale sur les données de santé et la reprise des dossiers papier existants. Sur ces sujets, voir aussi <a href="/blog/medicpro-confidentialite-conformite-dossier-patient">confidentialité et conformité du dossier patient</a>. Un consultant d'Alliance Consultants précise ces points pendant la démonstration.`,
+        },
+        {
+          h2: "Les étapes d'un déploiement réussi",
+          p: "La durée d'un déploiement dépend de la taille de la structure, du nombre de praticiens et du volume de dossiers à reprendre : elle se fixe au cadrage, pas avant. Les étapes, elles, restent les mêmes :",
+          bullets: [
+            "<strong>Cadrage</strong> : cartographier le parcours patient actuel (accueil, consultation, caisse), les rôles, les actes pratiqués et les assurances à gérer",
+            "<strong>Configuration</strong> : actes, médecins, droits d'accès par rôle et modèles de consultation",
+            "<strong>Reprise de l'existant</strong> : décider quels dossiers papier reprendre dans le dossier patient numérique, en commençant par les patients actifs",
+            "<strong>Formation par rôle</strong> : accueil, médecins et caisse n'ont pas les mêmes gestes à apprendre",
+            "<strong>Bascule et suivi</strong> : démarrage encadré, ajustements des premières semaines et support dédié à la prise en main",
+          ],
+        },
+        {
+          h2: "Ne pas confondre avec MedicPro",
+          p: `MedicPro, autre solution d'Alliance Consultants, est dédiée à la gestion réglementaire pharmaceutique (AMM, visas, produits, stocks et ventes). Ce n'est pas un logiciel de cabinet médical : pour un cabinet, un centre de santé ou une clinique, la solution adaptée est <a href="/solutions/cliniquepro">CliniquePro</a>.`,
         },
       ],
       outro:
-        "Un déploiement réussi commence par un audit du parcours patient existant et une formation courte mais ciblée. Nous proposons un accompagnement de 4 à 6 semaines selon la taille du cabinet.",
+        `Pour voir comment CliniquePro suit un patient de l'accueil à la caisse, lisez l'article sur <a href="/blog/cliniquepro-parcours-patient-rdv-sortie">le parcours patient, du rendez-vous à la sortie</a>, consultez la <a href="/solutions/cliniquepro">fiche CliniquePro</a> ou <a href="/contact-demo">demandez une démonstration</a> sur votre propre organisation. Si vous avez aussi des archives papier à traiter, voir le service de <a href="/services/dematerialisation-archives">dématérialisation des archives</a>.`,
     }),
-    seoTitle: "MedicPro — digitaliser un cabinet médical",
+    seoTitle: "Digitaliser un cabinet médical : méthode et CliniquePro",
     seoDescription:
-      "MedicPro, le logiciel cabinet médical d'Alliance Consultants : dossier patient, ordonnance électronique, confidentialité et formation incluses.",
+      "Dossier patient, agenda, facturation et assurances : comment digitaliser un cabinet médical ou une clinique, et quelle solution choisir avec CliniquePro.",
     publishedDaysAgo: 9,
     tagSlugs: ["solutions", "sante"],
+    faq: [
+      {
+        question: "CliniquePro convient-il à un cabinet médical de petite taille ?",
+        answer:
+          "CliniquePro s'adresse aux cliniques, aux centres de santé et aux cabinets médicaux, toutes spécialités. Le dossier patient, l'agenda, la caisse et la facturation sont configurés avec vous au démarrage : actes, médecins, droits d'accès par rôle et modèles de consultation.",
+      },
+      {
+        question: "Où sont hébergées les données d'un logiciel de cabinet médical ?",
+        answer:
+          "L'hébergement et la sauvegarde des données sont des critères à faire confirmer par écrit avant tout engagement : lieu de stockage, fréquence des sauvegardes, personnes qui y ont accès. Pour CliniquePro, un consultant précise ces points pendant la démonstration.",
+      },
+      {
+        question: "Un logiciel de cabinet médical fonctionne-t-il sans connexion internet ?",
+        answer:
+          "CliniquePro est une application web, utilisée depuis un navigateur sur chaque poste. Si votre connexion est instable, demandez à l'éditeur ce qui se passe lors d'une coupure : c'est un critère à valider dans tout projet de digitalisation d'un cabinet.",
+      },
+      {
+        question: "Que devient le dossier papier quand on digitalise un cabinet ?",
+        answer:
+          "Il faut décider au cadrage quels dossiers reprendre dans le dossier patient numérique, en commençant par les patients actifs, et comment conserver ou numériser le reste. Alliance Consultants propose aussi un service de dématérialisation des archives.",
+      },
+      {
+        question: "Faut-il former toute l'équipe du cabinet au nouveau logiciel ?",
+        answer:
+          "Oui, par rôle : l'accueil, les médecins et la caisse n'utilisent pas l'outil de la même façon. Alliance Consultants accompagne le déploiement avec une phase de cadrage, une formation par rôle et un support dédié à la prise en main.",
+      },
+      {
+        question: "CliniquePro est-il adapté à ma spécialité médicale ?",
+        answer:
+          "CliniquePro s'adresse à toutes les spécialités. Le socle (dossier patient, agenda, caisse, facturation, assurances) est commun, et les modèles de consultation spécialisés se précisent avec vous : l'ophtalmologie n'en est qu'un exemple.",
+      },
+      {
+        question: "MedicPro est-il un logiciel de cabinet médical ?",
+        answer:
+          "Non. MedicPro est la solution d'Alliance Consultants pour la gestion réglementaire pharmaceutique (AMM, visas, produits, stocks et ventes). Pour un cabinet, un centre de santé ou une clinique, c'est CliniquePro.",
+      },
+    ],
   },
   {
     slug: "medicpro-confidentialite-conformite-dossier-patient",
-    title: "Dossier patient informatisé : confidentialité et conformité avec MedicPro",
+    title: "Dossier patient informatisé : confidentialité et conformité avec CliniquePro",
     excerpt:
-      "MedicPro garantit la confidentialité du dossier patient grâce au chiffrement, aux droits d'accès granulaires et à l'audit complet des consultations.",
+      "Droits d'accès par rôle, traçabilité des actions sensibles et questions à poser à l'éditeur : comment sécuriser le dossier patient informatisé d'un cabinet ou d'une clinique.",
     bodyHtml: html({
       intro:
-        "Le dossier patient est l'un des actifs les plus sensibles d'un établissement de santé. Le digitaliser implique une obligation forte : garantir confidentialité, intégrité et traçabilité, à la fois pour la conformité réglementaire et pour la confiance des patients.",
+        "Le dossier patient est l'un des actifs les plus sensibles d'un établissement de santé. Le digitaliser implique une obligation forte : garantir confidentialité, intégrité et traçabilité, à la fois pour la conformité réglementaire et pour la confiance des patients. Voici les mécanismes à exiger d'un logiciel de dossier patient, et ceux que propose CliniquePro pour les cliniques, centres de santé et cabinets médicaux.",
       sections: [
         {
-          h2: "Le contrôle d'accès granulaire",
-          p: "MedicPro applique un principe simple : chaque utilisateur n'accède qu'aux dossiers strictement nécessaires à son rôle.",
+          h2: "Le contrôle d'accès par rôle",
+          p: `Dans <a href="/solutions/cliniquepro">CliniquePro</a>, les droits d'accès sont configurés par rôle : chaque utilisateur n'accède qu'aux informations nécessaires à sa fonction.`,
           bullets: [
-            "Profils Médecin, Infirmier, Secrétariat, Caisse, Direction",
-            "Droits par cabinet, par service ou par praticien référent",
-            "Exclusion explicite de données sensibles selon le profil",
+            "Des profils distincts pour la direction, les médecins, les infirmiers, le secrétariat, la caisse et les partenaires assurance",
+            "Des droits adaptés au rôle de chacun dans le parcours du patient (accueil, consultation, caisse)",
+            "Une configuration des droits réalisée avec la direction lors du cadrage",
           ],
         },
         {
-          h2: "Le chiffrement et la sauvegarde",
-          p: "Les bases sont chiffrées au repos. Les communications passent par TLS. Des sauvegardes chiffrées sont produites quotidiennement et conservées hors site.",
+          h2: "La traçabilité des actions sensibles",
+          p: "Les actions sensibles (paiements, validations assurance, modifications importantes) sont associées à un utilisateur, à une date et à un statut. La clinique garde ainsi une trace claire de qui a fait quoi, utile en cas de question d'un patient, d'un assureur ou d'une autorité.",
         },
         {
-          h2: "L'audit des consultations",
-          p: "Chaque ouverture, modification ou export d'un dossier est journalisé. Les rapports d'audit sont consultables par la direction et peuvent être exportés en cas de demande réglementaire.",
+          h2: "Le consentement et l'historique dans le dossier",
+          p: "Le dossier patient centralisé réunit l'identité, l'historique, les assurances rattachées, les consentements et l'accès aux rendez-vous et aux paiements. Tout est au même endroit, sans copies éparses dans des tableurs ou des carnets.",
+        },
+        {
+          h2: "Les questions à poser à tout éditeur",
+          p: "Au-delà des droits d'accès, certains points de sécurité et de conformité dépendent de l'hébergement et de votre pays. Demandez des réponses écrites sur :",
+          bullets: [
+            "Le chiffrement des données stockées et des échanges",
+            "Le lieu d'hébergement et la politique de sauvegarde (fréquence, restauration, conservation hors site)",
+            "La conformité à la réglementation locale sur les données de santé",
+            "La possibilité d'exporter un journal des accès et des modifications en cas de demande réglementaire",
+          ],
+        },
+        {
+          h2: "Ne pas confondre avec MedicPro",
+          p: "MedicPro, autre solution d'Alliance Consultants, est dédiée à la gestion réglementaire pharmaceutique (AMM, visas, produits, stocks et ventes) : il ne gère pas de dossiers patients. Le dossier patient d'un cabinet, d'un centre de santé ou d'une clinique relève de CliniquePro.",
         },
       ],
       outro:
-        "MedicPro est conçu pour répondre aux exigences des autorités sanitaires africaines tout en restant simple à utiliser. Un audit de configuration est inclus dans chaque mise en production.",
+        `Un consultant d'Alliance Consultants précise pendant la démonstration les réponses sur l'hébergement, la sauvegarde et la conformité. Pour la méthode complète, lisez <a href="/blog/medicpro-digitaliser-cabinet-medical">comment digitaliser un cabinet médical</a> ou <a href="/contact-demo">demandez une démonstration de CliniquePro</a>.`,
     }),
-    seoTitle: "MedicPro — confidentialité du dossier patient",
+    seoTitle: "Dossier patient informatisé : confidentialité et CliniquePro",
     seoDescription:
-      "Chiffrement, droits granulaires et audit : comment MedicPro sécurise le dossier patient informatisé pour les cabinets et cliniques africains.",
+      "Droits d'accès par rôle, traçabilité et questions à poser à l'éditeur : comment sécuriser le dossier patient informatisé d'un cabinet ou d'une clinique.",
     publishedDaysAgo: 25,
     tagSlugs: ["solutions", "sante"],
+    faq: [
+      {
+        question: "Qui peut consulter le dossier d'un patient dans CliniquePro ?",
+        answer:
+          "Les droits d'accès sont configurés par rôle : direction, médecins, infirmiers, secrétariat, caisse, partenaires assurance. Chaque utilisateur accède aux informations nécessaires à sa fonction, et les actions sensibles sont associées à un utilisateur et à une date.",
+      },
+      {
+        question: "Les données du dossier patient sont-elles chiffrées et sauvegardées ?",
+        answer:
+          "Le chiffrement, l'hébergement et la sauvegarde sont des critères à faire confirmer par écrit par tout éditeur avant de s'engager. Un consultant d'Alliance Consultants précise ces points pour CliniquePro pendant la démonstration.",
+      },
+      {
+        question: "MedicPro gère-t-il des dossiers patients ?",
+        answer:
+          "Non. MedicPro est dédié à la gestion réglementaire pharmaceutique (AMM, visas, produits, stocks et ventes). Les dossiers patients d'une clinique, d'un centre de santé ou d'un cabinet médical se gèrent avec CliniquePro.",
+      },
+    ],
   },
 
   // =========================================================================
@@ -318,35 +416,39 @@ export const POSTS: SeedPost[] = [
     slug: "cliniquepro-parcours-patient-rdv-sortie",
     title: "Parcours patient orchestré avec CliniquePro : du RDV à la sortie",
     excerpt:
-      "Comment CliniquePro orchestre l'ensemble du parcours patient — prise de RDV, accueil, consultation, examens, facturation, sortie — sur une plateforme unique.",
+      "Comment CliniquePro suit le parcours du patient — rendez-vous, accueil, consultation, examens, facturation, caisse — dans une clinique, un centre de santé ou un cabinet médical.",
     bodyHtml: html({
       intro:
-        "Un patient qui entre dans une clinique attend deux choses : un soin de qualité et un parcours fluide. Quand l'organisation administrative coince, l'expérience se dégrade et le pilotage devient impossible. CliniquePro orchestre ce parcours bout-en-bout.",
+        "Un patient qui entre dans une clinique attend deux choses : un soin de qualité et un parcours fluide. Quand l'organisation administrative coince, l'expérience se dégrade et le pilotage devient impossible. CliniquePro, l'application web d'Alliance Consultants pour les cliniques, les centres de santé et les cabinets médicaux de toutes spécialités, suit ce parcours de bout en bout.",
       sections: [
         {
           h2: "La prise de rendez-vous et l'accueil",
-          p: "Les agendas des praticiens sont partagés. Le secrétariat planifie en quelques clics et envoie les rappels par SMS pour réduire l'absentéisme.",
+          p: "Les agendas sont partagés : le secrétariat crée, modifie et suit les rendez-vous par médecin, par type d'acte et par statut, et retrouve un patient par nom, numéro de dossier ou contact en quelques secondes.",
         },
         {
           h2: "Le passage en consultation et les examens",
-          p: "Le médecin retrouve le patient avec son historique complet. Les prescriptions d'examens partent automatiquement vers le laboratoire ou l'imagerie.",
+          p: "Le médecin retrouve le patient avec son historique, dans un dossier unique. Les modèles de consultation spécialisés structurent la saisie ; l'ophtalmologie (acuité, réfraction, fond d'œil, OCT, champ visuel) n'en est qu'un exemple.",
           bullets: [
-            "Dossier patient unifié, accessible aux praticiens autorisés",
-            "Prescriptions et résultats remontent dans le dossier",
-            "Compte-rendu signé et archivé numériquement",
+            "Dossier patient centralisé, accessible selon les droits de chaque rôle",
+            "Suivi des consultations, examens et actes avec leurs statuts, par patient et par médecin",
+            "Ordonnances préparées et historisées dans le dossier",
           ],
         },
         {
-          h2: "La facturation et la sortie",
-          p: "À la sortie, la caisse édite une facture consolidée. Les conventions assurance/mutuelle sont appliquées automatiquement. Les pièces justificatives sont conservées dans le dossier.",
+          h2: "La facturation et la caisse",
+          p: "Les consultations et les examens sont liés à la caisse : encaissement, factures patient et honoraires médecins restent rattachés au dossier. Les couvertures assurance du patient et leur statut sont visibles dans le même flux.",
+        },
+        {
+          h2: "Aller plus loin",
+          p: `Découvrez la <a href="/solutions/cliniquepro">fiche produit CliniquePro</a>, ou lisez notre guide pour <a href="/blog/medicpro-digitaliser-cabinet-medical">digitaliser un cabinet médical</a> : méthode, checklist de choix et étapes de déploiement.`,
         },
       ],
       outro:
-        "Cette orchestration repose sur une configuration métier précise : nomenclature des actes, conventions, droits d'accès. Notre équipe accompagne chaque clinique dans cette phase critique.",
+        "Ce suivi repose sur une configuration métier précise : actes, médecins, assurances, droits d'accès. Notre équipe accompagne chaque structure dans cette phase de cadrage, puis forme chaque rôle (accueil, médecins, caisse).",
     }),
     seoTitle: "CliniquePro — parcours patient bout-en-bout",
     seoDescription:
-      "RDV, accueil, consultation, examens, facturation, sortie : CliniquePro orchestre tout le parcours patient sur une plateforme unique.",
+      "RDV, accueil, consultation, examens, facturation, caisse : CliniquePro suit tout le parcours patient d'une clinique ou d'un cabinet médical.",
     publishedDaysAgo: 32,
     tagSlugs: ["solutions", "sante"],
   },

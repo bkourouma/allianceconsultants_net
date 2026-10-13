@@ -87,6 +87,12 @@ function buildPostalAddress(settings: SiteSettings): Record<string, unknown> {
   };
 }
 
+/**
+ * Pas de `potentialAction: SearchAction` : /blog ne gère aucun paramètre `?q`
+ * (seulement `page` et `tag`), et Google a abandonné le champ de recherche des
+ * liens annexes fin 2024. L'ancienne cible `/blog?q={search_term_string}` était
+ * même découverte par Google comme une vraie URL à explorer.
+ */
 export function buildWebSiteJsonLd(siteUrl: string): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
@@ -98,14 +104,6 @@ export function buildWebSiteJsonLd(siteUrl: string): Record<string, unknown> {
       "@type": "Organization",
       "@id": `${rootUrl(siteUrl)}#organization`,
       name: "Alliance Consultants",
-    },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${siteUrl}/blog?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
     },
   };
 }

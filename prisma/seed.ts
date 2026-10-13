@@ -222,7 +222,7 @@ export const POSTS: SeedPost[] = [
             "<strong>Agenda partagé</strong> : création et suivi des rendez-vous par médecin, par type d'acte et par statut, avec recherche rapide d'un patient",
             "<strong>Consultation</strong> : modèles de consultation spécialisés, ordonnances et suivi des actes",
             "<strong>Caisse, facturation et honoraires</strong> : encaissement, factures patient et honoraires par médecin, reliés à la consultation",
-            "<strong>Assurances</strong> : suivi des prises en charge et des validations dans le même flux que la consultation",
+            "<strong>Assurances</strong> : calcul de la prise en charge (part assurance et part patient), suivi des couvertures et des validations dans le même flux que la consultation",
             "<strong>Pilotage</strong> : tableaux de bord d'activité et traçabilité des actions sensibles",
           ],
         },
@@ -232,7 +232,8 @@ export const POSTS: SeedPost[] = [
           bullets: [
             "<strong>Dossier patient unique</strong> : l'historique, les assurances et les paiements sont-ils réunis au même endroit, sans ressaisie ?",
             "<strong>Agenda</strong> : partagé entre l'accueil et les médecins, avec les types d'actes que vous pratiquez ?",
-            "<strong>Facturation et assurances</strong> : le lien entre l'acte réalisé, la facture, l'encaissement et la prise en charge est-il direct ?",
+            "<strong>Facturation et assurances</strong> : le lien entre l'acte réalisé, la facture, l'encaissement et la prise en charge est-il direct, avec un calcul de la part assurance et de la part patient ?",
+            "<strong>Connexion et hébergement</strong> : l'outil fonctionne-t-il hors connexion, et où les données sont-elles hébergées ?",
             "<strong>Modèles de consultation</strong> : correspondent-ils à votre spécialité, ou peuvent-ils être adaptés avec l'éditeur ?",
             "<strong>Droits d'accès et traçabilité</strong> : chaque rôle (médecin, accueil, caisse, direction) voit-il uniquement ce dont il a besoin, et les actions sensibles sont-elles tracées ?",
             "<strong>Formation et accompagnement</strong> : une formation par rôle et un support après la mise en service sont-ils prévus ?",
@@ -240,8 +241,8 @@ export const POSTS: SeedPost[] = [
           ],
         },
         {
-          h2: "Les points à faire confirmer par l'éditeur",
-          p: `Certains critères dépendent de votre contexte et ne se jugent pas sur une fiche produit. Demandez des réponses écrites, quel que soit le logiciel envisagé : le fonctionnement en cas de connexion limitée ou de coupure (CliniquePro est une application web, utilisée depuis un navigateur), le lieu d'hébergement des données, la politique de sauvegarde, la conformité à la réglementation locale sur les données de santé et la reprise des dossiers papier existants. Sur ces sujets, voir aussi <a href="/blog/medicpro-confidentialite-conformite-dossier-patient">confidentialité et conformité du dossier patient</a>. Un consultant d'Alliance Consultants précise ces points pendant la démonstration.`,
+          h2: "Hors connexion, hébergement local et conformité",
+          p: `CliniquePro fonctionne hors connexion, ce qui compte quand l'accès internet est instable, et les données peuvent être hébergées localement, en Côte d'Ivoire ou sur site. Pour le reste, demandez des réponses écrites, quel que soit le logiciel envisagé : le chiffrement, la politique de sauvegarde, la conformité à la réglementation locale sur les données de santé et la reprise des dossiers papier existants. Sur ces sujets, voir aussi <a href="/blog/medicpro-confidentialite-conformite-dossier-patient">confidentialité et conformité du dossier patient</a>. Un consultant d'Alliance Consultants précise ces points pendant la démonstration.`,
         },
         {
           h2: "Les étapes d'un déploiement réussi",
@@ -276,12 +277,17 @@ export const POSTS: SeedPost[] = [
       {
         question: "Où sont hébergées les données d'un logiciel de cabinet médical ?",
         answer:
-          "L'hébergement et la sauvegarde des données sont des critères à faire confirmer par écrit avant tout engagement : lieu de stockage, fréquence des sauvegardes, personnes qui y ont accès. Pour CliniquePro, un consultant précise ces points pendant la démonstration.",
+          "Avec CliniquePro, les données peuvent être hébergées localement, en Côte d'Ivoire ou sur site. Quel que soit l'éditeur, faites aussi confirmer par écrit la politique de sauvegarde et les personnes qui ont accès aux données.",
       },
       {
         question: "Un logiciel de cabinet médical fonctionne-t-il sans connexion internet ?",
         answer:
-          "CliniquePro est une application web, utilisée depuis un navigateur sur chaque poste. Si votre connexion est instable, demandez à l'éditeur ce qui se passe lors d'une coupure : c'est un critère à valider dans tout projet de digitalisation d'un cabinet.",
+          "Oui, CliniquePro fonctionne hors connexion : le cabinet ou la clinique peut continuer à travailler lorsque l'accès internet est instable. C'est un critère à valider dans tout projet de digitalisation d'un cabinet.",
+      },
+      {
+        question: "Le logiciel calcule-t-il la part de l'assurance et la part du patient ?",
+        answer:
+          "Oui. CliniquePro calcule la prise en charge assurance en distinguant la part de l'assurance et la part du patient, et affiche les couvertures du patient et leur statut dans son dossier.",
       },
       {
         question: "Que devient le dossier papier quand on digitalise un cabinet ?",
@@ -333,10 +339,10 @@ export const POSTS: SeedPost[] = [
         },
         {
           h2: "Les questions à poser à tout éditeur",
-          p: "Au-delà des droits d'accès, certains points de sécurité et de conformité dépendent de l'hébergement et de votre pays. Demandez des réponses écrites sur :",
+          p: "Avec CliniquePro, les données peuvent être hébergées localement, en Côte d'Ivoire ou sur site, et l'outil fonctionne hors connexion. Au-delà, certains points de sécurité et de conformité dépendent de votre pays et de votre organisation. Demandez des réponses écrites, quel que soit l'éditeur, sur :",
           bullets: [
             "Le chiffrement des données stockées et des échanges",
-            "Le lieu d'hébergement et la politique de sauvegarde (fréquence, restauration, conservation hors site)",
+            "La politique de sauvegarde (fréquence, restauration, conservation hors site) et les personnes qui ont accès aux données",
             "La conformité à la réglementation locale sur les données de santé",
             "La possibilité d'exporter un journal des accès et des modifications en cas de demande réglementaire",
           ],
@@ -347,7 +353,7 @@ export const POSTS: SeedPost[] = [
         },
       ],
       outro:
-        `Un consultant d'Alliance Consultants précise pendant la démonstration les réponses sur l'hébergement, la sauvegarde et la conformité. Pour la méthode complète, lisez <a href="/blog/medicpro-digitaliser-cabinet-medical">comment digitaliser un cabinet médical</a> ou <a href="/contact-demo">demandez une démonstration de CliniquePro</a>.`,
+        `Un consultant d'Alliance Consultants précise pendant la démonstration les réponses sur le chiffrement, la sauvegarde et la conformité. Pour la méthode complète, lisez <a href="/blog/medicpro-digitaliser-cabinet-medical">comment digitaliser un cabinet médical</a> ou <a href="/contact-demo">demandez une démonstration de CliniquePro</a>.`,
     }),
     seoTitle: "Dossier patient informatisé : confidentialité et CliniquePro",
     seoDescription:
@@ -363,7 +369,7 @@ export const POSTS: SeedPost[] = [
       {
         question: "Les données du dossier patient sont-elles chiffrées et sauvegardées ?",
         answer:
-          "Le chiffrement, l'hébergement et la sauvegarde sont des critères à faire confirmer par écrit par tout éditeur avant de s'engager. Un consultant d'Alliance Consultants précise ces points pour CliniquePro pendant la démonstration.",
+          "Les données de CliniquePro peuvent être hébergées localement, en Côte d'Ivoire ou sur site. Le chiffrement, la sauvegarde et la conformité à la réglementation locale sont des critères à faire confirmer par écrit par tout éditeur avant de s'engager ; un consultant d'Alliance Consultants précise ces points pour CliniquePro pendant la démonstration.",
       },
       {
         question: "MedicPro gère-t-il des dossiers patients ?",
@@ -378,39 +384,93 @@ export const POSTS: SeedPost[] = [
   // =========================================================================
   {
     slug: "cliniquepro-facturation-pilotage-multi-services",
-    title: "CliniquePro : structurer la facturation et le pilotage d'une clinique multi-services",
+    title: "CliniquePro : facturation, prise en charge assurance et pilotage d'une clinique",
     excerpt:
-      "Comment CliniquePro unifie consultations, hospitalisation, laboratoire et caisse pour une facturation fiable et un pilotage en temps réel.",
+      "Comment CliniquePro relie consultations, examens, caisse et assurances pour une facturation fiable, avec le calcul de la part assurance et de la part patient, et un pilotage clair de l'activité.",
     bodyHtml: html({
       intro:
-        "Dans une clinique multi-services, la difficulté n'est pas tant la prise en charge médicale que la cohérence administrative : un patient passe par plusieurs services dans la même journée et la facturation doit refléter ce parcours sans perte ni double comptage.",
+        "Dans une clinique ou un centre de santé, la difficulté n'est pas tant la prise en charge médicale que la cohérence administrative : un patient passe par l'accueil, la consultation, les examens et la caisse dans la même journée, et la facturation doit refléter ce parcours sans perte ni double saisie. Voici comment CliniquePro, l'application web d'Alliance Consultants pour les cliniques, centres de santé et cabinets médicaux, structure la facturation, la prise en charge assurance et le pilotage.",
       sections: [
         {
-          h2: "Une facturation pilotée par le parcours patient",
-          p: "CliniquePro s'appuie sur une notion centrale : la prise en charge. Chaque acte (consultation, examen, hospitalisation) est rattaché à une prise en charge unique, ce qui évite les doublons.",
+          h2: "Une facturation reliée à la consultation",
+          p: `Dans <a href="/solutions/cliniquepro">CliniquePro</a>, la caisse est intégrée : elle garde un lien direct avec les consultations, les examens et les factures. Les informations ne sont pas ressaisies d'un poste à l'autre, ce qui limite les erreurs et les oublis de facturation.`,
           bullets: [
-            "Tarifs configurables par convention (mutuelles, assurances)",
-            "Prise en charge partielle automatique selon les contrats",
-            "Édition d'une facture consolidée multi-services",
+            "Génération et suivi des factures patient, avec un historique consolidé par dossier",
+            "Encaissement et suivi des paiements, rattachés au dossier du patient",
+            "Honoraires médecins suivis par médecin, par acte et par période",
           ],
         },
         {
-          h2: "Le pilotage en temps réel",
-          p: "Tableaux de bord par service, par praticien et par période : taux d'occupation, recettes, restes à recouvrer. Les directions disposent d'une vision quotidienne.",
+          h2: "Le calcul de la prise en charge assurance",
+          p: "Pour un patient assuré, la facture ne s'adresse pas à une seule personne. CliniquePro calcule la prise en charge assurance en distinguant la part de l'assurance et la part du patient, afin que la caisse sache exactement ce qu'elle doit encaisser et ce qui relève de l'assureur.",
+          bullets: [
+            "Les couvertures du patient et leur statut sont visibles directement dans son dossier",
+            "La part assurance et la part patient sont calculées à partir de la prise en charge",
+            "Les validations assurance sont suivies dans le même flux que la consultation",
+          ],
         },
         {
-          h2: "L'intégration avec les autres modules",
-          p: "Laboratoire, pharmacie, hospitalisation et caisse partagent la même base patient. Un examen prescrit en consultation arrive directement au laboratoire, et son coût remonte dans la facture.",
+          h2: "Les erreurs qu'une facturation reliée évite",
+          p: "Dans une structure sans outil commun, les mêmes erreurs reviennent : un acte réalisé mais non facturé, un paiement saisi sans lien avec la consultation, une part assurance mal estimée, des honoraires de médecins recalculés à la main en fin de mois. Relier l'acte, la facture, l'encaissement et la prise en charge dans un même dossier supprime les ressaisies, rend chaque montant explicable et facilite les échanges avec les assureurs.",
+        },
+        {
+          h2: "Les questions à se poser avant de choisir un outil de facturation",
+          p: "Quel que soit le logiciel envisagé, vérifiez ces points avec vos équipes :",
+          bullets: [
+            "La caisse est-elle liée aux consultations et aux examens, ou fonctionne-t-elle à part ?",
+            "La part assurance et la part patient sont-elles calculées par l'outil ou refaites à la main ?",
+            "Les honoraires de chaque médecin se retrouvent-ils par acte et par période, sans recalcul ?",
+            "La direction voit-elle l'activité, les encaissements et les assurances sans demander de rapports ?",
+            "Les actions sensibles (paiements, validations assurance) sont-elles tracées par utilisateur ?",
+          ],
+        },
+        {
+          h2: "Le pilotage de l'activité",
+          p: "La direction dispose de tableaux de bord sur les patients, les rendez-vous, les encaissements, les factures, les assurances et les honoraires. Le suivi par médecin montre l'activité, les actes réalisés et les honoraires sur la période choisie, et les actions sensibles sont associées à un utilisateur, une date et un statut.",
+        },
+        {
+          h2: "Hors connexion et hébergement local",
+          p: "CliniquePro fonctionne hors connexion : l'activité de la clinique ne s'arrête pas lorsque l'accès internet est instable. Les données peuvent être hébergées localement, en Côte d'Ivoire ou sur site, selon le besoin de la structure. Ces choix se précisent avec vous lors du cadrage.",
+        },
+        {
+          h2: "Un déploiement cadré, sans durée standard",
+          p: "La durée d'un déploiement dépend de la taille de la structure, du nombre de praticiens, des assurances à gérer et du volume de données à reprendre ; elle se fixe au cadrage. L'accompagnement porte sur la configuration des actes, des tarifs et des assurances, la formation de chaque rôle (en particulier les caissiers) et le suivi de la direction après la mise en service.",
+        },
+        {
+          h2: "Pour aller plus loin",
+          p: `Le suivi complet du patient est détaillé dans l'article sur <a href="/blog/cliniquepro-parcours-patient-rdv-sortie">le parcours patient, du rendez-vous à la sortie</a>. Pour la méthode de choix et de déploiement, lisez <a href="/blog/medicpro-digitaliser-cabinet-medical">comment digitaliser un cabinet médical</a>.`,
         },
       ],
       outro:
-        "Le déploiement type d'une CliniquePro se fait en 8 à 12 semaines selon le nombre de services. Nous intervenons sur la configuration tarifaire, la formation des caissiers et l'accompagnement de la direction.",
+        `Pour voir la facturation et le calcul de la prise en charge sur votre propre organisation, consultez la <a href="/solutions/cliniquepro">fiche CliniquePro</a> ou <a href="/contact-demo">demandez une démonstration</a>.`,
     }),
     seoTitle: "CliniquePro — facturation et pilotage clinique",
     seoDescription:
-      "CliniquePro structure la facturation multi-services et le pilotage des cliniques : prises en charge, conventions, tableaux de bord temps réel.",
+      "CliniquePro relie consultations, caisse et assurances : calcul part assurance / part patient, honoraires médecins, tableaux de bord, usage hors connexion.",
     publishedDaysAgo: 14,
     tagSlugs: ["solutions", "sante"],
+    faq: [
+      {
+        question: "CliniquePro calcule-t-il la part assurance et la part patient ?",
+        answer:
+          "Oui. CliniquePro calcule la prise en charge assurance en distinguant la part de l'assurance et la part du patient. Les couvertures du patient et leur statut sont visibles dans son dossier, et les validations assurance sont suivies dans le même flux que la consultation.",
+      },
+      {
+        question: "CliniquePro fonctionne-t-il hors connexion ?",
+        answer:
+          "Oui. CliniquePro fonctionne hors connexion, ce qui permet à la clinique de continuer son activité lorsque l'accès internet est instable. Les modalités se précisent avec vous lors du cadrage.",
+      },
+      {
+        question: "Les données de la clinique peuvent-elles être hébergées localement ?",
+        answer:
+          "Oui. Les données peuvent être hébergées localement, en Côte d'Ivoire ou sur site, selon le besoin de la structure. Le choix se fait avec vous lors du cadrage du projet.",
+      },
+      {
+        question: "Combien de temps faut-il pour déployer CliniquePro et former les caissiers ?",
+        answer:
+          "La durée dépend de la taille de la structure, du nombre de praticiens, des assurances à gérer et du volume de données à reprendre ; elle se fixe au cadrage. Alliance Consultants forme chaque rôle, dont les caissiers, et assure un support dédié à la prise en main.",
+      },
+    ],
   },
   {
     slug: "cliniquepro-parcours-patient-rdv-sortie",

@@ -13,7 +13,6 @@ export const SERVICE_LINES: Record<string, LineId[]> = {
   "assistance-maitrise-ouvrage": ALL,
   "automatisation-ia-processus-metiers": ["docupro", "medicpro", "immotopia"],
   "dematerialisation-archives": ["docupro", "medicpro", "cliniquepro"],
-  "scanners-professionnels": ["docupro"],
 };
 
 export function linesForService(slug: string): LineId[] {

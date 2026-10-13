@@ -27,7 +27,7 @@ export function ServicesSection({ services }: ServicesSectionProps) {
         </h2>
         <p className="t-lead mt-4 max-w-[60ch]">
           Au-delà de nos solutions logicielles, nous intervenons en conseil,
-          développement sur mesure et déploiement de matériel pour accompagner
+          développement sur mesure, automatisation et dématérialisation pour accompagner
           votre transformation digitale de bout en bout.
         </p>
         <p className="m-0 mt-2">

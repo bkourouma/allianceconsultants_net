@@ -68,7 +68,7 @@ const EXPERTISE = [
   {
     title: "Dématérialisation & GED",
     description:
-      "Numérisation de fonds documentaires, intégration de scanners professionnels, gouvernance documentaire et workflows électroniques.",
+      "Numérisation de fonds documentaires, conseil et méthode de dématérialisation, intégration à la GED, gouvernance documentaire et workflows électroniques.",
   },
   {
     title: "Développement spécifique & AMOA",
@@ -99,9 +99,9 @@ const MILESTONES: Milestone[] = [
   },
   {
     year: "2015",
-    title: "Pôle dématérialisation & scanners",
+    title: "Pôle numérisation & dématérialisation",
     description:
-      "Structuration de l'offre numérisation : intégration de scanners professionnels, prestations de dématérialisation et gouvernance documentaire.",
+      "Structuration de l'offre numérisation : conseil et méthode, prestations de dématérialisation et gouvernance documentaire.",
     color: getLine("cliniquepro")?.color ?? "#00789a",
   },
   {

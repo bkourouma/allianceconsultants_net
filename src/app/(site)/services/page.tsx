@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ...buildMetadata({
       title: "Nos services — Alliance Consultants",
       description:
-        "Développement spécifique, automatisation IA, AMOA, dématérialisation et scanners professionnels : nos services pour les organisations africaines.",
+        "Développement spécifique, automatisation IA, AMOA, numérisation et dématérialisation des archives : nos services pour les organisations africaines.",
       siteUrl: `${SITE_URL}/services`,
     }),
     alternates: { canonical: `${SITE_URL}/services` },

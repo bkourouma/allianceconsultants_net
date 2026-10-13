@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PostFaqSchema } from "@/lib/blog-faq";
 
 export const PostStatusSchema = z.enum(["DRAFT", "PUBLISHED"]);
 export type PostStatusInput = z.infer<typeof PostStatusSchema>;
@@ -24,6 +25,8 @@ const BlogPostBaseSchema = z.object({
   seoTitle: z.string().trim().min(10).max(60).nullable().optional(),
   seoDescription: z.string().trim().min(50).max(160).nullable().optional(),
   ogImage: z.string().trim().min(1).max(300).nullable().optional(),
+  // FAQ de l'article (voir src/lib/blog-faq.ts) ; null pour la retirer.
+  faq: PostFaqSchema.nullable().optional(),
   status: PostStatusSchema.default("DRAFT"),
   publishedAt: z
     .union([z.string().datetime(), z.date(), z.null()])

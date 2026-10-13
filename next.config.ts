@@ -33,6 +33,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Ancienne page « Vente et intégration de scanners » : Alliance Consultants
+      // ne vend pas de scanners, l'offre est la numérisation / dématérialisation.
+      {
+        source: "/services/scanners-professionnels",
+        destination: "/services/dematerialisation-archives",
+        permanent: true,
+      },
       { source: "/ressources", destination: "/blog", permanent: true },
       { source: "/ressources/:path*", destination: "/blog/:path*", permanent: true },
     ];

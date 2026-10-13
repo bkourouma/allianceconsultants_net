@@ -43,3 +43,24 @@ export function withPublicOrigin(req: NextRequest): NextRequest {
   if (wanted === origin) return req;
   return new NextRequest(href.replace(origin, wanted), req);
 }
+
+/**
+ * Redirection vers un CHEMIN du site, en `Location` relatif (ex. `/contact-recu`).
+ *
+ * `NextResponse.redirect()` exige une URL absolue, donc une origine : or `request.url`
+ * porte l'hôte interne du conteneur (voir plus haut). Le navigateur résout un `Location`
+ * relatif (RFC 9110 §10.2.2) par rapport à l'adresse qu'il vient d'appeler : aucune
+ * dépendance aux en-têtes du proxy, donc aucune adresse interne qui fuite.
+ *
+ * Seuls les chemins internes sont acceptés (pas de `//hôte`, de `/\hôte` ni de schéma) :
+ * pas de redirection ouverte, même si le chemin venait un jour d'une saisie.
+ */
+export function redirectToPath(path: string, status: 301 | 302 | 303 | 307 | 308 = 303): Response {
+  const safe = isInternalPath(path) ? path : "/";
+  return new Response(null, { status, headers: { Location: safe } });
+}
+
+function isInternalPath(path: string): boolean {
+  if (!path.startsWith("/") || path.startsWith("//") || path.startsWith("/\\")) return false;
+  return !/[\u0000-\u001f\u007f]/.test(path);
+}

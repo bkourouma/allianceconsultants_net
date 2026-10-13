@@ -169,4 +169,62 @@ describe("POST /api/lead", () => {
     const sixth = await POST(buildRequest(validBody, ip) as never);
     expect(sixth.status).toBe(429);
   });
+
+  describe("formulaire HTML sans JavaScript (repli 303)", () => {
+    // Sous Docker, req.url porte l'hôte interne du conteneur : le Location ne doit jamais
+    // en dépendre (chemin relatif, résolu par le navigateur sur l'adresse publique).
+    function buildFormRequest(fields: Record<string, string>, ip: string) {
+      return new Request("http://013da9911305:3000/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          host: "allianceconsultants.net",
+          "x-forwarded-proto": "https",
+          "x-forwarded-for": ip,
+        },
+        body: new URLSearchParams(fields).toString(),
+      });
+    }
+
+    it("honeypot rempli → 303 vers /contact-recu (relatif)", async () => {
+      const res = await POST(buildFormRequest({ honeypot: "bot" }, "10.0.1.1") as never);
+      expect(res.status).toBe(303);
+      expect(res.headers.get("location")).toBe("/contact-recu");
+    });
+
+    it("validation échouée → 303 vers /contact-erreur?reason=validation (relatif)", async () => {
+      const res = await POST(buildFormRequest({ name: "x" }, "10.0.1.2") as never);
+      expect(res.status).toBe(303);
+      expect(res.headers.get("location")).toBe("/contact-erreur?reason=validation");
+    });
+
+    it("succès → 303 vers /contact-recu?ref=… (relatif, sans hôte interne)", async () => {
+      createMock.mockResolvedValue({ id: "lead_form_001" });
+      sendMock.mockResolvedValue(undefined);
+      const res = await POST(
+        buildFormRequest({ ...validBody, consent: "true" } as Record<string, string>, "10.0.1.3") as never
+      );
+      expect(res.status).toBe(303);
+      expect(res.headers.get("location")).toBe("/contact-recu?ref=lead_form_001");
+    });
+
+    it("succès, mail en échec → 303 avec &mail=ko", async () => {
+      createMock.mockResolvedValue({ id: "lead_form_002" });
+      sendMock.mockRejectedValue(new Error("SMTP unreachable"));
+      const res = await POST(
+        buildFormRequest({ ...validBody, consent: "true" } as Record<string, string>, "10.0.1.4") as never
+      );
+      expect(res.status).toBe(303);
+      expect(res.headers.get("location")).toBe("/contact-recu?ref=lead_form_002&mail=ko");
+    });
+
+    it("erreur de base de données → 303 vers /contact-erreur?reason=server", async () => {
+      createMock.mockRejectedValue(new Error("db down"));
+      const res = await POST(
+        buildFormRequest({ ...validBody, consent: "true" } as Record<string, string>, "10.0.1.5") as never
+      );
+      expect(res.status).toBe(303);
+      expect(res.headers.get("location")).toBe("/contact-erreur?reason=server");
+    });
+  });
 });

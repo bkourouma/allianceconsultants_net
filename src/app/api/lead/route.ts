@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { LeadInputSchema, type LeadInput } from "@/lib/validators/lead";
 import { prisma } from "@/lib/prisma";
 import { sendLeadNotification } from "@/lib/mailer";
+import { redirectToPath } from "@/lib/public-request";
 import type { LeadIntent } from "@prisma/client";
 
 export const runtime = "nodejs";
@@ -72,14 +73,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
   }
   const { data, isHtmlForm } = body;
-  const origin = new URL(req.url).origin;
 
   // Honeypot — silently swallow if filled
   const honeypotFilled =
     typeof data.honeypot === "string" && data.honeypot.length > 0;
   if (honeypotFilled) {
     if (isHtmlForm) {
-      return NextResponse.redirect(new URL("/contact-recu", origin), { status: 303 });
+      return redirectToPath("/contact-recu");
     }
     return new NextResponse(null, { status: 204 });
   }
@@ -88,10 +88,7 @@ export async function POST(req: NextRequest) {
   const parsed = LeadInputSchema.safeParse(data);
   if (!parsed.success) {
     if (isHtmlForm) {
-      return NextResponse.redirect(
-        new URL("/contact-erreur?reason=validation", origin),
-        { status: 303 }
-      );
+      return redirectToPath("/contact-erreur?reason=validation");
     }
     const errors: Record<string, string> = {};
     for (const issue of parsed.error.issues) {
@@ -106,10 +103,7 @@ export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
   if (rateLimitExceeded(ip)) {
     if (isHtmlForm) {
-      return NextResponse.redirect(
-        new URL("/contact-erreur?reason=rate_limited", origin),
-        { status: 303 }
-      );
+      return redirectToPath("/contact-erreur?reason=rate_limited");
     }
     return NextResponse.json(
       { ok: false, error: "rate_limited" },
@@ -151,10 +145,7 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     console.error("Lead persistence failed:", e);
     if (isHtmlForm) {
-      return NextResponse.redirect(
-        new URL("/contact-erreur?reason=server", origin),
-        { status: 303 }
-      );
+      return redirectToPath("/contact-erreur?reason=server");
     }
     return NextResponse.json(
       { ok: false, error: "server_error" },
@@ -176,7 +167,7 @@ export async function POST(req: NextRequest) {
     const dest = mailSent
       ? `/contact-recu?ref=${encodeURIComponent(leadId)}`
       : `/contact-recu?ref=${encodeURIComponent(leadId)}&mail=ko`;
-    return NextResponse.redirect(new URL(dest, origin), { status: 303 });
+    return redirectToPath(dest);
   }
 
   return NextResponse.json(

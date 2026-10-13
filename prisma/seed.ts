@@ -923,73 +923,289 @@ const POSTS: SeedPost[] = [
     slug: "scanner-professionnel-comment-choisir",
     title: "Scanner professionnel : comment choisir le bon modèle selon vos volumes",
     excerpt:
-      "Scanners de bureau, départementaux ou de production : comment choisir le bon modèle selon votre volume mensuel et vos contraintes métier.",
-    bodyHtml: html({
-      intro:
-        "Le choix d'un scanner professionnel dépend de quelques critères simples : volume quotidien, types de documents, niveau d'automatisation attendu et contraintes d'intégration logicielle. Voici une grille de décision pratique.",
-      sections: [
-        {
-          h2: "Scanner de bureau (jusqu'à 2 000 pages/jour)",
-          p: "Pour un service ou un cabinet : scanners compacts avec chargeur automatique, format A4, recto-verso.",
-          bullets: [
-            "Volume modéré, qualité standard",
-            "Driver TWAIN/ISIS pour intégration logicielle",
-            "Reconnaissance automatique des couleurs",
-          ],
-        },
-        {
-          h2: "Scanner départemental (2 000 à 10 000 pages/jour)",
-          p: "Pour un service archives ou un secrétariat général : capacité élevée, fiabilité industrielle, traitement par lots.",
-        },
-        {
-          h2: "Scanner de production (au-delà de 10 000 pages/jour)",
-          p: "Pour un atelier de numérisation : matériel haute cadence, intégration GED native, contrôle qualité statistique.",
-        },
-      ],
-      outro:
-        "Nos équipes accompagnent le choix du modèle, l'intégration logicielle (TWAIN, ISIS, scan-to-folder/email) et la formation des opérateurs. Un test sur site est systématiquement proposé avant achat.",
-    }),
-    seoTitle: "Scanner professionnel — comment choisir ?",
+      "Bureau, départemental ou production : tableau comparatif, 6 critères de choix, scanner à défilement ou à plat, OCR et intégration à une GED.",
+    bodyHtml: `<p>Un scanner professionnel, parfois appelé numériseur professionnel, n'a rien à voir avec l'appareil multifonction posé dans un couloir. Le scan professionnel consiste à numériser chaque jour des centaines, voire des milliers de pages, en produisant des fichiers lisibles, bien orientés et exploitables par un logiciel. Le bon modèle dépend donc de vos volumes, de vos documents et de l'outil qui recevra les fichiers, bien plus que d'une marque ou d'une fiche technique.</p>
+<p>Ce guide est volontairement neutre. Alliance Consultants ne vend pas de scanners : notre métier se situe avant et après le matériel, c'est-à-dire la méthode de numérisation, la <a href="/services/dematerialisation-archives">dématérialisation de vos archives</a> et leur intégration dans une GED. Voici de quoi comparer les catégories, poser les bonnes questions à un revendeur et éviter les erreurs de dimensionnement.</p>
+<h2>Bureau, départemental, production : le comparatif</h2>
+<p>On distingue trois grandes familles de scanners professionnels. Le critère de départ est le volume de pages à numériser par jour, puis viennent la vitesse, le chargeur automatique et les interfaces disponibles.</p>
+<table>
+<thead>
+<tr><th>Critère</th><th>Scanner de bureau</th><th>Scanner départemental</th><th>Scanner de production</th></tr>
+</thead>
+<tbody>
+<tr><td>Volume indicatif par jour</td><td>Jusqu'à 2 000 pages</td><td>2 000 à 10 000 pages</td><td>Au-delà de 10 000 pages</td></tr>
+<tr><td>Vitesse (pages par minute, ordre de grandeur)</td><td>Quelques dizaines de ppm</td><td>Plusieurs dizaines de ppm, souvent davantage</td><td>Cadence élevée et soutenue sur toute la journée</td></tr>
+<tr><td>Chargeur automatique (ADF)</td><td>Capacité modérée, recto-verso</td><td>Grande capacité, traitement par lots</td><td>Grande capacité, alimentation industrielle, détection de double alimentation</td></tr>
+<tr><td>Formats</td><td>A4, parfois A3 selon le modèle</td><td>A4 et A3 selon le modèle</td><td>De l'A4 aux grands formats ou aux documents difficiles, selon le modèle</td></tr>
+<tr><td>Interfaces</td><td>USB, TWAIN, parfois réseau</td><td>TWAIN, ISIS, réseau</td><td>TWAIN, ISIS, intégration à un logiciel de capture ou à une GED</td></tr>
+<tr><td>Usage type</td><td>Service, cabinet, numérisation au fil de l'eau</td><td>Secrétariat général, service archives</td><td>Atelier de numérisation, projet de masse</td></tr>
+<tr><td>Budget</td><td>Le plus accessible</td><td>Intermédiaire</td><td>Le plus élevé</td></tr>
+</tbody>
+</table>
+<p>Les vitesses sont des ordres de grandeur : elles varient fortement d'un fabricant et d'un modèle à l'autre, et la vitesse annoncée est rarement celle que l'on obtient sur des documents réels (papier fin, agrafes, formats mélangés). Nous ne donnons pas de prix : ils dépendent du modèle, du pays et du revendeur, et il vaut mieux demander plusieurs devis écrits.</p>
+<h2>Les 6 critères pour choisir un scanner professionnel</h2>
+<p>Avant de comparer des modèles, passez ces six critères en revue. Ils pèsent plus lourd que la marque.</p>
+<h3>1. Le volume mensuel réel, et pas seulement la moyenne</h3>
+<p>Partez du nombre de pages à numériser, mais aussi des pics : une fin d'exercice, un projet de reprise d'archives ou une campagne ponctuelle changent complètement le dimensionnement. Un appareil trop petit s'use vite et crée des files d'attente ; un appareil surdimensionné immobilise un budget inutilement.</p>
+<h3>2. La vitesse et le cycle de service</h3>
+<p>La vitesse en pages par minute ne dit pas tout. Le cycle de service, c'est-à-dire le volume quotidien ou mensuel que le fabricant recommande de ne pas dépasser, indique si le scanner est conçu pour tourner toute la journée. Un modèle poussé en permanence au-delà de ce volume vieillit mal.</p>
+<h3>3. Le chargeur automatique et la détection de double alimentation</h3>
+<p>Un chargeur automatique (ADF) de bonne capacité fait gagner un temps considérable sur les lots. La détection de double alimentation, par ultrasons ou par capteurs, signale quand deux feuilles passent ensemble : sans elle, des pages manquent dans les fichiers, ce que l'on ne découvre souvent que des mois plus tard.</p>
+<h3>4. La résolution, la qualité d'image et l'OCR</h3>
+<p>Pour des documents texte destinés à la reconnaissance de caractères, 300 dpi est la résolution la plus courante. Monter plus haut alourdit les fichiers sans toujours améliorer le résultat. Vérifiez aussi le redressement automatique, la suppression des pages blanches et le traitement des documents recto-verso de contenu inégal.</p>
+<h3>5. La connectique et l'intégration à vos logiciels</h3>
+<p>Un scanner doit dialoguer avec l'outil qui reçoit les fichiers : pilotes TWAIN ou ISIS, numérisation vers un dossier réseau, vers une messagerie ou directement vers une GED. Vérifiez la compatibilité avec votre système d'exploitation et vos logiciels avant l'achat, pas après.</p>
+<h3>6. Le coût total de possession</h3>
+<p>Le prix d'achat n'est qu'une partie de la dépense. Comptez les consommables (rouleaux, tampons de séparation, kits de nettoyage), le contrat de maintenance, la disponibilité des pièces et du support dans votre pays, ainsi que la formation des opérateurs. Un modèle moins cher mais sans support local peut coûter plus cher à l'usage.</p>
+<h2>Scanner à défilement ou à plat ?</h2>
+<p>La question revient dès que l'on dépasse quelques pages. Les deux technologies ne se concurrencent pas vraiment : elles répondent à des documents différents.</p>
+<ul>
+<li><strong>Scanner à défilement (avec chargeur)</strong> : les feuilles passent devant le capteur. C'est le choix naturel pour des feuilles volantes en volume, en recto-verso, avec une cadence élevée.</li>
+<li><strong>Scanner à plat</strong> : le document est posé sur une vitre. Il convient aux pièces fragiles, aux reliures, aux registres, aux photos ou aux formats irréguliers, mais il est lent et demande un opérateur à chaque page.</li>
+<li><strong>Modèles mixtes</strong> : certains scanners associent un chargeur et un plateau, pour traiter l'essentiel en lot et les cas particuliers à la main.</li>
+</ul>
+<p>Pour un fonds d'archives mélangeant feuilles courantes et documents fragiles, la solution habituelle est un scanner à défilement pour la masse, complété par un poste à plat pour les exceptions.</p>
+<h2>Quel scanner pour numériser en PDF consultable (OCR) ?</h2>
+<p>Un PDF consultable est un PDF dans lequel un moteur de reconnaissance de caractères (OCR) a ajouté une couche de texte : on peut alors chercher un mot dans le document ou dans toute une base. Presque tous les scanners professionnels savent produire un PDF image ; la reconnaissance de texte est réalisée soit par le scanner, soit par le logiciel de capture, soit par la GED qui reçoit le fichier.</p>
+<p>La qualité de l'OCR dépend d'abord de la qualité de l'image : bonne résolution, contraste correct, page bien droite, absence d'ombres. Un scanner honnête sur le papier mais mal réglé donnera un texte truffé d'erreurs. Si vous visez la conservation à long terme, renseignez-vous aussi sur le format PDF/A, pensé pour l'archivage.</p>
+<h2>Du scanner à la GED : relier le matériel à l'organisation</h2>
+<p>Un scanner produit des fichiers ; une GED les range, les indexe et les rend retrouvables. Sans plan de classement ni indexation, les fichiers numérisés finissent dans un dossier réseau où plus personne ne retrouve rien. C'est pourquoi il faut décider de l'organisation avant le matériel : voir à ce sujet <a href="/blog/dematerialisation-archives-par-ou-commencer">la méthode pour démarrer une dématérialisation</a>.</p>
+<p>La GED <a href="/solutions/docupro-suite">DocuPro Suite</a> propose notamment la numérisation et l'indexation avec des champs métier configurables, la recherche multicritère et le pilotage des durées de conservation. Alliance Consultants ne vend pas de scanners, mais vous conseille sur la méthode et configure la prise en charge de votre matériel existant par DocuPro.</p>
+<h2>Acheter un scanner ou confier la numérisation ?</h2>
+<p>Si la numérisation est continue (courrier, factures, dossiers du quotidien), un scanner de bureau ou départemental adapté se justifie. Si vous avez un fonds historique à numériser en une fois, acheter un scanner de production n'est pas toujours rentable : un prestataire spécialisé, avec son propre matériel et ses opérateurs formés, peut être plus pertinent. Nous détaillons ce choix dans notre guide <a href="/blog/numeriser-archives-papier-quel-materiel-quelle-methode">Numériser ses archives papier : matériel, méthode et coûts</a>, et la partie organisation d'un atelier dans <a href="/blog/scanners-production-integration-formation-support">réussir un projet de numérisation avec des scanners de production</a>.</p>
+<p>Attention enfin au cadre juridique : numériser un document n'en fait pas automatiquement une copie opposable, et ne dispense pas de respecter les règles de conservation. Les exigences d'archivage à valeur probante sont présentées dans notre article <a href="/blog/archivage-reglementaire-normes-bonnes-pratiques">Archivage réglementaire : normes et bonnes pratiques</a>.</p>
+<h2>En pratique</h2>
+<p>Voici une façon simple de procéder pour choisir sans se tromper :</p>
+<ul>
+<li>Chiffrez vos volumes quotidiens, vos pics et la nature de vos documents (formats, épaisseur, état).</li>
+<li>Décidez d'abord de votre plan de classement et de l'outil qui recevra les fichiers.</li>
+<li>Présélectionnez deux ou trois modèles dans la bonne catégorie, puis demandez des devis détaillés incluant consommables, maintenance et support local.</li>
+<li>Demandez une démonstration au revendeur avec vos propres documents, y compris les plus difficiles.</li>
+</ul>
+<p>Si votre besoin est surtout un projet d'archives à numériser et à organiser, notre page <a href="/services/dematerialisation-archives">Numérisation et dématérialisation des archives</a> présente l'accompagnement que nous proposons, du conseil à l'intégration dans DocuPro Suite.</p>`,
+    seoTitle: "Scanner professionnel : comment choisir (bureau, production)",
     seoDescription:
-      "Scanners de bureau, départementaux ou de production : guide de choix d'un scanner professionnel selon le volume et l'usage métier.",
+      "Quel scanner professionnel choisir ? Comparatif bureau, départemental et production selon vos volumes, critères de choix, OCR et intégration à une GED.",
     publishedDaysAgo: 13,
     tagSlugs: ["services", "ged"],
+    faq: [
+      {
+        question: "Quelle différence entre un scanner de bureau et un scanner de production ?",
+        answer:
+          "Le scanner de bureau est conçu pour un volume modéré, jusqu'à environ 2 000 pages par jour, dans un service ou un cabinet. Le scanner de production est conçu pour tourner toute la journée au-delà de 10 000 pages par jour, avec un chargeur de grande capacité, une détection de double alimentation poussée et une intégration à un logiciel de capture ou à une GED. Le scanner départemental se situe entre les deux.",
+      },
+      {
+        question: "Combien de pages par jour peut traiter un scanner départemental ?",
+        answer:
+          "On situe généralement un scanner départemental entre 2 000 et 10 000 pages par jour. Ce chiffre est un ordre de grandeur : vérifiez le cycle de service indiqué par le fabricant, c'est-à-dire le volume quotidien ou mensuel recommandé, et comparez-le à vos volumes réels, pics compris.",
+      },
+      {
+        question: "Un scanner professionnel peut-il produire des PDF consultables (OCR) ?",
+        answer:
+          "Oui, mais la reconnaissance de caractères est faite soit par le scanner, soit par le logiciel de capture, soit par la GED qui reçoit le fichier. Ce qui compte le plus est la qualité de l'image : bonne résolution (300 dpi est courant pour du texte), page bien droite, contraste correct. Pour une conservation longue, renseignez-vous sur le format PDF/A.",
+      },
+      {
+        question: "Que sont les pilotes TWAIN et ISIS ?",
+        answer:
+          "TWAIN et ISIS sont deux standards qui permettent à un logiciel (logiciel de capture, GED) de piloter un scanner et de récupérer les images. Un scanner compatible avec l'un ou l'autre s'intègre plus facilement à votre chaîne de numérisation. Vérifiez la compatibilité avec votre système d'exploitation avant l'achat.",
+      },
+      {
+        question: "Peut-on tester un scanner avant de l'acheter ?",
+        answer:
+          "C'est vivement conseillé : demandez une démonstration au revendeur avec vos propres documents, y compris les plus difficiles (papier fin, agrafes, formats mélangés). Observez le taux de bourrage, la qualité d'image et le temps réel de traitement. Alliance Consultants ne vend pas de scanners, mais peut vous aider à cadrer votre projet de numérisation en amont.",
+      },
+    ],
   },
   {
     slug: "scanners-production-integration-formation-support",
-    title: "Scanners de production : intégration, formation et support à grande échelle",
+    title:
+      "Réussir un projet de numérisation avec des scanners de production : intégration, formation, organisation",
     excerpt:
-      "Au-delà du matériel : intégration logicielle, formation des opérateurs et support pour des projets de dématérialisation à grande échelle.",
-    bodyHtml: html({
-      intro:
-        "Un scanner de production performant ne suffit pas à réussir une dématérialisation. La qualité du résultat dépend de l'intégration logicielle, de la formation des opérateurs et du support disponible en cas d'incident.",
-      sections: [
-        {
-          h2: "L'intégration logicielle",
-          p: "Le scanner doit dialoguer naturellement avec votre GED, votre système de fichiers ou votre messagerie.",
-          bullets: [
-            "Profils de numérisation par typologie de document",
-            "OCR embarqué et reconnaissance des séparateurs",
-            "Routage automatique vers le bon dossier ou la bonne file",
-          ],
-        },
-        {
-          h2: "La formation des opérateurs",
-          p: "Une session de 2 à 3 jours couvre la préparation des lots, le paramétrage des profils, le contrôle qualité et la maintenance courante.",
-        },
-        {
-          h2: "Le support et la maintenance",
-          p: "Contrat de maintenance avec délai d'intervention contractuel, pièces détachées, mise à jour des firmwares et drivers.",
-        },
-      ],
-      outro:
-        "Sur les projets à grande échelle, nous intervenons en équipe complète : ingénieur d'intégration, formateur, technicien support. La continuité de service est notre engagement principal.",
-    }),
-    seoTitle: "Scanners de production — intégration & support",
+      "Le matériel ne fait pas le projet : organisation de l'atelier, intégration logicielle, formation des opérateurs et contrôle qualité pour une dématérialisation à grande échelle.",
+    bodyHtml: `<p>Un scanner de production performant ne suffit pas à réussir une dématérialisation. Sur un projet de numérisation à grande échelle, la qualité du résultat dépend de l'organisation de l'atelier, de l'intégration logicielle, de la formation des opérateurs et d'un contrôle qualité rigoureux. Ce guide, volontairement neutre, s'adresse aux responsables d'archives, aux DSI et aux directions administratives qui préparent un projet de masse. Alliance Consultants ne vend pas de scanners : nous conseillons sur la méthode et l'intégration à la GED.</p>
+<p>Si vous cherchez d'abord à choisir un modèle, commencez par notre guide <a href="/blog/scanner-professionnel-comment-choisir">Scanner professionnel : comment choisir</a>. Nous partons ici du principe que la catégorie de matériel est déjà identifiée.</p>
+<h2>Cadrer le projet avant de parler matériel</h2>
+<p>Les projets de numérisation qui dérapent le font presque toujours en amont. Avant de lancer le moindre lot, il faut avoir répondu à quelques questions simples :</p>
+<ul>
+<li>Quels fonds numériser, en quelle quantité, dans quel état (agrafes, trombones, papier fragile, formats mélangés) ?</li>
+<li>Pour quel usage : consultation courante, recherche, conservation à valeur probante ?</li>
+<li>Quel plan de classement et quelles métadonnées d'indexation, validés par les métiers ?</li>
+<li>Quel délai, et combien de personnes disponibles pour préparer et contrôler les lots ?</li>
+</ul>
+<p>Ces points sont détaillés dans <a href="/blog/dematerialisation-archives-par-ou-commencer">Dématérialisation des archives : par où commencer</a> et dans <a href="/blog/dematerialisation-fondamentaux-plan-classement">les fondamentaux du plan de classement et de l'indexation</a>. Ils déterminent le nombre de scanners, le nombre d'opérateurs et la durée réelle du chantier.</p>
+<h2>Organiser l'atelier de numérisation</h2>
+<p>Un atelier de numérisation est une petite chaîne de production. Chaque étape doit avoir un responsable et laisser une trace.</p>
+<ul>
+<li><strong>Réception et inventaire</strong> : les documents arrivent par lots identifiés, avec un bordereau qui permet de suivre chaque boîte ou chaque dossier.</li>
+<li><strong>Préparation</strong> : retrait des agrafes et trombones, remise à plat des feuilles pliées, réparation des déchirures, tri et insertion de feuilles de séparation. C'est l'étape la plus longue et la plus sous-estimée.</li>
+<li><strong>Numérisation</strong> : lancement des lots avec le bon profil de numérisation selon le type de document.</li>
+<li><strong>Contrôle qualité</strong> : vérification de la lisibilité, de la complétude et de l'orientation avant validation.</li>
+<li><strong>Indexation et versement</strong> : saisie ou reprise des métadonnées, puis dépôt dans la GED.</li>
+<li><strong>Restitution</strong> : remise en boîte des originaux, avec le même identifiant, et décision sur leur sort (conservation ou élimination selon les règles applicables).</li>
+</ul>
+<p>Prévoyez aussi l'ergonomie des postes, la sécurité des originaux (accès restreint, traçabilité des mouvements) et un plan de repli : un seul scanner pour tout un chantier est un point de défaillance.</p>
+<h2>L'intégration logicielle : du scanner à la GED</h2>
+<p>Le scanner doit dialoguer naturellement avec votre GED, votre système de fichiers ou votre messagerie. Pour un projet de production, quelques fonctions font gagner un temps considérable :</p>
+<ul>
+<li>des profils de numérisation par typologie de document (résolution, couleur ou noir et blanc, recto-verso) ;</li>
+<li>la reconnaissance de caractères (OCR) et la reconnaissance des séparateurs ou des codes-barres pour découper automatiquement les lots ;</li>
+<li>un nommage cohérent des fichiers et le routage vers le bon dossier ou la bonne file de traitement ;</li>
+<li>des pilotes standard (TWAIN, ISIS) ou la numérisation vers un dossier réseau, selon le logiciel de capture utilisé.</li>
+</ul>
+<p>Dans la GED <a href="/solutions/docupro-suite">DocuPro Suite</a>, les documents numérisés sont indexés avec des champs métier configurables puis retrouvés par recherche multicritère. Alliance Consultants configure la prise en charge de votre matériel existant par DocuPro ; la méthode générale est présentée sur la page <a href="/services/dematerialisation-archives">Numérisation et dématérialisation des archives</a>.</p>
+<h2>Former les opérateurs</h2>
+<p>Un scanner de production entre les mains d'un opérateur mal formé produit des lots à refaire. La formation ne doit pas se limiter au bouton de démarrage. Elle couvre en général :</p>
+<ul>
+<li>la préparation des lots et la gestion des cas difficiles (papier fin, formats mélangés, pages collées) ;</li>
+<li>le choix et le réglage des profils de numérisation ;</li>
+<li>le contrôle qualité : que vérifier, à quelle fréquence, que faire d'un lot rejeté ;</li>
+<li>la maintenance de premier niveau : nettoyage, remplacement des consommables, signalement d'un incident ;</li>
+<li>les règles de confidentialité sur des documents parfois sensibles.</li>
+</ul>
+<p>Le constructeur ou le revendeur du matériel assure souvent une formation à l'utilisation de la machine ; la formation à la méthode du projet (préparation, indexation, contrôle) relève, elle, de l'organisation qui porte la numérisation, éventuellement avec l'appui d'un conseil.</p>
+<h2>Le contrôle qualité sur les lots</h2>
+<p>Sur un volume important, on ne relit pas chaque page. On met en place un contrôle qualité statistique : un échantillon de chaque lot est vérifié selon des critères fixés à l'avance (lisibilité, pages manquantes, orientation, exactitude de l'indexation). Si le taux d'anomalies dépasse le seuil retenu, le lot est repris. Ce contrôle doit être documenté, car il fait partie de la confiance que l'on accorde au fonds numérisé.</p>
+<h2>Maintenance et support : les questions à poser au fournisseur</h2>
+<p>La disponibilité du matériel conditionne le calendrier. Auprès du constructeur ou du revendeur, posez par écrit les questions suivantes :</p>
+<ul>
+<li>Quel délai d'intervention est garanti en cas de panne, et dans quelle ville ?</li>
+<li>Les pièces d'usure et les consommables sont-ils disponibles localement ?</li>
+<li>Qui met à jour les firmwares et les pilotes, et comment sont-ils validés avec votre logiciel ?</li>
+<li>Existe-t-il un matériel de remplacement en cas d'immobilisation prolongée ?</li>
+</ul>
+<h2>Atelier interne ou prestataire ?</h2>
+<p>Tout projet de masse ne justifie pas d'acheter des scanners de production. Si le chantier a une fin (un fonds historique à traiter une fois), un prestataire équipé, avec des opérateurs déjà formés, évite d'immobiliser un budget et du personnel. Si les volumes sont continus et que la numérisation fait partie du fonctionnement quotidien, l'atelier interne devient pertinent. Dans les deux cas, l'organisation qui porte le projet garde la responsabilité du plan de classement, de l'indexation et du contrôle qualité.</p>
+<h2>Les pièges les plus fréquents</h2>
+<ul>
+<li>Sous-estimer le temps de préparation des documents, souvent supérieur au temps de numérisation lui-même.</li>
+<li>Acheter le matériel avant d'avoir défini le plan de classement et l'indexation.</li>
+<li>Ne prévoir ni contrôle qualité, ni appareil de secours, ni plan de maintenance.</li>
+<li>Oublier la question du sort des originaux, qui doit suivre les règles de conservation applicables (voir <a href="/blog/archivage-reglementaire-normes-bonnes-pratiques">Archivage réglementaire : normes et bonnes pratiques</a>).</li>
+</ul>
+<h2>En pratique</h2>
+<p>Un projet de numérisation à grande échelle se pilote comme un projet à part entière : périmètre pilote, indicateurs de qualité, responsables identifiés, intégration à la GED. Si vous préparez un projet de ce type, notre page <a href="/services/dematerialisation-archives">Numérisation et dématérialisation des archives</a> présente la démarche de conseil et d'intégration à DocuPro Suite, et notre guide <a href="/blog/numeriser-archives-papier-quel-materiel-quelle-methode">Numériser ses archives papier</a> aide à choisir entre équipement interne et prestataire.</p>`,
+    seoTitle: "Scanners de production : réussir son projet de numérisation",
     seoDescription:
-      "Au-delà du matériel : intégration logicielle, formation et support pour réussir un projet de dématérialisation avec scanners de production.",
+      "Organisation de l'atelier, intégration à la GED, formation des opérateurs et contrôle qualité : réussir un projet de numérisation à grande échelle.",
     publishedDaysAgo: 30,
     tagSlugs: ["services", "ged"],
+    faq: [
+      {
+        question: "Faut-il choisir le scanner avant le plan de classement ?",
+        answer:
+          "Non, l'inverse est préférable. Le plan de classement, l'indexation et les volumes à traiter déterminent le nombre de scanners, la cadence nécessaire et le logiciel de capture. Choisir le matériel en premier conduit souvent à un équipement mal dimensionné ou mal intégré à la GED.",
+      },
+      {
+        question: "Que doit couvrir la formation des opérateurs de numérisation ?",
+        answer:
+          "Elle doit couvrir la préparation des lots (agrafes, déchirures, séparateurs), le réglage des profils de numérisation, le contrôle qualité, la maintenance de premier niveau (nettoyage, consommables) et les règles de confidentialité. La formation à la machine est souvent assurée par le constructeur ou le revendeur ; la méthode du projet relève de l'organisation qui le porte.",
+      },
+      {
+        question: "Comment contrôler la qualité sur un grand volume de documents ?",
+        answer:
+          "On applique un contrôle qualité par échantillonnage : une part de chaque lot est vérifiée selon des critères définis à l'avance (lisibilité, pages manquantes, orientation, exactitude de l'indexation). Si le taux d'anomalies dépasse le seuil fixé, le lot est repris. Le contrôle est documenté pour garder une trace.",
+      },
+      {
+        question: "Vaut-il mieux internaliser la numérisation ou la confier à un prestataire ?",
+        answer:
+          "Pour un flux continu de documents, un équipement interne se justifie. Pour un fonds historique à numériser une fois, un prestataire équipé et formé est souvent plus adapté qu'un achat de scanner de production. Le bon choix dépend du volume, du délai, de la sensibilité des documents et des compétences disponibles en interne.",
+      },
+    ],
+  },
+  {
+    slug: "numeriser-archives-papier-quel-materiel-quelle-methode",
+    title: "Numériser ses archives papier : matériel, méthode et coûts",
+    excerpt:
+      "Les étapes d'une numérisation d'archives, le matériel selon le volume, les facteurs de coût, prestataire ou internalisation, et les normes à respecter.",
+    bodyHtml: `<p>Numériser ses archives papier ne se résume pas à acheter un scanner. Un projet réussi suit une méthode : on diagnostique le fonds, on décide du classement, on prépare les documents, on numérise, on contrôle, puis on indexe pour que chaque document soit retrouvable. Le matériel et le budget en découlent. Ce guide présente les étapes, les choix de matériel selon le volume, les facteurs qui font varier le coût, l'arbitrage entre prestataire et internalisation, et les normes à connaître.</p>
+<p>Alliance Consultants ne vend pas de scanners : nous accompagnons la méthode et l'intégration des archives numérisées dans la GED, dans le cadre de notre offre de <a href="/services/dematerialisation-archives">numérisation et dématérialisation des archives</a>.</p>
+<h2>Les étapes d'une numérisation d'archives</h2>
+<h3>1. Le diagnostic du fonds</h3>
+<p>On recense les typologies de documents, les volumes, l'état physique (papier fragile, agrafes, formats variés), la valeur juridique et l'usage opérationnel. Ce diagnostic permet de décider ce qui doit être numérisé, ce qui peut rester en papier et ce qui peut être éliminé selon les règles de conservation.</p>
+<h3>2. Le plan de classement</h3>
+<p>Il structure tout le reste : c'est lui qui permettra de retrouver les documents. Il se construit avec les métiers avant la numérisation. Voir <a href="/blog/dematerialisation-fondamentaux-plan-classement">Plan de classement, indexation, conservation : les fondamentaux</a>.</p>
+<h3>3. La préparation des documents</h3>
+<p>Retrait des agrafes et trombones, remise à plat, réparation des déchirures, tri, insertion de feuilles de séparation. C'est souvent l'étape la plus longue, et celle qui conditionne la qualité des images.</p>
+<h3>4. La numérisation</h3>
+<p>On choisit le bon profil (résolution, couleur ou noir et blanc, recto-verso) selon le type de document, puis on traite par lots identifiés.</p>
+<h3>5. Le contrôle qualité</h3>
+<p>Un échantillon de chaque lot est vérifié : lisibilité, pages manquantes, orientation, complétude. Un lot qui ne passe pas le contrôle est repris.</p>
+<h3>6. L'indexation et le versement en GED</h3>
+<p>Chaque document reçoit ses métadonnées (titre, date, identifiants métier) afin d'être retrouvé par recherche. Sans cette étape, les fichiers numérisés finissent dans un dossier où plus personne ne retrouve rien. La GED <a href="/solutions/docupro-suite">DocuPro Suite</a> prévoit l'indexation avec des champs métier configurables et la recherche multicritère.</p>
+<p>Pour démarrer dans de bonnes conditions, voir aussi <a href="/blog/dematerialisation-archives-par-ou-commencer">Dématérialisation des archives : par où commencer</a>.</p>
+<h2>Quel matériel selon le volume</h2>
+<p>Le matériel se choisit en fonction du volume de pages par jour, des types de documents et du logiciel qui recevra les fichiers. Les ordres de grandeur ci-dessous reprennent ceux de notre guide <a href="/blog/scanner-professionnel-comment-choisir">Scanner professionnel : comment choisir</a>.</p>
+<ul>
+<li><strong>Quelques dossiers par jour, numérisation au fil de l'eau</strong> : un scanner de bureau avec chargeur automatique suffit généralement (jusqu'à environ 2 000 pages par jour).</li>
+<li><strong>Un service archives ou un secrétariat général</strong> : un scanner départemental, conçu pour des volumes plus importants et un traitement par lots (de l'ordre de 2 000 à 10 000 pages par jour).</li>
+<li><strong>Un fonds important à traiter en une fois</strong> : un atelier avec scanners de production (au-delà de 10 000 pages par jour), ou le recours à un prestataire équipé.</li>
+<li><strong>Registres, reliures, documents fragiles</strong> : un scanner à plat ou un poste spécialisé, en complément du scanner à défilement.</li>
+</ul>
+<p>Ne choisissez pas le matériel avant d'avoir fixé le classement et l'indexation : ce sont eux qui déterminent le logiciel de capture et la manière dont les fichiers seront nommés et rangés.</p>
+<h2>Ce qui fait varier le coût d'une numérisation</h2>
+<p>Nous ne donnons pas de montant : il dépend trop de votre contexte pour être honnête sans étude préalable. En revanche, voici les postes qui pèsent dans un budget :</p>
+<ul>
+<li>le volume de pages et la proportion de documents difficiles (formats, fragilité) ;</li>
+<li>le temps de préparation, qui représente souvent une part majeure du travail ;</li>
+<li>le matériel (achat ou location) et ses consommables ;</li>
+<li>le temps des opérateurs et du contrôle qualité ;</li>
+<li>l'indexation : saisie manuelle ou reprise automatique de métadonnées ;</li>
+<li>la GED qui accueille les fichiers, et son déploiement ;</li>
+<li>le stockage et la sauvegarde des fichiers numériques dans la durée.</li>
+</ul>
+<p>Demandez toujours un chiffrage détaillé poste par poste, et comparez à périmètre identique.</p>
+<h2>Prestataire ou internalisation ?</h2>
+<p>Il n'y a pas de réponse unique ; trois situations se présentent le plus souvent.</p>
+<ul>
+<li><strong>Flux continu</strong> (courriers, factures, dossiers du quotidien) : l'internalisation avec un scanner adapté est généralement la plus logique.</li>
+<li><strong>Fonds historique ponctuel</strong> : un prestataire de numérisation, avec son matériel et ses opérateurs, évite d'immobiliser un budget et du personnel pour un chantier qui a une fin.</li>
+<li><strong>Solution mixte</strong> : le prestataire reprend le stock, l'organisation numérise ensuite le flux courant.</li>
+</ul>
+<p>Dans tous les cas, gardez la maîtrise du plan de classement, de l'indexation et du contrôle qualité : ils engagent la valeur du fonds numérisé. Si vous optez pour un atelier interne, notre article sur <a href="/blog/scanners-production-integration-formation-support">la réussite d'un projet avec des scanners de production</a> détaille l'organisation, la formation et le contrôle des lots.</p>
+<h2>Les erreurs à éviter</h2>
+<ul>
+<li>Numériser avant d'avoir décidé du plan de classement, au risque de devoir tout reclasser.</li>
+<li>Négliger l'indexation : un fichier non indexé est un fichier perdu dans la masse.</li>
+<li>Se limiter à des sauvegardes sur un seul support, sans copie ailleurs.</li>
+<li>Oublier d'associer les utilisateurs métier, qui sont ceux qui retrouveront les documents.</li>
+</ul>
+<h2>Normes et cadre à respecter</h2>
+<p>Numériser un document ne signifie pas toujours que la copie numérique remplace l'original sur le plan juridique, ni que l'on peut détruire le papier. Les règles de conservation et de valeur probante dépendent de la nature des documents et de la réglementation applicable : vérifiez-les avant toute élimination d'originaux.</p>
+<p>Pour l'archivage électronique à valeur probante, les normes de référence sont notamment la NF Z42-013 et l'ISO 14641, complétées par l'ISO 27001 pour la sécurité de l'information. Elles sont présentées dans <a href="/blog/archivage-reglementaire-normes-bonnes-pratiques">Archivage réglementaire : normes et bonnes pratiques</a>. Pensez aussi à un format adapté à la conservation, tel que PDF/A, à des sauvegardes régulières et à une gestion des droits d'accès.</p>
+<h2>En pratique</h2>
+<p>Commencez petit : un périmètre pilote, un plan de classement validé, un échantillon numérisé et contrôlé, puis extension. Si vous souhaitez être accompagné sur le diagnostic, la méthode et l'intégration à la GED, découvrez notre service de <a href="/services/dematerialisation-archives">numérisation et dématérialisation des archives</a> et la plateforme <a href="/solutions/docupro-suite">DocuPro Suite</a>.</p>`,
+    seoTitle: "Numériser ses archives papier : matériel, méthode, coûts",
+    seoDescription:
+      "Numériser ses archives papier : étapes, matériel selon le volume, postes de coût, prestataire ou internalisation et normes d'archivage à respecter.",
+    publishedDaysAgo: 2,
+    tagSlugs: ["services", "ged"],
+    faq: [
+      {
+        question: "Quelles sont les étapes pour numériser des archives papier ?",
+        answer:
+          "Les étapes sont le diagnostic du fonds, le plan de classement, la préparation des documents, la numérisation, le contrôle qualité puis l'indexation et le versement dans une GED. L'indexation est essentielle : sans métadonnées, les fichiers numérisés ne sont pas retrouvables.",
+      },
+      {
+        question: "Quel scanner choisir pour numériser des archives ?",
+        answer:
+          "Cela dépend du volume par jour et de la nature des documents. Un scanner de bureau suffit jusqu'à environ 2 000 pages par jour, un scanner départemental couvre de l'ordre de 2 000 à 10 000 pages par jour, et au-delà il faut un scanner de production ou un prestataire. Les documents fragiles ou reliés demandent un scanner à plat.",
+      },
+      {
+        question: "Combien coûte la numérisation d'archives ?",
+        answer:
+          "Le coût dépend du volume, de l'état des documents, du temps de préparation, du matériel, du contrôle qualité, de l'indexation et de la GED retenue. Il n'existe pas de tarif universel : demandez un chiffrage détaillé poste par poste et comparez les offres à périmètre identique.",
+      },
+      {
+        question: "Faut-il confier la numérisation à un prestataire ou la faire en interne ?",
+        answer:
+          "Pour un flux continu de documents, l'internalisation est généralement adaptée. Pour un fonds historique à traiter une fois, un prestataire équipé est souvent préférable. Dans les deux cas, gardez la maîtrise du plan de classement, de l'indexation et du contrôle qualité.",
+      },
+      {
+        question: "Peut-on détruire les originaux papier après numérisation ?",
+        answer:
+          "Pas automatiquement. La possibilité de détruire un original dépend de la nature du document, des durées de conservation et de la réglementation applicable, ainsi que de la valeur probante de la copie numérique. Vérifiez ces règles avant toute élimination, et appuyez-vous sur les normes d'archivage électronique comme la NF Z42-013 et l'ISO 14641.",
+      },
+    ],
   },
 
   // =========================================================================

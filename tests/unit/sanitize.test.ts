@@ -44,4 +44,13 @@ describe("sanitizeBlogHtml", () => {
     const clean = sanitizeBlogHtml(dirty);
     expect(clean).not.toMatch(/style=/);
   });
+
+  it("preserves simple tables (comparatifs d'articles)", () => {
+    const dirty =
+      "<table><thead><tr><th>A</th></tr></thead><tbody><tr><td>1</td></tr></tbody></table>";
+    const clean = sanitizeBlogHtml(dirty);
+    expect(clean).toContain("<table>");
+    expect(clean).toContain("<th>A</th>");
+    expect(clean).toContain("<td>1</td>");
+  });
 });

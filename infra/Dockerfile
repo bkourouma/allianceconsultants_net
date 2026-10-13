@@ -24,6 +24,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
+# Docker fixe HOSTNAME à l'identifiant du conteneur ; le serveur standalone de Next s'en sert
+# comme hôte de la requête (request.nextUrl). On le fixe pour un comportement déterministe.
+ENV HOSTNAME=0.0.0.0
 
 # openssl + libc6-compat: required by Prisma for engine detection on Alpine
 RUN apk add --no-cache openssl libc6-compat

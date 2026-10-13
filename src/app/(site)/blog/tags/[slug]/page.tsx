@@ -19,16 +19,22 @@ import { getReadingMinutes } from "../../_reading-times";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
 
-export const revalidate = 60;
+/**
+ * Page rendue À LA REQUÊTE (comme /blog), jamais pré-générée ni mise en cache ISR.
+ *
+ * La pagination passe par `?page=` : la page lit donc `searchParams`, une API
+ * dynamique. Combinée à `generateStaticParams` (+ `revalidate`), elle faisait
+ * échouer CHAQUE requête en production avec `DYNAMIC_SERVER_USAGE` (HTTP 500) :
+ * l'image Docker est construite sans base de données, `generateStaticParams`
+ * renvoyait [] et la route devenait SSG/ISR, ce qui est incompatible avec la
+ * lecture de `searchParams` au rendu. Ne PAS réintroduire `generateStaticParams`
+ * ni `revalidate` ici tant que la pagination dépend de `?page=`.
+ */
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ page?: string }>;
-}
-
-export async function generateStaticParams() {
-  const tags = await listAllPublishedTags().catch(() => []);
-  return tags.map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({

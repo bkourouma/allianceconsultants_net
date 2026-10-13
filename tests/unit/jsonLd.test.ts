@@ -3,6 +3,7 @@ import {
   buildProductJsonLd,
   buildFaqJsonLd,
   buildBreadcrumbJsonLd,
+  buildWebSiteJsonLd,
 } from "@/lib/seo";
 import type { SolutionDetail, FaqEntry } from "@/lib/validators/content";
 
@@ -124,5 +125,15 @@ describe("buildBreadcrumbJsonLd", () => {
     expect(items[2]?.position).toBe(3);
     expect(items[2]?.name).toBe("MedicPro");
     expect(items[2]?.item).toBe("https://allianceconsultants.net/solutions/medicpro");
+  });
+});
+
+describe("buildWebSiteJsonLd", () => {
+  it("ne déclare pas de SearchAction (/blog ne gère pas ?q, champ de recherche abandonné par Google)", () => {
+    const ld = buildWebSiteJsonLd(SITE);
+    expect(ld["@type"]).toBe("WebSite");
+    expect(ld.url).toBe(SITE);
+    expect(ld).not.toHaveProperty("potentialAction");
+    expect(JSON.stringify(ld)).not.toContain("search_term_string");
   });
 });

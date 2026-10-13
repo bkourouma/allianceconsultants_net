@@ -6,6 +6,7 @@ import { ValueProp } from "@/components/solutions/ValueProp";
 import { TargetAudience } from "@/components/solutions/TargetAudience";
 import { FeatureGrid } from "@/components/solutions/FeatureGrid";
 import { BenefitList } from "@/components/solutions/BenefitList";
+import { ComparisonSection } from "@/components/solutions/ComparisonSection";
 import { UseCases } from "@/components/solutions/UseCases";
 import { ProofBlock, hasProof } from "@/components/solutions/ProofBlock";
 import { StationNav } from "@/components/solutions/StationNav";
@@ -122,6 +123,9 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
       />
       <FeatureGrid groups={solution.featureGroups} />
       <BenefitList benefits={solution.benefits} />
+      {solution.comparison && (
+        <ComparisonSection comparison={solution.comparison} />
+      )}
 
       {proofFilled && solution.useCases && solution.useCases.length > 0 && (
         <UseCases useCases={solution.useCases} />

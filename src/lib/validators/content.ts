@@ -224,6 +224,18 @@ export const SolutionProductLinkSchema = z.object({
   href: z.string().regex(/^https?:\/\//),
 });
 
+export const SolutionComparisonPointSchema = z.object({
+  label: z.string().min(2).max(80),
+  text: z.string().min(10).max(400),
+});
+
+/** Section « face à un tableur / un logiciel généraliste » (facultative). */
+export const SolutionComparisonSchema = z.object({
+  title: z.string().min(10).max(120),
+  intro: z.string().min(10).max(300).optional(),
+  points: z.array(SolutionComparisonPointSchema).min(2).max(5),
+});
+
 export const SolutionDetailSchema = SolutionSchema.extend({
   // SEO promu en obligatoire au niveau page détail
   seoTitle: z.string().min(10).max(60),
@@ -242,6 +254,7 @@ export const SolutionDetailSchema = SolutionSchema.extend({
     .min(2)
     .max(3),
   productLink: SolutionProductLinkSchema.optional(),
+  comparison: SolutionComparisonSchema.optional(),
 });
 
 export type SolutionLeadIntent = z.infer<typeof SolutionLeadIntentSchema>;
@@ -255,6 +268,7 @@ export type SolutionUseCase = z.infer<typeof SolutionUseCaseSchema>;
 export type SolutionProof = z.infer<typeof SolutionProofSchema>;
 export type FaqEntry = z.infer<typeof FaqEntrySchema>;
 export type RelatedSolution = z.infer<typeof RelatedSolutionSchema>;
+export type SolutionComparison = z.infer<typeof SolutionComparisonSchema>;
 export type SolutionDetail = z.infer<typeof SolutionDetailSchema>;
 
 export const ServiceSchema = z.object({

@@ -458,81 +458,173 @@ export const POSTS: SeedPost[] = [
   // =========================================================================
   {
     slug: "immotopia-cloud-5-leviers-agences-immobilieres",
-    title: "Agences immobilières : 5 leviers d'efficacité avec ImmoTopia.cloud",
+    title: "5 leviers d'efficacité pour une agence immobilière en Afrique",
     excerpt:
-      "Cinq leviers concrets pour gagner en efficacité dans une agence immobilière africaine grâce à ImmoTopia.cloud : mandats, biens, clients, diffusion, reporting.",
+      "Cinq leviers concrets pour gagner du temps dans une agence immobilière africaine : gestion locative, syndic, Mobile Money, multi-agences, patrimoine et chantiers.",
     bodyHtml: html({
       intro:
-        "Les agences immobilières africaines partagent un même défi : gérer une activité multi-sites avec des données dispersées entre tableurs, e-mails et téléphones. ImmoTopia.cloud centralise ces flux et libère du temps commercial.",
+        "Les agences immobilières d'Afrique de l'Ouest partagent un même défi : gérer une activité qui s'étend (plusieurs agences, des locations, parfois des copropriétés) avec des informations dispersées entre tableurs, messageries et papier. Le temps part en ressaisies, en relances manuelles et en rapprochements de paiements. <a href=\"/solutions/immotopia-cloud\">ImmoTopia.cloud, logiciel immobilier SaaS</a>, rassemble ces tâches sur une seule plateforme. Voici cinq leviers d'efficacité, classés du plus quotidien au plus stratégique.",
       sections: [
         {
-          h2: "1. Centraliser les mandats et les biens",
-          p: "Une seule base mandats/biens accessible depuis n'importe quel poste. Plus de fichiers Excel locaux qui divergent entre agences.",
+          h2: "1. Un vrai logiciel de gestion locative plutôt qu'un tableur",
+          p: "La gestion locative est le métier le plus répétitif d'une agence : contrats, avis d'échéance, quittances, relances, soldes par locataire. Dans un tableur, chaque mois recommence de zéro et la moindre erreur de saisie se paie en appels et en litiges. Un logiciel de gestion locative garde l'historique par bien, par locataire et par bailleur, et prépare les documents à votre place.",
           bullets: [
-            "Saisie unique avec champs obligatoires métier",
-            "Photos, plans, documents juridiques attachés au bien",
-            "Historique des prix, des visites et des offres",
+            "Contrats de location et historique rattachés à chaque bien",
+            "Quittances et avis d'échéance générés et envoyés depuis la plateforme",
+            "Relances automatisées pour les loyers en retard",
           ],
         },
         {
-          h2: "2. Suivre les clients et leurs critères",
-          p: "Un CRM immobilier connecté aux biens : matching automatique entre une nouvelle annonce et les recherches actives.",
+          h2: "2. Encaisser les loyers par Mobile Money, sans rapprochement à la main",
+          p: "En Afrique de l'Ouest, le Mobile Money est le moyen de paiement du quotidien. Quand le paiement Mobile Money est rattaché au bon dossier, plus besoin de recopier des références de transfert dans un cahier : l'encaissement est tracé par locataire et par bien, et les écarts se voient immédiatement. C'est moins de litiges sur « j'ai déjà payé » et un suivi de trésorerie plus fiable pour le propriétaire.",
         },
         {
-          h2: "3. Diffuser et publier",
-          p: "Publication multi-canale : site agence, portails partenaires, réseaux sociaux. Mise à jour propagée instantanément.",
+          h2: "3. Ajouter le syndic de copropriété sur la même plateforme",
+          p: "Beaucoup d'agences gèrent aussi des immeubles en copropriété, avec un outil à part, voire aucun. Réunir location et syndic évite de maintenir deux jeux de fichiers pour les mêmes personnes, car un propriétaire peut être bailleur d'un lot et copropriétaire d'un autre.",
+          bullets: [
+            "Suivi des immeubles, des lots, des copropriétaires et des tantièmes",
+            "Charges, répartition et appels de fonds",
+            "Dossier de chaque copropriétaire avec son historique de paiements",
+          ],
         },
         {
-          h2: "4. Piloter en temps réel",
-          p: "Tableaux de bord : pipeline, conversion, performance des négociateurs, délai moyen de mise en location.",
+          h2: "4. Travailler en multi-agences avec une vision d'ensemble",
+          p: "Dès qu'une agence ouvre un deuxième site, les fichiers divergent. Une plateforme multi-agences donne à chaque équipe ses dossiers et à la direction une vue consolidée : biens gérés, locations en cours, encaissements. Les responsables arrêtent de réclamer des fichiers à chaque fin de mois, et un dossier qui change d'agence n'est plus à ressaisir.",
         },
         {
-          h2: "5. Sécuriser la conformité",
-          p: "Vérifications KYC, archivage des contrats et journal d'audit pour répondre aux demandes des autorités de tutelle.",
+          h2: "5. Piloter le patrimoine et les chantiers",
+          p: "Pour un propriétaire institutionnel, un promoteur ou une agence qui gère le patrimoine de ses clients, la question n'est pas seulement « qui a payé », mais « dans quel état est mon parc, et quels travaux sont en cours ». Rattacher la gestion du patrimoine et la gestion des chantiers aux mêmes biens permet de décider avec des données à jour, sans reconstituer l'information avant chaque réunion.",
+        },
+        {
+          h2: "Comment mesurer le gain d'efficacité",
+          p: "Plutôt que de promettre un pourcentage, mesurez vous-même, avant et après, quelques indicateurs simples sur votre propre portefeuille. Ils montrent très vite si l'outil tient ses promesses chez vous.",
+          bullets: [
+            "Le temps passé chaque mois à préparer quittances, avis d'échéance et relances",
+            "Le nombre de loyers en retard et le délai moyen entre l'échéance et la relance",
+            "Le temps nécessaire pour obtenir la situation consolidée de toutes les agences",
+            "Le nombre de ressaisies d'une même information dans plusieurs fichiers",
+          ],
+        },
+        {
+          h2: "Les erreurs à éviter au démarrage",
+          p: "Trois pièges reviennent souvent. Le premier est de reprendre tel quel un tableur mal tenu : mieux vaut nettoyer les biens, les locataires et les soldes avant de les charger. Le deuxième est de laisser chaque agence paramétrer son coin dans son coin, ce qui recrée les divergences que l'on voulait supprimer. Le troisième est de ne pas former les équipes : un outil adopté par la moitié de l'agence ne remplace pas le tableur, il s'y ajoute.",
+        },
+        {
+          h2: "Par où commencer",
+          p: "Inutile de tout basculer d'un coup. Le plus simple est de démarrer par le module qui consomme le plus de temps dans votre agence, en général la gestion locative et ses encaissements, puis d'ajouter le syndic, les autres agences, le patrimoine et les chantiers au rythme de vos équipes. Alliance Consultants accompagne le déploiement et la prise en main.",
         },
       ],
       outro:
-        "Sur les 12 derniers mois, les agences ayant déployé ImmoTopia.cloud constatent un gain moyen de 30 % sur le temps administratif et une meilleure traçabilité des dossiers.",
+        "Ces cinq leviers ont un point commun : ils remplacent des ressaisies et des vérifications manuelles par une base unique, tenue à jour par les équipes dans leur travail quotidien. Pour voir ce que cela donne sur votre portefeuille, consultez la fiche <a href=\"/solutions/immotopia-cloud\">ImmoTopia.cloud, logiciel immobilier SaaS</a> ou demandez une démonstration. Le produit est aussi présenté sur <a href=\"https://www.immotopia.cloud\">www.immotopia.cloud</a>.",
     }),
-    seoTitle: "ImmoTopia.cloud — 5 leviers pour agences immobilières",
+    seoTitle: "Agence immobilière : 5 leviers d'efficacité en Afrique",
     seoDescription:
-      "Mandats, biens, clients, diffusion, reporting : 5 leviers concrets d'efficacité avec ImmoTopia.cloud pour les agences immobilières africaines.",
+      "Gestion locative, syndic, paiement Mobile Money, multi-agences, patrimoine et chantiers : 5 leviers pour gagner du temps dans une agence immobilière.",
+    faq: [
+      {
+        question: "Quel logiciel de gestion locative choisir pour une agence en Afrique de l'Ouest ?",
+        answer:
+          "Cherchez un logiciel qui couvre l'ensemble du cycle : contrats, quittances, relances, suivi des soldes par locataire, et paiement Mobile Money, très répandu dans la région. ImmoTopia.cloud a été conçu dans cette logique et propose en plus le syndic de copropriété, le multi-agences, la gestion du patrimoine et des chantiers sur la même plateforme.",
+      },
+      {
+        question: "ImmoTopia.cloud permet-il de gérer plusieurs agences ?",
+        answer:
+          "Oui. ImmoTopia.cloud est une plateforme multi-agences : chaque agence travaille sur ses dossiers et la direction dispose d'une vision d'ensemble de l'activité, des biens et des encaissements.",
+      },
+      {
+        question: "Peut-on encaisser les loyers par Mobile Money avec ImmoTopia.cloud ?",
+        answer:
+          "Oui, le paiement Mobile Money fait partie des fonctions d'ImmoTopia.cloud. Les encaissements sont suivis par locataire et par bien, ce qui évite les rapprochements manuels. Pour connaître le paramétrage adapté à votre agence, demandez une démonstration.",
+      },
+      {
+        question: "Faut-il tout basculer en même temps vers ImmoTopia.cloud ?",
+        answer:
+          "Non. Vous pouvez commencer par le module le plus utile à votre agence, par exemple la gestion locative, puis ajouter le syndic, les autres agences, le patrimoine et les chantiers progressivement. Alliance Consultants accompagne le déploiement et la prise en main.",
+      },
+    ],
     publishedDaysAgo: 7,
     tagSlugs: ["solutions", "immobilier", "transformation-digitale"],
   },
   {
     slug: "immotopia-cloud-centraliser-mandats-biens-clients",
-    title: "ImmoTopia.cloud : centraliser mandats, biens et clients sur une plateforme SaaS",
+    title: "Mandats, biens, clients : centraliser son agence en SaaS",
     excerpt:
-      "ImmoTopia.cloud unifie le portefeuille de mandats, le catalogue de biens et le CRM clients sur une plateforme SaaS multi-agences accessible partout.",
+      "Comment une agence immobilière multi-sites centralise ses biens, ses clients et ses dossiers sur une plateforme SaaS, de la gestion locative au syndic.",
     bodyHtml: html({
       intro:
-        "Une agence immobilière qui se développe sur plusieurs sites finit par perdre la vision d'ensemble : qui gère quel bien, quel client a déjà visité quoi, quel mandat arrive à échéance. ImmoTopia.cloud apporte une réponse SaaS multi-agences.",
+        "Une agence immobilière qui se développe sur plusieurs sites finit par perdre la vision d'ensemble : qui gère quel bien, quel client a déjà visité quoi, quel locataire a réglé son loyer ce mois-ci. Les tableurs, les messageries et les carnets de notes se multiplient, et chaque agence travaille avec sa propre version de la vérité. <a href=\"/solutions/immotopia-cloud\">ImmoTopia.cloud, logiciel immobilier SaaS</a>, répond à ce problème en réunissant les biens, les clients, la gestion locative, le syndic de copropriété et le paiement Mobile Money sur une plateforme accessible depuis un simple navigateur. Voici ce que cette centralisation change concrètement dans une agence.",
       sections: [
         {
-          h2: "Une seule base, plusieurs agences",
-          p: "Chaque agence garde ses données locales mais partage un référentiel commun : biens, mandats, clients. Les transferts entre agences sont tracés.",
-        },
-        {
-          h2: "Le portefeuille mandats",
-          p: "Suivi du cycle de vie complet du mandat : signature, exclusivité, échéances, renouvellement.",
+          h2: "Pourquoi les données s'éparpillent dans une agence qui grandit",
+          p: "Au départ, un tableur suffit : une ligne par bien, un onglet par mois. Puis l'agence prend de nouveaux mandats, recrute des négociateurs, ouvre un second site. Chacun crée ses propres fichiers, les versions divergent, et personne ne sait plus laquelle fait foi. Le coût n'est pas toujours visible, mais il est réel.",
           bullets: [
-            "Alertes d'échéance et relances automatiques",
-            "Documents contractuels archivés numériquement",
-            "Statistiques d'efficacité par négociateur",
+            "Des ressaisies d'une agence à l'autre pour le même bien ou le même client",
+            "Des relances oubliées parce que l'information est dans le téléphone de quelqu'un",
+            "Des rapprochements de paiements faits à la main, en fin de mois",
+            "Une direction qui attend des fichiers pour connaître l'état du portefeuille",
           ],
         },
         {
-          h2: "Le CRM client connecté",
-          p: "Profil client avec critères de recherche structurés, historique de visites et offres, communications enregistrées.",
+          h2: "Une seule base, plusieurs agences",
+          p: "Dans une plateforme multi-agences, chaque agence travaille sur ses dossiers tout en s'appuyant sur le même référentiel : mêmes biens, mêmes clients, mêmes règles de saisie. La direction voit l'ensemble sans réclamer de fichiers. Quand un dossier change d'agence, il suit avec son historique au lieu d'être ressaisi.",
+        },
+        {
+          h2: "Des biens et des clients dans la même base",
+          p: "Le catalogue de biens et le suivi des clients et prospects vivent dans le même outil. Un bien n'est plus une ligne isolée : il est relié à ses photos, à ses caractéristiques, à son propriétaire, à ses locataires et aux contacts qui s'y intéressent. À l'inverse, la fiche d'un client montre les biens et les dossiers qui le concernent. On retrouve en un coup d'œil ce qui était auparavant éclaté entre trois fichiers.",
+        },
+        {
+          h2: "La gestion locative au quotidien",
+          p: "Une fois les biens et les clients centralisés, la gestion locative s'y rattache naturellement. Un logiciel de gestion locative conserve les contrats par bien, par locataire et par bailleur, produit les avis d'échéance et les quittances, et déclenche les relances sur les loyers en retard. Le gestionnaire passe moins de temps à fabriquer des documents et plus de temps à suivre les situations qui posent problème.",
+        },
+        {
+          h2: "Le syndic de copropriété sur la même plateforme",
+          p: "Les agences qui font aussi du syndic gagnent à ne pas séparer les deux activités. Un logiciel de syndic de copropriété suit les immeubles, les lots, les copropriétaires et les tantièmes, calcule la répartition des charges, émet les appels de fonds et garde l'historique de paiements de chaque copropriétaire. Comme la base est commune, un même propriétaire n'est pas saisi deux fois lorsqu'il est à la fois bailleur et copropriétaire.",
+        },
+        {
+          h2: "Le paiement Mobile Money, rattaché au bon dossier",
+          p: "En Afrique de l'Ouest, loyers et charges se règlent très souvent par Mobile Money. L'enjeu est de rattacher chaque paiement au bon locataire, au bon copropriétaire et au bon bien. Quand l'encaissement est suivi dans la plateforme, les soldes sont à jour et les écarts apparaissent d'eux-mêmes, au lieu d'être découverts en fin de mois dans un relevé.",
+        },
+        {
+          h2: "Patrimoine et chantiers : voir au-delà de l'encaissement",
+          p: "Pour un propriétaire, un promoteur ou une agence qui gère le patrimoine de ses clients, la gestion du patrimoine donne une vue consolidée des biens et de leur situation. La gestion des chantiers relie les travaux aux biens, aux programmes ou aux copropriétés concernés. Les décisions de maintenance ou d'investissement s'appuient alors sur des informations à jour, sans reconstitution avant chaque réunion.",
+        },
+        {
+          h2: "À qui s'adresse cette centralisation",
+          p: "Elle est utile à plusieurs profils, avec des priorités différentes. Un gestionnaire locatif y gagnera surtout en gestion locative et en suivi des encaissements. Un syndic de copropriété y trouvera ses immeubles, ses lots, ses charges et ses appels de fonds. Une agence en croissance y verra d'abord le multi-agences et la fin des fichiers parallèles. Un promoteur ou un investisseur s'intéressera à la gestion du patrimoine et à la gestion des chantiers. Les mêmes données alimentent tous ces usages, ce qui évite d'acheter un outil par métier.",
+        },
+        {
+          h2: "Comment mettre en place la centralisation",
+          p: "Le plus sûr est d'avancer par étapes : commencer par les biens et les clients, puis la gestion locative et ses encaissements, ensuite le syndic, les autres agences, le patrimoine et les chantiers. Chaque étape apporte un bénéfice visible avant la suivante, et les équipes gardent le temps de prendre leurs habitudes.",
         },
       ],
       outro:
-        "ImmoTopia.cloud est livré en mode SaaS : pas d'infrastructure à gérer, mises à jour incluses, support local en français. Le déploiement standard prend 4 à 6 semaines.",
+        "Centraliser, ce n'est pas ajouter un outil de plus : c'est remplacer plusieurs fichiers par une base commune que toute l'agence alimente en travaillant. ImmoTopia.cloud est livré en mode SaaS, sans infrastructure à gérer de votre côté, et Alliance Consultants accompagne le déploiement. Retrouvez le détail des fonctions sur la fiche <a href=\"/solutions/immotopia-cloud\">ImmoTopia.cloud, logiciel immobilier SaaS</a> ou sur <a href=\"https://www.immotopia.cloud\">www.immotopia.cloud</a>.",
     }),
-    seoTitle: "ImmoTopia.cloud — plateforme SaaS multi-agences",
+    seoTitle: "Mandats, biens, clients : centraliser son agence en SaaS",
     seoDescription:
-      "Plateforme SaaS multi-agences pour centraliser mandats, biens et clients : ImmoTopia.cloud, l'outil métier des agences immobilières africaines.",
+      "Biens, clients, gestion locative, syndic et paiement Mobile Money sur une plateforme SaaS multi-agences : comment centraliser une agence immobilière.",
+    faq: [
+      {
+        question: "Qu'est-ce qu'un logiciel immobilier SaaS multi-agences ?",
+        answer:
+          "C'est une plateforme accessible depuis un navigateur, sans installation, où plusieurs agences partagent un même référentiel (biens, clients, règles de saisie) tout en travaillant chacune sur leurs dossiers. La direction garde une vue d'ensemble. ImmoTopia.cloud fonctionne sur ce principe.",
+      },
+      {
+        question: "ImmoTopia.cloud sert-il aussi aux syndics de copropriété ?",
+        answer:
+          "Oui. ImmoTopia.cloud inclut la gestion du syndic de copropriété : immeubles, lots, copropriétaires, charges, appels de fonds et suivi des paiements, sur la même plateforme que la gestion locative.",
+      },
+      {
+        question: "Quelles activités immobilières ImmoTopia.cloud couvre-t-il ?",
+        answer:
+          "ImmoTopia.cloud couvre la gestion locative, le syndic de copropriété, le paiement Mobile Money, le multi-agences, la gestion du patrimoine et la gestion des chantiers, avec le catalogue de biens et le suivi des clients décrits sur la fiche produit.",
+      },
+      {
+        question: "Faut-il installer un logiciel sur les postes de l'agence ?",
+        answer:
+          "Non. ImmoTopia.cloud est une solution SaaS accessible depuis un navigateur web : pas d'infrastructure à gérer de votre côté. Alliance Consultants accompagne le déploiement et la prise en main.",
+      },
+    ],
     publishedDaysAgo: 22,
     tagSlugs: ["solutions", "immobilier"],
   },

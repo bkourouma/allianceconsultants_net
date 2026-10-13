@@ -17,6 +17,12 @@ const ALLOWED_TAGS = [
   "img",
   "hr",
   "br",
+  "table",
+  "thead",
+  "tbody",
+  "tr",
+  "th",
+  "td",
 ];
 
 const ALLOWED_ATTR = [

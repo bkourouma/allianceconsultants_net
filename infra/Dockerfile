@@ -38,6 +38,15 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 # bcryptjs is only used by seed.ts so Next's tracer skips it; copy it explicitly
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/bcryptjs ./node_modules/bcryptjs
+# One-off scripts run inside the container with the bundled tsx (devDependency, so
+# not traced by Next): scripts/apply-blog-posts.ts imports prisma/seed.ts.
+#   docker exec allianceconsultants-web node node_modules/tsx/dist/cli.mjs scripts/apply-blog-posts.ts --slugs a,b
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/apply-blog-posts.ts ./scripts/apply-blog-posts.ts
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tsx ./node_modules/tsx
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/esbuild ./node_modules/esbuild
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@esbuild ./node_modules/@esbuild
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/get-tsconfig ./node_modules/get-tsconfig
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/resolve-pkg-maps ./node_modules/resolve-pkg-maps
 
 USER nextjs
 EXPOSE 3000

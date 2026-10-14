@@ -1,10 +1,9 @@
 "use client";
 
-import { useId, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { ChevronLeft, ChevronRight, TramFront } from "lucide-react";
-import { Section } from "@/components/ui/Section";
+import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { SolutionFeatureGroup } from "@/lib/validators/content";
-import { SectionHead } from "./SectionHead";
+import { CouponBand } from "./CouponBand";
 import { cn } from "@/lib/utils";
 import s from "./Solutions.module.css";
 
@@ -12,9 +11,12 @@ interface FeatureGridProps {
   groups: SolutionFeatureGroup[];
 }
 
+const NOTCH =
+  "before:absolute before:-left-[2px] before:-top-[10px] before:h-5 before:w-[10px] before:rounded-r-full before:border-2 before:border-l-0 before:border-ink before:bg-enamel before:content-[''] after:absolute after:-right-[2px] after:-top-[10px] after:h-5 after:w-[10px] after:rounded-l-full after:border-2 after:border-r-0 after:border-ink after:bg-enamel after:content-['']";
+
 /**
- * Station-by-station explorer. Each feature group is a station on the line;
- * selecting one brings the train there and lists what the station serves.
+ * Coupon fold-out explorer. The groups are an index of small tickets; picking
+ * one unfolds its features on a coupon whose rows are separated by perforations.
  * (Name kept for the existing import; it is no longer a card grid.)
  */
 export function FeatureGrid({ groups }: FeatureGridProps) {
@@ -56,146 +58,144 @@ export function FeatureGrid({ groups }: FeatureGridProps) {
   }
 
   return (
-    <Section id="fonctionnalites" bg="gray" padding="md" aria-labelledby="fonctionnalites-title">
-      <SectionHead
-        id="fonctionnalites-title"
-        title="Les fonctionnalités, station par station"
-        intro="Choisissez une station : vous voyez ce qu’elle dessert."
-      />
+    <section
+      id="fonctionnalites"
+      aria-labelledby="fonctionnalites-title"
+      className="pb-16 lg:pb-24"
+    >
+      <div className="wrap">
+        <header className="max-w-3xl">
+          <h2 id="fonctionnalites-title" className="t-h2 text-ink">
+            Les fonctionnalités
+          </h2>
+          <p className="t-lead mt-4">
+            Choisissez un domaine : ses fonctionnalités se déplient sur le
+            coupon.
+          </p>
+        </header>
 
-      <div className="mt-10" style={{ "--n": n } as CSSProperties}>
-        <div
-          role="tablist"
-          aria-label="Domaines fonctionnels"
-          onKeyDown={onKeyDown}
-          className="relative grid md:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]"
-        >
-          {/* rails */}
-          <span
-            aria-hidden
-            className="absolute bottom-6 left-[9px] top-6 w-1.5 bg-[var(--accent)] md:hidden"
-          />
-          <span
-            aria-hidden
-            className="absolute left-3 top-[9px] hidden h-1.5 bg-[var(--accent)] md:block md:[width:calc(100%*(var(--n)_-_1)/var(--n))]"
-          />
-          {/* the train */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute top-[-9px] z-10 hidden size-[42px] place-items-center rounded-full border-[3px] border-[var(--accent)] bg-ink text-white transition-[left] duration-[600ms] ease-[var(--ease-out-expo)] md:grid"
-            style={{ left: `calc(100% * ${index} / ${n} - 9px)` }}
+        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-12">
+          <div
+            role="tablist"
+            aria-label="Domaines fonctionnels"
+            aria-orientation="vertical"
+            onKeyDown={onKeyDown}
+            className="flex flex-col gap-2.5"
           >
-            <TramFront className="size-5" strokeWidth={2} />
-          </span>
-
-          {groups.map((g, i) => {
-            const selected = i === index;
-            return (
-              <button
-                key={g.title}
-                ref={(el) => {
-                  tabRefs.current[i] = el;
-                }}
-                role="tab"
-                type="button"
-                id={`${uid}-tab-${i}`}
-                aria-selected={selected}
-                aria-controls={`${uid}-panel`}
-                tabIndex={selected ? 0 : -1}
-                onClick={() => select(i)}
-                className="relative flex min-h-12 items-start gap-4 py-2 text-left md:block md:pb-0 md:pr-5 md:pt-12"
-              >
-                <span
-                  aria-hidden
+            {groups.map((g, i) => {
+              const selected = i === index;
+              return (
+                <button
+                  key={g.title}
+                  ref={(el) => {
+                    tabRefs.current[i] = el;
+                  }}
+                  role="tab"
+                  type="button"
+                  id={`${uid}-tab-${i}`}
+                  aria-selected={selected}
+                  aria-controls={`${uid}-panel`}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => select(i)}
                   className={cn(
-                    "relative z-[1] size-6 shrink-0 rounded-full border-[5px] transition-[background-color,border-color] duration-300 md:absolute md:left-0 md:top-0",
+                    "grid min-h-14 grid-cols-[2.75rem_minmax(0,1fr)] items-stretch overflow-hidden rounded-[3px] border-2 border-ink text-left transition-[background-color,color,transform,box-shadow] duration-300 ease-[var(--ease-out-expo)]",
                     selected
-                      ? "border-ink bg-[var(--accent)]"
-                      : "border-[var(--accent)] bg-panel",
-                  )}
-                />
-                <span
-                  className={cn(
-                    "block font-display text-base font-bold leading-snug transition-colors duration-300 sm:text-[1.0625rem]",
-                    selected
-                      ? "text-ink underline decoration-[3px] decoration-[var(--accent)] underline-offset-[6px]"
-                      : "text-ink-soft",
+                      ? "bg-ink text-white shadow-[0_1px_2px_rgba(15,42,90,0.14),0_8px_16px_-8px_rgba(15,42,90,0.3)] lg:translate-x-2"
+                      : "bg-panel text-ink hover:-translate-y-0.5",
                   )}
                 >
-                  {g.title}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div
-          key={index}
-          role="tabpanel"
-          id={`${uid}-panel`}
-          aria-labelledby={`${uid}-tab-${index}`}
-          className={cn(
-            "mt-8 rounded-md bg-panel p-6 sm:p-8 lg:p-10",
-            s.panelIn,
-          )}
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h3 className="t-h3 text-ink">{active.title}</h3>
-            <p className="t-num text-sm font-semibold text-ink-mute">
-              Station {index + 1} sur {n}
-            </p>
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "grid place-items-center border-r-2 border-ink font-display text-2xl font-extrabold",
+                      selected ? "bg-white text-ink" : "carbon bg-panel",
+                    )}
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="flex flex-col justify-center gap-0.5 px-3.5 py-2">
+                    <span className="font-display text-[1.0625rem] font-bold leading-snug sm:text-lg">
+                      {g.title}
+                    </span>
+                    <span
+                      className={cn(
+                        "font-mono text-[0.625rem] font-medium uppercase tracking-[0.08em]",
+                        selected ? "text-white/80" : "text-ink-mute",
+                      )}
+                    >
+                      {g.features.length} fonctionnalités
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          <ul className="mt-8 grid gap-x-12 md:grid-cols-2">
-            {active.features.map((f) => (
-              <li
-                key={f.title}
-                className="grid grid-cols-[auto_1fr] gap-x-3 border-t border-rule py-5"
-              >
-                <span
-                  aria-hidden
-                  className="mt-[0.45rem] size-3 rounded-full border-[3px] border-[var(--accent)] bg-panel"
-                />
-                <div>
-                  <h4 className="text-base font-bold leading-snug text-ink">
+          <div
+            key={index}
+            role="tabpanel"
+            id={`${uid}-panel`}
+            aria-labelledby={`${uid}-tab-${index}`}
+            className="coupon"
+          >
+            <CouponBand
+              titleAs="h3"
+              no={index + 1}
+              title={active.title}
+              chip={`${index + 1} / ${n}`}
+            />
+            <ul>
+              {active.features.map((f, i) => (
+                <li
+                  key={f.title}
+                  style={{ "--i": i } as React.CSSProperties}
+                  className={cn(
+                    "relative grid gap-x-8 gap-y-1.5 px-6 py-5 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] sm:px-8 sm:py-6",
+                    s.foldRow,
+                    i > 0 && "border-t-2 border-dashed border-ink",
+                    i > 0 && NOTCH,
+                  )}
+                >
+                  <h4 className="font-display text-xl font-bold leading-tight text-ink">
                     {f.title}
                   </h4>
-                  <p className="t-body mt-1.5 text-[0.9375rem] leading-relaxed text-ink-soft">
+                  <p className="t-body text-[0.9375rem] leading-relaxed text-ink-soft">
                     {f.description}
                   </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t-2 border-ink pt-5">
-            {prev ? (
-              <button
-                type="button"
-                onClick={() => select(index - 1)}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-bold text-ink ring-2 ring-inset ring-ink transition-colors hover:bg-ink hover:text-white"
-              >
-                <ChevronLeft aria-hidden className="size-4" strokeWidth={2} />
-                <span className="sr-only">Station précédente : </span>
-                {prev.title}
-              </button>
-            ) : (
-              <span />
-            )}
-            {next && (
-              <button
-                type="button"
-                onClick={() => select(index + 1)}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-4 text-sm font-bold text-white transition-colors hover:bg-night-2"
-              >
-                <span className="sr-only">Station suivante : </span>
-                {next.title}
-                <ChevronRight aria-hidden className="size-4" strokeWidth={2} />
-              </button>
-            )}
+            <hr className="tear" />
+            <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 sm:px-8">
+              {prev ? (
+                <button
+                  type="button"
+                  onClick={() => select(index - 1)}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-[3px] px-4 font-display text-[0.9375rem] font-bold uppercase tracking-[0.06em] text-ink ring-2 ring-inset ring-ink transition-colors hover:bg-ink hover:text-white"
+                >
+                  <ChevronLeft aria-hidden className="size-4" strokeWidth={2} />
+                  <span className="sr-only">Domaine précédent : </span>
+                  {prev.title}
+                </button>
+              ) : (
+                <span />
+              )}
+              {next && (
+                <button
+                  type="button"
+                  onClick={() => select(index + 1)}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-[3px] bg-ink px-4 font-display text-[0.9375rem] font-bold uppercase tracking-[0.06em] text-white transition-colors hover:bg-night-2"
+                >
+                  <span className="sr-only">Domaine suivant : </span>
+                  {next.title}
+                  <ChevronRight aria-hidden className="size-4" strokeWidth={2} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

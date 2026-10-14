@@ -3,19 +3,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
+import { Perforation } from "@/components/about/CouponKit";
 import { PillLink } from "@/components/about/PillLink";
 import {
   getPublishedProjectReferenceById,
   listLatestPublishedProjectReferences,
 } from "@/lib/projectReferences";
 import { getSiteSettings } from "@/lib/content";
-import { lineStyle } from "@/lib/network";
 import {
   buildCaseStudyJsonLd,
   buildMetadata,
   buildReferencesBreadcrumbJsonLd,
 } from "@/lib/seo";
-import { ReferenceTicket, lineForSector } from "../ReferenceTicket";
+import { ReferenceTicket } from "../ReferenceTicket";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -88,23 +88,21 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
   });
 
   const others = latest.filter((r) => r.id !== id).slice(0, 3);
-  const line = lineForSector(ref.sector);
 
-  const stations: { title: string; body: string }[] = [
+  const sections: { title: string; body: string }[] = [
     { title: "Problématique", body: ref.problem },
     { title: "Solution proposée", body: ref.solution },
   ];
-  if (ref.impact) stations.push({ title: "Impact / résultat", body: ref.impact });
+  if (ref.impact) sections.push({ title: "Impact / résultat", body: ref.impact });
 
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={caseStudyJsonLd} />
 
-      {/* ───────── En-tête : la ligne du secteur ───────── */}
-      <section className="bg-enamel" style={lineStyle(line.id)}>
-        <div className="h-3 bg-[var(--accent)]" aria-hidden />
-        <div className="wrap pb-12 pt-8 lg:pb-16 lg:pt-10">
+      {/* ───────── En-tête ───────── */}
+      <section className="bg-enamel pb-12 pt-8 lg:pb-16 lg:pt-10">
+        <div className="wrap">
           <Link
             href="/references"
             className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink underline-offset-4 hover:underline"
@@ -122,14 +120,25 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* ───────── Corps : fiche d'identité + stations ───────── */}
-      <section className="bg-panel py-14 lg:py-20" style={lineStyle(line.id)}>
-        <div className="wrap grid gap-12 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-20">
-          <aside aria-label="Fiche d'identité du projet" className="lg:sticky lg:top-32 lg:self-start">
-            <div className="overflow-hidden rounded-lg ring-1 ring-rule">
-              <div className="flex items-center gap-3 bg-[var(--accent)] p-5 text-[var(--on-accent)]">
+      {/* ───────── Corps : fiche d'identité + problématique / solution / impact ───────── */}
+      <section className="bg-enamel pb-16 lg:pb-24">
+        <div className="wrap grid gap-10 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-14">
+          <aside
+            aria-label="Fiche d'identité du projet"
+            className="lg:sticky lg:top-32 lg:self-start"
+          >
+            <div className="coupon overflow-hidden">
+              <div className="flex h-11 border-b-2 border-ink bg-ink text-white">
+                <span className="t-num grid min-w-[4.25rem] place-items-center border-r-2 border-ink bg-panel px-3 font-display text-xl font-extrabold text-ink">
+                  {ref.year}
+                </span>
+                <span className="t-field flex min-w-0 flex-1 items-center truncate px-4 !text-white">
+                  {ref.sector ?? "Référence"}
+                </span>
+              </div>
+              <div className="flex items-center gap-3 border-b-2 border-dashed border-ink px-5 py-4">
                 {ref.logoUrl ? (
-                  <span className="grid h-14 max-w-[10rem] place-items-center rounded-[4px] bg-white px-3">
+                  <span className="grid h-14 max-w-[10rem] place-items-center rounded-[3px] border border-ink-mute/60 bg-white px-3">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={ref.logoUrl}
@@ -140,55 +149,50 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
                 ) : (
                   <span
                     aria-hidden
-                    className="grid size-14 place-items-center rounded-full bg-white font-display text-xl font-extrabold text-ink"
+                    className="grid size-14 place-items-center rounded-[3px] border-2 border-ink bg-white font-display text-2xl font-extrabold text-ink"
                   >
                     {ref.companyName.charAt(0).toUpperCase()}
                   </span>
                 )}
-                {ref.sector ? (
-                  <p className="text-sm font-bold leading-tight">
-                    {ref.sector}
-                  </p>
-                ) : null}
               </div>
-              <dl className="divide-y divide-dashed divide-rule bg-panel px-5">
+              <dl className="px-5">
                 <Row label="Client">{ref.companyName}</Row>
                 <Row label="Année">{ref.year}</Row>
-                <Row label="Durée">{ref.duration}</Row>
+                <Row label="Durée" last>
+                  {ref.duration}
+                </Row>
               </dl>
             </div>
           </aside>
 
-          <div>
-            <ol className="relative grid gap-12">
-              <span
-                aria-hidden
-                className="absolute bottom-3 left-[0.6875rem] top-3 w-1.5 rounded-full bg-[var(--accent)]"
-              />
-              {stations.map((s) => (
-                <li key={s.title} className="relative pl-12">
-                  <span
-                    aria-hidden
-                    className="absolute left-0 top-0.5 block size-7 rounded-full border-[5px] border-ink bg-panel"
-                  />
-                  <h2 className="t-h3 text-ink">{s.title}</h2>
-                  <div className="mt-4 grid max-w-[68ch] gap-4 text-[1.0625rem] leading-relaxed text-ink-soft">
-                    {renderParagraphs(s.body)}
-                  </div>
-                </li>
+          <div className="min-w-0">
+            <div className="coupon overflow-hidden">
+              {sections.map((s, i) => (
+                <div key={s.title}>
+                  {i > 0 ? <Perforation /> : null}
+                  <section className="p-6 sm:p-8 lg:p-10">
+                    <h2 className="t-h3 text-ink">{s.title}</h2>
+                    <div className="mt-4 grid max-w-[68ch] gap-4 text-[1.0625rem] leading-relaxed text-ink-soft">
+                      {renderParagraphs(s.body)}
+                    </div>
+                  </section>
+                </div>
               ))}
-            </ol>
+            </div>
 
-            <aside className="mt-16 rounded-lg bg-night p-7 text-white sm:p-9">
-              <h2 className="t-h3 text-white">Un projet similaire à mener ?</h2>
-              <p className="mt-3 max-w-[52ch] text-white/80">
-                Discutons de votre contexte. Nos consultants vous accompagnent
-                pour cadrer, prototyper et déployer votre projet de
-                transformation digitale.
-              </p>
-              <div className="mt-6">
+            <aside className="coupon mt-10 grid overflow-hidden sm:grid-cols-[minmax(0,1fr)_16rem] lg:mt-14">
+              <div className="p-6 sm:p-8">
+                <h2 className="t-h3 text-ink">Un projet similaire à mener ?</h2>
+                <p className="mt-3 max-w-[52ch] text-ink-soft">
+                  Discutons de votre contexte. Nos consultants vous accompagnent
+                  pour cadrer, prototyper et déployer votre projet de
+                  transformation digitale.
+                </p>
+              </div>
+              <div className="flex flex-col justify-center gap-3 border-t-2 border-dashed border-ink bg-[#f6f5fb] p-6 sm:border-l-2 sm:border-t-0">
+                <p className="t-field !text-carbon">Coupon détachable</p>
                 <PillLink
-                  onDark
+                  className="w-full"
                   href={`/contact-demo?intent=contact&from=references&block=references-cta`}
                 >
                   Prendre contact
@@ -200,9 +204,10 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
       </section>
 
       {others.length > 0 ? (
-        <section className="bg-enamel py-14 lg:py-20">
+        <section className="bg-enamel pb-20 lg:pb-28">
           <div className="wrap">
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <hr className="tear" />
+            <div className="mb-8 mt-12 flex flex-wrap items-end justify-between gap-4 lg:mt-16">
               <h2 className="t-h3 text-ink">Autres références</h2>
               <Link
                 href="/references"
@@ -212,7 +217,7 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
                 <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
               {others.map((r) => (
                 <ReferenceTicket key={r.id} reference={r} />
               ))}
@@ -227,14 +232,20 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
 function Row({
   label,
   children,
+  last = false,
 }: {
   label: string;
   children: React.ReactNode;
+  last?: boolean;
 }) {
   return (
-    <div className="py-4">
-      <dt className="t-station text-ink-mute">{label}</dt>
-      <dd className="mt-1 font-display text-lg font-bold leading-snug text-ink">
+    <div
+      className={
+        "py-4 " + (last ? "" : "border-b border-dashed border-ink-mute/60")
+      }
+    >
+      <dt className="t-field">{label}</dt>
+      <dd className="mt-1 font-display text-xl font-bold leading-snug text-ink">
         {children}
       </dd>
     </div>
@@ -264,7 +275,7 @@ function renderParagraphs(input: string): React.ReactNode {
   function flushList() {
     if (listBuffer.length === 0) return;
     blocks.push(
-      <ul key={`ul-${key++}`} className="list-disc space-y-1.5 pl-5 marker:text-ink">
+      <ul key={`ul-${key++}`} className="list-disc space-y-1.5 pl-5 marker:text-ink-mute">
         {listBuffer.map((item, i) => (
           <li key={i}>{item}</li>
         ))}

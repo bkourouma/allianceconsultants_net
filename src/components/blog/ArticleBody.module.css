@@ -1,15 +1,16 @@
-/* Reading surface for sanitised TipTap HTML.
-   Scoped via CSS Modules; colours come from the global RÉSEAU tokens and the
-   --accent set on the article wrapper. Measure is capped by the container. */
+/* Reading surface for sanitised TipTap HTML: Le Carnet de coupons.
+   Scoped via CSS Modules; colours come from the global tokens (navy ink, white
+   coupon stock, red only for the hover/active mark). Measure is 68ch. */
 
 .body {
   --quote-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 38'%3E%3Cpath d='M0 38V22C0 9 7 1.5 19 0v7C13 8.5 10.5 12 10.5 17H19v21H0Zm27 0V22C27 9 34 1.5 46 0v7c-6 1.5-8.5 5-8.5 10H46v21H27Z'/%3E%3C/svg%3E");
   --ext-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");
 
   max-inline-size: 68ch;
+  font-family: var(--font-text);
   font-size: clamp(1.0625rem, 1.01rem + 0.22vw, 1.1875rem);
   line-height: 1.78;
-  color: #1f2b47;
+  color: #1c2a4a;
   overflow-wrap: break-word;
   hyphens: auto;
 }
@@ -23,7 +24,7 @@
   text-wrap: pretty;
 }
 
-/* ───── headings ───── */
+/* ───── headings: display condensed, a tear line above each h2 ───── */
 .body h2,
 .body h3,
 .body h4 {
@@ -34,43 +35,41 @@
 }
 
 .body h2 {
-  margin: 2.6em 0 0.7em;
-  font-size: clamp(1.625rem, 1.3rem + 1.3vw, 2.25rem);
+  margin: 2.8em 0 0.7em;
+  font-size: clamp(1.875rem, 1.4rem + 1.8vw, 2.625rem);
+  font-style: italic;
   font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  line-height: 1.04;
+  letter-spacing: -0.008em;
 }
 
-/* a short line stub above every h2: the section's "platform" */
 .body h2::before {
   content: "";
   display: block;
-  inline-size: 3rem;
-  block-size: 0.3125rem;
-  margin-block-end: 0.7em;
-  border-radius: 3px;
-  background: var(--accent);
+  block-size: 0;
+  margin-block-end: 0.55em;
+  border-block-start: 2px dashed var(--color-ink);
 }
 
 .body h3 {
-  margin: 2.1em 0 0.55em;
-  font-size: clamp(1.3125rem, 1.15rem + 0.6vw, 1.625rem);
+  margin: 2.1em 0 0.5em;
+  font-size: clamp(1.4375rem, 1.2rem + 0.8vw, 1.875rem);
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.018em;
+  line-height: 1.12;
+  letter-spacing: 0;
 }
 
 .body h4 {
   margin: 1.8em 0 0.4em;
-  font-size: 1.0625rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.005em;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
 }
 
 /* ───── inline ───── */
 .body strong {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-ink);
 }
 
@@ -80,18 +79,19 @@
 
 .body a {
   color: var(--color-ink);
-  font-weight: 600;
+  font-weight: 500;
   text-decoration-line: underline;
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--color-ink);
   text-decoration-thickness: 2px;
-  text-underline-offset: 0.24em;
+  text-underline-offset: 0.22em;
   text-decoration-skip-ink: auto;
-  transition: text-decoration-thickness 180ms var(--ease-out-expo),
-    text-decoration-color 180ms var(--ease-out-expo);
+  transition: text-decoration-color 180ms var(--ease-out-expo),
+    text-decoration-thickness 180ms var(--ease-out-expo);
 }
 
 .body a:hover {
-  text-decoration-thickness: 4px;
+  text-decoration-color: var(--color-red);
+  text-decoration-thickness: 3px;
 }
 
 .body a[target="_blank"]::after {
@@ -107,18 +107,18 @@
 }
 
 .body code {
-  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.875em;
+  font-family: var(--font-mono);
+  font-size: 0.84em;
   padding: 0.14em 0.4em;
-  border-radius: 4px;
+  border-radius: 3px;
   background: var(--color-panel);
   color: var(--color-ink);
-  box-shadow: inset 0 0 0 1px var(--color-rule);
+  box-shadow: inset 0 0 0 1px var(--color-ink);
   hyphens: none;
   overflow-wrap: anywhere;
 }
 
-/* ───── lists: stations on a line ───── */
+/* ───── lists: square navy marks, carbon numerals ───── */
 .body ul,
 .body ol {
   margin: 0 0 1.5em;
@@ -129,7 +129,7 @@
 .body li {
   position: relative;
   margin: 0 0 0.55em;
-  padding-inline-start: 2rem;
+  padding-inline-start: 1.9rem;
 }
 
 .body li > p {
@@ -146,26 +146,16 @@
 .body ul > li::before {
   content: "";
   position: absolute;
-  z-index: 1;
-  inset-inline-start: 0.1rem;
-  inset-block-start: 0.58em;
-  inline-size: 0.8rem;
-  block-size: 0.8rem;
-  border-radius: 999px;
-  border: 3px solid var(--accent);
-  background: var(--color-enamel);
+  inset-inline-start: 0.2rem;
+  inset-block-start: 0.66em;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border: 2px solid var(--color-ink);
+  background: var(--color-panel);
 }
 
-/* the line joining one station to the next */
-.body ul > li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  inset-inline-start: calc(0.1rem + 0.4rem - 1px);
-  inset-block-start: calc(0.58em + 0.8rem);
-  inset-block-end: calc(-0.58em - 0.55em);
-  inline-size: 2px;
-  background: var(--accent);
-  opacity: 0.55;
+.body ul ul > li::before {
+  background: var(--color-ink);
 }
 
 .body ol {
@@ -174,42 +164,38 @@
 
 .body ol > li {
   counter-increment: step;
-  padding-inline-start: 2.5rem;
+  padding-inline-start: 2.4rem;
 }
 
 .body ol > li::before {
   content: counter(step);
   position: absolute;
   inset-inline-start: 0;
-  inset-block-start: 0.2em;
-  display: grid;
-  place-items: center;
-  inline-size: 1.7rem;
-  block-size: 1.7rem;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--on-accent);
+  inset-block-start: 0;
+  min-inline-size: 1.6rem;
+  color: var(--color-carbon);
   font-family: var(--font-display);
-  font-size: 0.8125rem;
+  font-size: 1.55em;
+  font-style: italic;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: 1.12;
 }
 
-/* ───── quote: leading glyph, no side border ───── */
+/* ───── quote: a drawn quotation mark, no side border ───── */
 .body blockquote {
   position: relative;
-  margin: 2.2em 0;
+  margin: 2.4em 0;
   padding: 0;
 }
 
 .body blockquote::before {
   content: "";
   display: block;
-  inline-size: 2.5rem;
-  block-size: 2rem;
-  margin-block-end: 0.7rem;
-  background: var(--accent);
+  inline-size: 2.75rem;
+  block-size: 2.2rem;
+  margin-block-end: 0.8rem;
+  background: var(--color-ink);
   -webkit-mask: var(--quote-mark) left center / contain no-repeat;
   mask: var(--quote-mark) left center / contain no-repeat;
 }
@@ -217,10 +203,11 @@
 .body blockquote p {
   margin: 0 0 0.8em;
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  font-weight: 600;
-  line-height: 1.38;
-  letter-spacing: -0.012em;
+  font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
   color: var(--color-ink);
   text-wrap: balance;
 }
@@ -229,17 +216,18 @@
   margin-block-end: 0;
 }
 
-/* ───── code blocks ───── */
+/* ───── code blocks: dark coupon-stock panel ───── */
 .body pre {
   margin: 2em 0;
   padding: 1.15rem 1.35rem;
   overflow-x: auto;
-  border-radius: 8px;
-  border-block-start: 4px solid var(--accent);
+  border: 2px solid var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 8px 16px -8px rgb(15 42 90 / 0.3);
   background: var(--color-night);
   color: #e4eaff;
-  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
   line-height: 1.7;
   tab-size: 2;
   -webkit-overflow-scrolling: touch;
@@ -255,18 +243,19 @@
   overflow-wrap: normal;
 }
 
-/* ───── media ───── */
+/* ───── media: images sit on a coupon frame ───── */
 .body img {
   display: block;
   max-inline-size: 100%;
   block-size: auto;
   margin: 2em 0;
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px var(--color-rule);
+  border: 2px solid var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 8px 16px -8px rgb(15 42 90 / 0.3);
 }
 
 .body figure {
-  margin: 2.2em 0;
+  margin: 2.4em 0;
 }
 
 .body figure img {
@@ -276,69 +265,67 @@
 .body figcaption {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
-  margin-block-start: 0.7rem;
+  gap: 0.7rem;
+  margin-block-start: 0.9rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--color-ink-mute);
+  color: var(--color-ink-soft);
 }
 
 .body figcaption::before {
   content: "";
   flex: none;
-  inline-size: 1.25rem;
-  block-size: 2px;
-  background: var(--accent);
-  transform: translateY(-0.2em);
+  inline-size: 1.5rem;
+  block-size: 0;
+  border-block-start: 2px dashed var(--color-ink);
+  transform: translateY(-0.25em);
 }
 
-/* ───── rule: a station on the line ───── */
+/* ───── rule: a tear line ───── */
 .body hr {
-  position: relative;
-  block-size: 3px;
+  block-size: 0;
   margin: 3rem 0;
   border: 0;
-  border-radius: 2px;
-  background: var(--color-rule);
-  overflow: visible;
+  border-block-start: 2px dashed var(--color-ink);
 }
 
-.body hr::after {
-  content: "";
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  inline-size: 1.1rem;
-  block-size: 1.1rem;
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  border: 4px solid var(--color-ink);
-  background: var(--color-enamel);
-}
-
-/* ───── tables (scroll on small screens) ───── */
+/* ───── tables: a ruled coupon, scrolls on small screens ───── */
 .body table {
   display: block;
   max-inline-size: 100%;
-  margin: 2em 0;
+  margin: 2.2em 0;
   overflow-x: auto;
+  border: 2px solid var(--color-ink);
+  border-radius: 4px;
   border-collapse: collapse;
+  box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 8px 16px -8px rgb(15 42 90 / 0.3);
+  background: var(--color-panel);
   font-size: 0.9375rem;
   font-variant-numeric: tabular-nums;
+  -webkit-overflow-scrolling: touch;
 }
 
 .body th,
 .body td {
-  padding: 0.65rem 0.9rem;
+  padding: 0.7rem 1rem;
   border-block-end: 1px solid var(--color-rule);
   text-align: start;
   white-space: nowrap;
 }
 
 .body th {
-  font-weight: 700;
-  color: var(--color-ink);
-  border-block-end: 2px solid var(--color-ink);
+  background: var(--color-ink);
+  border-block-end: 0;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.body tr:last-child td {
+  border-block-end: 0;
 }
 
 @media (max-width: 640px) {

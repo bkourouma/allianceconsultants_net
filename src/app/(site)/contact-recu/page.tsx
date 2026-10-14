@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Check, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
+import { Perforation } from "@/components/about/CouponKit";
 import { PillLink } from "@/components/about/PillLink";
-import { getLine } from "@/lib/network";
-import { Arrival } from "./Arrival";
+import { PressedStamp } from "@/components/about/PressedStamp";
 
 export const metadata: Metadata = {
   title: "Demande envoyée — Alliance Consultants",
@@ -21,83 +21,83 @@ export default async function ContactRecuPage({ searchParams }: PageProps) {
   const mailKo = params.mail === "ko";
 
   return (
-    <>
-      <section className="bg-enamel">
-        <Arrival
-          color={getLine("docupro")!.color}
-          stripe={getLine("ecole")!.color}
-        />
+    <section className="bg-enamel">
+      <div className="wrap pb-20 pt-10 lg:pb-28 lg:pt-16">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center lg:gap-16">
+          <div>
+            <h1 className="t-display max-w-[16ch] text-ink">
+              Merci, votre demande a bien été reçue
+            </h1>
+            <p className="t-lead mt-6">
+              Notre équipe commerciale revient vers vous sous
+              24&nbsp;à&nbsp;48&nbsp;heures ouvrées pour échanger sur votre
+              besoin et organiser une démonstration.
+            </p>
 
-        <div className="wrap pb-16 pt-8 lg:pb-24 lg:pt-12">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
-            <div>
-              <span className="grid size-14 place-items-center rounded-full bg-ink text-white">
-                <Check aria-hidden className="size-7" strokeWidth={2.5} />
-              </span>
-              <h1 className="t-display mt-6 max-w-[16ch] text-ink">
-                Merci, votre demande a bien été reçue
-              </h1>
-              <p className="t-lead mt-6">
-                Notre équipe commerciale revient vers vous sous
-                24&nbsp;à&nbsp;48&nbsp;heures ouvrées pour échanger sur votre
-                besoin et organiser une démonstration.
-              </p>
+            {mailKo ? (
+              <div
+                role="note"
+                className="mt-6 flex max-w-[60ch] gap-3 rounded-[3px] border-2 border-ink bg-panel p-4 text-sm text-ink"
+              >
+                <TriangleAlert
+                  aria-hidden
+                  className="mt-0.5 size-5 shrink-0 text-ink"
+                  strokeWidth={1.75}
+                />
+                <p>
+                  Votre demande a bien été enregistrée. Si vous ne recevez pas
+                  d&apos;accusé par e-mail, notre équipe vous recontactera
+                  directement.
+                </p>
+              </div>
+            ) : null}
 
-              {mailKo ? (
-                <div
-                  role="note"
-                  className="mt-6 flex max-w-[60ch] gap-3 rounded-lg bg-panel p-4 text-sm text-ink ring-1 ring-rule"
-                >
-                  <TriangleAlert
-                    aria-hidden
-                    className="mt-0.5 size-5 shrink-0 text-ink"
-                    strokeWidth={1.75}
-                  />
-                  <p>
-                    Votre demande a bien été enregistrée. Si vous ne recevez pas
-                    d&apos;accusé par e-mail, notre équipe vous recontactera
-                    directement.
+            <div className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4">
+              <PillLink href="/solutions" size="lg">
+                Voir toutes nos solutions
+              </PillLink>
+              <PillLink href="/" size="lg" variant="secondary">
+                Retour à l&apos;accueil
+              </PillLink>
+            </div>
+          </div>
+
+          {/* Le récépissé, tamponné une fois */}
+          <div className="coupon overflow-hidden">
+            <div className="bg-ink px-5 py-2.5 sm:px-7">
+              <p className="t-field !text-white">Récépissé de votre demande</p>
+            </div>
+
+            <div className="grid min-h-40 place-items-center px-5 py-8 sm:px-7">
+              <PressedStamp
+                size="clamp(1.75rem, 1.1rem + 2.4vw, 2.75rem)"
+                rotate={-5}
+              >
+                Demande reçue
+              </PressedStamp>
+            </div>
+
+            <Perforation />
+
+            <div className="grid gap-5 bg-[#f6f5fb] px-5 py-6 sm:px-7">
+              {reference ? (
+                <div>
+                  <p className="t-field">Référence de votre demande&nbsp;:</p>
+                  <p className="mt-1.5 break-all font-mono text-xl font-semibold text-ink">
+                    {reference}
                   </p>
                 </div>
               ) : null}
-
-              <div className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4">
-                <PillLink href="/solutions" size="lg">
-                  Voir toutes nos solutions
-                </PillLink>
-                <PillLink href="/" size="lg" variant="secondary">
-                  Retour à l&apos;accueil
-                </PillLink>
+              <div>
+                <p className="t-field">Réponse</p>
+                <p className="mt-1.5 font-display text-xl font-bold leading-tight text-ink">
+                  Sous 24&nbsp;à&nbsp;48&nbsp;heures ouvrées
+                </p>
               </div>
             </div>
-
-            {reference ? (
-              <div className="self-start">
-                <div className="relative overflow-hidden rounded-lg bg-panel ring-1 ring-rule">
-                  <div className="bg-ink px-6 py-4 text-white">
-                    <p className="t-station">Arrivée au terminus</p>
-                  </div>
-                  <div
-                    aria-hidden
-                    className="relative border-t-2 border-dashed border-rule"
-                  >
-                    <span className="absolute left-0 top-0 size-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-enamel" />
-                    <span className="absolute right-0 top-0 size-5 translate-x-1/2 -translate-y-1/2 rounded-full bg-enamel" />
-                  </div>
-                  <div className="px-6 py-6">
-                    <p className="text-sm text-ink-soft">
-                      Référence de votre demande&nbsp;:
-                    </p>
-                    <p className="mt-2 break-all font-mono text-lg font-bold text-ink">
-                      {reference}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : null}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

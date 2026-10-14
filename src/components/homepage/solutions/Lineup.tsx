@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { ChevronDown, ExternalLink } from "lucide-react";
 import { CTAButton } from "@/components/shared/CTAButton";
@@ -12,9 +12,9 @@ import { Stations } from "./Stations";
 import { PREVIEWS } from "./previews";
 import styles from "./Lineup.module.css";
 
-/** Neutral ink accent for a solution that has no line in the network model. */
+/** Neutral ink accent for a solution that has no entry in the product model. */
 const NEUTRAL_STYLE = {
-  "--accent": "#0b1b3a",
+  "--accent": "#0f2a5a",
   "--on-accent": "#ffffff",
 } as CSSProperties;
 
@@ -22,21 +22,39 @@ interface LineupProps {
   solutions: Solution[];
 }
 
+type StampLabel = "Ouvert" | "Consulté";
+
+/**
+ * "Les six coupons" — one coupon per solution, stacked as a ledger. Each is an
+ * accordion: opening a coupon folds it out to reveal an illustrative product
+ * preview, and a red rubber stamp presses onto it (one at a time).
+ */
 export function Lineup({ solutions }: LineupProps) {
+  // First coupon open by default; phones start closed (see effect below).
   const [openSlug, setOpenSlug] = useState<string | null>(solutions[0]?.slug ?? null);
   // Previews mount lazily on first open, then keep their state.
   const [seen, setSeen] = useState<Set<string>>(
     () => new Set(solutions[0] ? [solutions[0].slug] : []),
   );
+  // The stamp only appears after a visitor opens a coupon themselves.
+  const [stamp, setStamp] = useState<{ slug: string; label: StampLabel } | null>(null);
   const rowRefs = useRef<Record<string, HTMLLIElement | null>>({});
   const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  useEffect(() => {
+    if (!window.matchMedia("(min-width: 1024px)").matches) {
+      setOpenSlug(null);
+      setSeen(new Set());
+    }
+  }, []);
 
   function toggle(slug: string) {
     const next = openSlug === slug ? null : slug;
     setOpenSlug(next);
     if (!next) return;
+    setStamp({ slug: next, label: seen.has(next) ? "Consulté" : "Ouvert" });
     setSeen((prev) => (prev.has(next) ? prev : new Set(prev).add(next)));
-    // A row above may have collapsed and pushed this one off-screen: bring it back.
+    // A coupon above may have folded up and pushed this one off-screen: bring it back.
     window.setTimeout(() => {
       const el = rowRefs.current[next];
       if (!el) return;
@@ -44,7 +62,7 @@ export function Lineup({ solutions }: LineupProps) {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         el.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
       }
-    }, 500);
+    }, 540);
   }
 
   function onKeyDown(e: KeyboardEvent<HTMLButtonElement>, index: number) {
@@ -60,7 +78,7 @@ export function Lineup({ solutions }: LineupProps) {
   }
 
   return (
-    <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:gap-4">
+    <ul className="m-0 flex list-none flex-col gap-4 p-0 lg:gap-5">
       {solutions.map((solution, i) => {
         const line = getLine(solution.slug);
         return (
@@ -71,11 +89,13 @@ export function Lineup({ solutions }: LineupProps) {
             }}
             className="scroll-mt-24"
           >
-            <Row
+            <Coupon
+              index={i}
               solution={solution}
               line={line}
               open={openSlug === solution.slug}
               mounted={seen.has(solution.slug)}
+              stampLabel={stamp?.slug === solution.slug ? stamp.label : null}
               onToggle={() => toggle(solution.slug)}
               onKeyDown={(e) => onKeyDown(e, i)}
               buttonRef={(el) => {
@@ -89,117 +109,120 @@ export function Lineup({ solutions }: LineupProps) {
   );
 }
 
-interface RowProps {
+interface CouponProps {
+  index: number;
   solution: Solution;
   line: NetworkLine | undefined;
   open: boolean;
   mounted: boolean;
+  stampLabel: StampLabel | null;
   onToggle: () => void;
   onKeyDown: (e: KeyboardEvent<HTMLButtonElement>) => void;
   buttonRef: (el: HTMLButtonElement | null) => void;
 }
 
-function Row({ solution, line, open, mounted, onToggle, onKeyDown, buttonRef }: RowProps) {
+function Coupon({
+  index,
+  solution,
+  line,
+  open,
+  mounted,
+  stampLabel,
+  onToggle,
+  onKeyDown,
+  buttonRef,
+}: CouponProps) {
   const slug = solution.slug;
-  const btnId = `line-${slug}-btn`;
-  const panelId = `line-${slug}-panel`;
+  const btnId = `coupon-${slug}-btn`;
+  const panelId = `coupon-${slug}-panel`;
   const sector = line?.sector ?? solution.category;
-  const stations = line ? STATIONS[line.id] : [];
+  const modules = line ? STATIONS[line.id] : [];
   const Preview = line ? PREVIEWS[line.id] : undefined;
+  const number = String(index + 1).padStart(2, "0");
 
   return (
     <article
       data-open={open}
-      style={{ ...(line ? lineStyle(line.id) : NEUTRAL_STYLE) }}
-      className={cn(
-        styles.row,
-        "overflow-hidden rounded-lg",
-        open
-          ? "bg-[var(--accent)] text-[var(--on-accent)] [--stroke:var(--on-accent)]"
-          : "bg-panel text-ink shadow-[0_1px_0_var(--color-rule)] [--stroke:var(--accent)] hover:shadow-[0_10px_28px_-20px_rgba(7,18,43,0.55)]",
-      )}
+      style={line ? lineStyle(line.id) : NEUTRAL_STYLE}
+      className={cn(styles.row, "coupon relative text-ink")}
     >
-      {/* Departure-board row: band | description | stations | chevron */}
-      <div
-        className={cn(
-          "relative grid lg:items-stretch",
-          open
-            ? "lg:grid-cols-[minmax(18.5rem,1.15fr)_minmax(0,2.85fr)_auto]"
-            : "lg:grid-cols-[minmax(18.5rem,1.15fr)_minmax(0,1.35fr)_minmax(0,1.5fr)_auto]",
-        )}
-      >
-        <h3 className="m-0">
-          <button
-            ref={buttonRef}
-            id={btnId}
-            type="button"
-            aria-expanded={open}
-            aria-controls={panelId}
-            onClick={onToggle}
-            onKeyDown={onKeyDown}
-            className={cn(
-              styles.headBtn,
-              "flex h-full min-h-[4.5rem] w-full items-center gap-3.5 px-4 py-4 pr-16 text-left lg:px-6 lg:py-6 lg:pr-6",
-              "bg-[var(--accent)] text-[var(--on-accent)]",
-              // the whole row is the hit area
-              "after:absolute after:inset-0 after:content-['']",
-            )}
-          >
-            <span
-              aria-hidden
-              className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--on-accent)] font-display text-xl font-extrabold leading-none text-[var(--accent)]"
-            >
-              {line?.glyph ?? solution.name.charAt(0)}
-            </span>
-            <span className="min-w-0">
-              <span className="block text-balance break-words font-display text-[clamp(1.5rem,1.15rem+1.1vw,2rem)] font-extrabold leading-none tracking-[-0.03em]">
-                {solution.name}
-              </span>
-              <span className="mt-1.5 block text-[0.8125rem] font-semibold leading-tight">
-                {sector}
-              </span>
-            </span>
-          </button>
-        </h3>
-
-        <p
-          className={cn(
-            "m-0 hidden self-center px-4 py-6 text-[0.9375rem] leading-snug text-pretty lg:block",
-            open ? "max-w-[68ch]" : "max-w-[44ch]",
-          )}
-        >
-          {solution.shortDescription}
-        </p>
-
-        {/* the open panel carries the stations as a vertical route instead */}
-        {!open &&
-          (stations.length > 0 ? (
-            <div className="hidden self-center px-4 py-6 lg:block">
-              <Stations stations={stations} />
-            </div>
-          ) : (
-            <span className="hidden lg:block" />
-          ))}
-
+      {/* Head: a compact wallet row. The button's ::after covers the whole row so
+          it is one big hit area; « En savoir plus » sits above it. */}
+      <div className={cn(styles.head, "relative grid")}>
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute right-4 top-[1.0625rem] grid size-10 place-items-center rounded-full ring-2 ring-inset ring-current",
-            "lg:static lg:mr-6 lg:self-center",
-            open ? "text-[var(--on-accent)]" : "text-[var(--on-accent)] lg:text-ink",
+            styles.numeral,
+            "carbon t-num grid place-items-center border-r-2 border-ink font-display font-extrabold leading-none",
           )}
         >
-          <ChevronDown
+          {number}
+        </span>
+
+        <div className={cn(styles.title, "min-w-0")}>
+          <h3 className="m-0">
+            <button
+              ref={buttonRef}
+              id={btnId}
+              type="button"
+              aria-expanded={open}
+              aria-controls={panelId}
+              onClick={onToggle}
+              onKeyDown={onKeyDown}
+              className={cn(
+                styles.headBtn,
+                "block w-full cursor-pointer p-0 text-left",
+                "after:absolute after:inset-0 after:content-['']",
+              )}
+            >
+              <span className="block break-words font-display text-[clamp(1.5rem,1.25rem+0.9vw,2rem)] font-bold leading-none">
+                {solution.name}
+              </span>
+              <span className={cn(styles.field, "t-field mt-1.5 flex items-center gap-2")}>
+                <span
+                  aria-hidden
+                  className="size-2.5 shrink-0 rounded-[1px] bg-[var(--accent)] ring-1 ring-ink/70"
+                />
+                {sector}
+              </span>
+            </button>
+          </h3>
+        </div>
+
+        <p className={cn(styles.pitch, "m-0 text-[0.9375rem] leading-snug text-ink-soft")}>
+          {line?.pitch ?? solution.shortDescription}
+        </p>
+
+        <div className={cn(styles.more, "flex items-center")}>
+          <Link
+            href={`/solutions/${slug}`}
+            className="relative z-10 inline-flex min-h-11 items-center font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] text-ink underline decoration-2 underline-offset-[5px] hover:decoration-red"
+          >
+            En savoir plus
+            <span className="sr-only"> sur {solution.name}</span>
+          </Link>
+        </div>
+
+        {/* fold indicator: a ruled square, navy-filled when open */}
+        <span aria-hidden className={cn(styles.chev, "pointer-events-none grid place-items-center")}>
+          <span
             className={cn(
-              "size-5 transition-transform duration-300 ease-[var(--ease-out-expo)] motion-reduce:transition-none",
-              open && "rotate-180",
+              "grid size-10 place-items-center border-2 border-ink transition-colors duration-200 motion-reduce:transition-none",
+              open ? "bg-ink text-white" : "bg-panel text-ink",
             )}
-            strokeWidth={2.25}
-          />
+          >
+            <ChevronDown
+              className={cn(
+                "size-5 transition-transform duration-300 ease-[var(--ease-out-expo)] motion-reduce:transition-none",
+                open && "rotate-180",
+              )}
+              strokeWidth={2.25}
+            />
+          </span>
         </span>
       </div>
 
-      {/* Open panel: pitch + actions | live synthetic preview */}
+      {/* Fold-out: perforation, benefit + modules + actions | illustrative preview */}
       <div
         id={panelId}
         role="region"
@@ -208,26 +231,41 @@ function Row({ solution, line, open, mounted, onToggle, onKeyDown, buttonRef }: 
         className={styles.panel}
       >
         <div className={styles.inner}>
+          <hr className="tear m-0" />
           <div
             className={cn(
-              "grid gap-6 px-4 pb-6 pt-2 lg:px-6 lg:pb-8",
+              "grid gap-6 p-4 lg:p-6",
               Preview && "lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10",
             )}
           >
-            <div className="flex flex-col gap-6 lg:justify-between lg:gap-8 lg:py-1">
-              {/* the head hides these on phones, so repeat them here */}
-              <p className="m-0 text-[0.9375rem] leading-snug lg:hidden">{solution.shortDescription}</p>
-              {stations.length > 0 && <Stations stations={stations} className="lg:hidden" />}
+            <div className="flex flex-col gap-6 lg:justify-between">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <span className={cn(styles.field, "t-field block")}>Bénéfice principal</span>
+                    <p className="m-0 mt-2 max-w-[34ch] font-display text-[clamp(1.375rem,1.1rem+0.9vw,1.875rem)] font-bold leading-[1.12] text-balance">
+                      {solution.mainBenefit}
+                    </p>
+                  </div>
+                  {open && stampLabel && (
+                    <span aria-hidden className={cn(styles.press, "stamp mr-1 mt-1 shrink-0")}>
+                      {stampLabel}
+                    </span>
+                  )}
+                </div>
+                <p className="m-0 max-w-[58ch] text-[0.9375rem] leading-snug text-ink-soft">
+                  {solution.shortDescription}
+                </p>
+                {modules.length > 0 && (
+                  <div>
+                    <span className={cn(styles.field, "t-field block")}>Modules clés</span>
+                    <Stations stations={modules} label="Modules clés du produit" className="mt-2" />
+                  </div>
+                )}
+              </div>
 
-              <p className="m-0 max-w-[40ch] font-display text-[clamp(1.25rem,1.05rem+0.7vw,1.625rem)] font-bold leading-tight tracking-[-0.02em] text-balance">
-                {solution.mainBenefit}
-              </p>
-
-              {stations.length > 0 && (
-                <Stations stations={stations} orientation="column" className="hidden lg:grid" />
-              )}
-
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
+              {/* The detachable stub: the one red action, only on the open coupon */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-t-2 border-dashed border-ink pt-5">
                 <CTAButton
                   intent="demo"
                   label="Demander une démo"
@@ -235,19 +273,12 @@ function Row({ solution, line, open, mounted, onToggle, onKeyDown, buttonRef }: 
                   block="solution-card"
                   size="md"
                 />
-                <Link
-                  href={`/solutions/${slug}`}
-                  className="inline-flex min-h-11 items-center rounded-full px-4 text-[0.9375rem] font-bold ring-2 ring-inset ring-current transition-colors duration-200 hover:bg-[var(--on-accent)] hover:text-[var(--accent)] motion-reduce:transition-none"
-                >
-                  En savoir plus
-                  <span className="sr-only"> sur {solution.name}</span>
-                </Link>
                 {solution.externalUrl && (
                   <a
                     href={solution.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center gap-1.5 px-1 text-[0.9375rem] font-bold underline decoration-2 underline-offset-4"
+                    className="inline-flex min-h-11 items-center gap-2 border-2 border-ink px-4 text-[0.9375rem] font-bold text-ink transition-colors duration-200 hover:bg-ink hover:text-white motion-reduce:transition-none"
                   >
                     Site du produit
                     <ExternalLink aria-hidden className="size-4" strokeWidth={2} />
@@ -258,7 +289,9 @@ function Row({ solution, line, open, mounted, onToggle, onKeyDown, buttonRef }: 
             </div>
 
             {Preview && (
-              <div className={cn(styles.preview, "min-h-[30rem] sm:min-h-[27rem]")}>{mounted ? <Preview name={solution.name} /> : null}</div>
+              <div className="min-h-[30rem] sm:min-h-[27rem]">
+                {mounted ? <Preview name={solution.name} /> : null}
+              </div>
             )}
           </div>
         </div>

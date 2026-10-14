@@ -1,131 +1,127 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-03T00:00:00Z",
-  "title": "Design System: Alliance Consultants — RÉSEAU",
+  "generatedAt": "2026-10-14T00:00:00Z",
+  "title": "Design System: Alliance Consultants - Le Carnet de coupons",
   "extensions": {
     "colorMeta": {
-      "ink": { "role": "primary", "displayName": "Ink Navy", "canonical": "#0b1b3a", "tonalRamp": ["#050d1e", "#0b1b3a", "#1d2c4d", "#3a4764", "#5b6784", "#8f98ae", "#d5dbea", "#f3f5fa"] },
-      "brand": { "role": "primary", "displayName": "Brand Signal Blue", "canonical": "#1457f5", "tonalRamp": ["#0a2c7d", "#0d3ca8", "#1457f5", "#4577f7", "#7799f9", "#a3bbfb", "#d1ddfd", "#eef2fe"] },
-      "line-docupro": { "role": "secondary", "displayName": "DocuPro Blue", "canonical": "#1457f5", "tonalRamp": ["#0a2c7d", "#0d3ca8", "#1457f5", "#4577f7", "#7799f9", "#a3bbfb", "#d1ddfd", "#eef2fe"] },
-      "line-medicpro": { "role": "secondary", "displayName": "MedicPro Green", "canonical": "#098240", "tonalRamp": ["#04411f", "#06582c", "#098240", "#38a066", "#6bbd91", "#9bd5b4", "#cdeadb", "#ecf7f1"] },
-      "line-cliniquepro": { "role": "secondary", "displayName": "CliniquePro Teal", "canonical": "#00789a", "tonalRamp": ["#003c4d", "#005369", "#00789a", "#33a0bc", "#66bad0", "#99d2e0", "#cce8ef", "#ebf6f9"] },
-      "line-immotopia": { "role": "secondary", "displayName": "Immotopia Orange", "canonical": "#f26a1b", "tonalRamp": ["#7a3005", "#a84610", "#f26a1b", "#f58b4d", "#f8a97c", "#fbc7a8", "#fde3d3", "#fef4ed"] },
-      "line-annonces": { "role": "secondary", "displayName": "Annonces Magenta", "canonical": "#e0245e", "tonalRamp": ["#700f2f", "#9d1844", "#e0245e", "#e8537f", "#ee80a0", "#f4a9c0", "#f9d4df", "#fdeef3"] },
-      "line-ecole": { "role": "secondary", "displayName": "École Yellow", "canonical": "#f5b800", "tonalRamp": ["#7a5c00", "#a88000", "#f5b800", "#f8c933", "#fad866", "#fce699", "#fef3cc", "#fffaeb"] },
-      "line-academie": { "role": "tertiary", "displayName": "Académie Violet", "canonical": "#6d3be0", "tonalRamp": ["#37146f", "#4c24a3", "#6d3be0", "#8f69e8", "#ae91ee", "#cbbbf4", "#e5ddf9", "#f5f1fd"] },
-      "enamel": { "role": "neutral", "displayName": "Cool Enamel", "canonical": "#f3f5fa", "tonalRamp": ["#5b6784", "#8f98ae", "#b4bccd", "#d5dbea", "#e4e8f2", "#ecf0f7", "#f3f5fa", "#ffffff"] },
-      "night": { "role": "neutral", "displayName": "Night Navy", "canonical": "#07122b", "tonalRamp": ["#030816", "#07122b", "#0e2149", "#1a3269", "#2d4a8a", "#5a74ad", "#9aabd0", "#d5dbea"] }
+      "ink-navy": { "role": "primary", "displayName": "Carrier Navy", "canonical": "#0f2a5a", "tonalRamp": ["#061230", "#0a1d40", "#0f2a5a", "#12306a", "#3a4a70", "#4a5878", "#c3cadb", "#eef0f5"] },
+      "signal-red": { "role": "primary", "displayName": "Signal Red", "canonical": "#d6342a", "tonalRamp": ["#5c120d", "#821c16", "#b02820", "#d6342a", "#e5645b", "#ee8e87", "#f6bcb7", "#fbe3e1"] },
+      "carbon-purple": { "role": "secondary", "displayName": "Carbon Purple", "canonical": "#5b4aa8", "tonalRamp": ["#1f1840", "#2f2663", "#43367f", "#5b4aa8", "#7d6fbd", "#a095d1", "#c7c0e4", "#ebe8f6"] },
+      "cool-paper": { "role": "neutral", "displayName": "Cool Paper", "canonical": "#eef0f5", "tonalRamp": ["#3a4a70", "#6b7899", "#9aa4bd", "#c3cadb", "#dde1ec", "#eef0f5", "#f6f5fb", "#ffffff"] },
+      "tab-docupro": { "role": "tertiary", "displayName": "DocuPro Blue", "canonical": "#1457f5", "tonalRamp": ["#071e57", "#0a3190", "#1457f5", "#4a7df7", "#7fa2f9", "#b0c6fb", "#d6e1fd", "#eef3fe"] },
+      "tab-medicpro": { "role": "tertiary", "displayName": "MedicPro Green", "canonical": "#098240", "tonalRamp": ["#032c16", "#064f27", "#098240", "#2fa263", "#67c08e", "#9fd8b9", "#cfeadb", "#eaf6f0"] },
+      "tab-cliniquepro": { "role": "tertiary", "displayName": "CliniquePro Teal", "canonical": "#00789a", "tonalRamp": ["#002a36", "#004e63", "#00789a", "#33a0bd", "#66bdd2", "#99d3e2", "#cce8f0", "#e8f5f9"] },
+      "tab-immotopia": { "role": "tertiary", "displayName": "ImmoTopia Orange", "canonical": "#f26a1b", "tonalRamp": ["#5a2105", "#9a3d0b", "#f26a1b", "#f58a4a", "#f8a979", "#fbc7a6", "#fde1d0", "#fef3ea"] },
+      "tab-annonces": { "role": "tertiary", "displayName": "Annonces Rose", "canonical": "#e0245e", "tonalRamp": ["#5a0b25", "#8f1239", "#e0245e", "#e8537f", "#ee80a1", "#f4abc1", "#f9d3de", "#fcebf0"] },
+      "tab-ecole": { "role": "tertiary", "displayName": "École Yellow", "canonical": "#f5b800", "tonalRamp": ["#5c4500", "#977000", "#f5b800", "#f8c940", "#fad66f", "#fce39d", "#fdf0cb", "#fef9e8"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Homepage H1 only; signage-scale, tight." },
-      "headline": { "displayName": "Headline", "purpose": "Section titles (t-h2)." },
-      "title": { "displayName": "Title", "purpose": "Card and panel headings (t-h3)." },
-      "lead": { "displayName": "Lead", "purpose": "One sentence under a heading, 62ch max." },
+      "display": { "displayName": "Display", "purpose": "Home H1 only, Barlow Condensed italic 800." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles, italic 800." },
+      "title": { "displayName": "Title", "purpose": "Coupon and card titles, upright 700." },
+      "lead": { "displayName": "Lead", "purpose": "Intro paragraphs in Barlow, Ink Soft, 62ch." },
       "body": { "displayName": "Body", "purpose": "Running text, 68ch max." },
-      "label": { "displayName": "Station label", "purpose": "Diagram station names and sector captions." }
+      "label": { "displayName": "Field caption", "purpose": "Chivo Mono uppercase captions inside coupons and controls only." }
     },
     "shadows": [
-      { "name": "rule-underline", "value": "0 1px 0 #d5dbea", "purpose": "Resting line card edge." },
-      { "name": "menu-open", "value": "0 18px 30px -18px rgba(11,27,58,0.28)", "purpose": "Header mega-panel." },
-      { "name": "card-lift", "value": "0 10px 28px -20px rgba(7,18,43,0.55)", "purpose": "Lineup card hover." },
-      { "name": "preview-frame", "value": "0 24px 48px -28px rgba(7,18,43,0.6)", "purpose": "Illustrative product preview frame." }
+      { "name": "coupon-rest", "value": "0 1px 2px rgb(15 42 90 / 0.14), 0 10px 18px -10px rgb(15 42 90 / 0.32)", "purpose": "Standard coupon lift." },
+      { "name": "coupon-lifted", "value": "0 1px 2px rgb(15 42 90 / 0.14), 0 22px 30px -14px rgb(15 42 90 / 0.38)", "purpose": "The lifted hero coupon." },
+      { "name": "red-stub", "value": "0 8px 16px -8px rgba(176,40,32,0.55)", "purpose": "Primary red button; removed on press." }
     ],
     "motion": [
-      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "All state transitions and scroll reveals (300ms controls, 700ms reveals)." },
-      { "name": "fade-up", "value": "0.6s ease-out both, translateY(8px) to 0", "purpose": "Entrance." },
-      { "name": "hero-mesh", "value": "18s ease-in-out infinite", "purpose": "Slow drift of the hero background mesh." }
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "All transitions and authored moments." },
+      { "name": "lift-in", "value": "520ms", "purpose": "Hero coupon lifts into its tilt." },
+      { "name": "stamp-press", "value": "520ms, scale 1.7 to 1, rotate -12deg to -4.5deg", "purpose": "Stamp pressed onto the coupon." },
+      { "name": "tear-off", "value": "400ms", "purpose": "Stub tears away, stamp slams again." },
+      { "name": "reveal", "value": "700ms, translateY 18px", "purpose": "Scroll reveal, opt-in via JS; disabled under reduced motion." }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "xl", "value": "1280px" }
+      { "name": "coupon-split", "value": "560px" },
+      { "name": "nav-desktop", "value": "1024px" },
+      { "name": "hero-split", "value": "1100px" }
     ]
   },
   "components": [
     {
-      "name": "Primary Pill CTA",
+      "name": "Primary Button (red stub)",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Ink pill with an accent arrow roundel; the demo request.",
-      "html": "<a class=\"ds-cta\" href=\"#\">Demander une démo<span class=\"ds-cta-r\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 8h10M9 4l4 4-4 4\"/></svg></span></a>",
-      "css": ".ds-cta{--accent:#1457f5;--on-accent:#fff;display:inline-flex;align-items:center;gap:12px;height:44px;padding:0 6px 0 20px;border-radius:9999px;background:#0b1b3a;color:#fff;font-weight:700;font-size:15px;text-decoration:none;transition:background-color .3s cubic-bezier(.16,1,.3,1)}.ds-cta:hover{background:#0e2149}.ds-cta:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.ds-cta-r{display:grid;place-items:center;width:32px;height:32px;border-radius:9999px;background:var(--accent);color:var(--on-accent);transition:transform .3s cubic-bezier(.16,1,.3,1)}.ds-cta:hover .ds-cta-r{transform:translateX(2px) rotate(-8deg)}"
+      "description": "The single primary action of a region.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">DEMANDER UNE DÉMO <svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 8h11M9.5 4l4 4-4 4\"/></svg></a>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 24px;border-radius:3px;background:#d6342a;color:#fff;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:17px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;box-shadow:0 8px 16px -8px rgba(176,40,32,.55);transition:background-color .2s,transform .2s,box-shadow .2s}.ds-btn-primary:hover{background:#b02820}.ds-btn-primary:focus-visible{outline:3px solid #0f2a5a;outline-offset:3px}.ds-btn-primary:active{transform:translateY(2px);box-shadow:none}"
     },
     {
-      "name": "Secondary Pill",
+      "name": "Secondary Button (outlined)",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Outlined ink pill for the secondary action.",
-      "html": "<a class=\"ds-ghost\" href=\"#\">Voir les solutions</a>",
-      "css": ".ds-ghost{display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:9999px;box-shadow:inset 0 0 0 2px #0b1b3a;color:#0b1b3a;font-weight:700;font-size:15px;text-decoration:none;transition:background-color .3s,color .3s}.ds-ghost:hover{background:#0b1b3a;color:#fff}.ds-ghost:focus-visible{outline:3px solid #1457f5;outline-offset:3px}"
+      "description": "Outlined navy companion action.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">DÉCOUVRIR NOS SOLUTIONS</a>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:3px;background:transparent;color:#0f2a5a;box-shadow:inset 0 0 0 2px #0f2a5a;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:17px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background-color .2s,color .2s}.ds-btn-secondary:hover{background:#0f2a5a;color:#fff}.ds-btn-secondary:focus-visible{outline:3px solid #0f2a5a;outline-offset:3px}"
     },
     {
-      "name": "Line Roundel",
-      "kind": "chip",
-      "description": "Coloured circle with a one-letter glyph; identifies a product line.",
-      "html": "<span class=\"ds-roundel\" style=\"background:#098240\">M</span>",
-      "css": ".ds-roundel{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:9999px;color:#fff;font-family:'Bricolage Grotesque','Segoe UI',sans-serif;font-weight:800;font-size:16px}"
-    },
-    {
-      "name": "Line Card",
+      "name": "Coupon",
       "kind": "card",
-      "refersTo": "panel",
-      "description": "Panel with a full accent band, roundel and name, then pitch and actions.",
-      "html": "<article class=\"ds-card\"><div class=\"ds-card-h\"><span class=\"ds-card-r\">M</span><div><h3>MedicPro</h3><p>Pharma &amp; réglementaire</p></div></div><div class=\"ds-card-b\"><p>Suivi des AMM, visas, produits, stocks et ventes multi-pays.</p></div></article>",
-      "css": ".ds-card{--accent:#098240;--on-accent:#fff;width:320px;border-radius:8px;overflow:hidden;background:#fff;color:#0b1b3a;box-shadow:0 1px 0 #d5dbea;font-family:Figtree,'Segoe UI',sans-serif}.ds-card-h{display:flex;align-items:center;gap:12px;padding:16px;background:var(--accent);color:var(--on-accent)}.ds-card-r{display:grid;place-items:center;width:40px;height:40px;border-radius:9999px;background:var(--on-accent);color:var(--accent);font-weight:800;font-size:18px}.ds-card h3{margin:0;font-family:'Bricolage Grotesque','Segoe UI',sans-serif;font-weight:800;font-size:24px;line-height:1;letter-spacing:-.03em}.ds-card-h p{margin:4px 0 0;font-size:13px;font-weight:600}.ds-card-b{padding:16px;font-size:15px;color:#3a4764;line-height:1.35}.ds-card-b p{margin:0}"
+      "refersTo": "coupon",
+      "description": "White stock, 2px navy rule, header band with product tab, dashed stub with carbon numeral.",
+      "html": "<div class=\"ds-coupon\"><div class=\"ds-hd\"><span class=\"ds-chip\">D</span><span class=\"ds-name\">DocuPro Suite</span></div><div class=\"ds-main\"><p>Gestion électronique des documents, courriers et workflows.</p></div><div class=\"ds-stub\"><span class=\"ds-cap\">Coupon n°</span><span class=\"ds-num\">01</span></div></div>",
+      "css": ".ds-coupon{display:grid;grid-template-columns:1fr 130px;background:#fff;border:2px solid #0f2a5a;border-radius:4px;color:#0f2a5a;font-family:Barlow,sans-serif;box-shadow:0 1px 2px rgb(15 42 90/.14),0 10px 18px -10px rgb(15 42 90/.32);max-width:420px}.ds-hd{grid-column:1/-1;display:flex;background:#0f2a5a;color:#fff;height:46px}.ds-chip{display:grid;place-items:center;width:54px;background:#1457f5;color:#fff;border-right:2px solid #0f2a5a;font:800 28px 'Barlow Condensed',sans-serif}.ds-name{display:flex;align-items:center;padding-left:18px;font:700 22px 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}.ds-main{padding:14px 20px;font-size:14px;color:#4a5878}.ds-main p{margin:0}.ds-stub{padding:12px 16px;background:#f6f5fb;border-left:2px dashed #0f2a5a}.ds-cap{display:block;font:500 11px 'Chivo Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#4a5878}.ds-num{font:800 56px/.9 'Barlow Condensed',sans-serif;color:#5b4aa8}"
     },
     {
-      "name": "Text Input",
-      "kind": "input",
-      "refersTo": "input",
-      "description": "48px field with ink focus border and brand ring.",
-      "html": "<label class=\"ds-l\">E-mail professionnel<span aria-hidden=\"true\"> *</span><input class=\"ds-in\" type=\"email\"></label>",
-      "css": ".ds-l{display:block;font-family:Figtree,'Segoe UI',sans-serif;font-size:14px;font-weight:700;color:#0b1b3a}.ds-in{display:block;box-sizing:border-box;width:100%;height:48px;margin-top:6px;padding:0 14px;border:1px solid rgba(91,103,132,.7);border-radius:8px;background:#fff;color:#0b1b3a;font-size:16px;transition:border-color .2s}.ds-in:focus{outline:none;border-color:#0b1b3a;box-shadow:0 0 0 3px rgba(20,87,245,.3)}"
+      "name": "Stamp",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "Red rubber stamp for confirmations.",
+      "html": "<span class=\"ds-stamp\">Démo demandée</span>",
+      "css": ".ds-stamp{display:inline-block;padding:.2em .6em;border:2px solid #d6342a;border-radius:3px;color:#d6342a;font:600 13px 'Chivo Mono',monospace;letter-spacing:.08em;text-transform:uppercase;transform:rotate(-4deg);opacity:.92}"
     },
     {
-      "name": "Segmented Control",
-      "kind": "chip",
-      "refersTo": "segmented-control",
-      "description": "Pill group on enamel; the selected option fills with ink.",
-      "html": "<div class=\"ds-seg\"><span class=\"ds-seg-o ds-on\">Démo</span><span class=\"ds-seg-o\">Contact</span><span class=\"ds-seg-o\">Formation</span></div>",
-      "css": ".ds-seg{display:inline-flex;gap:4px;padding:4px;border-radius:9999px;background:#f3f5fa;font-family:Figtree,'Segoe UI',sans-serif}.ds-seg-o{display:flex;align-items:center;min-height:44px;padding:0 16px;border-radius:9999px;font-size:14px;font-weight:600;color:#3a4764;cursor:pointer}.ds-seg-o:hover{color:#0b1b3a}.ds-on{background:#0b1b3a;color:#fff}"
+      "name": "Field Caption",
+      "kind": "custom",
+      "refersTo": "field-caption",
+      "description": "Mono caption, only inside coupons and controls.",
+      "html": "<span class=\"ds-field\">Itinéraire</span>",
+      "css": ".ds-field{font:500 11px 'Chivo Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#4a5878}"
     },
     {
-      "name": "Route Nav",
+      "name": "Nav Link",
       "kind": "nav",
-      "description": "Nav items as stations on a hairline track; the active station fills with the route colour.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-n ds-n-on\">Solutions</a><a class=\"ds-n\">Services</a><a class=\"ds-n\">Formations</a><a class=\"ds-n\">À propos</a></nav>",
-      "css": ".ds-nav{--route:#1457f5;position:relative;display:flex;height:56px;font-family:Figtree,'Segoe UI',sans-serif}.ds-nav:after{content:'';position:absolute;left:8px;right:8px;bottom:12px;height:1px;background:#d5dbea}.ds-n{position:relative;display:flex;align-items:center;padding:0 10px 14px;font-size:15px;font-weight:600;color:#3a4764}.ds-n:hover{color:#0b1b3a}.ds-n:before{content:'';position:absolute;left:50%;bottom:7px;width:11px;height:11px;transform:translateX(-50%);border-radius:9999px;border:2px solid #5b6784;background:#fff;z-index:1}.ds-n-on{color:#0b1b3a}.ds-n-on:before{width:14px;height:14px;bottom:5px;border-color:var(--route);background:var(--route)}"
+      "description": "Mono caps link on the white bar; red underline marks the active page.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-active\">Solutions</a><a href=\"#\">Services</a><a href=\"#\" class=\"ds-out\">Contact &amp; Démo</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:24px;height:64px;padding:0 24px;background:#fff;border-bottom:2px solid #0f2a5a}.ds-nav a{font:500 12px 'Chivo Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#0f2a5a;text-decoration:none;padding:6px 0;border-bottom:3px solid transparent}.ds-nav a:hover{border-bottom-color:#0f2a5a}.ds-nav a.ds-active{border-bottom-color:#d6342a}.ds-nav a.ds-out{margin-left:auto;padding:10px 14px;border:2px solid #0f2a5a;border-radius:3px}.ds-nav a.ds-out:hover{background:#0f2a5a;color:#fff}.ds-nav a:focus-visible{outline:3px solid #0f2a5a;outline-offset:3px}"
     }
   ],
   "narrative": {
-    "northStar": "Daylight Station Signage",
-    "overview": "Alliance is drawn as a transit network, not a catalogue. Each solution is a colour-coded line, each module a station, services are interchanges, formations form the circular Académie line, and the demo request is the terminus. The ground is a cool enamel with white signage panels, ink-navy type and hairline rules; one night-navy family is reserved for contrast sections. Colour is spent at page scale: thick strokes, section spines, full colour bands, never sprinkled accents.\n\nDisplay type is large and tight (Bricolage Grotesque, 800, tracking -0.035em); text is Figtree. Controls are fully round pills, content panels are modestly rounded (8px), and structure is drawn with 1px rules. The recognisable silhouette with content removed: coloured parallel strokes bending at 45 degrees with ringed stations.",
+    "northStar": "Le Carnet de coupons",
+    "overview": "The offer is a carnet of official service coupons. Each solution is a numbered white coupon with a heavy navy rule; commitments are rubber-stamped; things are validated or filed, never faded. Trust comes from official-document devices (perforation, stub, stamp, carbon figures) set on a calm cool-paper ground. The tone is premium, calm and a little playful, never technical or busy.\n\nDepth is flat paper plus honest edges: thickness is carried by a 2px navy rule, not by shadow. Motion is one authored moment per section (coupon lift, stub tear, stamp press); everything else is still, and reduced-motion shows the static stamped state.",
     "keyCharacteristics": [
-      "One accent per scope: --accent / --on-accent are set per product line and everything inside inherits them.",
-      "Ink-navy is the structural colour (type, primary buttons, rules); lines carry meaning.",
-      "Flat panels, hairline rules; shadows only on lifted previews and open menus.",
-      "Station vocabulary: ringed dots, white dots with ink ring, coloured roundels with a one-letter glyph.",
-      "Reveal-on-scroll and route spine motion, all disabled under reduced motion."
+      "White coupon, 2px navy border, 4px radius, dashed tear line, red stamp, on cool paper: recognisable with content removed.",
+      "Italic 800 condensed headlines, large and tight.",
+      "One red thing per region: the primary stub, a stamp, or the active mark.",
+      "Product colours appear only as small coupon tabs and chips.",
+      "Mono uppercase captions live only inside coupons and controls."
     ],
     "rules": [
-      { "name": "The One Line Rule", "body": "Inside any scope exactly one line colour is active, delivered through --accent. Never place two line colours as competing accents in the same card; a multi-line view shows them as parallel strokes, not as decoration.", "section": "colors" },
-      { "name": "The Ink On Yellow Rule", "body": "Text on orange and yellow is ink, never white. Take the on-colour from --on-accent.", "section": "colors" },
-      { "name": "The Tight Display Rule", "body": "Display never exceeds 6rem and tracking never goes below -0.04em; headings use text-wrap: balance.", "section": "typography" },
-      { "name": "The Soft Lift Rule", "body": "Shadows are tinted with night navy, long blur and negative spread; no hard offset shadows.", "section": "elevation" }
+      { "name": "The One Red Rule", "body": "Red is the primary stub, stamps and active/selected marks, nothing else. It is never a background wash, heading colour or decorative accent.", "section": "colors" },
+      { "name": "The Tab-Only Rule", "body": "Product colours are small coupon tabs and chips. They never fill a section, a card face or a headline.", "section": "colors" },
+      { "name": "The Carbon Rule", "body": "Purple is for numerals only.", "section": "colors" },
+      { "name": "The Inside-Only Rule", "body": "Mono uppercase captions appear inside coupons and controls (field captions, nav, stub captions, stamps). Never as a small label above a section heading.", "section": "typography" },
+      { "name": "The Tight Display Rule", "body": "Display tracking never goes below -0.04em; headlines balance-wrap.", "section": "typography" },
+      { "name": "The Tabular Rule", "body": "Figures that compare use tabular numerals.", "section": "typography" },
+      { "name": "The Rule-Is-Thickness Rule", "body": "If something needs to feel solid, thicken the navy rule; do not add a hard offset shadow.", "section": "elevation" }
     ],
     "dos": [
-      "Do scope --accent to one line per section or card and take text colour from --on-accent.",
-      "Do build controls as full pills and panels at 8px radius with 1px rules.",
-      "Do keep every reveal and animation inside the reduced-motion fallback (visible by default, JS opts in).",
-      "Do reserve Night for contrast sections; use white text on it and #c4d2ff for secondary labels.",
-      "Do pair every colour signal with text (line name, station label); keep 44px minimum touch targets."
+      "Do build new surfaces from white coupons with a 2px navy rule on cool paper.",
+      "Do keep one red element per region: the primary stub, a stamp, or an active mark.",
+      "Do scope a product accent with its `.line-<id>` class and show it as a small tab.",
+      "Do keep mono uppercase captions inside coupons and controls.",
+      "Do provide a static equivalent for every animated moment."
     ],
     "donts": [
-      "Don't use the legacy admin tokens (--color-primary, --color-dark, Inter) on public pages.",
-      "Don't centre a hero over a row of equal icon cards, or alternate grey and white sections.",
-      "Don't use emoji as icons; icons are Lucide strokes (2px) or the roundel glyphs.",
-      "Don't use hard offset shadows or scatter line colours as decoration.",
-      "Don't invent figures, clients or claims in diagrams or previews."
+      "Don't use red as decoration, fills or headings.",
+      "Don't use hard zero-blur offset shadows; use the ambient vocabulary.",
+      "Don't make equal-size icon-heading-text card grids, metro maps, gradients, or travel imagery.",
+      "Don't put mono kickers above section headings.",
+      "Don't let admin legacy tokens (`--color-primary`, Inter) leak into the public site."
     ]
   }
 }

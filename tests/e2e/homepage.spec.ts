@@ -13,7 +13,7 @@ test.describe("Homepage — US acceptance scenarios", () => {
 
     const h1 = page.locator("h1");
     await expect(h1).toBeVisible();
-    await expect(h1).toContainText("solutions");
+    await expect(h1).toContainText(/solutions/i);
 
     // Unique H1
     await expect(page.locator("h1")).toHaveCount(1);

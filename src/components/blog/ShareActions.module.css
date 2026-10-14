@@ -1,0 +1,24 @@
+/* Stamp that presses when the link has been copied. Static (already pressed)
+   under prefers-reduced-motion. */
+.pressed {
+  animation: press 340ms var(--ease-out-expo) both;
+}
+
+@keyframes press {
+  from {
+    opacity: 0;
+    transform: scale(1.7) rotate(-14deg);
+  }
+  to {
+    opacity: 0.92;
+    transform: scale(1) rotate(-5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pressed {
+    animation: none;
+    opacity: 0.92;
+    transform: rotate(-5deg);
+  }
+}

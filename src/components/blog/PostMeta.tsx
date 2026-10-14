@@ -15,7 +15,7 @@ export function PostMeta({
   return (
     <p
       className={cn(
-        "t-num flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-mute",
+        "t-num flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-soft",
         className,
       )}
     >

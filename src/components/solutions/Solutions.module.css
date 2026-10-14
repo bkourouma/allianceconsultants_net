@@ -1,18 +1,13 @@
-/* Focus ring colours per ground. Specificity is bumped (repeated class) so the
-   rule beats the unlayered `.site-root :focus-visible` regardless of order. */
+/* Le Carnet de coupons — solutions pages: authored motion + focus helpers.
+   Every animation has a static equivalent under prefers-reduced-motion. */
+
+/* Focus ring stays navy on every product accent (yellow/orange fail on white).
+   Specificity is bumped so it beats the unlayered `.site-root :focus-visible`. */
 .focusInk.focusInk :focus-visible {
   outline-color: var(--color-ink);
 }
-.focusOnAccent.focusOnAccent.focusOnAccent :focus-visible {
-  outline-color: var(--on-accent);
-}
-.focusNight.focusNight.focusNight :focus-visible {
-  outline-color: #ffffff;
-}
-.focusInkForce.focusInkForce.focusInkForce.focusInkForce :focus-visible {
-  outline-color: var(--color-ink);
-}
 
+/* The tab panel appears with a short rise. */
 @keyframes panelIn {
   from {
     opacity: 0;
@@ -23,9 +18,105 @@
     transform: none;
   }
 }
-
 .panelIn {
   animation: panelIn 420ms var(--ease-out-expo) both;
+}
+
+/* Hero coupon: set down on the ground, slightly crooked (lg+ only). */
+@keyframes liftIn {
+  from {
+    transform: translateY(14px) rotate(0deg);
+  }
+  to {
+    transform: translateY(0) rotate(var(--lift-rot, 0deg));
+  }
+}
+.liftIn {
+  --lift-rot: 0deg;
+}
+@media (min-width: 1024px) {
+  .liftIn {
+    --lift-rot: -0.5deg;
+    transform: rotate(var(--lift-rot));
+    transform-origin: 20% 100%;
+    animation: liftIn 800ms var(--ease-out-expo) both;
+  }
+}
+
+/* Fold-out: each perforated row unfolds from its top edge, staggered. */
+@keyframes foldOut {
+  from {
+    opacity: 0;
+    transform: perspective(700px) rotateX(-68deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.foldRow {
+  transform-origin: top center;
+  animation: foldOut 560ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Rubber stamp pressed onto the coupon. */
+@keyframes stampPress {
+  0% {
+    opacity: 0;
+    transform: rotate(-5deg) scale(1.7);
+  }
+  55% {
+    opacity: 1;
+    transform: rotate(-5deg) scale(0.94);
+  }
+  100% {
+    opacity: 0.92;
+    transform: rotate(-5deg) scale(1);
+  }
+}
+.stampPress {
+  transform: rotate(-5deg);
+  animation: stampPress 520ms var(--ease-out-expo) both;
+}
+
+/* Bigger stamp for the booking coupon (doubled class beats the global .stamp). */
+.stampBig.stampBig {
+  font-size: 1.375rem;
+  padding: 0.25em 0.8em;
+  border-width: 3px;
+  letter-spacing: 0.14em;
+  box-shadow: inset 0 0 0 2px rgba(214, 52, 42, 0.22);
+}
+.stampPress.stampPress {
+  transform: rotate(-5deg);
+}
+
+/* FAQ answer. */
+@keyframes faqIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.faqBody {
+  animation: faqIn 360ms var(--ease-out-expo) both;
+}
+
+/* Coupon that rises a little on hover / focus. */
+.lift {
+  transition:
+    transform 320ms var(--ease-out-expo),
+    box-shadow 320ms var(--ease-out-expo);
+}
+.lift:hover,
+.lift:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 8px 16px -8px rgb(15 42 90 / 0.3);
 }
 
 .noScrollbar {
@@ -36,7 +127,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .panelIn {
+  .panelIn,
+  .faqBody,
+  .foldRow {
     animation: none;
+  }
+  .liftIn {
+    animation: none;
+  }
+  .stampPress {
+    animation: none;
+    opacity: 0.92;
+  }
+  .lift,
+  .lift:hover,
+  .lift:focus-within {
+    transition: none;
+    transform: none;
+    box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 8px 16px -8px rgb(15 42 90 / 0.3);
   }
 }

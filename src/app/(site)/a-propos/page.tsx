@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Clock, Mail, MessageCircle, Phone } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { CTAButton } from "@/components/shared/CTAButton";
-import { HistoryLine, type Milestone } from "@/components/about/HistoryLine";
-import { RouteBand } from "@/components/about/RouteBand";
+import {
+  PassportTimeline,
+  type Milestone,
+} from "@/components/about/PassportTimeline";
 import { SectorSelector } from "@/components/about/SectorSelector";
-import { TerminusMark } from "@/components/about/TerminusMark";
 import { Reveal } from "@/components/fx/Reveal";
 import { getSiteSettings } from "@/lib/content";
-import { ACADEMIE, LINES, getLine } from "@/lib/network";
+import { ACADEMIE, getLine } from "@/lib/network";
 import { buildMetadata, buildOrganizationJsonLd } from "@/lib/seo";
 
 const SITE_URL =
@@ -88,7 +89,7 @@ const MILESTONES: Milestone[] = [
     title: "Création d'Alliance Consultants",
     description:
       "Fondation à Abidjan autour d'une promesse : apporter aux organisations africaines une expertise technique de niveau international.",
-    color: "#0b1b3a",
+    color: "#0f2a5a",
   },
   {
     year: "2008",
@@ -127,14 +128,8 @@ const MILESTONES: Milestone[] = [
   },
 ];
 
-const BAND = [
-  getLine("docupro")!.color,
-  getLine("immotopia")!.color,
-  getLine("annonces")!.color,
-];
-
-const CONTACT_LINK =
-  "group flex min-h-12 items-center gap-4 rounded-lg px-3 py-2 text-[0.9375rem] font-semibold text-ink transition-colors duration-200 hover:bg-enamel";
+const CONTACT_ROW =
+  "group flex min-h-14 items-center gap-4 border-b border-dashed border-ink-mute/50 px-5 py-3 transition-colors duration-200 hover:bg-panel sm:px-7";
 
 export default async function AboutPage() {
   const settings = await getSiteSettings();
@@ -167,8 +162,8 @@ export default async function AboutPage() {
       <JsonLd data={breadcrumb} />
       <JsonLd data={orgJsonLd} />
 
-      {/* ───────── Départ : l'histoire ───────── */}
-      <section className="bg-enamel pt-8 lg:pt-12">
+      {/* ───────── L'histoire : titre et fiche d'identité ───────── */}
+      <section className="bg-enamel pb-16 pt-8 lg:pb-24 lg:pt-12">
         <div className="wrap">
           <nav aria-label="Fil d'Ariane">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-ink-mute">
@@ -185,148 +180,187 @@ export default async function AboutPage() {
             </ol>
           </nav>
 
-          <h1 className="t-display mt-8 max-w-[18ch] text-ink lg:mt-12">
-            Éditeur et intégrateur africain de solutions SaaS, IA et métiers
-          </h1>
-          <p className="t-lead mt-6">
-            Depuis {settings.brand.foundingYear}, Alliance Consultants conçoit,
-            édite et opère des plateformes logicielles et des services experts
-            pour accompagner les organisations d&apos;Afrique francophone dans
-            leur transformation digitale.
-          </p>
-        </div>
-        <RouteBand colors={BAND} className="mt-10 lg:mt-14" />
-      </section>
-
-      <section className="bg-panel py-16 lg:py-24">
-        <div className="wrap grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-          <Reveal>
-            <h2 className="t-h2 max-w-[22ch] text-ink">
-              Donner aux organisations africaines les outils logiciels qu&apos;elles méritent
-            </h2>
-            <div className="mt-8 grid gap-5 text-[1.0625rem] leading-relaxed text-ink-soft">
-              <p className="t-body">
-                Pendant longtemps, le marché logiciel africain s&apos;est
-                contenté d&apos;importer des solutions pensées pour d&apos;autres
-                contextes — souvent trop chères, trop rigides, ou déconnectées
-                des réalités opérationnelles locales.
-              </p>
-              <p className="t-body">
-                Alliance Consultants prend le contre-pied de cette logique. Nous
-                éditons nos propres plateformes SaaS, nous formons les talents
-                locaux, et nous intégrons l&apos;IA dans les processus métiers
-                de nos clients pour qu&apos;ils gagnent en autonomie, en
-                productivité et en compétitivité.
+          <div className="mt-8 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:items-end lg:gap-16">
+            <div>
+              <h1 className="t-display max-w-[17ch] text-ink">
+                Éditeur et intégrateur africain de solutions SaaS, IA et métiers
+              </h1>
+              <p className="t-lead mt-6">
+                Depuis {settings.brand.foundingYear}, Alliance Consultants
+                conçoit, édite et opère des plateformes logicielles et des
+                services experts pour accompagner les organisations
+                d&apos;Afrique francophone dans leur transformation digitale.
               </p>
             </div>
-          </Reveal>
 
-          <Reveal
-            delay={120}
-            className="relative self-start overflow-hidden rounded-lg bg-night p-7 text-white sm:p-9"
-          >
-            <span
-              aria-hidden
-              className="absolute inset-x-0 top-0 flex h-1.5"
+            <aside
+              aria-label="Fiche d'identité"
+              className="coupon overflow-hidden"
             >
-              {LINES.map((l) => (
-                <span
-                  key={l.id}
-                  className="flex-1"
-                  style={{ background: l.color }}
-                />
-              ))}
-            </span>
-            <h2 className="t-h3 text-white">
-              Un écosystème logiciel africain souverain et de niveau mondial
-            </h2>
-            <p className="mt-5 text-[1.0625rem] leading-relaxed text-white/85">
-              Nous croyons qu&apos;une transformation digitale durable passe par
-              trois piliers indissociables : des produits SaaS robustes conçus
-              en Afrique, une montée en compétences continue des équipes, et
-              une intégration intelligente de l&apos;IA dans les opérations
-              quotidiennes.
-            </p>
-            <p className="mt-4 text-[1.0625rem] leading-relaxed text-white/85">
-              Notre ambition : faire d&apos;Alliance Consultants la maison de
-              référence pour l&apos;édition logicielle, les services experts et
-              la formation IA en Afrique francophone.
-            </p>
-          </Reveal>
+              <div className="bg-ink px-5 py-2.5 text-white">
+                <p className="t-field !text-white">Fiche d&apos;identité</p>
+              </div>
+              <dl className="grid grid-cols-[auto_minmax(0,1fr)]">
+                <div className="col-span-2 grid grid-cols-subgrid items-end gap-4 border-b border-dashed border-ink-mute/60 px-5 py-4">
+                  <dt className="t-field">Fondée en</dt>
+                  <dd className="t-num text-right font-display text-5xl font-extrabold italic leading-none text-carbon">
+                    {settings.brand.foundingYear}
+                  </dd>
+                </div>
+                <div className="col-span-2 grid grid-cols-subgrid items-baseline gap-4 border-b border-dashed border-ink-mute/60 px-5 py-3.5">
+                  <dt className="t-field">Siège</dt>
+                  <dd className="text-right font-display text-xl font-bold leading-tight text-ink">
+                    {contact.address.street}
+                  </dd>
+                </div>
+                <div className="col-span-2 grid grid-cols-subgrid items-baseline gap-4 border-b border-dashed border-ink-mute/60 px-5 py-3.5">
+                  <dt className="t-field">Zone</dt>
+                  <dd className="text-right font-display text-xl font-bold leading-tight text-ink">
+                    Afrique francophone
+                  </dd>
+                </div>
+                <div className="col-span-2 grid grid-cols-subgrid items-baseline gap-4 px-5 py-3.5">
+                  <dt className="t-field">Offre</dt>
+                  <dd className="text-right font-display text-xl font-bold leading-tight text-ink">
+                    SaaS, IA, formations
+                  </dd>
+                </div>
+              </dl>
+            </aside>
+          </div>
         </div>
       </section>
 
-      {/* ───────── La ligne du temps ───────── */}
+      {/* ───────── La conviction ───────── */}
+      <section className="bg-enamel pb-16 lg:pb-24">
+        <div className="wrap">
+          <hr className="tear" />
+          <div className="grid gap-12 pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 lg:pt-24">
+            <Reveal>
+              <h2 className="t-h2 max-w-[22ch] text-ink">
+                Donner aux organisations africaines les outils logiciels qu&apos;elles méritent
+              </h2>
+              <div className="mt-8 grid gap-5 text-[1.0625rem] leading-relaxed text-ink-soft">
+                <p className="t-body">
+                  Pendant longtemps, le marché logiciel africain s&apos;est
+                  contenté d&apos;importer des solutions pensées pour d&apos;autres
+                  contextes — souvent trop chères, trop rigides, ou déconnectées
+                  des réalités opérationnelles locales.
+                </p>
+                <p className="t-body">
+                  Alliance Consultants prend le contre-pied de cette logique. Nous
+                  éditons nos propres plateformes SaaS, nous formons les talents
+                  locaux, et nous intégrons l&apos;IA dans les processus métiers
+                  de nos clients pour qu&apos;ils gagnent en autonomie, en
+                  productivité et en compétitivité.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={120} className="self-start">
+              <div className="coupon overflow-hidden">
+                <div className="bg-ink px-5 py-2.5 sm:px-8">
+                  <p className="t-field !text-white">Notre conviction</p>
+                </div>
+                <div className="p-6 sm:p-8">
+                  <h2 className="t-h3 text-ink">
+                    Un écosystème logiciel africain souverain et de niveau mondial
+                  </h2>
+                  <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-soft">
+                    Nous croyons qu&apos;une transformation digitale durable passe
+                    par trois piliers indissociables : des produits SaaS robustes
+                    conçus en Afrique, une montée en compétences continue des
+                    équipes, et une intégration intelligente de l&apos;IA dans les
+                    opérations quotidiennes.
+                  </p>
+                  <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-soft">
+                    Notre ambition : faire d&apos;Alliance Consultants la maison de
+                    référence pour l&apos;édition logicielle, les services experts
+                    et la formation IA en Afrique francophone.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── Le passeport : l'histoire ───────── */}
       <section
         aria-labelledby="history-title"
-        className="bg-enamel py-16 lg:py-24"
+        className="bg-enamel pb-16 lg:pb-24"
       >
         <div className="wrap">
-          <h2 id="history-title" className="t-h2 max-w-[24ch] text-ink">
+          <hr className="tear" />
+          <h2 id="history-title" className="t-h2 mt-16 max-w-[24ch] text-ink lg:mt-24">
             Une trajectoire au service du logiciel africain
           </h2>
-          <div className="mt-12 lg:mt-16">
-            <HistoryLine milestones={MILESTONES} />
-          </div>
+          <Reveal className="mt-10 lg:mt-14">
+            <PassportTimeline
+              milestones={MILESTONES}
+              label="Histoire d'Alliance Consultants"
+            />
+          </Reveal>
         </div>
       </section>
 
       {/* ───────── L'équipe et les pôles ───────── */}
-      <section className="bg-night py-16 text-white lg:py-24">
-        <div className="wrap grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-          <div>
-            <h2 className="t-h2 max-w-[18ch] text-white">
-              Des praticiens expérimentés, ancrés à Abidjan
-            </h2>
-            <div className="mt-8 grid gap-5 text-[1.0625rem] leading-relaxed text-white/85">
-              <p className="t-body">
-                Notre équipe rassemble des architectes logiciels, des
-                développeurs full-stack .NET et web, des spécialistes IA et
-                automatisation, des consultants AMOA, des chefs de projet
-                certifiés et des formateurs en activité.
-              </p>
-              <p className="t-body">
-                Chaque mission est portée par un binôme expert métier / expert
-                technique, supervisé par un directeur de projet — pour garantir
-                la cohérence entre la valeur livrée et la maîtrise technique.
-              </p>
-              <p className="t-body">
-                Nous formons également la prochaine génération de talents
-                africains à travers <strong>École Digitale</strong>, notre pôle
-                de formation continue dédié à l&apos;IA, au développement et
-                aux métiers du numérique.
-              </p>
+      <section className="bg-enamel pb-16 lg:pb-24">
+        <div className="wrap">
+          <hr className="tear" />
+          <div className="grid gap-12 pt-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:pt-24">
+            <div>
+              <h2 className="t-h2 max-w-[18ch] text-ink">
+                Des praticiens expérimentés, ancrés à Abidjan
+              </h2>
+              <div className="mt-8 grid gap-5 text-[1.0625rem] leading-relaxed text-ink-soft">
+                <p className="t-body">
+                  Notre équipe rassemble des architectes logiciels, des
+                  développeurs full-stack .NET et web, des spécialistes IA et
+                  automatisation, des consultants AMOA, des chefs de projet
+                  certifiés et des formateurs en activité.
+                </p>
+                <p className="t-body">
+                  Chaque mission est portée par un binôme expert métier / expert
+                  technique, supervisé par un directeur de projet — pour garantir
+                  la cohérence entre la valeur livrée et la maîtrise technique.
+                </p>
+                <p className="t-body">
+                  Nous formons également la prochaine génération de talents
+                  africains à travers <strong className="text-ink">École Digitale</strong>, notre pôle
+                  de formation continue dédié à l&apos;IA, au développement et
+                  aux métiers du numérique.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <h3 className="t-h3 text-white">
-              Cinq pôles complémentaires au service de votre transformation
-            </h3>
-            <p className="mt-3 max-w-[56ch] text-white/75">
-              Du diagnostic stratégique à l&apos;exploitation quotidienne, nos
-              équipes couvrent l&apos;ensemble de la chaîne de valeur
-              logicielle.
-            </p>
-            <dl className="mt-8 divide-y divide-white/15 border-y border-white/15">
-              {EXPERTISE.map((item) => (
-                <div
-                  key={item.title}
-                  className="grid gap-1 py-5 sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-6"
-                >
-                  <dt className="flex items-start gap-3 font-display text-lg font-bold leading-snug text-white">
-                    <span
-                      aria-hidden
-                      className="mt-1.5 size-3.5 shrink-0 rounded-full border-[3px] border-white bg-night"
-                    />
-                    {item.title}
-                  </dt>
-                  <dd className="text-[0.9375rem] leading-relaxed text-white/75">
-                    {item.description}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            <div className="coupon self-start overflow-hidden">
+              <div className="bg-ink px-5 py-4 sm:px-8">
+                <h3 className="t-h3 text-white">
+                  Cinq pôles complémentaires au service de votre transformation
+                </h3>
+              </div>
+              <p className="border-b-2 border-dashed border-ink px-5 py-4 text-[0.9375rem] leading-relaxed text-ink-soft sm:px-8">
+                Du diagnostic stratégique à l&apos;exploitation quotidienne, nos
+                équipes couvrent l&apos;ensemble de la chaîne de valeur
+                logicielle.
+              </p>
+              <dl>
+                {EXPERTISE.map((item) => (
+                  <div
+                    key={item.title}
+                    className="grid gap-1 border-b border-dashed border-ink-mute/50 px-5 py-4 last:border-b-0 sm:grid-cols-[11.5rem_minmax(0,1fr)] sm:gap-6 sm:px-8"
+                  >
+                    <dt className="font-display text-lg font-bold leading-snug text-ink">
+                      {item.title}
+                    </dt>
+                    <dd className="text-[0.9375rem] leading-relaxed text-ink-soft">
+                      {item.description}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
       </section>
@@ -334,14 +368,15 @@ export default async function AboutPage() {
       {/* ───────── Les secteurs ───────── */}
       <section
         aria-labelledby="sectors-title"
-        className="bg-enamel py-16 lg:py-24"
+        className="bg-enamel pb-16 lg:pb-24"
       >
         <div className="wrap">
-          <h2 id="sectors-title" className="t-h2 max-w-[18ch] text-ink">
+          <hr className="tear" />
+          <h2 id="sectors-title" className="t-h2 mt-16 max-w-[26ch] text-ink lg:mt-24">
             Nous travaillons avec…
           </h2>
           <p className="t-lead mt-5">
-            Choisissez votre secteur : les lignes du réseau qui vous concernent
+            Choisissez votre secteur : les produits qui vous concernent
             s&apos;allument.
           </p>
           <div className="mt-10 lg:mt-14">
@@ -362,85 +397,76 @@ export default async function AboutPage() {
       {/* ───────── Les valeurs ───────── */}
       <section
         aria-labelledby="values-title"
-        className="bg-panel py-16 lg:py-24"
+        className="bg-enamel pb-16 lg:pb-24"
       >
-        <div className="wrap grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <h2 id="values-title" className="t-h2 max-w-[16ch] text-ink">
+        <div className="wrap">
+          <hr className="tear" />
+          <div className="grid gap-10 pt-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16 lg:pt-24">
+            <h2
+              id="values-title"
+              className="t-h2 max-w-[16ch] text-ink lg:sticky lg:top-32 lg:self-start"
+            >
               Quatre principes qui guident nos engagements
             </h2>
+            <ul className="coupon self-start overflow-hidden">
+              {VALUES.map((v) => (
+                <li
+                  key={v.title}
+                  className="grid gap-2 border-b-2 border-dashed border-ink px-5 py-6 last:border-b-0 sm:px-8 sm:py-7"
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      aria-hidden
+                      className="h-3 w-5 shrink-0 rounded-[2px] border border-ink"
+                      style={{ background: v.color }}
+                    />
+                    <h3 className="t-h3 text-ink">{v.title}</h3>
+                  </div>
+                  <p className="t-body text-[1.0625rem] leading-relaxed text-ink-soft">
+                    {v.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ol className="relative grid gap-10">
-            <span
-              aria-hidden
-              className="absolute bottom-2 left-[0.6875rem] top-2 w-1.5 rounded-full bg-ink"
-            />
-            {VALUES.map((v) => (
-              <li key={v.title} className="relative pl-12">
-                <span
-                  aria-hidden
-                  className="absolute left-0 top-0.5 block size-7 rounded-full border-[5px] bg-panel"
-                  style={{ borderColor: v.color }}
-                />
-                <h3 className="t-h3 text-ink">{v.title}</h3>
-                <p className="t-body mt-3 text-[1.0625rem] leading-relaxed text-ink-soft">
-                  {v.description}
-                </p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 
-      {/* ───────── Bureaux & contact ───────── */}
+      {/* ───────── Abidjan : bureau et contact ───────── */}
       <section
         aria-labelledby="offices-title"
-        className="bg-enamel py-16 lg:py-24"
+        className="bg-enamel pb-16 lg:pb-24"
       >
         <div className="wrap">
-          <div className="grid overflow-hidden rounded-lg bg-panel ring-1 ring-rule lg:grid-cols-[1fr_1fr]">
-            <div className="relative bg-ink p-8 text-white sm:p-10 lg:p-12">
-              <MapPin
-                aria-hidden
-                className="size-7 text-white"
-                strokeWidth={1.75}
-              />
-              <h2
-                id="offices-title"
-                className="t-h2 mt-6 text-white"
-              >
-                {settings.contact.address.city}
+          <hr className="tear" />
+          <div className="coupon mt-16 grid overflow-hidden lg:mt-24 lg:grid-cols-2">
+            <div className="p-6 sm:p-10 lg:p-12">
+              <p className="t-field">Notre bureau</p>
+              <h2 id="offices-title" className="t-h2 mt-3 text-ink">
+                {contact.address.city}
               </h2>
-              <p className="mt-3 text-lg text-white/85">
+              <p className="mt-3 font-display text-2xl font-bold text-ink">
                 {contact.address.street}
               </p>
-              <p className="mt-6 max-w-[40ch] text-white/75">
-                Basés à <strong>{contact.address.city}</strong>, Côte
+              <p className="mt-5 max-w-[40ch] text-[1.0625rem] leading-relaxed text-ink-soft">
+                Basés à <strong className="text-ink">{contact.address.city}</strong>, Côte
                 d&apos;Ivoire. Interventions dans toute l&apos;Afrique
                 francophone.
               </p>
-              <div aria-hidden className="mt-10 flex h-1.5 gap-1.5">
-                {LINES.map((l) => (
-                  <span
-                    key={l.id}
-                    className="flex-1 rounded-full"
-                    style={{ background: l.color }}
-                  />
-                ))}
-              </div>
+              <p className="mt-6 flex items-center gap-3 text-[0.9375rem] text-ink-soft">
+                <Clock aria-hidden className="size-5 shrink-0 text-ink-mute" strokeWidth={1.75} />
+                Lundi&nbsp;–&nbsp;Vendredi, 8&nbsp;h&nbsp;–&nbsp;18&nbsp;h (GMT)
+              </p>
             </div>
 
-            <ul className="grid content-center gap-1 p-5 sm:p-8 lg:p-10">
+            <ul className="flex flex-col justify-center border-t-2 border-dashed border-ink bg-[#f6f5fb] lg:border-l-2 lg:border-t-0 [&>li:last-child>a]:border-b-0">
               {contact.phones.map((p) => (
                 <li key={p}>
-                  <a
-                    href={`tel:${p.replace(/\s+/g, "")}`}
-                    className={CONTACT_LINK}
-                  >
+                  <a href={`tel:${p.replace(/\s+/g, "")}`} className={CONTACT_ROW}>
                     <Phone aria-hidden className="size-5 shrink-0 text-ink-mute" strokeWidth={1.75} />
                     <span>
-                      <span className="sr-only">Téléphone : </span>
-                      {p}
+                      <span className="t-field block">Téléphone</span>
+                      <span className="t-num font-display text-xl font-bold text-ink">{p}</span>
                     </span>
                   </a>
                 </li>
@@ -451,75 +477,68 @@ export default async function AboutPage() {
                     href={`https://wa.me/${whatsappDigits}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={CONTACT_LINK}
+                    className={CONTACT_ROW}
                   >
                     <MessageCircle aria-hidden className="size-5 shrink-0 text-ink-mute" strokeWidth={1.75} />
                     <span>
-                      <span className="sr-only">WhatsApp : </span>
-                      {contact.whatsapp}
+                      <span className="t-field block">WhatsApp</span>
+                      <span className="t-num font-display text-xl font-bold text-ink">{contact.whatsapp}</span>
                     </span>
                   </a>
                 </li>
               ) : null}
               <li>
-                <a href={`mailto:${contact.email}`} className={CONTACT_LINK}>
+                <a href={`mailto:${contact.email}`} className={CONTACT_ROW}>
                   <Mail aria-hidden className="size-5 shrink-0 text-ink-mute" strokeWidth={1.75} />
-                  <span className="break-all">
-                    <span className="sr-only">E-mail : </span>
-                    {contact.email}
+                  <span className="min-w-0">
+                    <span className="t-field block">E-mail</span>
+                    <span className="break-all font-display text-xl font-bold text-ink">{contact.email}</span>
                   </span>
                 </a>
-              </li>
-              <li className="flex min-h-12 items-center gap-4 px-3 py-2 text-[0.9375rem] text-ink-soft">
-                <Clock aria-hidden className="size-5 shrink-0 text-ink-mute" strokeWidth={1.75} />
-                <span>
-                  Lundi&nbsp;–&nbsp;Vendredi, 8&nbsp;h&nbsp;–&nbsp;18&nbsp;h (GMT)
-                </span>
               </li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* ───────── Terminus ───────── */}
+      {/* ───────── Le coupon final ───────── */}
       <section
         aria-labelledby="about-cta-title"
-        className="overflow-hidden bg-night text-white"
+        className="bg-enamel pb-20 lg:pb-28"
       >
-        <div className="wrap grid items-center gap-10 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
-          <div>
-            <h2
-              id="about-cta-title"
-              className="t-h2 max-w-[20ch] text-white"
-            >
-              Parlons de votre projet de transformation digitale
-            </h2>
-            <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-white/80">
-              Diagnostic gratuit, échange sans engagement avec un consultant
-              senior. Réponse sous 24 h ouvrées.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className="wrap">
+          <div className="coupon grid overflow-hidden lg:grid-cols-[minmax(0,1fr)_21rem]">
+            <div className="p-6 sm:p-10 lg:p-12">
+              <h2
+                id="about-cta-title"
+                className="t-h2 max-w-[28ch] text-balance text-ink"
+              >
+                Parlons de votre projet de transformation digitale
+              </h2>
+              <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-ink-soft">
+                Diagnostic gratuit, échange sans engagement avec un consultant
+                senior. Réponse sous 24 à 48 heures ouvrées.
+              </p>
+            </div>
+            <div className="flex flex-col justify-center gap-3 border-t-2 border-dashed border-ink bg-[#f6f5fb] p-6 sm:p-8 lg:border-l-2 lg:border-t-0">
+              <p className="t-field !text-carbon">Coupon détachable</p>
               <CTAButton
                 intent="contact"
                 label="Nous contacter"
                 block="final-cta"
                 size="lg"
-                onDark
+                className="w-full"
               />
               <CTAButton
                 intent="diagnostic"
                 label="Demander un diagnostic"
                 block="final-cta"
-                size="lg"
+                size="md"
                 variant="secondary"
-                onDark
+                className="w-full"
               />
             </div>
           </div>
-          <TerminusMark
-            colors={[BAND[0], BAND[1], BAND[2]]}
-            className="mx-auto max-w-sm lg:max-w-none"
-          />
         </div>
       </section>
     </>

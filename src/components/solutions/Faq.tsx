@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
-import { Section } from "@/components/ui/Section";
 import type { FaqEntry } from "@/lib/validators/content";
+import s from "./Solutions.module.css";
 
 interface FaqProps {
   entries: FaqEntry[];
@@ -13,35 +13,42 @@ interface FaqProps {
  */
 export function Faq({ entries }: FaqProps) {
   return (
-    <Section id="faq" bg="gray" padding="md" aria-labelledby="faq-title">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-        <h2 id="faq-title" className="t-h2 max-w-[12ch] text-ink lg:sticky lg:top-40 lg:self-start">
+    <section id="faq" aria-labelledby="faq-title" className="pb-16 lg:pb-24">
+      <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+        <h2
+          id="faq-title"
+          className="t-h2 text-ink lg:sticky lg:top-[calc(var(--site-header-h,4rem)+4.5rem)] lg:self-start"
+        >
           Questions fréquentes
         </h2>
-        <div className="border-t-2 border-ink">
-          {entries.map((entry) => (
+        <div className="coupon">
+          {entries.map((entry, i) => (
             <details
               key={entry.question}
-              className="group border-b border-rule"
+              className={
+                i > 0 ? "group border-t-2 border-dashed border-ink" : "group"
+              }
             >
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-5 py-4 marker:hidden [&::-webkit-details-marker]:hidden">
-                <span className="font-display text-lg font-bold leading-snug tracking-[-0.01em] text-ink">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-5 px-6 py-4 marker:hidden sm:px-8 [&::-webkit-details-marker]:hidden">
+                <span className="font-display text-xl font-bold leading-snug text-ink">
                   {entry.question}
                 </span>
                 <span
                   aria-hidden
-                  className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-open:rotate-45"
+                  className="grid size-9 shrink-0 place-items-center rounded-[3px] bg-ink text-white transition-[transform,background-color] duration-300 ease-[var(--ease-out-expo)] group-open:rotate-45 group-open:bg-red"
                 >
                   <Plus className="size-5" strokeWidth={2.25} />
                 </span>
               </summary>
-              <p className="t-body pb-6 pr-12 text-[1.0625rem] leading-relaxed text-ink-soft">
+              <p
+                className={`t-body px-6 pb-6 text-[1.0625rem] leading-relaxed text-ink-soft sm:px-8 sm:pr-20 ${s.faqBody}`}
+              >
                 {entry.answer}
               </p>
             </details>
           ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

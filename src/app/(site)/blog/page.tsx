@@ -5,7 +5,6 @@ import { BlogEmptyState } from "@/components/blog/BlogEmptyState";
 import { BlogFilterBar } from "@/components/blog/BlogFilterBar";
 import { BlogPagination } from "@/components/blog/BlogPagination";
 import { BlogPostList } from "@/components/blog/BlogPostList";
-import { RouteCover } from "@/components/blog/RouteCover";
 import { listAllPublishedTags, listPublishedPosts, BLOG_PAGE_SIZE } from "@/lib/blog";
 import { buildBlogBreadcrumbJsonLd, buildMetadata } from "@/lib/seo";
 import { getReadingMinutes } from "./_reading-times";
@@ -59,36 +58,27 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
     <>
       <JsonLd data={breadcrumbJsonLd} />
 
-      <header className="wrap pb-8 pt-10 sm:pt-14 lg:pb-12 lg:pt-20">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-          <div>
-            <h1 className="t-display max-w-[14ch] text-ink">
-              Idées et retours d&rsquo;expérience
-            </h1>
-            <p className="t-lead mt-6">
-              Transformation digitale, IA, automatisation, dématérialisation des
-              archives, gestion des SaaS métier : ce que nous apprenons sur le
-              terrain auprès des organisations africaines.
-            </p>
-          </div>
-          <div
-            aria-hidden
-            className="relative hidden aspect-[16/9] overflow-hidden rounded-[8px] lg:block"
-          >
-            <RouteCover slug="blog-alliance-consultants" tone="enamel" weight={17} className="absolute inset-0" />
-          </div>
+      <header className="wrap pb-8 pt-10 sm:pt-14 lg:pb-10 lg:pt-20">
+        <div className="grid items-end gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16">
+          <h1 className="t-display max-w-[14ch] text-ink">
+            Idées et retours d&rsquo;expérience
+          </h1>
+          <p className="t-lead lg:pb-3">
+            Transformation digitale, IA, automatisation, dématérialisation des
+            archives, gestion des SaaS métier : ce que nous apprenons sur le
+            terrain auprès des organisations africaines.
+          </p>
         </div>
 
+        <hr className="tear mt-10" />
         {tags.length > 0 ? (
-          <div className="mt-10 border-t border-ink/15 pt-6">
+          <div className="pt-5">
             <BlogFilterBar tags={tags} />
           </div>
-        ) : (
-          <div className="mt-10 border-t border-ink/15" />
-        )}
+        ) : null}
       </header>
 
-      <section aria-label="Articles" className="wrap pb-16 pt-2 sm:pb-24">
+      <section aria-label="Articles" className="wrap pb-20 pt-6 sm:pb-28">
         {items.length === 0 ? (
           <BlogEmptyState title="Le premier article arrive bientôt">
             Nous préparons nos premiers retours d&apos;expérience. Le flux RSS vous

@@ -160,7 +160,7 @@ export default async function ContactDemoPage({ searchParams }: PageProps) {
       <JsonLd data={breadcrumb} />
       <JsonLd data={localBusiness} />
 
-      <section className="bg-enamel pb-14 pt-8 lg:pb-20 lg:pt-12">
+      <section className="bg-enamel pb-20 pt-8 lg:pb-28 lg:pt-12">
         <div className="wrap">
           <nav aria-label="Fil d'Ariane">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-ink-mute">
@@ -181,7 +181,9 @@ export default async function ContactDemoPage({ searchParams }: PageProps) {
 
           <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-16">
             <h1 className="t-display max-w-[18ch] text-ink">{heroTitle}</h1>
-            <p className="t-lead">{copy.description}</p>
+            <p className="t-lead border-t-2 border-ink pt-5 lg:mb-2">
+              {copy.description}
+            </p>
           </div>
 
           <div className="mt-10 lg:mt-14">

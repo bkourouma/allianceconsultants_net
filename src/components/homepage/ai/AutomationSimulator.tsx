@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
-import { Check, Pause, Play, RotateCcw, SkipForward } from "lucide-react";
+import { Pause, Play, RotateCcw, SkipForward } from "lucide-react";
 import { cn } from "@/lib/utils";
 import styles from "./AutomationSimulator.module.css";
 
@@ -12,10 +12,12 @@ interface AutomationSimulatorProps {
 
 type Mode = "before" | "after";
 
-interface FlowNode {
+interface Station {
   id: string;
   title: string;
-  /** Index of the aiSection bullet that this step illustrates. */
+  /** Word pressed on the work order when it leaves the station. */
+  stamp: string;
+  /** Index of the aiSection bullet that this station illustrates. */
   bulletIndex: number;
   what: string;
   after: { doing: string; done: string; note: string };
@@ -23,10 +25,11 @@ interface FlowNode {
 }
 
 /* Generic, capability-level wording only (no figures, no durations). */
-const NODES: FlowNode[] = [
+const STATIONS: Station[] = [
   {
     id: "recu",
     title: "Courrier reçu",
+    stamp: "Reçu",
     bulletIndex: 0,
     what: "Le document entre dans le circuit dès sa réception, sans transmission manuelle.",
     after: { doing: "Prise en charge", done: "Document lu", note: "Capté et lancé automatiquement." },
@@ -35,6 +38,7 @@ const NODES: FlowNode[] = [
   {
     id: "extraction",
     title: "Extraction IA",
+    stamp: "Extrait",
     bulletIndex: 2,
     what: "L'IA lit le document et en extrait les informations utiles, prêtes à être exploitées.",
     after: { doing: "Lecture en cours", done: "Champs extraits", note: "Les données sont lues par l'IA." },
@@ -43,6 +47,7 @@ const NODES: FlowNode[] = [
   {
     id: "classement",
     title: "Classement GED",
+    stamp: "Classé",
     bulletIndex: 3,
     what: "Le contenu est classé et indexé automatiquement dans la gestion électronique des documents.",
     after: { doing: "Classement en cours", done: "Classé et indexé", note: "Classé et indexé sans intervention." },
@@ -51,6 +56,7 @@ const NODES: FlowNode[] = [
   {
     id: "validation",
     title: "Validation",
+    stamp: "Validé",
     bulletIndex: 1,
     what: "Le circuit de validation est digital : chacun voit où en est le dossier et valide au bon moment.",
     after: { doing: "En attente de visa", done: "Validé", note: "Circuit de validation digital." },
@@ -59,6 +65,7 @@ const NODES: FlowNode[] = [
   {
     id: "archivage",
     title: "Archivage",
+    stamp: "Archivé",
     bulletIndex: 5,
     what: "Le document validé est archivé électroniquement et reste facile à retrouver, y compris depuis vos outils existants.",
     after: { doing: "Archivage en cours", done: "Archivé", note: "Archivé et retrouvable." },
@@ -66,7 +73,28 @@ const NODES: FlowNode[] = [
   },
 ];
 
-const COUNT = NODES.length;
+/** Where each stamp lands on the work order (% of the coupon) + a slight tilt. */
+const IMPRINTS: { left: number; top: number; rot: number }[] = [
+  { left: 4, top: 46, rot: -5 },
+  { left: 50, top: 49, rot: 4 },
+  { left: 5, top: 64, rot: 3 },
+  { left: 49, top: 67, rot: -5 },
+  { left: 27, top: 81, rot: -3 },
+];
+
+const COUNT = STATIONS.length;
+/**
+ * The line is a small state machine over `stage`:
+ *   even 2i   → the work order has reached station i (not yet stamped)
+ *   odd 2i+1  → station i has stamped it
+ */
+const LAST_STAGE = COUNT * 2 - 1;
+
+const TIMING: Record<Mode, { travel: number; arrive: number; dwell: number }> = {
+  after: { travel: 700, arrive: 850, dwell: 650 },
+  before: { travel: 1500, arrive: 1750, dwell: 1500 },
+};
+
 const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 
 function subscribeReduced(cb: () => void) {
@@ -82,35 +110,41 @@ function useReducedMotion() {
   );
 }
 
+const BTN =
+  "inline-flex h-12 items-center justify-center gap-2.5 rounded-[3px] px-5 font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--ease-out-expo)] active:translate-y-[2px] active:shadow-none disabled:cursor-not-allowed disabled:opacity-50";
+const BTN_MAIN = cn(BTN, "bg-white text-ink shadow-[0_1px_2px_rgb(15_42_90/0.14),0_8px_16px_-8px_rgb(15_42_90/0.3)] hover:bg-enamel");
+const BTN_GHOST = cn(BTN, "px-4 text-white ring-2 ring-inset ring-white/60 hover:bg-white hover:text-ink");
+
 export function AutomationSimulator({ bullets }: AutomationSimulatorProps) {
   const reduced = useReducedMotion();
   const [mode, setMode] = useState<Mode>("after");
-  /** Number of completed stations (0..COUNT). */
-  const [cursor, setCursor] = useState(0);
+  const [stage, setStage] = useState(0);
   const [running, setRunning] = useState(false);
-  /** Station the user explicitly inspected; otherwise the detail follows the token. */
+  /** Station the visitor explicitly inspected; otherwise the detail follows the order. */
   const [pinned, setPinned] = useState<number | null>(null);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const autoplayed = useRef(false);
 
-  const finished = cursor >= COUNT;
+  const finished = stage >= LAST_STAGE;
   const isRunning = running && !finished && !reduced;
-  const tokenAt = Math.min(cursor, COUNT - 1);
-  const focusIdx = pinned ?? tokenAt;
-  const focusNode = NODES[focusIdx];
-  const dwell = mode === "after" ? 1000 : 2300;
-  const travel = Math.round(dwell * 0.55);
-  const copy = mode === "after" ? "after" : "before";
+  const pos = Math.floor(stage / 2);
+  const stamped = Math.ceil(stage / 2);
+  const focusIdx = pinned ?? pos;
+  const focus = STATIONS[focusIdx];
+  const timing = TIMING[mode];
 
   useEffect(() => {
     if (!isRunning) return;
-    const t = window.setTimeout(() => setCursor((c) => c + 1), dwell);
+    const t = window.setTimeout(
+      () => setStage((s) => Math.min(LAST_STAGE, s + 1)),
+      stage % 2 === 0 ? timing.arrive : timing.dwell,
+    );
     return () => window.clearTimeout(t);
-  }, [isRunning, cursor, dwell]);
+  }, [isRunning, stage, timing.arrive, timing.dwell]);
 
-  // Play the circuit once, the first time the panel scrolls into view.
-  // Reduced motion keeps it step by step; later control is the visitor's.
+  // Play the line once, the first time it scrolls into view. Under reduced
+  // motion nothing moves by itself: the visitor steps with « Étape suivante ».
   useEffect(() => {
     if (reduced || autoplayed.current) return;
     const el = rootRef.current;
@@ -122,53 +156,52 @@ export function AutomationSimulator({ bullets }: AutomationSimulatorProps) {
         setRunning(true);
         io.disconnect();
       },
-      { threshold: 0.3 },
+      { threshold: 0.25 },
     );
     io.observe(el);
     return () => io.disconnect();
   }, [reduced]);
 
-  const reset = () => {
-    setRunning(false);
-    setCursor(0);
+  const replay = (nextMode: Mode = mode) => {
+    autoplayed.current = true;
     setPinned(null);
+    setStage(0);
+    setRunning(!reduced);
+    setMode(nextMode);
   };
   const changeMode = (m: Mode) => {
-    if (m === mode) return;
-    setMode(m);
-    reset();
+    if (m !== mode) replay(m);
   };
-  const start = () => {
+  const resume = () => {
     autoplayed.current = true;
-    if (finished) setCursor(0);
     setPinned(null);
     setRunning(true);
   };
   const step = () => {
     setPinned(null);
-    setCursor((c) => Math.min(COUNT, c + 1));
+    setStage((s) => Math.min(LAST_STAGE, s % 2 === 0 ? s + 1 : s + 2));
   };
 
   const status = (i: number): "done" | "active" | "waiting" =>
-    i < cursor ? "done" : i === cursor && isRunning ? "active" : "waiting";
+    i < stamped ? "done" : i === pos && isRunning ? "active" : "waiting";
 
   const liveMessage = finished
-    ? "Simulation terminée."
-    : cursor === 0 && !isRunning
+    ? "Circuit terminé : le bon de travail est archivé."
+    : stage === 0 && !isRunning
       ? "Simulation prête."
-      : `Étape ${tokenAt + 1} sur ${COUNT} : ${NODES[tokenAt].title}.`;
+      : `Étape ${pos + 1} sur ${COUNT} : ${STATIONS[pos].title}.`;
 
-  const bulletText = bullets[focusNode.bulletIndex] ?? bullets[0];
-  const nextTitle = NODES[Math.min(cursor, COUNT - 1)].title;
+  const capability = bullets[focus.bulletIndex] ?? bullets[0];
+  const nextTitle = STATIONS[Math.min(stage % 2 === 0 ? pos : pos + 1, COUNT - 1)].title;
 
   return (
-    <div ref={rootRef} className="rounded-lg bg-night-2 ring-1 ring-white/10">
+    <div ref={rootRef} className="rounded-[4px] border-2 border-white/25 bg-night-2">
       {/* Header: honest label + before/after switch */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-4 py-3 sm:px-6">
-        <p className="text-sm font-semibold text-white/80">
-          Aperçu illustratif <span className="font-normal text-white/60">· traitement d&apos;un courrier entrant</span>
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b-2 border-dashed border-white/25 px-3 py-3 sm:px-5">
+        <p className="m-0 font-mono text-[0.75rem] font-medium uppercase leading-snug tracking-[0.08em] text-[#c3d0ee]">
+          Aperçu illustratif · bon de travail d&apos;un courrier entrant
         </p>
-        <div role="group" aria-label="Mode du circuit" className="inline-flex rounded-full bg-night p-1 ring-1 ring-white/15">
+        <div role="group" aria-label="Mode du circuit" className="inline-flex gap-1.5">
           {(
             [
               ["before", "Avant : manuel"],
@@ -181,8 +214,10 @@ export function AutomationSimulator({ bullets }: AutomationSimulatorProps) {
               aria-pressed={mode === m}
               onClick={() => changeMode(m)}
               className={cn(
-                "min-h-9 rounded-full px-3.5 text-sm font-semibold transition-colors duration-200",
-                mode === m ? "bg-white text-ink" : "text-white/75 hover:text-white",
+                "min-h-11 rounded-[3px] px-3.5 font-display text-[1rem] font-bold uppercase tracking-[0.06em] ring-2 ring-inset transition-colors duration-200",
+                mode === m
+                  ? "bg-white text-ink ring-white"
+                  : "text-white ring-white/45 hover:bg-white/10",
               )}
             >
               {label}
@@ -191,140 +226,198 @@ export function AutomationSimulator({ bullets }: AutomationSimulatorProps) {
         </div>
       </div>
 
-      {/* Flow */}
-      <div className="px-4 pb-6 pt-6 sm:px-6">
+      {/* The stamping line */}
+      <div className="p-3 sm:p-5">
         <div
-          className="relative grid h-[23rem] grid-rows-5 md:h-auto md:grid-cols-5 md:grid-rows-1"
+          className={styles.flow}
           style={
             {
-              "--p": tokenAt,
-              "--travel": `${travel}ms`,
+              "--pos": pos,
+              "--travel": `${timing.travel}ms`,
             } as CSSProperties
           }
         >
-          <div aria-hidden className={cn(styles.track, mode === "before" && styles.manual)}>
-            <div className={styles.fill} />
-          </div>
-          <span aria-hidden className={styles.token} />
+          <ol className={styles.stations} aria-label="Stations du circuit">
+            {STATIONS.map((n, i) => {
+              const st = status(i);
+              const c = n[mode];
+              const label = st === "done" ? c.done : st === "active" ? c.doing : "En attente";
+              const selected = focusIdx === i;
+              return (
+                <li key={n.id} className={styles.station}>
+                  <button
+                    type="button"
+                    aria-pressed={pinned === i}
+                    aria-label={`${n.title} : ${label}. Épingler l'explication de cette étape.`}
+                    onClick={() => setPinned((p) => (p === i ? null : i))}
+                    className="group/st flex h-full min-h-11 w-full flex-col justify-center rounded-[3px] px-1 text-left lg:justify-start lg:px-2 lg:pt-1 lg:text-center"
+                  >
+                    <span
+                      className={cn(
+                        "block font-display text-[1.25rem] font-bold leading-tight transition-colors duration-200 sm:text-[1.375rem]",
+                        st === "waiting" ? "text-white/80" : "text-white",
+                        "group-hover/st:text-white",
+                      )}
+                    >
+                      {n.title}
+                    </span>
+                    <span className="mt-1 flex items-start gap-1.5 text-[0.8125rem] leading-snug text-[#c3d0ee] lg:justify-center">
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "mt-[0.3rem] size-2 shrink-0 rounded-[1px] transition-colors duration-300",
+                          selected ? "bg-red" : st === "done" ? "bg-white" : "bg-white/35",
+                        )}
+                      />
+                      <span className="min-w-0">{label}</span>
+                    </span>
+                    <span
+                      aria-hidden
+                      data-pressing={isRunning && stage === i * 2 + 1 ? "true" : "false"}
+                      className={cn(styles.press, "lg:mt-auto")}
+                    >
+                      <span className={styles.knob} />
+                      <span className={styles.stem} />
+                      <span className={styles.plate} />
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
 
-          {NODES.map((n, i) => {
-            const st = status(i);
-            const c = n[copy];
-            const label = st === "done" ? c.done : st === "active" ? c.doing : "En attente";
-            const selected = focusIdx === i;
-            return (
-              <button
-                key={n.id}
-                type="button"
-                aria-pressed={pinned === i}
-                aria-label={`${n.title} : ${label}. Voir ce que fait cette étape.`}
-                onClick={() => setPinned((p) => (p === i ? null : i))}
-                className="group/node relative flex items-center gap-3 rounded-md px-0 text-left md:flex-col md:items-center md:gap-2 md:px-1 md:text-center"
-              >
-                <span className="grid size-11 shrink-0 place-items-center">
-                  <span
-                    className={cn(
-                      "relative z-[1] grid size-[30px] place-items-center rounded-full border-[3px] transition-colors duration-300",
-                      st === "done" && "border-[#7d9bff] bg-[#7d9bff] text-night",
-                      st === "active" && "border-[#a78bfa] bg-[#6d3be0]",
-                      st === "waiting" && "border-white/70 bg-night-2 group-hover/node:border-white",
-                      selected && "outline outline-2 outline-offset-4 outline-white/70",
-                    )}
-                  >
-                    {st === "done" && <Check className="size-4" strokeWidth={3} aria-hidden />}
+          <div aria-hidden className={cn(styles.belt, mode === "before" && styles.beltManual)}>
+            <div className={styles.slots}>
+              {STATIONS.map((n, i) => {
+                // Copy of the work order as it left this station; the live order
+                // itself is drawn by the carrier while it sits here.
+                const copy = i < stamped && i !== pos;
+                return (
+                  <span key={n.id} className={styles.slot}>
+                    <span className={cn(styles.doc, copy && styles.docCopy)}>
+                      <span className={styles.docHead} />
+                      <span className={styles.bar} style={{ top: "28%", width: "62%" }} />
+                      <span className={styles.bar} style={{ top: "35%", width: "38%" }} />
+                      <span className={styles.orderTear} />
+                      <span className={styles.docStamps}>
+                        {copy &&
+                          STATIONS.slice(0, i + 1).map((m, k) => (
+                            <span
+                              key={m.id}
+                              className={cn("stamp", styles.mark)}
+                              style={
+                                {
+                                  left: `${IMPRINTS[k].left}%`,
+                                  top: `${IMPRINTS[k].top}%`,
+                                  "--r": `${IMPRINTS[k].rot}deg`,
+                                } as CSSProperties
+                              }
+                            >
+                              {m.stamp}
+                            </span>
+                          ))}
+                      </span>
+                    </span>
                   </span>
-                </span>
-                <span className="block min-w-0">
-                  <span className="block text-[0.9375rem] font-bold leading-tight text-white">{n.title}</span>
+                );
+              })}
+            </div>
+            <div className={cn(styles.carrier, mode === "before" && styles.carrierSlow)}>
+              <div className={styles.order}>
+                <div className={styles.orderHead}>Bon de travail</div>
+                <span className={styles.bar} style={{ top: "28%", width: "62%" }} />
+                <span className={styles.bar} style={{ top: "35%", width: "38%" }} />
+                <span className={styles.orderTear} />
+                {STATIONS.slice(0, stamped).map((n, i) => (
                   <span
-                    className={cn(
-                      "mt-0.5 block text-[0.8125rem] leading-snug",
-                      st === "waiting" ? "text-white/60" : "text-[#c4d2ff]",
-                    )}
+                    key={n.id}
+                    className={cn("stamp", styles.mark)}
+                    style={
+                      {
+                        left: `${IMPRINTS[i].left}%`,
+                        top: `${IMPRINTS[i].top}%`,
+                        "--r": `${IMPRINTS[i].rot}deg`,
+                      } as CSSProperties
+                    }
                   >
-                    {label}
+                    {n.stamp}
                   </span>
-                </span>
-              </button>
-            );
-          })}
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Controls | station detail */}
-      <div className="grid border-t border-white/10 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3 px-4 py-5 sm:px-6 lg:flex-col lg:items-start lg:justify-center">
-        {reduced ? (
-          <button
-            type="button"
-            onClick={step}
-            disabled={finished}
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-[0.9375rem] font-bold text-ink transition-colors hover:bg-enamel disabled:opacity-50"
-          >
-            <SkipForward className="size-4" strokeWidth={2} aria-hidden />
-            {finished ? "Circuit terminé" : `Étape suivante : ${nextTitle}`}
-          </button>
-        ) : isRunning ? (
-          <button
-            type="button"
-            onClick={() => setRunning(false)}
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-[0.9375rem] font-bold text-ink transition-colors hover:bg-enamel"
-          >
-            <Pause className="size-4" strokeWidth={2} aria-hidden />
-            Mettre en pause
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={start}
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-[0.9375rem] font-bold text-ink transition-colors hover:bg-enamel"
-          >
-            {finished ? <RotateCcw className="size-4" strokeWidth={2} aria-hidden /> : <Play className="size-4" strokeWidth={2} aria-hidden />}
-            {finished ? "Rejouer" : cursor > 0 ? "Reprendre" : "Lancer la simulation"}
-          </button>
-        )}
-        {cursor > 0 && (
-          <button
-            type="button"
-            onClick={reset}
-            className="inline-flex h-11 items-center gap-2 rounded-full px-4 text-[0.9375rem] font-semibold text-white/80 ring-1 ring-inset ring-white/30 transition-colors hover:bg-white/10 hover:text-white"
-          >
-            <RotateCcw className="size-4" strokeWidth={2} aria-hidden />
-            Réinitialiser
-          </button>
-        )}
-        <p className="ml-auto max-w-[24ch] text-[0.8125rem] font-semibold leading-snug text-white/75 lg:ml-0 lg:mt-1">
-          {finished
-            ? mode === "after"
-              ? "Du courrier reçu à l'archivage, le circuit s'enchaîne sans ressaisie."
-              : "Un circuit lent et dépendant de chacun. Basculez sur « Après » pour comparer."
-            : mode === "after"
-              ? "Étapes enchaînées automatiquement"
-              : "Chaque passage dépend d'une personne"}
-        </p>
-      </div>
-
-      {/* Station detail */}
-      <div className="border-t border-white/10 px-4 py-5 sm:px-6 lg:min-h-[10.5rem] lg:border-l lg:border-t-0" aria-live="polite">
-        <h3 className="font-display text-lg font-bold text-white">{focusNode.title}</h3>
-        <p className="mt-1.5 max-w-[62ch] text-[0.9375rem] leading-relaxed text-white/80">{focusNode.what}</p>
-        <dl className="mt-3 grid max-w-[60rem] gap-x-8 gap-y-2 text-[0.875rem] sm:grid-cols-2">
-          <div>
-            <dt className="font-semibold text-[#c4d2ff]">{mode === "after" ? "Avec l'automatisation" : "Aujourd'hui, à la main"}</dt>
-            <dd className="mt-0.5 text-white/80">{focusNode[copy].note}</dd>
+      {/* Controls | pinned explanation */}
+      <div className="grid gap-4 border-t-2 border-dashed border-white/25 p-3 sm:p-5 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-6">
+        <div className="flex flex-col items-start justify-center gap-3">
+          <div className="flex flex-wrap gap-3">
+            {reduced ? (
+              <button type="button" onClick={step} disabled={finished} className={BTN_MAIN}>
+                <SkipForward className="size-4" strokeWidth={2} aria-hidden />
+                Étape suivante
+              </button>
+            ) : isRunning ? (
+              <button type="button" onClick={() => setRunning(false)} className={BTN_MAIN}>
+                <Pause className="size-4" strokeWidth={2} aria-hidden />
+                Pause
+              </button>
+            ) : finished ? (
+              <button type="button" onClick={() => replay()} className={BTN_MAIN}>
+                <RotateCcw className="size-4" strokeWidth={2} aria-hidden />
+                Rejouer
+              </button>
+            ) : (
+              <button type="button" onClick={resume} className={BTN_MAIN}>
+                <Play className="size-4" strokeWidth={2} aria-hidden />
+                {stage > 0 ? "Reprendre" : "Lancer"}
+              </button>
+            )}
+            {stage > 0 && !finished && (
+              <button type="button" onClick={() => replay()} className={BTN_GHOST}>
+                <RotateCcw className="size-4" strokeWidth={2} aria-hidden />
+                Rejouer
+              </button>
+            )}
           </div>
-          {bulletText && (
-            <div>
-              <dt className="font-semibold text-[#c4d2ff]">Capacité Alliance</dt>
-              <dd className="mt-0.5 text-white/80">{bulletText}</dd>
-            </div>
+          {reduced && !finished && (
+            <p className="m-0 text-[0.8125rem] leading-snug text-[#c3d0ee]">Prochain poste : {nextTitle}</p>
           )}
-        </dl>
+          <p className="m-0 max-w-[26ch] text-[0.875rem] font-semibold leading-snug text-white/85">
+            {finished
+              ? mode === "after"
+                ? "Du courrier reçu à l'archivage, le circuit s'enchaîne sans ressaisie."
+                : "Un circuit lent et dépendant de chacun. Passez sur « Après » pour comparer."
+              : mode === "after"
+                ? "Étapes enchaînées automatiquement."
+                : "Chaque passage dépend d'une personne."}
+          </p>
+        </div>
+
+        <div className="coupon p-4 text-ink sm:p-5">
+          <p className={cn(styles.field, "t-field m-0")}>
+            {pinned === null ? "Étape en cours" : "Étape épinglée · cliquez à nouveau pour libérer"}
+          </p>
+          <h3 className="t-h3 m-0 mt-1">{focus.title}</h3>
+          <p className="t-body m-0 mt-2 max-w-[64ch] text-[0.9375rem] leading-relaxed text-ink-soft">{focus.what}</p>
+          <hr className="tear my-3" />
+          <dl className="m-0 grid gap-x-8 gap-y-3 text-[0.9375rem] sm:grid-cols-2">
+            <div>
+              <dt className={cn(styles.field, "t-field")}>{mode === "after" ? "Avec l'automatisation" : "Aujourd'hui, à la main"}</dt>
+              <dd className="m-0 mt-0.5 leading-snug">{focus[mode].note}</dd>
+            </div>
+            {capability && (
+              <div>
+                <dt className={cn(styles.field, "t-field")}>Capacité Alliance</dt>
+                <dd className="m-0 mt-0.5 leading-snug">{capability}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
         <p className="sr-only" role="status">
           {liveMessage}
         </p>
-      </div>
       </div>
     </div>
   );

@@ -1,12 +1,16 @@
-/* Accordion panel: animates height via grid rows, never display:none-flips.
+/* ── Le Carnet de coupons: the six-coupon ledger ──────────────────────────
+   Materials (.coupon, .coupon-stub, .tear, .stamp) come from globals.css; this
+   module only adds what Tailwind utilities cannot override (unlayered rules). */
+
+/* Fold-out panel: animates height via grid rows, never display:none-flips.
    Closed content is visibility:hidden (out of tab order + a11y tree). */
 .panel {
   display: grid;
   grid-template-rows: 0fr;
   visibility: hidden;
   transition:
-    grid-template-rows 480ms var(--ease-out-expo),
-    visibility 0s linear 480ms;
+    grid-template-rows 520ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    visibility 0s linear 520ms;
 }
 .panel[data-open="true"] {
   grid-template-rows: 1fr;
@@ -18,30 +22,119 @@
   overflow: hidden;
 }
 
-/* The row's colour field: background + text swap with a short, calm ease. */
+/* Coupon lift on hover (closed coupons only; the open one stays put). */
 .row {
   transition:
-    background-color 360ms var(--ease-out-expo),
-    color 360ms var(--ease-out-expo);
+    transform 240ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    box-shadow 240ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+article.row[data-open="false"]:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 2px rgb(15 42 90 / 0.14),
+    0 12px 20px -10px rgb(15 42 90 / 0.38);
 }
 
-/* Focus rings must stay visible on a full colour field (global ring = accent).
+/* Head: a compact wallet row. Phones: numeral | name + sector + pitch + link |
+   chevron. Desktop: one line — numeral | name + sector | pitch | link | chevron. */
+.head {
+  grid-template-columns: 3.25rem minmax(0, 1fr) 3.5rem;
+  grid-template-areas:
+    "num title chev"
+    "num pitch chev"
+    "num more chev";
+  align-items: center;
+}
+.numeral {
+  grid-area: num;
+  align-self: stretch;
+  font-size: 2rem;
+}
+.title {
+  grid-area: title;
+  padding: 0.875rem 0 0 1rem;
+}
+.pitch {
+  grid-area: pitch;
+  padding: 0.5rem 0 0 1rem;
+}
+.more {
+  grid-area: more;
+  padding: 0 0 0.25rem 1rem;
+}
+.chev {
+  grid-area: chev;
+  align-self: start;
+  padding-top: 0.875rem;
+}
+.field.field {
+  font-size: 0.75rem;
+}
+@media (min-width: 640px) {
+  .head {
+    grid-template-columns: 4.25rem minmax(0, 1fr) 4rem;
+  }
+  .numeral {
+    font-size: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .head {
+    grid-template-columns: 4.25rem minmax(13rem, 17rem) minmax(0, 1fr) auto 4.5rem;
+    grid-template-areas: "num title pitch more chev";
+    min-height: 5.25rem;
+  }
+  .title {
+    padding: 0.875rem 1.25rem 0.875rem 1.5rem;
+  }
+  .pitch {
+    padding: 0.875rem 1.5rem 0.875rem 0;
+  }
+  .more {
+    align-self: stretch;
+    padding: 0 1.5rem;
+    border-left: 2px dashed var(--color-ink);
+  }
+  .chev {
+    align-self: center;
+    padding-top: 0;
+  }
+}
+
+/* The product accent can be yellow/orange: focus rings stay navy on white stock.
    Higher specificity than `.site-root :focus-visible`. */
 article.row :focus-visible {
   outline: 3px solid var(--color-ink);
   outline-offset: 3px;
 }
-article.row[data-open="true"] :focus-visible {
-  outline-color: var(--on-accent);
-}
-/* the head button sits flush against the row's clipped edge: ring goes inside */
+/* the head button's hit area covers the whole head: ring goes inside */
 article.row .headBtn:focus-visible {
   outline-offset: -6px;
+  border-radius: 2px;
 }
-/* inside the white preview window, rings go back to ink */
-article.row .preview :focus-visible {
-  outline: 3px solid var(--color-ink);
-  outline-offset: 2px;
+
+/* Rubber stamp pressed onto the coupon, once. Static state = the end frame. */
+article.row .press {
+  font-size: 1rem;
+  padding: 0.25em 0.7em;
+  letter-spacing: 0.12em;
+  transform: rotate(-5deg);
+  animation: press 460ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  will-change: transform, opacity;
+}
+@keyframes press {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) scale(1.9);
+  }
+  55% {
+    opacity: 0.96;
+    transform: rotate(-5deg) scale(0.94);
+  }
+  to {
+    opacity: 0.92;
+    transform: rotate(-5deg) scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,5 +142,11 @@ article.row .preview :focus-visible {
   .panel[data-open="true"],
   .row {
     transition: none;
+  }
+  article.row[data-open="false"]:hover {
+    transform: none;
+  }
+  article.row .press {
+    animation: none;
   }
 }

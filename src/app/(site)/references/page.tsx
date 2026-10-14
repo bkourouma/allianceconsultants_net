@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { PillLink } from "@/components/about/PillLink";
-import { RouteBand } from "@/components/about/RouteBand";
 import {
   PROJECT_REFERENCES_PAGE_SIZE,
   listPublishedProjectReferences,
   listPublishedSectors,
 } from "@/lib/projectReferences";
-import { getLine } from "@/lib/network";
 import { buildMetadata, buildReferencesBreadcrumbJsonLd } from "@/lib/seo";
-import { ReferenceTicket, lineForSector } from "./ReferenceTicket";
+import { ReferenceTicket } from "./ReferenceTicket";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -34,12 +32,6 @@ interface PageProps {
   searchParams: Promise<{ page?: string; secteur?: string }>;
 }
 
-const BAND = [
-  getLine("medicpro")!.color,
-  getLine("cliniquepro")!.color,
-  getLine("docupro")!.color,
-];
-
 export default async function ReferencesIndexPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const page = Math.max(1, Number.parseInt(params.page ?? "1", 10) || 1);
@@ -57,9 +49,9 @@ export default async function ReferencesIndexPage({ searchParams }: PageProps) {
     <>
       <JsonLd data={breadcrumbJsonLd} />
 
-      <section className="bg-enamel pt-10 lg:pt-16">
+      <section className="bg-enamel pb-10 pt-10 lg:pb-14 lg:pt-16">
         <div className="wrap">
-          <h1 className="t-display max-w-[16ch] text-ink">
+          <h1 className="t-display max-w-[22ch] text-ink">
             Des projets concrets, de la problématique à l&apos;impact
           </h1>
           <p className="t-lead mt-6">
@@ -72,11 +64,9 @@ export default async function ReferencesIndexPage({ searchParams }: PageProps) {
           {sectors.length > 0 ? (
             <nav
               aria-label="Filtrer par secteur"
-              className="mt-9"
+              className="mt-10 border-y-2 border-ink py-4 lg:mt-12"
             >
-              <p className="t-station mb-3 text-ink-mute">
-                Filtrer par secteur
-              </p>
+              <p className="t-field mb-3">Filtrer par secteur</p>
               <ul className="flex flex-wrap items-center gap-2">
                 <li>
                   <SectorChip href="/references" active={!sector}>
@@ -85,14 +75,11 @@ export default async function ReferencesIndexPage({ searchParams }: PageProps) {
                 </li>
                 {sectors.map((s) => {
                   const active = sector?.toLowerCase() === s.toLowerCase();
-                  const line = lineForSector(s);
                   return (
                     <li key={s}>
                       <SectorChip
                         href={`/references?secteur=${encodeURIComponent(s)}`}
                         active={active}
-                        color={line.color}
-                        onColor={line.onColor}
                       >
                         {s}
                       </SectorChip>
@@ -103,15 +90,14 @@ export default async function ReferencesIndexPage({ searchParams }: PageProps) {
             </nav>
           ) : null}
         </div>
-        <RouteBand colors={BAND} className="mt-10 lg:mt-14" />
       </section>
 
-      <section className="bg-enamel py-14 lg:py-20">
+      <section className="bg-enamel pb-20 pt-4 lg:pb-28">
         <div className="wrap">
           {items.length === 0 ? (
             <EmptyState sector={sector} />
           ) : (
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
               {items.map((r) => (
                 <ReferenceTicket key={r.id} reference={r} />
               ))}
@@ -127,66 +113,54 @@ export default async function ReferencesIndexPage({ searchParams }: PageProps) {
   );
 }
 
+/** Neutral navy filter chip (sectors are free text, not product lines). */
 function SectorChip({
   href,
   active,
-  color,
-  onColor,
   children,
 }: {
   href: string;
   active: boolean;
-  color?: string;
-  onColor?: string;
   children: React.ReactNode;
 }) {
-  const fill = color ?? "#0b1b3a";
-  const on = onColor ?? "#ffffff";
   return (
     <Link
       href={href}
       aria-current={active ? "page" : undefined}
       className={
         active
-          ? "inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-bold"
-          : "inline-flex min-h-11 items-center gap-2 rounded-full bg-panel py-1 pl-2 pr-4 text-sm font-semibold text-ink ring-1 ring-ink-mute/40 transition-colors hover:ring-2 hover:ring-ink"
+          ? "inline-flex min-h-11 items-center gap-2 rounded-[3px] border-2 border-ink bg-ink px-4 font-display text-[1.0625rem] font-bold text-white"
+          : "inline-flex min-h-11 items-center gap-2 rounded-[3px] border-2 border-ink-mute/70 bg-panel px-4 font-display text-[1.0625rem] font-bold text-ink transition-colors duration-200 hover:border-ink hover:bg-enamel"
       }
-      style={active ? { background: fill, color: on } : undefined}
     >
-      {!active && color ? (
-        <span
-          aria-hidden
-          className="size-4 rounded-full"
-          style={{ background: color }}
-        />
-      ) : null}
-      {!active && !color ? (
-        <span
-          aria-hidden
-          className="size-4 rounded-full border-[3px] border-ink bg-panel"
-        />
+      {active ? (
+        <Check aria-hidden className="size-4 shrink-0" strokeWidth={2.5} />
       ) : null}
       {children}
     </Link>
   );
 }
 
+/**
+ * The blank coupon: empty ruled fields where the first published reference
+ * will land, with the one useful action next to it.
+ */
 function EmptyState({ sector }: { sector?: string }) {
   return (
-    <div className="grid gap-8 rounded-lg border-2 border-dashed border-ink-mute/40 bg-panel p-8 sm:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
-      <div>
-        <h2 className="t-h3 text-ink">
+    <div className="coupon grid overflow-hidden lg:grid-cols-[minmax(0,1fr)_21rem]">
+      <div className="p-6 sm:p-10 lg:p-12">
+        <h2 className="t-h2 max-w-[20ch] text-ink">
           {sector
             ? `Aucune référence publiée pour le secteur « ${sector} » pour le moment.`
             : "Les références publiées arriveront ici"}
         </h2>
-        <p className="t-body mt-3 text-ink-soft">
+        <p className="t-body mt-5 text-[1.0625rem] leading-relaxed text-ink-soft">
           {sector
             ? "Essayez un autre secteur ou consultez l'ensemble des références. En attendant, nos consultants peuvent vous présenter des cas d'usage proches de votre contexte."
             : "Chaque fiche présentera la problématique d'un projet, la solution mise en œuvre et l'impact constaté. En attendant, échangeons sur votre contexte : nos consultants peuvent vous présenter des cas d'usage proches du vôtre."}
         </p>
         {sector ? (
-          <p className="mt-4">
+          <p className="mt-5">
             <Link
               href="/references"
               className="inline-flex min-h-11 items-center gap-2 font-semibold text-ink underline underline-offset-4 hover:decoration-2"
@@ -196,10 +170,27 @@ function EmptyState({ sector }: { sector?: string }) {
             </Link>
           </p>
         ) : null}
+
+        <dl aria-hidden className="mt-8 grid max-w-md gap-2.5">
+          {["Organisation", "Projet", "Année"].map((label) => (
+            <div key={label} className="grid grid-cols-[6rem_1fr] items-end gap-3">
+              <dt className="t-field">{label}</dt>
+              <dd className="h-5 border-b-2 border-dashed border-ink-mute/60" />
+            </div>
+          ))}
+        </dl>
       </div>
-      <PillLink href="/contact-demo?intent=contact&from=references&block=references-empty">
-        Discutons de votre projet
-      </PillLink>
+
+      <div className="flex flex-col justify-center gap-3 border-t-2 border-dashed border-ink bg-[#f6f5fb] p-6 sm:p-8 lg:border-l-2 lg:border-t-0">
+        <p className="t-field !text-carbon">Coupon détachable</p>
+        <PillLink
+          size="lg"
+          className="w-full"
+          href="/contact-demo?intent=contact&from=references&block=references-empty"
+        >
+          Discutons de votre projet
+        </PillLink>
+      </div>
     </div>
   );
 }
@@ -221,13 +212,13 @@ function Pagination({
     return `/references${qs ? `?${qs}` : ""}`;
   }
   const btn =
-    "inline-flex min-h-11 items-center gap-2 rounded-full bg-panel px-5 text-sm font-bold text-ink ring-2 ring-inset ring-ink transition-colors hover:bg-ink hover:text-white";
+    "inline-flex min-h-11 items-center gap-2 rounded-[3px] border-2 border-ink bg-panel px-5 font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] text-ink transition-colors hover:bg-ink hover:text-white";
   return (
     <nav
       aria-label="Pagination"
-      className="mt-12 flex flex-wrap items-center justify-between gap-4 text-sm"
+      className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t-2 border-ink pt-5 text-sm"
     >
-      <span className="t-num font-semibold text-ink-soft">
+      <span className="t-num t-field !text-[0.8125rem]">
         Page {page} sur {totalPages}
       </span>
       <div className="flex gap-2">

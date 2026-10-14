@@ -62,7 +62,7 @@ function inline(text: string): ReactNode[] {
         <Link
           key={i}
           href={link[2]}
-          className="font-semibold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 hover:decoration-4"
+          className="font-semibold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 transition-[text-decoration-thickness] hover:decoration-4"
         >
           {link[1]}
         </Link>
@@ -85,7 +85,10 @@ export function RichBody({ body }: { body: string }) {
         switch (b.kind) {
           case "h2":
             return (
-              <h2 key={i} className="t-h3 text-ink [&:not(:first-child)]:pt-6">
+              <h2
+                key={i}
+                className="t-h3 text-ink [&:not(:first-child)]:mt-10 [&:not(:first-child)]:border-t-2 [&:not(:first-child)]:border-dashed [&:not(:first-child)]:border-ink [&:not(:first-child)]:pt-8"
+              >
                 {b.text}
               </h2>
             );
@@ -93,16 +96,21 @@ export function RichBody({ body }: { body: string }) {
             return (
               <h3
                 key={i}
-                className="font-display text-xl font-bold tracking-tight text-ink [&:not(:first-child)]:pt-4"
+                className="font-display text-2xl font-bold leading-tight text-ink [&:not(:first-child)]:pt-4"
               >
                 {b.text}
               </h3>
             );
           case "ul":
             return (
-              <ul key={i} className="t-body list-disc space-y-2 pl-5 text-ink-soft marker:text-[var(--accent)]">
+              <ul key={i} className="t-body space-y-2.5 text-ink-soft">
                 {b.items.map((it, j) => (
-                  <li key={j}>{inline(it)}</li>
+                  <li
+                    key={j}
+                    className="relative pl-6 before:absolute before:left-0 before:top-[0.6em] before:size-2 before:bg-[var(--accent)] before:content-['']"
+                  >
+                    {inline(it)}
+                  </li>
                 ))}
               </ul>
             );

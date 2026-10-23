@@ -31,6 +31,7 @@ const staticRoutes = [
   { url: "/a-propos", priority: 0.6, changeFrequency: "monthly" as const },
   { url: "/contact-demo", priority: 0.9, changeFrequency: "monthly" as const },
   { url: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
+  { url: "/mentions-legales", priority: 0.3, changeFrequency: "yearly" as const },
 ];
 
 /** Lit une source de données ; en cas d'échec, journalise (jamais en silence) et renvoie un repli. */

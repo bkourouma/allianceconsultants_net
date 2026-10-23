@@ -10,6 +10,7 @@ import {
   YouTubeIcon,
 } from "./SocialIcons";
 import { TerminusLines } from "./TerminusLines";
+import { ManageCookiesButton } from "@/components/shared/ManageCookiesButton";
 
 interface GlobalFooterProps {
   settings: SiteSettings;
@@ -301,20 +302,21 @@ export function GlobalFooter({ settings }: GlobalFooterProps) {
           <p className="text-sm text-white/70">
             © {year} {brand.name}. Tous droits réservés.
           </p>
-          {footerMenu.legal && footerMenu.legal.length > 0 && (
-            <ul className="flex flex-wrap items-center gap-x-6">
-              {footerMenu.legal.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="inline-flex min-h-11 items-center text-sm text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className="flex flex-wrap items-center gap-x-6">
+            {(footerMenu.legal ?? []).map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="inline-flex min-h-11 items-center text-sm text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <ManageCookiesButton className="inline-flex min-h-11 items-center text-sm text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline" />
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

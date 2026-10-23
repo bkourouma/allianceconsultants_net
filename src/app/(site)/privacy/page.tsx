@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Link2 } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
+import { ManageCookiesButton } from "@/components/shared/ManageCookiesButton";
 import { RouteBand } from "@/components/about/RouteBand";
 import { getSiteSettings } from "@/lib/content";
 import { getLine } from "@/lib/network";
@@ -11,8 +12,8 @@ import { Toc, type TocItem } from "./Toc";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
 
-const LAST_UPDATED = "2026-10-03";
-const LAST_UPDATED_LABEL = "3 octobre 2026";
+const LAST_UPDATED = "2026-10-23";
+const LAST_UPDATED_LABEL = "23 octobre 2026";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -206,7 +207,8 @@ export default async function PrivacyPage() {
                   et ville approximatifs, type d&apos;appareil, de navigateur
                   et d&apos;écran, collectées via notre outil de mesure
                   d&apos;audience Umami (sans cookie, votre adresse IP
-                  n&apos;est pas conservée).
+                  n&apos;est pas conservée) et, si vous l&apos;acceptez,
+                  via Google Analytics 4 (section 7).
                 </li>
                 <li>
                   <strong className="text-ink">Échanges avec l&apos;assistant IA</strong>
@@ -245,8 +247,9 @@ export default async function PrivacyPage() {
                 </li>
                 <li>
                   Mesurer l&apos;audience du site et améliorer son contenu —
-                  base légale&nbsp;: intérêt légitime ou consentement pour les
-                  outils non exemptés.
+                  base légale&nbsp;: intérêt légitime pour Umami (sans
+                  cookie) ; consentement pour Google Analytics, que vous
+                  pouvez retirer à tout moment.
                 </li>
                 <li>
                   Respecter nos obligations légales, fiscales et comptables —
@@ -267,8 +270,12 @@ export default async function PrivacyPage() {
                   répondre à nos obligations comptables et fiscales.
                 </li>
                 <li>
-                  Données de navigation et mesure d&apos;audience&nbsp;: 13
-                  mois maximum.
+                  Données de navigation et mesure d&apos;audience (Umami)&nbsp;:
+                  13 mois maximum.
+                </li>
+                <li>
+                  Cookies de mesure d&apos;audience (Google Analytics)&nbsp;:
+                  13 mois au plus. Votre choix sur les cookies&nbsp;: 6 mois.
                 </li>
                 <li>
                   Journaux techniques&nbsp;: 6 à 12 mois selon les obligations
@@ -302,27 +309,71 @@ export default async function PrivacyPage() {
                 décisions d&apos;adéquation, mesures techniques
                 complémentaires). C&apos;est notamment le cas de notre
                 assistant IA (voir la section 8), dont les prestataires
-                peuvent être établis hors de l&apos;Union européenne.
+                peuvent être établis hors de l&apos;Union européenne. Il en va
+                de même, si vous l&apos;acceptez, pour Google Analytics
+                (Google Ireland Limited), dont les données peuvent être
+                transférées vers les États-Unis ou d&apos;autres pays (voir la
+                section 7).
               </p>
             </article>
 
             <article aria-labelledby="cookies-traceurs">
               <H2 id="cookies-traceurs" />
               <p className={P}>
-                Notre site utilise des cookies strictement nécessaires à son
-                fonctionnement. Sa fréquentation est mesurée avec Umami, un
-                outil libre que nous hébergeons nous-mêmes&nbsp;: sans cookie,
-                sans conserver votre adresse IP, et sans envoyer de données à
-                un service de mesure d&apos;audience tiers. Il enregistre les
-                pages consultées, la page d&apos;origine, le pays, la région
-                et la ville approximatifs, ainsi que le type d&apos;appareil,
-                de navigateur et d&apos;écran.
+                Notre site utilise des cookies et traceurs strictement
+                nécessaires à son fonctionnement, qui ne demandent pas votre
+                accord, et, avec votre seul accord, un outil de mesure
+                d&apos;audience qui dépose des cookies. S&apos;y ajoutent les
+                cookies de Calendly, déposés seulement si vous ouvrez la
+                réservation de rendez-vous (voir la section 8).
+              </p>
+              <ul className={UL}>
+                <li>
+                  <strong className="text-ink">Votre choix sur les cookies</strong>
+                  &nbsp;: pour mémoriser que vous avez accepté ou refusé, nous
+                  enregistrons dans votre navigateur un traceur nommé
+                  «&nbsp;ac_consent&nbsp;» (stockage local). Il est strictement
+                  nécessaire, ne sert qu&apos;à cela, n&apos;est pas transmis à
+                  un tiers et est conservé 6 mois, après quoi nous vous
+                  reposons la question.
+                </li>
+                <li>
+                  <strong className="text-ink">Umami (sans cookie)</strong>
+                  &nbsp;: la fréquentation du site est mesurée avec Umami, un
+                  outil libre que nous hébergeons nous-mêmes, sans cookie et
+                  sans conserver votre adresse IP. Il enregistre les pages
+                  consultées, la page d&apos;origine, le pays, la région et la
+                  ville approximatifs, ainsi que le type d&apos;appareil, de
+                  navigateur et d&apos;écran.
+                </li>
+                <li>
+                  <strong className="text-ink">Google Analytics 4 (avec votre accord)</strong>
+                  &nbsp;: service de mesure d&apos;audience de Google Ireland
+                  Limited, qui peut transférer des données hors de l&apos;Union
+                  européenne (section 6). Il n&apos;est chargé qu&apos;après
+                  que vous avez cliqué sur «&nbsp;Accepter&nbsp;»&nbsp;: tant
+                  que vous n&apos;avez pas choisi, ou si vous refusez, aucune
+                  balise Google n&apos;est chargée et aucun cookie Google n&apos;est
+                  déposé. Il dépose les cookies <code>_ga</code> et{" "}
+                  <code>_ga_&lt;identifiant&gt;</code>, d&apos;une durée de 13
+                  mois au plus, pour la seule finalité de mesure d&apos;audience
+                  (pages consultées, provenance, appareil). Nous avons
+                  désactivé les fonctions publicitaires de Google Analytics.
+                </li>
+              </ul>
+              <p className={P}>
+                <strong className="text-ink">Modifier ou retirer votre accord</strong>
+                &nbsp;: à tout moment, via le lien «&nbsp;Gérer mes cookies&nbsp;»
+                en bas de chaque page, ou ici&nbsp;:{" "}
+                <ManageCookiesButton className={A} />. Retirer votre accord
+                supprime les cookies <code>_ga</code> du site et empêche tout
+                nouveau chargement de la balise Google. Refuser est aussi simple
+                qu&apos;accepter, et le refus n&apos;affecte pas l&apos;accès aux
+                contenus du site.
               </p>
               <p className={P}>
-                Vous pouvez à tout moment configurer votre navigateur pour
-                bloquer ou supprimer les cookies. Le refus des cookies non
-                essentiels n&apos;affecte pas l&apos;accès aux contenus du
-                site.
+                Vous pouvez aussi configurer votre navigateur pour bloquer ou
+                supprimer les cookies.
               </p>
             </article>
 

@@ -2,6 +2,8 @@ import { Barlow, Barlow_Condensed, Chivo_Mono } from "next/font/google";
 import { GlobalHeader } from "@/components/layout/GlobalHeader";
 import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { UmamiTracker } from "@/components/shared/UmamiTracker";
+import { GoogleAnalytics } from "@/components/shared/GoogleAnalytics";
+import { CookieConsent } from "@/components/shared/CookieConsent";
 import { RouteSpine } from "@/components/fx/RouteSpine";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
 import { getSiteSettings } from "@/lib/content";
@@ -59,6 +61,8 @@ export default async function SiteLayout({
       <RouteSpine />
       <GlobalFooter settings={settings} />
       <UmamiTracker />
+      <GoogleAnalytics />
+      <CookieConsent />
       <AssistantWidget />
     </div>
   );

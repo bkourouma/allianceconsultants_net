@@ -68,6 +68,9 @@ export async function generateMetadata({
       canonical: url,
       types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
     },
+    // Pages de tag courtes (quelques articles, pagination) : contenu faible.
+    // Elles restent explorables pour le maillage vers les articles, sans être indexées.
+    robots: { index: false, follow: true },
   };
 }
 

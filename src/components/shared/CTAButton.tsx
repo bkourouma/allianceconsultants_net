@@ -26,12 +26,12 @@ interface CTAButtonProps {
 }
 
 const BASE =
-  "group/cta inline-flex items-center justify-center rounded-full font-bold no-underline transition-[background-color,color,box-shadow,transform] duration-300 ease-[var(--ease-out-expo)] active:translate-y-px";
+  "group/cta inline-flex items-center justify-center rounded-[3px] font-display font-bold uppercase no-underline tracking-[0.06em] transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--ease-out-expo)] active:translate-y-[2px] active:shadow-none";
 
 const SIZE: Record<NonNullable<CTAButtonProps["size"]>, string> = {
-  sm: "h-9 pl-4 pr-1.5 text-sm gap-2",
-  md: "h-11 pl-5 pr-1.5 text-[0.9375rem] gap-3",
-  lg: "h-14 pl-7 pr-2 text-base gap-4",
+  sm: "h-11 px-4 text-[0.9375rem] gap-2",
+  md: "h-12 px-6 text-[1.0625rem] gap-2.5",
+  lg: "h-14 px-8 text-[1.25rem] gap-3",
 };
 
 function variantClasses(
@@ -39,12 +39,11 @@ function variantClasses(
   onDark: boolean,
 ): string {
   if (variant === "primary") {
-    return onDark
-      ? "bg-white text-ink hover:bg-enamel"
-      : "bg-ink text-white hover:bg-night-2";
+    // The red stub: the one primary action of the site.
+    return "bg-red text-white shadow-[0_8px_16px_-8px_rgba(176,40,32,0.55)] hover:bg-red-dk";
   }
   return onDark
-    ? "bg-transparent text-white ring-2 ring-inset ring-white/70 hover:bg-white hover:text-ink"
+    ? "bg-transparent text-white ring-2 ring-inset ring-white/80 hover:bg-white hover:text-ink"
     : "bg-transparent text-ink ring-2 ring-inset ring-ink hover:bg-ink hover:text-white";
 }
 
@@ -70,12 +69,18 @@ export function CTAButton({
       className={cn(BASE, SIZE[size], variantClasses(variant, onDark), className)}
     >
       {label}
-      <span
+      <svg
         aria-hidden
-        className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5 group-hover/cta:rotate-[-8deg]"
+        viewBox="0 0 16 16"
+        className="size-4 shrink-0 transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
-      </span>
+        <path d="M2.5 8h11M9.5 4l4 4-4 4" />
+      </svg>
     </a>
   );
 }

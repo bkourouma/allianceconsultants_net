@@ -25,12 +25,12 @@ export function glyphForName(name: string): string {
 }
 
 interface ServiceMeta {
-  /** Solution lines this service connects to (interchange). */
+  /** Solution products this service connects to. */
   lines: LineId[];
-  /** True when the service applies to every product line. */
+  /** True when the service applies to every product. */
   transversal?: boolean;
   /**
-   * Stations of the service, each one restated from the MDX
+   * Steps of the service, each one restated from the MDX
    * `shortDescription` (no invented steps).
    */
   journey: string[];
@@ -65,6 +65,12 @@ export const SERVICE_META: Record<string, ServiceMeta> = {
       "Recette fonctionnelle",
       "Conduite du changement",
     ],
+  },
+  // Aucun service « scanners » publié aujourd'hui (Alliance ne vend pas de
+  // matériel) : l'entrée reste prête si une page de ce type est ajoutée.
+  "scanners-professionnels": {
+    lines: ["docupro"],
+    journey: [],
   },
   "dematerialisation-archives": {
     lines: ["docupro", "medicpro", "cliniquepro"],

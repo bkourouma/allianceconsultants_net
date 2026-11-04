@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import { tagLine } from "./post-utils";
 
 /**
- * Tag roundel: a line-coloured roundel (initial) + label, like a line badge on
- * a station sign. Colour is deterministic from the tag slug.
+ * Tag chip: a mono field caption with a small product-colour tab. The colour
+ * is deterministic from the tag slug. Links to /blog/tags/<slug>.
  */
 export function BlogTagBadge({
   tag,
@@ -19,38 +19,27 @@ export function BlogTagBadge({
   className?: string;
 }) {
   const line = tagLine(tag.slug);
-  const initial = tag.label.trim().charAt(0).toUpperCase() || "#";
   return (
     <Link
       href={`/blog/tags/${encodeURIComponent(tag.slug)}`}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "relative inline-flex items-center gap-2 rounded-full font-semibold no-underline ring-1 transition-colors duration-200",
-        size === "md" ? "min-h-11 py-1.5 pl-1.5 pr-4 text-sm" : "min-h-8 py-1 pl-1 pr-3 text-[0.8125rem]",
-        active
-          ? "bg-ink text-white ring-ink"
-          : "bg-panel text-ink ring-rule hover:ring-ink",
+        "relative inline-flex items-center gap-2 rounded-[3px] border-2 border-ink font-mono font-medium uppercase tracking-[0.08em] no-underline transition-[background-color,color] duration-200 ease-[var(--ease-out-expo)]",
+        size === "md"
+          ? "min-h-11 px-3.5 text-[0.75rem]"
+          : "min-h-8 px-2 text-[0.6875rem] before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-['']",
+        active ? "bg-ink text-white" : "bg-panel text-ink hover:bg-ink hover:text-white",
         className,
       )}
     >
       <span
         aria-hidden
-        className={cn(
-          "grid shrink-0 place-items-center rounded-full font-extrabold",
-          size === "md" ? "size-8 text-xs" : "size-6 text-[11px]",
-        )}
-        style={{ background: line.color, color: line.onColor }}
-      >
-        {initial}
-      </span>
+        className="size-2.5 shrink-0 rounded-[2px]"
+        style={{ background: line.color }}
+      />
       {tag.label}
       {typeof tag.count === "number" ? (
-        <span
-          className={cn(
-            "t-num text-xs font-medium",
-            active ? "text-white/75" : "text-ink-mute",
-          )}
-        >
+        <span className={cn("t-num font-medium", active ? "text-white/80" : "text-ink-mute")}>
           {tag.count}
         </span>
       ) : null}

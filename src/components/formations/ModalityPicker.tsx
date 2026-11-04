@@ -4,11 +4,13 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CTAButton } from "@/components/shared/CTAButton";
+import fx from "@/components/services/fx.module.css";
 import { MODALITY_LABELS, type ModalityKey } from "./modalities";
 
 /**
- * Selectable modality chips + the training CTA, for the terminus panel
- * (dark background). The choice is echoed so the visitor can mention it.
+ * Selectable modality chips + the training CTA, for the closing stub. Picking
+ * a modality presses a stamp under the chips; the choice is echoed so the
+ * visitor can mention it in the request.
  */
 export function ModalityPicker({ available }: { available: ModalityKey[] }) {
   const [picked, setPicked] = useState<ModalityKey | null>(null);
@@ -18,7 +20,7 @@ export function ModalityPicker({ available }: { available: ModalityKey[] }) {
         <>
           <p
             id="modality-pick"
-            className="font-display text-lg font-semibold text-white"
+            className="font-display text-xl font-bold leading-tight text-ink"
           >
             Modalité souhaitée
           </p>
@@ -36,22 +38,43 @@ export function ModalityPicker({ available }: { available: ModalityKey[] }) {
                   aria-pressed={on}
                   onClick={() => setPicked(on ? null : k)}
                   className={cn(
-                    "inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-[0.9375rem] font-semibold transition-colors duration-200",
+                    "inline-flex min-h-11 items-center gap-2 rounded-[3px] border-2 px-3.5 font-display text-base font-bold uppercase tracking-[0.05em] transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-expo)] active:translate-y-px",
                     on
-                      ? "bg-white text-ink"
-                      : "bg-transparent text-white ring-2 ring-inset ring-white/60 hover:ring-white",
+                      ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--on-accent)]"
+                      : "border-ink bg-white text-ink hover:bg-ink hover:text-white",
                   )}
                 >
-                  {on && <Check aria-hidden className="size-4" strokeWidth={2} />}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "grid size-5 shrink-0 place-items-center rounded-[2px] border-2",
+                      on
+                        ? "border-white bg-white text-[var(--accent)]"
+                        : "border-ink text-transparent",
+                    )}
+                  >
+                    <Check className="size-3.5" strokeWidth={3} />
+                  </span>
                   {MODALITY_LABELS[k]}
                 </button>
               );
             })}
           </div>
+          <div className="mt-4 flex min-h-[3.25rem] items-center">
+            {picked && (
+              <span
+                key={picked}
+                aria-hidden
+                className={cn("stamp bg-white", fx.stampPress)}
+              >
+                {MODALITY_LABELS[picked]} retenu
+              </span>
+            )}
+          </div>
           <p
             role="status"
             aria-live="polite"
-            className="mt-3 min-h-6 text-sm text-white/85"
+            className="min-h-5 text-sm text-ink-soft"
           >
             {picked
               ? `Vous préférez : ${MODALITY_LABELS[picked].toLowerCase()}. Précisez-le dans votre demande.`
@@ -64,8 +87,8 @@ export function ModalityPicker({ available }: { available: ModalityKey[] }) {
           intent="training"
           label="Demander un devis / S'inscrire"
           block="training-section"
-          size="lg"
-          onDark
+          size="md"
+          className="h-auto min-h-12 w-full px-4 py-2 text-center leading-tight"
         />
       </div>
     </div>

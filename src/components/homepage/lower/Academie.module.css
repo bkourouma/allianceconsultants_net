@@ -1,7 +1,6 @@
-.train {
-  transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* Cartes d'accès (formations): the rack, the lifted pass, the tear edge. */
 
+/* Detail pass: content swaps in when another pass is selected. */
 .swap {
   animation: swap 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -17,11 +16,126 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .train {
-    transition: none;
+/* A pass standing in the rack. Lifts on hover, lifts higher and tilts when selected. */
+.pass {
+  position: relative;
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 300ms ease;
+  transform-origin: 50% 100%;
+}
+.pass:hover {
+  transform: translateY(-4px);
+}
+.pass[aria-selected="true"] {
+  transform: translateY(-10px) rotate(-1.6deg);
+  box-shadow:
+    0 1px 2px rgb(15 42 90 / 0.14),
+    0 8px 16px -8px rgb(15 42 90 / 0.3);
+}
+
+/* The shelf the passes stand on: a heavy ruled line under every row. */
+.shelf::after {
+  content: "";
+  position: absolute;
+  left: -0.5rem;
+  right: -0.5rem;
+  bottom: -1.125rem;
+  height: 2px;
+  background: var(--color-ink);
+  pointer-events: none;
+}
+
+/* Lanyard slot at the top of each pass. */
+.slot {
+  display: block;
+  width: 1.75rem;
+  height: 0.5rem;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-enamel);
+}
+
+/* Faint barcode strip along the foot of a pass. */
+.bars {
+  height: 0.75rem;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-ink) 0 2px,
+    transparent 2px 4px,
+    var(--color-ink) 4px 5px,
+    transparent 5px 9px,
+    var(--color-ink) 9px 12px,
+    transparent 12px 14px
+  );
+  opacity: 0.32;
+}
+
+/* Detail pass stub with a perforated tear edge. Stacked on phones (tear is
+   horizontal, notches on the sides); side by side from lg (tear is vertical,
+   notches at top and bottom). */
+.stub {
+  position: relative;
+  border-top: 2px dashed var(--color-ink);
+  background: #f6f5fb;
+}
+.stub::before,
+.stub::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 11px;
+  height: 22px;
+  background: var(--notch-bg, var(--color-enamel));
+  border: 2px solid var(--color-ink);
+  pointer-events: none;
+}
+.stub::before {
+  left: -2px;
+  border-left: 0;
+  border-radius: 0 11px 11px 0;
+}
+.stub::after {
+  right: -2px;
+  border-right: 0;
+  border-radius: 11px 0 0 11px;
+}
+
+@media (min-width: 1024px) {
+  .stub {
+    border-top: 0;
+    border-left: 2px dashed var(--color-ink);
   }
+  .stub::before,
+  .stub::after {
+    left: -12px;
+    right: auto;
+    width: 22px;
+    height: 11px;
+    border: 2px solid var(--color-ink);
+  }
+  .stub::before {
+    top: -2px;
+    border-top: 0;
+    border-radius: 0 0 11px 11px;
+  }
+  .stub::after {
+    top: auto;
+    bottom: -2px;
+    border-bottom: 0;
+    border-radius: 11px 11px 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .swap {
     animation: none;
+  }
+  .pass {
+    transition: none;
+  }
+  .pass:hover {
+    transform: none;
   }
 }

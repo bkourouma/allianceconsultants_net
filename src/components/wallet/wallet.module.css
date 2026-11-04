@@ -1,0 +1,667 @@
+/* Le Carnet de coupons: the hero wallet.
+   Geometry follows the approved sketch (challenger-ticket): heavy 2px navy
+   rules, a lifted + tilted first coupon with a detachable stub, five ruled
+   rows below. Everything is authored CSS; motion has a static equivalent. */
+
+.wallet {
+  --ink: var(--color-ink);
+  --mute: var(--color-ink-mute);
+  --tilt: -1.4deg;
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  margin-inline: auto;
+}
+@media (min-width: 1100px) {
+  .wallet {
+    --tilt: -1.6deg;
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+
+.cap {
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0.25rem 0.75rem;
+}
+
+/* ───────── the lifted coupon ───────── */
+.lift {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 2.875rem auto auto;
+  margin-left: 0.25rem;
+  background: var(--color-panel);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  box-shadow:
+    0 1px 2px rgb(15 42 90 / 0.14),
+    0 22px 30px -14px rgb(15 42 90 / 0.38);
+  transform: rotate(var(--tilt));
+  transform-origin: 20% 100%;
+}
+.touched .lift {
+  animation: lift-in 520ms var(--ease-out-expo) both;
+}
+@media (min-width: 560px) {
+  .lift {
+    grid-template-columns: minmax(0, 1fr) 9.375rem;
+    grid-template-rows: 2.875rem 1fr;
+    min-height: 14.125rem;
+    margin-left: 0.5rem;
+  }
+}
+
+.hd {
+  grid-column: 1 / -1;
+  display: flex;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 7px 7px 0 0;
+}
+.hdChip {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.375rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-right: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.875rem;
+  line-height: 1;
+}
+.hdName {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 1.125rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.375rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hdTag {
+  display: none;
+  flex: none;
+  width: 9.375rem;
+  place-items: center;
+  padding: 0 0.5rem;
+  background: var(--color-red);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+}
+@media (min-width: 560px) {
+  .hdTag {
+    display: grid;
+  }
+  .sectorInline {
+    display: none;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.875rem 1.25rem 1rem;
+}
+@media (min-width: 560px) {
+  .main {
+    padding: 0.875rem 1.375rem 0.875rem;
+  }
+}
+.sectorInline {
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.pitch {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--mute);
+  min-height: 2.8em;
+}
+.route {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 0.375rem;
+}
+.pt {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.125rem;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.ptEnd {
+  font-size: 1.5rem;
+  line-height: 0.98;
+  text-align: right;
+}
+.sub {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.arc {
+  position: relative;
+  flex: 1;
+  min-width: 2rem;
+  height: 3.5rem;
+  margin: 0 0.75rem;
+}
+.arc svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.dotA,
+.dotB {
+  position: absolute;
+  bottom: 0.4rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+}
+.dotA {
+  left: -0.125rem;
+}
+.dotB {
+  right: -0.125rem;
+  background: var(--color-panel);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(15, 42, 90, 0.28);
+  text-underline-offset: 5px;
+  transition: text-decoration-color 200ms var(--ease-out-expo);
+}
+.link:hover {
+  text-decoration-color: var(--ink);
+}
+.link svg {
+  transition: transform 220ms var(--ease-out-expo);
+}
+.link:hover svg {
+  transform: translateX(2px);
+}
+
+.stub {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem 1.9rem;
+  background: #f6f5fb;
+  border-top: 2px dashed var(--ink);
+  border-radius: 0 0 8px 8px;
+  transform-origin: 0 0;
+}
+@media (min-width: 560px) {
+  .stub {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem 0.875rem;
+    border-top: 0;
+    border-left: 2px dashed var(--ink);
+    border-radius: 0 0 8px 0;
+  }
+}
+.stubTop {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+@media (min-width: 560px) {
+  .stubTop {
+    display: block;
+  }
+}
+.stubCap {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-mute);
+}
+.stubNum {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 3.5rem;
+  line-height: 0.9;
+  color: var(--color-carbon);
+}
+@media (min-width: 560px) {
+  .stubCap {
+    display: block;
+  }
+  .stubNum {
+    font-size: 4rem;
+    margin-top: 0.125rem;
+  }
+}
+.stubCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
+  background: var(--color-red);
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  box-shadow: 0 8px 16px -8px rgb(176 40 32 / 0.55);
+  transition:
+    background-color 200ms var(--ease-out-expo),
+    transform 200ms var(--ease-out-expo),
+    box-shadow 200ms var(--ease-out-expo);
+}
+.stubCta:hover {
+  background: var(--color-red-dk);
+}
+.stubCta:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 6px -4px rgb(176 40 32 / 0.55);
+}
+.stubCta svg {
+  flex: none;
+}
+
+/* A half-moon bitten out of the bottom edge, on the tear line. */
+.notch {
+  display: none;
+}
+@media (min-width: 560px) {
+  .notch {
+    display: block;
+    position: absolute;
+    bottom: -2px;
+    right: calc(9.375rem - 0.5rem - 1px);
+    width: 1rem;
+    height: 0.5rem;
+    background: var(--color-enamel);
+    border: 2px solid var(--ink);
+    border-bottom: 0;
+    border-radius: 0.5rem 0.5rem 0 0;
+    pointer-events: none;
+  }
+}
+
+/* The one stamp of the viewport. */
+.stamp {
+  position: absolute;
+  left: 1.25rem;
+  bottom: -0.85rem;
+  z-index: 4;
+  padding: 0.2rem 0.75rem;
+  border: 3px solid var(--color-red);
+  border-radius: 4px;
+  color: var(--color-red);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3125rem;
+  letter-spacing: 0.14em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.9;
+  box-shadow: inset 0 0 0 2px rgba(214, 52, 42, 0.22);
+  transform: rotate(-4.5deg);
+  pointer-events: none;
+  animation: stamp-press 520ms var(--ease-out-expo) var(--stamp-delay, 650ms) both;
+}
+@media (min-width: 560px) {
+  .stamp {
+    left: 9rem;
+    font-size: 1.4375rem;
+  }
+}
+.touched .stamp {
+  --stamp-delay: 160ms;
+}
+
+/* Tear-off: the stub leaves the coupon, the stamp is pressed once more. */
+.lift[data-tearing="true"] .stub {
+  animation: tear-off 400ms var(--ease-out-expo) forwards;
+  pointer-events: none;
+}
+.lift[data-tearing="true"] .main {
+  border-right: 2px dashed var(--ink);
+}
+.lift[data-tearing="true"] .stamp {
+  animation: stamp-slam 320ms var(--ease-out-expo) both;
+}
+
+/* ───────── the five other coupons ───────── */
+.rows {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.625rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 6.75rem;
+  min-height: 4.5rem;
+  background: var(--color-panel);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 8px 16px -8px rgb(15 42 90 / 0.3);
+  transition: transform 260ms var(--ease-out-expo);
+}
+@media (min-width: 560px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) 9.375rem;
+  }
+}
+@media (hover: hover) {
+  .row:has(.pick:hover) {
+    transform: translateX(-6px);
+  }
+}
+.pick {
+  appearance: none;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px 0 0 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+@media (min-width: 560px) {
+  .pick {
+    grid-template-columns: 4.375rem minmax(0, 1fr);
+  }
+}
+.pick:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: -5px;
+  border-radius: 6px;
+}
+.no {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-right: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-carbon);
+}
+@media (min-width: 560px) {
+  .no {
+    font-size: 2.375rem;
+  }
+}
+.no::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: var(--ink);
+  border-radius: 6px 0 0 6px;
+}
+.nm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 0.25rem 0.75rem;
+}
+@media (min-width: 560px) {
+  .nm {
+    padding: 0 1.25rem;
+  }
+}
+.nmName {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 560px) {
+  .nmName {
+    font-size: 1.625rem;
+  }
+}
+.nmSector {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.touched .swapIn {
+  animation: row-in 360ms var(--ease-out-expo) both;
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 0;
+  padding: 0 0.75rem;
+  border-left: 2px dashed var(--ink);
+  border-radius: 0 6px 6px 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+@media (min-width: 560px) {
+  .more {
+    padding: 0 1rem;
+  }
+}
+.more:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: -5px;
+  border-radius: 6px;
+}
+.moreTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.moreCap {
+  display: none;
+}
+@media (min-width: 560px) {
+  .moreCap {
+    display: inline;
+  }
+}
+.chip {
+  display: inline-grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.moreText {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(15, 42, 90, 0.25);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 200ms var(--ease-out-expo);
+}
+.more:hover .moreText {
+  text-decoration-color: var(--ink);
+}
+.moreText svg {
+  flex: none;
+  transition: transform 220ms var(--ease-out-expo);
+}
+.more:hover .moreText svg {
+  transform: translateX(2px);
+}
+
+/* ───────── motion ───────── */
+@keyframes lift-in {
+  from {
+    opacity: 0.55;
+    transform: translateY(18px) rotate(calc(var(--tilt) + 1.4deg));
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--tilt));
+  }
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes stamp-press {
+  from {
+    opacity: 0;
+    transform: scale(1.7) rotate(-12deg);
+  }
+  60% {
+    opacity: 0.95;
+  }
+  to {
+    opacity: 0.9;
+    transform: scale(1) rotate(-4.5deg);
+  }
+}
+@keyframes stamp-slam {
+  from {
+    transform: scale(1.35) rotate(-8deg);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1) rotate(-4.5deg);
+    opacity: 0.95;
+  }
+}
+@keyframes tear-off {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  30% {
+    transform: translate(2px, 1px) rotate(1.5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(30px, 44px) rotate(10deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift,
+  .stamp,
+  .swapIn,
+  .stub {
+    animation: none !important;
+  }
+  .row {
+    transition: none;
+  }
+  .row:has(.pick:hover) {
+    transform: none;
+  }
+}

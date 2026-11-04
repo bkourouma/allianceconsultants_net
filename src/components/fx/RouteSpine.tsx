@@ -4,61 +4,32 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import styles from "./RouteSpine.module.css";
 
-interface Station {
-  /** 0..1 position of the section top within <main>. */
-  at: number;
-  accent: string;
-}
-
 const MIN_SECTIONS = 3;
-const FALLBACK = "var(--color-ink)";
 
 /**
- * Decorative route spine: one station per top-level <main > section, a line
- * that fills with scroll and a small "train" at the reading position.
- * Purely visual (aria-hidden, not focusable). Only visible >= 1360px.
+ * Perforation rail: a decorative dashed line in the left margin with one
+ * small tick per top-level <main> section (no numerals); the current one
+ * carries a small red dot. Purely visual (aria-hidden, no focusables).
+ * Only visible >= 1360px. Kept under the historical RouteSpine name so the
+ * layout mount does not change.
  */
 export function RouteSpine() {
   const pathname = usePathname();
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [stations, setStations] = useState<Station[]>([]);
-  const [passed, setPassed] = useState(0);
+  const railRef = useRef<HTMLDivElement>(null);
+  /** 0..1 position of each section top within <main>. */
+  const [at, setAt] = useState<number[]>([]);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const main = document.getElementById("main-content");
     let sections: HTMLElement[] = [];
     let tops: number[] = []; // document offsets
+    let heights: number[] = [];
+    let darks: boolean[] = [];
     let mainTop = 0;
     let mainH = 1;
     let raf = 0;
-    let lastPassed = -1;
-    let lastAccent = "";
-
-    const detect = () => {
-      if (!main) return;
-      sections = Array.from(
-        main.querySelectorAll<HTMLElement>(":scope > section"),
-      );
-      if (sections.length < MIN_SECTIONS) {
-        sections = [];
-        setStations((s) => (s.length ? [] : s));
-        return;
-      }
-      measure();
-      const accents = sections.map((el) => {
-        const v = getComputedStyle(el).getPropertyValue("--accent").trim();
-        return v || FALLBACK;
-      });
-      setStations(
-        tops.map((t, i) => ({
-          at: Math.min(1, Math.max(0, (t - mainTop) / mainH)),
-          accent: accents[i],
-        })),
-      );
-      lastPassed = -1;
-      lastAccent = "";
-      schedule();
-    };
+    let lastCurrent = -1;
 
     const measure = () => {
       if (!main || !sections.length) return;
@@ -67,32 +38,56 @@ export function RouteSpine() {
       mainTop = mr.top + y;
       mainH = Math.max(1, mr.height);
       tops = sections.map((el) => el.getBoundingClientRect().top + y);
-      rootRef.current?.style.setProperty(
-        "--h",
-        `${rootRef.current.clientHeight}px`,
+      heights = sections.map((el) => el.getBoundingClientRect().height);
+      darks = sections.map((el) => {
+        const rgb = getComputedStyle(el)
+          .backgroundColor.match(/[\d.]+/g)
+          ?.map(Number);
+        return (
+          !!rgb &&
+          rgb.length >= 3 &&
+          (rgb[3] ?? 1) > 0.5 &&
+          (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255 < 0.35
+        );
+      });
+    };
+
+    const publish = () => {
+      const next = tops.map((t) => Math.min(1, Math.max(0, (t - mainTop) / mainH)));
+      setAt((prev) =>
+        prev.length === next.length && prev.every((v, i) => Math.abs(v - next[i]) < 0.0005)
+          ? prev
+          : next
       );
     };
 
     const update = () => {
       raf = 0;
-      const root = rootRef.current;
-      if (!root || !sections.length) return;
+      if (!sections.length) return;
+      // Fade the rail out once the (dark) footer stub scrolls into view.
+      const footer = document.querySelector("footer");
+      railRef.current?.toggleAttribute(
+        "data-away",
+        !!footer && footer.getBoundingClientRect().top < window.innerHeight * 0.85
+      );
       const readY = window.scrollY + window.innerHeight * 0.4;
-      const p = Math.min(1, Math.max(0, (readY - mainTop) / mainH));
-      root.style.setProperty("--p", p.toFixed(4));
       let idx = 0;
       for (let i = 0; i < tops.length; i++) if (tops[i] <= readY) idx = i;
-      const count = tops.filter((t) => t <= readY).length;
-      if (count !== lastPassed) {
-        lastPassed = count;
-        setPassed(count);
+      // Each tick sits over whichever section is under it on screen: switch
+      // it to a light ink while that section is dark (night).
+      const rail = railRef.current;
+      if (rail) {
+        const rr = rail.getBoundingClientRect();
+        rail.querySelectorAll<HTMLElement>("[data-tick]").forEach((el) => {
+          const docY = window.scrollY + rr.top + parseFloat(el.dataset.p ?? "0") * rr.height;
+          let k = 0;
+          for (let i = 0; i < tops.length; i++) if (tops[i] <= docY) k = i;
+          el.toggleAttribute("data-dark", !!darks[k] && docY < tops[k] + heights[k]);
+        });
       }
-      const accent =
-        getComputedStyle(sections[idx]).getPropertyValue("--accent").trim() ||
-        FALLBACK;
-      if (accent !== lastAccent) {
-        lastAccent = accent;
-        root.style.setProperty("--spine-accent", accent);
+      if (idx !== lastCurrent) {
+        lastCurrent = idx;
+        setCurrent(idx);
       }
     };
 
@@ -100,18 +95,25 @@ export function RouteSpine() {
       if (!raf) raf = requestAnimationFrame(update);
     };
 
-    const remeasure = () => {
-      measure();
-      if (sections.length) {
-        setStations((prev) =>
-          prev.length === tops.length
-            ? prev.map((s, i) => ({
-                ...s,
-                at: Math.min(1, Math.max(0, (tops[i] - mainTop) / mainH)),
-              }))
-            : prev,
-        );
+    const detect = () => {
+      if (!main) return;
+      sections = Array.from(main.querySelectorAll<HTMLElement>(":scope > section"));
+      if (sections.length < MIN_SECTIONS) {
+        sections = [];
+        tops = [];
+        setAt((s) => (s.length ? [] : s));
+        return;
       }
+      measure();
+      publish();
+      lastCurrent = -1;
+      schedule();
+    };
+
+    const remeasure = () => {
+      if (!sections.length) return;
+      measure();
+      publish();
       schedule();
     };
 
@@ -133,25 +135,25 @@ export function RouteSpine() {
     };
   }, [pathname]);
 
-  if (stations.length < MIN_SECTIONS) return null;
+  if (at.length < MIN_SECTIONS) return null;
+
+  const cur = Math.min(current, at.length - 1);
 
   return (
-    <div ref={rootRef} className={styles.spine} aria-hidden="true">
-      <div className={styles.track} />
-      <div className={styles.fill} />
-      {stations.map((s, i) => (
+    <div ref={railRef} className={styles.rail} aria-hidden="true">
+      <div className={styles.line} />
+      {at.map((p, i) => (
         <span
           key={i}
-          className={`${styles.station} ${i < passed ? styles.passed : ""}`}
-          style={
-            {
-              top: `${(s.at * 100).toFixed(3)}%`,
-              "--st": s.accent,
-            } as React.CSSProperties
-          }
-        />
+          data-tick=""
+          data-p={p.toFixed(4)}
+          className={`${styles.tick} ${i <= cur ? styles.tickPassed : ""}`}
+          style={{ top: `${(p * 100).toFixed(3)}%` }}
+        >
+          <span className={styles.bar} />
+        </span>
       ))}
-      <div className={styles.train} />
+      <span className={styles.dot} style={{ top: `${(at[cur] * 100).toFixed(3)}%` }} />
     </div>
   );
 }

@@ -10,9 +10,9 @@ export interface TocItem {
 }
 
 /**
- * Table of contents drawn as a station list. Sticky on desktop with the
- * current section highlighted; folds behind a toggle on phones. A single
- * <nav> in the DOM.
+ * Table of contents of the policy: a ruled list, sticky on desktop with the
+ * current section marked by a red square; folds behind a toggle on phones.
+ * A single <nav> in the DOM.
  */
 export function Toc({ items }: { items: TocItem[] }) {
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
@@ -38,13 +38,16 @@ export function Toc({ items }: { items: TocItem[] }) {
   }, [items]);
 
   return (
-    <nav aria-label="Sommaire de la politique" className="lg:sticky lg:top-28">
+    <nav
+      aria-label="Sommaire de la politique"
+      className="lg:sticky lg:top-28 lg:self-start"
+    >
       <button
         type="button"
         aria-expanded={open}
         aria-controls={listId}
         onClick={() => setOpen((v) => !v)}
-        className="flex min-h-12 w-full items-center justify-between rounded-full bg-panel px-5 text-sm font-bold text-ink ring-2 ring-inset ring-ink lg:hidden"
+        className="flex min-h-12 w-full items-center justify-between rounded-[3px] border-2 border-ink bg-panel px-5 font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] text-ink lg:hidden"
       >
         Sommaire
         <ChevronDown
@@ -57,19 +60,17 @@ export function Toc({ items }: { items: TocItem[] }) {
         />
       </button>
 
-      <p className="t-station mb-4 hidden text-ink-mute lg:block">Sommaire</p>
+      <p className="t-field mb-3 hidden border-b-2 border-ink pb-3 lg:block">
+        Sommaire
+      </p>
 
       <ol
         id={listId}
         className={cn(
-          "relative mt-4 lg:mt-0 lg:block",
+          "mt-3 border-y-2 border-ink lg:mt-0 lg:block lg:border-y-0",
           open ? "block" : "hidden",
         )}
       >
-        <span
-          aria-hidden
-          className="absolute bottom-4 left-[0.4375rem] top-4 w-1 rounded-full bg-rule"
-        />
         {items.map((item) => {
           const isActive = item.id === active;
           return (
@@ -82,7 +83,7 @@ export function Toc({ items }: { items: TocItem[] }) {
                   setOpen(false);
                 }}
                 className={cn(
-                  "relative flex min-h-11 items-start gap-4 py-2.5 text-[0.9375rem] leading-snug transition-colors duration-200 lg:min-h-9 lg:py-1.5",
+                  "flex min-h-11 items-start gap-3 border-b border-dashed border-ink-mute/50 py-2.5 text-[0.9375rem] leading-snug transition-colors duration-200 last:border-b-0 lg:min-h-9 lg:py-2",
                   isActive
                     ? "font-bold text-ink"
                     : "font-medium text-ink-soft hover:text-ink",
@@ -91,10 +92,8 @@ export function Toc({ items }: { items: TocItem[] }) {
                 <span
                   aria-hidden
                   className={cn(
-                    "relative z-10 mt-0.5 block size-[1.125rem] shrink-0 rounded-full border-[3px] transition-colors duration-200",
-                    isActive
-                      ? "border-ink bg-ink"
-                      : "border-ink-mute bg-panel",
+                    "mt-[0.3rem] block size-2.5 shrink-0 rounded-[2px] transition-colors duration-200",
+                    isActive ? "bg-red" : "border-2 border-ink-mute/60 bg-panel",
                   )}
                 />
                 <span>{item.title}</span>

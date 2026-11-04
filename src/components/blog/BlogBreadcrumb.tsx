@@ -8,7 +8,7 @@ export function BlogBreadcrumb({
 }) {
   return (
     <nav aria-label="Fil d'Ariane">
-      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-mute">
+      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-soft">
         {items.map((it, i) => {
           const last = i === items.length - 1;
           return (

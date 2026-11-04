@@ -59,10 +59,10 @@ export function ImmoTopiaPreview({ name }: { name: string }) {
               onClick={() => setTab(t)}
               onKeyDown={(e) => onTabKey(e, i)}
               className={cn(
-                "inline-flex min-h-11 items-center rounded-full px-3.5 text-[0.8125rem] font-bold transition-colors duration-200 motion-reduce:transition-none sm:min-h-8",
+                "inline-flex min-h-11 items-center rounded-[3px] px-3.5 text-[0.8125rem] font-bold transition-colors duration-200 motion-reduce:transition-none sm:min-h-8",
                 tab === t
-                  ? "bg-[var(--accent)] text-[var(--on-accent)] ring-2 ring-inset ring-ink"
-                  : "bg-enamel text-ink ring-1 ring-inset ring-rule hover:bg-rule/60",
+                  ? "bg-ink text-white ring-2 ring-inset ring-ink"
+                  : "bg-panel text-ink ring-[1.5px] ring-inset ring-ink hover:bg-enamel",
               )}
             >
               {t}
@@ -102,13 +102,14 @@ export function ImmoTopiaPreview({ name }: { name: string }) {
                       <span
                         aria-hidden
                         className={cn(
-                          "relative h-6 w-11 rounded-full ring-2 ring-inset ring-ink transition-colors duration-200 motion-reduce:transition-none",
-                          b.rented ? "bg-[var(--accent)]" : "bg-panel",
+                          "relative h-6 w-11 rounded-[3px] ring-2 ring-inset ring-ink transition-colors duration-200 motion-reduce:transition-none",
+                          b.rented ? "bg-ink" : "bg-panel",
                         )}
                       >
                         <span
                           className={cn(
-                            "absolute top-1 size-4 rounded-full bg-ink transition-[left] duration-200 ease-[var(--ease-out-expo)] motion-reduce:transition-none",
+                            "absolute top-1 size-4 rounded-[2px] transition-[left] duration-200 ease-[var(--ease-out-expo)] motion-reduce:transition-none",
+                            b.rented ? "bg-white" : "bg-ink",
                             b.rented ? "left-6" : "left-1",
                           )}
                         />
@@ -150,9 +151,9 @@ export function ImmoTopiaPreview({ name }: { name: string }) {
                 <p role="status" aria-live="polite" className="t-num text-[0.8125rem] font-bold text-ink">
                   Encaissé : {formatFcfa(cashed)} sur {formatFcfa(due)}
                 </p>
-                <div aria-hidden className="mt-1.5 h-2 overflow-hidden rounded-full bg-enamel">
+                <div aria-hidden className="mt-1.5 h-2 overflow-hidden rounded-[2px] bg-enamel ring-1 ring-inset ring-rule">
                   <div
-                    className="h-full rounded-full bg-[var(--accent)] transition-[width] duration-500 ease-[var(--ease-out-expo)] motion-reduce:transition-none"
+                    className="h-full bg-ink transition-[width] duration-500 ease-[var(--ease-out-expo)] motion-reduce:transition-none"
                     style={{ width: `${due ? (cashed / due) * 100 : 0}%` }}
                   />
                 </div>

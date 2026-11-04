@@ -123,18 +123,18 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
       hidden={!open}
       onKeyDown={onPanelKeyDown}
       style={accentStyle(topic.line)}
-      className="fixed inset-x-2 bottom-2 z-[55] flex h-[min(44rem,calc(100dvh-1rem))] flex-col overflow-hidden rounded-lg bg-enamel text-ink shadow-[0_24px_48px_-28px_rgba(7,18,43,0.6)] outline-none ring-1 ring-rule animate-fade-up sm:inset-x-auto sm:bottom-4 sm:right-4 sm:h-[min(40rem,calc(100dvh-2rem))] sm:w-[24.5rem] print:hidden"
+      className={`${styles.panel} coupon fixed inset-x-0 bottom-0 z-[55] flex h-[min(44rem,calc(100dvh-1rem))] flex-col overflow-hidden text-ink outline-none animate-fade-up sm:inset-x-auto sm:bottom-4 sm:right-4 sm:h-[min(40rem,calc(100dvh-2rem))] sm:w-[24.5rem] print:hidden`}
     >
-      <header className="flex items-center gap-3 border-b-[3px] border-[var(--accent)] bg-night px-4 py-2.5 text-white">
+      <header className="flex items-center gap-3 bg-panel px-4 py-2.5 text-ink">
         <span
           aria-hidden
-          className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)]"
+          className="grid size-9 shrink-0 place-items-center rounded-[3px] bg-[var(--accent)] text-[var(--on-accent)]"
         >
           <Sparkles className="size-[1.125rem]" strokeWidth={2} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-display text-base font-bold leading-tight tracking-tight">{assistantName}</p>
-          <p className="truncate text-xs text-[#c4d2ff]">Assistant IA</p>
+          <p className="truncate font-display text-xl font-bold leading-tight tracking-tight">{assistantName}</p>
+          <p className="t-field truncate">Assistant IA</p>
         </div>
         {items.length > 1 ? (
           <button
@@ -145,7 +145,7 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
             }}
             aria-label="Recommencer la conversation"
             title="Recommencer la conversation"
-            className="grid size-11 shrink-0 place-items-center rounded-full text-[#c4d2ff] transition-colors hover:bg-white/10 hover:text-white"
+            className="grid size-11 shrink-0 place-items-center rounded-[3px] text-ink-soft transition-colors hover:bg-enamel hover:text-ink"
           >
             <RotateCcw aria-hidden className="size-[1.125rem]" strokeWidth={2} />
           </button>
@@ -154,11 +154,12 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
           type="button"
           onClick={onClose}
           aria-label="Fermer l'assistant"
-          className="grid size-11 shrink-0 place-items-center rounded-full text-white transition-colors hover:bg-white/10"
+          className="grid size-11 shrink-0 place-items-center rounded-[3px] text-ink transition-colors hover:bg-enamel"
         >
           <X aria-hidden className="size-5" strokeWidth={2} />
         </button>
       </header>
+      <div aria-hidden className="tear shrink-0" />
 
       {view === "booking" && calendlyUrl ? (
         <BookingView
@@ -176,7 +177,7 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
             aria-live="off"
             aria-busy={streaming}
             aria-label="Conversation"
-            className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain px-3.5 py-4"
+            className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain bg-enamel px-3.5 py-4"
           >
             {items.map((item) => {
               if (item.kind === "contact_form") {
@@ -204,8 +205,8 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
                 <div key={item.id} className={cn("flex flex-col gap-2", mine ? "items-end" : "items-start")}>
                   <div
                     className={cn(
-                      "max-w-[90%] rounded-lg px-3.5 py-2.5 text-base leading-relaxed",
-                      mine ? "bg-ink text-white" : "bg-panel text-ink ring-1 ring-rule",
+                      "max-w-[90%] rounded-[4px] px-3.5 py-2.5 text-base leading-relaxed",
+                      mine ? "bg-ink text-white" : "border-2 border-ink bg-panel text-ink shadow-[0_1px_2px_rgba(15,42,90,0.14),0_8px_16px_-8px_rgba(15,42,90,0.3)]",
                     )}
                   >
                     <span className="sr-only">{mine ? "Vous : " : `${assistantName} : `}</span>
@@ -228,7 +229,7 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
                           key={reply}
                           type="button"
                           onClick={() => void chat.send(reply)}
-                          className="min-h-11 rounded-full bg-panel px-4 py-1.5 text-left text-[0.9375rem] font-semibold text-ink ring-1 ring-ink-mute/50 transition-[box-shadow,background-color] duration-200 hover:ring-2 hover:ring-ink"
+                          className="min-h-11 rounded-[4px] border-2 border-ink bg-panel px-3.5 py-1.5 text-left text-[0.9375rem] font-semibold text-ink transition-[background-color,color] duration-200 hover:bg-ink hover:text-white"
                         >
                           {reply}
                         </button>
@@ -244,14 +245,14 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
             {announcement}
           </div>
 
-          <div className="border-t border-rule bg-panel px-3 pb-2.5 pt-2">
+          <div className="border-t-2 border-ink bg-panel px-3 pb-2.5 pt-2">
             {canShortcut ? (
               <button
                 type="button"
                 onClick={openBooking}
-                className="mb-2 inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+                className="mb-2 inline-flex min-h-11 items-center gap-2 rounded-[3px] px-2 text-sm font-bold text-ink underline decoration-ink/40 underline-offset-4 hover:decoration-ink"
               >
-                <CalendarCheck aria-hidden className="size-4 text-[var(--accent)]" strokeWidth={2.25} />
+                <CalendarCheck aria-hidden className="size-4" strokeWidth={2.25} />
                 Pressé ? Réserver une démo
               </button>
             ) : null}
@@ -278,18 +279,18 @@ export default function AssistantPanel({ config, open, onClose, onNavigate }: As
                   resizeInput();
                 }}
                 onKeyDown={onInputKeyDown}
-                className="max-h-32 min-h-12 flex-1 resize-none rounded-lg border border-ink-mute/70 bg-panel px-3.5 py-3 text-base text-ink transition-colors placeholder:text-ink-mute focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-brand/30 disabled:cursor-not-allowed disabled:bg-enamel"
+                className="max-h-32 min-h-12 flex-1 resize-none rounded-[4px] border-2 border-ink bg-panel px-3.5 py-3 text-base text-ink transition-colors placeholder:text-ink-mute disabled:cursor-not-allowed disabled:bg-enamel"
               />
               <button
                 type="submit"
                 aria-label="Envoyer le message"
                 disabled={!draft.trim() || streaming || limitReached}
-                className="grid size-12 shrink-0 place-items-center rounded-full bg-ink text-white transition-[background-color,opacity] duration-200 hover:bg-night-2 disabled:cursor-not-allowed disabled:opacity-40"
+                className="grid size-12 shrink-0 place-items-center rounded-[3px] bg-red text-white shadow-[0_8px_16px_-8px_rgba(176,40,32,0.55)] transition-[background-color,opacity,transform] duration-200 hover:bg-red-dk active:translate-y-[2px] active:shadow-none disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
               >
                 <SendHorizontal aria-hidden className="size-5" strokeWidth={2} />
               </button>
             </form>
-            <p className="mt-2 text-xs leading-snug text-ink-mute">
+            <p className="mt-2 text-xs leading-snug text-ink-soft">
               Assistant IA : ses réponses peuvent comporter des erreurs. Ne saisissez pas de données sensibles.{" "}
               <a
                 href="/privacy#assistant-ia"

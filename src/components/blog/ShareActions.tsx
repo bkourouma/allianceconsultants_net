@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Link2, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import styles from "./ShareActions.module.css";
 
 function LinkedInGlyph() {
   return (
@@ -24,7 +25,7 @@ interface ShareActionsProps {
   /** Absolute canonical URL of the article. */
   url: string;
   title: string;
-  /** "rail": compact icon roundels (sticky sidebar). "bar": labelled pills (end of article). */
+  /** "rail": compact icon squares (sticky sidebar). "bar": labelled buttons (end of article). */
   variant?: "rail" | "bar";
   className?: string;
 }
@@ -91,11 +92,16 @@ export function ShareActions({ url, title, variant = "bar", className }: ShareAc
   ];
 
   const pill =
-    "inline-flex items-center justify-center gap-2 rounded-full bg-panel text-sm font-bold text-ink no-underline ring-1 ring-ink transition-colors duration-200 hover:bg-ink hover:text-white";
+    "inline-flex items-center justify-center gap-2 rounded-[3px] border-2 border-ink bg-panel font-mono text-[0.75rem] font-medium uppercase tracking-[0.08em] text-ink no-underline transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-expo)] hover:bg-ink hover:text-white active:translate-y-px";
   const sizing = variant === "rail" ? "size-11" : "min-h-11 px-4";
 
   return (
-    <div className={cn(variant === "bar" ? "flex flex-wrap items-center gap-2.5" : "", className)}>
+    <div
+      className={cn(
+        variant === "bar" ? "flex flex-wrap items-center gap-x-2.5 gap-y-2" : "relative",
+        className,
+      )}
+    >
       <ul className={cn("flex flex-wrap items-center gap-2", variant === "bar" && "contents")}>
         <li className={variant === "bar" ? "contents" : ""}>
           <button
@@ -131,6 +137,17 @@ export function ShareActions({ url, title, variant = "bar", className }: ShareAc
           </li>
         ))}
       </ul>
+
+      {/* Reserved slot: the stamp presses here without moving the layout (rail: overlaps the coupon edge). */}
+      <span
+        aria-hidden
+        className={cn(
+          "flex h-9 items-center",
+          variant === "rail" ? "pointer-events-none absolute right-0 top-full -mt-1" : "min-w-[7.5rem]",
+        )}
+      >
+        {copied ? <span className={cn("stamp text-[0.75rem]", styles.pressed)}>Lien copié</span> : null}
+      </span>
       <span role="status" aria-live="polite" className="sr-only">
         {copied ? "Lien copié dans le presse-papiers" : ""}
       </span>

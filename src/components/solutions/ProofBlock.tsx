@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { Section } from "@/components/ui/Section";
 import type { SolutionProof, SolutionUseCase } from "@/lib/validators/content";
 import { SectionHead } from "./SectionHead";
-import s from "./Solutions.module.css";
+import { UseCaseCoupon } from "./UseCases";
 
 interface ProofBlockProps {
   proof?: SolutionProof;
@@ -19,8 +18,8 @@ export function hasProof(proof?: SolutionProof): boolean {
 }
 
 /**
- * Night panel. Shows validated proof (logos, stats, testimonials) when the
- * content has any; otherwise falls back to real use cases from the MDX.
+ * Real content only. Shows validated proof (logos, stats, testimonials) when
+ * the content has any; otherwise falls back to the real use cases from the MDX.
  * Nothing here is invented.
  */
 export function ProofBlock({ proof, useCasesFallback }: ProofBlockProps) {
@@ -31,77 +30,63 @@ export function ProofBlock({ proof, useCasesFallback }: ProofBlockProps) {
   }
 
   return (
-    <Section
+    <section
       id="preuves"
-      bg="dark"
-      padding="md"
       aria-labelledby="proof-title"
-      className={s.focusNight}
+      className="pb-16 lg:pb-24"
     >
-      <SectionHead
-        id="proof-title"
-        onDark
-        title={filled ? "Preuves et références" : "Sur le terrain"}
-      />
+      <div className="wrap">
+        <SectionHead
+          id="proof-title"
+          title={filled ? "Preuves et références" : "Sur le terrain"}
+        />
 
-      {!filled && useCasesFallback && (
-        <ol className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-          {useCasesFallback.map((uc) => (
-            <li key={uc.title} className="relative border-t-2 border-white/40 pt-8">
-              <span
-                aria-hidden
-                className="absolute -top-[13px] left-0 size-6 rounded-full border-[5px] border-[var(--accent)] bg-night"
-              />
-              <h3 className="font-display text-xl font-bold leading-snug tracking-[-0.01em] text-white">
-                {uc.title}
-              </h3>
-              <p className="t-body mt-3 text-white/75">{uc.summary}</p>
-            </li>
-          ))}
-        </ol>
-      )}
+        {!filled && useCasesFallback && (
+          <div className="mt-10">
+            <UseCaseCoupon useCases={useCasesFallback} />
+          </div>
+        )}
 
-      {filled && (
-        <>
-          {proof?.stats && proof.stats.length > 0 && (
-            <dl className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-              {proof.stats.map((st) => (
-                <div
-                  key={`${st.value}-${st.label}`}
-                  className="border-t-2 border-white/40 pt-4"
-                >
-                  <dt className="text-sm text-white/75">{st.label}</dt>
-                  <dd className="t-num mt-1 font-display text-3xl font-extrabold tracking-[-0.02em] text-white">
-                    {st.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          )}
+        {filled && (
+          <div className="mt-10 grid gap-8">
+            {proof?.stats && proof.stats.length > 0 && (
+              <dl className="coupon grid sm:grid-cols-2 lg:grid-cols-4">
+                {proof.stats.map((st) => (
+                  <div
+                    key={`${st.value}-${st.label}`}
+                    className="border-t-2 border-dashed border-ink px-6 py-5 first:border-t-0 sm:border-l-2 sm:border-t-0 sm:first:border-l-0"
+                  >
+                    <dt className="t-field">{st.label}</dt>
+                    <dd className="t-num carbon mt-1 font-display text-4xl font-extrabold">
+                      {st.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
 
-          {proof?.testimonials && proof.testimonials.length > 0 && (
-            <div className="mt-12 grid gap-10 md:grid-cols-2">
-              {proof.testimonials.map((t) => (
-                <blockquote
-                  key={`${t.author}-${t.quote.slice(0, 24)}`}
-                  className="border-t-2 border-white/40 pt-5"
-                >
-                  <p className="font-display text-xl font-semibold leading-snug text-white">
-                    «&nbsp;{t.quote}&nbsp;»
-                  </p>
-                  <footer className="mt-4 text-sm font-medium text-white/75">
-                    {t.author}
-                    {t.role ? `, ${t.role}` : ""}
-                    {t.organization ? ` · ${t.organization}` : ""}
-                  </footer>
-                </blockquote>
-              ))}
-            </div>
-          )}
+            {proof?.testimonials && proof.testimonials.length > 0 && (
+              <div className="grid gap-8 md:grid-cols-2">
+                {proof.testimonials.map((t) => (
+                  <blockquote
+                    key={`${t.author}-${t.quote.slice(0, 24)}`}
+                    className="coupon p-6 sm:p-8"
+                  >
+                    <p className="font-display text-2xl font-semibold leading-snug text-ink">
+                      «&nbsp;{t.quote}&nbsp;»
+                    </p>
+                    <footer className="t-field mt-5">
+                      {t.author}
+                      {t.role ? `, ${t.role}` : ""}
+                      {t.organization ? ` · ${t.organization}` : ""}
+                    </footer>
+                  </blockquote>
+                ))}
+              </div>
+            )}
 
-          {proof?.logos && proof.logos.length > 0 && (
-            <div className="mt-12 border-t-2 border-white/40 pt-6">
-              <ul className="flex flex-wrap items-center gap-x-10 gap-y-6">
+            {proof?.logos && proof.logos.length > 0 && (
+              <ul className="coupon flex flex-wrap items-center gap-x-10 gap-y-6 px-6 py-6 sm:px-8">
                 {proof.logos.map((logo) => (
                   <li key={logo.name}>
                     <Image
@@ -109,15 +94,15 @@ export function ProofBlock({ proof, useCasesFallback }: ProofBlockProps) {
                       alt={logo.alt}
                       width={128}
                       height={64}
-                      className="h-10 w-auto object-contain opacity-80 brightness-0 invert"
+                      className="h-10 w-auto object-contain"
                     />
                   </li>
                 ))}
               </ul>
-            </div>
-          )}
-        </>
-      )}
-    </Section>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

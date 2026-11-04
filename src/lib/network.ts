@@ -1,11 +1,8 @@
 /**
- * RÉSEAU — the shared data model of the design world.
- * Alliance Consultants is drawn as a transit network: every solution is a
- * LINE, every module a STATION, services are CORRESPONDANCES (interchanges),
- * formations are the circular ACADÉMIE line, a demo request is the TERMINUS.
- *
- * Colours live in src/styles/globals.css (--color-line-*). Use the helper
- * `lineStyle(id)` or the `.line-<id>` utility class to scope `--accent`.
+ * The six products of Alliance Consultants as the "coupons" of the carnet.
+ * Each product keeps one accent colour, used only as a small coupon tab/chip
+ * (see DESIGN.md). Use `lineStyle(id)` or the `.line-<id>` class to scope
+ * `--accent` / `--on-accent` to a product.
  */
 
 export type LineId =
@@ -73,7 +70,7 @@ export const LINES: readonly NetworkLine[] = [
     sector: "Immobilier & syndic",
     pitch: "Biens, CRM, gestion locative et copropriétés sur une seule plateforme.",
     color: "#f26a1b",
-    onColor: "#0b1b3a",
+    onColor: "#0f2a5a",
   },
   {
     id: "annonces",
@@ -93,7 +90,7 @@ export const LINES: readonly NetworkLine[] = [
     sector: "Écoles & formation",
     pitch: "Gestion scolaire multi-établissements : élèves, notes, présences, paiements.",
     color: "#f5b800",
-    onColor: "#0b1b3a",
+    onColor: "#0f2a5a",
   },
 ] as const;
 

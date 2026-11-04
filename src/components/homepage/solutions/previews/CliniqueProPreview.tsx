@@ -52,7 +52,7 @@ export function CliniqueProPreview({ name }: { name: string }) {
             return (
               <li key={slot}>
                 {t ? (
-                  <div className="flex h-full min-h-16 flex-col justify-between rounded-md bg-enamel px-2.5 py-2 text-ink-soft ring-1 ring-inset ring-rule">
+                  <div className="flex h-full min-h-16 flex-col justify-between rounded-[3px] bg-enamel px-2.5 py-2 text-ink-soft ring-1 ring-inset ring-rule">
                     <span className="t-num text-sm font-extrabold">{slot}</span>
                     <span className="text-[0.75rem] font-semibold leading-tight">
                       {t.acte} · {t.who}
@@ -64,10 +64,10 @@ export function CliniqueProPreview({ name }: { name: string }) {
                     aria-pressed={!!mine}
                     onClick={() => toggle(slot)}
                     className={cn(
-                      "flex h-full min-h-16 w-full flex-col justify-between rounded-md px-2.5 py-2 text-left transition-colors duration-200 motion-reduce:transition-none",
+                      "flex h-full min-h-16 w-full flex-col justify-between rounded-[3px] px-2.5 py-2 text-left transition-colors duration-200 motion-reduce:transition-none",
                       mine
-                        ? "bg-[var(--accent)] text-[var(--on-accent)] ring-2 ring-inset ring-ink"
-                        : "bg-panel text-ink ring-1 ring-inset ring-ink/40 hover:bg-enamel",
+                        ? "bg-ink text-white ring-2 ring-inset ring-ink"
+                        : "bg-panel text-ink ring-[1.5px] ring-inset ring-ink hover:bg-enamel",
                     )}
                   >
                     <span className="t-num text-sm font-extrabold">{slot}</span>

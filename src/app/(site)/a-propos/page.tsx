@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ...buildMetadata({
       title: "À propos — Alliance Consultants, éditeur africain de SaaS",
       description:
-        "Depuis 2003, Alliance Consultants accompagne les organisations d'Afrique francophone dans leur transformation digitale : SaaS métiers, IA, dématérialisation et formations.",
+        "Depuis 2003, Alliance Consultants accompagne les organisations d'Afrique francophone dans leur transformation digitale : SaaS métiers, IA et formations.",
       siteUrl: `${SITE_URL}/a-propos`,
     }),
     alternates: { canonical: `${SITE_URL}/a-propos` },

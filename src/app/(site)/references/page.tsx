@@ -14,7 +14,11 @@ import { ReferenceTicket } from "./ReferenceTicket";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
 
-export const revalidate = 60;
+/**
+ * Rendue à la requête : la pagination et le filtre passent par `searchParams`,
+ * incompatible avec `revalidate` (ISR) → DYNAMIC_SERVER_USAGE, HTTP 500.
+ */
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

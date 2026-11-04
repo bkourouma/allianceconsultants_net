@@ -22,7 +22,7 @@ import {
   getServiceBySlug,
   getServices,
 } from "@/lib/content";
-import { buildFaqJsonLd, buildMetadata } from "@/lib/seo";
+import { buildFaqJsonLd, buildMetadata, withBrandSuffix } from "@/lib/seo";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -52,7 +52,7 @@ export async function generateMetadata({
   const url = `${SITE_URL}/services/${slug}`;
   return {
     ...buildMetadata({
-      title: service.seoTitle ?? `${service.title} — Alliance Consultants`,
+      title: service.seoTitle ?? withBrandSuffix(service.title),
       description: service.seoDescription ?? service.shortDescription,
       siteUrl: url,
     }),

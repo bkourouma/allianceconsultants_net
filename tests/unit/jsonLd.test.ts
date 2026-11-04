@@ -63,16 +63,16 @@ const stubSolution: SolutionDetail = {
 describe("buildProductJsonLd", () => {
   const jsonLd = buildProductJsonLd(stubSolution, SITE);
 
-  it("uses Schema.org context and Product type", () => {
+  it("uses Schema.org context and Service type", () => {
     expect(jsonLd["@context"]).toBe("https://schema.org");
-    expect(jsonLd["@type"]).toBe("Product");
+    expect(jsonLd["@type"]).toBe("Service");
   });
 
-  it("includes name, description, category, brand and url", () => {
+  it("includes name, description, serviceType, provider and url", () => {
     expect(jsonLd.name).toBe("MedicPro");
     expect(jsonLd.description).toBe(stubSolution.shortDescription);
-    expect(jsonLd.category).toBe("Pharma");
-    expect(jsonLd.brand).toEqual({ "@type": "Brand", name: "Alliance Consultants" });
+    expect(jsonLd.serviceType).toBe("Pharma");
+    expect(jsonLd.provider).toEqual({ "@type": "Organization", name: "Alliance Consultants" });
     expect(jsonLd.url).toBe("https://allianceconsultants.net/solutions/medicpro");
   });
 

@@ -86,7 +86,7 @@ export function ShareActions({ url, title, variant = "bar", className }: ShareAc
     {
       key: "x",
       label: "X",
-      href: `https://twitter.com/intent/tweet?url=${u}&text=${t}`,
+      href: `https://x.com/intent/post?url=${u}&text=${t}`,
       icon: <XGlyph />,
     },
   ];

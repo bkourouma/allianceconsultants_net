@@ -19,7 +19,7 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   return {
     ...buildMetadata({
-      title: "Références clients — projets et cas d'usage Alliance Consultants",
+      title: "Références clients — cas d'usage Alliance Consultants",
       description:
         "Découvrez les références d'Alliance Consultants : projets de transformation digitale, dématérialisation, IA et SaaS métier menés pour des organisations africaines.",
       siteUrl: `${SITE_URL}/references`,

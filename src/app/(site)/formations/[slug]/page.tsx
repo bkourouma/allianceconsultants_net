@@ -15,7 +15,7 @@ import {
   activeModalities,
 } from "@/components/formations/modalities";
 import { getAllTrainingSlugs, getTrainingBySlug } from "@/lib/content";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, withBrandSuffix } from "@/lib/seo";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://allianceconsultants.net";
@@ -45,7 +45,7 @@ export async function generateMetadata({
   const url = `${SITE_URL}/formations/${slug}`;
   return {
     ...buildMetadata({
-      title: `${training.title} — Alliance Consultants`,
+      title: withBrandSuffix(training.title),
       description: training.shortDescription,
       siteUrl: url,
     }),

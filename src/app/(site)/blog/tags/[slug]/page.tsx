@@ -59,7 +59,7 @@ export async function generateMetadata({
 
   return {
     ...buildMetadata({
-      title: `${tag.label} — Articles | Blog Alliance Consultants`,
+      title: `${tag.label} — Blog Alliance Consultants`,
       description: `Articles classés sous « ${tag.label} » : retours d'expérience, méthodes et bonnes pratiques sur la transformation digitale en Afrique francophone.`,
       siteUrl: url,
     }),

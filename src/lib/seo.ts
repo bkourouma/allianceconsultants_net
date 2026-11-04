@@ -5,6 +5,15 @@ import type {
   FaqEntry,
 } from "./validators/content";
 
+const TITLE_SUFFIX = " — Alliance Consultants";
+const TITLE_MAX = 60;
+
+/** Ajoute le suffixe de marque seulement si le title reste dans les 60 caractères. */
+export function withBrandSuffix(title: string): string {
+  const full = `${title}${TITLE_SUFFIX}`;
+  return full.length <= TITLE_MAX ? full : title;
+}
+
 export function buildMetadata({
   title,
   description,

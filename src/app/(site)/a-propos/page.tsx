@@ -19,7 +19,7 @@ const SITE_URL =
 export async function generateMetadata(): Promise<Metadata> {
   return {
     ...buildMetadata({
-      title: "À propos d'Alliance Consultants — éditeur africain de SaaS, IA et services",
+      title: "À propos — Alliance Consultants, éditeur africain de SaaS",
       description:
         "Depuis 2003, Alliance Consultants accompagne les organisations d'Afrique francophone dans leur transformation digitale : SaaS métiers, IA, dématérialisation et formations.",
       siteUrl: `${SITE_URL}/a-propos`,

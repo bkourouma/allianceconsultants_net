@@ -3,10 +3,10 @@
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Check } from "lucide-react";
-import { Section } from "@/components/ui/Section";
 import { LeadInputSchema, type LeadInput } from "@/lib/validators/lead";
 import { cn } from "@/lib/utils";
+import { CouponBand } from "./CouponBand";
+import { couponNo } from "./couponMeta";
 import s from "./Solutions.module.css";
 
 interface LeadFormSectionProps {
@@ -25,7 +25,7 @@ const STEPS = [
   "Présentation adaptée à votre contexte",
 ];
 
-/** The terminus of the line: where the visitor boards. */
+/** The booking coupon: fields on the stock, a perforated stub with the red submit. */
 export function LeadFormSection({
   solutionSlug,
   solutionName,
@@ -117,75 +117,116 @@ export function LeadFormSection({
     }
   }
 
-  return (
-    <Section
-      id="demander-une-demo"
-      bg="dark"
-      padding="md"
-      aria-labelledby="demo-title"
-      className={s.focusNight}
-    >
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+  const stub = (
+    <div className="flex flex-col justify-between gap-8 border-t-2 border-dashed border-ink bg-[#f6f5fb] p-6 lg:rounded-br-[2px] lg:border-l-2 lg:border-t-0 lg:p-7">
+      <div>
+        <p className="t-field !text-carbon">Ce qui se passe ensuite</p>
+        <ol className="mt-4 grid gap-4">
+          {STEPS.map((step, i) => (
+            <li key={step} className="grid grid-cols-[1.75rem_1fr] gap-x-2">
+              <span
+                aria-hidden
+                className="carbon font-display text-2xl font-extrabold leading-none"
+              >
+                {i + 1}
+              </span>
+              <span className="text-[0.9375rem] font-semibold leading-snug text-ink">
+                {step}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {status !== "success" && (
         <div>
-          {/* Terminus: the line ends here. */}
-          <div aria-hidden className="flex items-center">
-            <span className="h-2 w-16 bg-[var(--accent)] sm:w-28" />
-            <span className="grid size-14 shrink-0 place-items-center rounded-full border-[6px] border-[var(--accent)] bg-night">
-              <span className="size-5 rounded-full bg-white" />
-            </span>
-          </div>
-          <h2 id="demo-title" className="t-h2 mt-8 text-white">
+          <button
+            type="submit"
+            disabled={status === "submitting" || !isValid}
+            aria-describedby="lead-submit-hint"
+            className="group/cta inline-flex min-h-14 w-full items-center justify-center gap-2.5 rounded-[3px] bg-red px-4 py-2 text-center font-display text-[1.0625rem] font-bold uppercase leading-tight tracking-[0.06em] text-white shadow-[0_8px_16px_-8px_rgba(176,40,32,0.55)] transition-[background-color,transform,box-shadow] duration-200 ease-[var(--ease-out-expo)] hover:bg-red-dk active:translate-y-[2px] active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-red"
+          >
+            {status === "submitting" ? "Envoi en cours…" : ctaLabel}
+            <svg
+              aria-hidden
+              viewBox="0 0 16 16"
+              className="size-4 shrink-0 transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M2.5 8h11M9.5 4l4 4-4 4" />
+            </svg>
+          </button>
+          <p id="lead-submit-hint" className="mt-3 text-sm leading-snug text-ink-mute">
+            {!isValid && status !== "submitting"
+              ? "Renseignez les champs obligatoires et cochez la case de consentement pour envoyer."
+              : "Pas d’engagement — réponse sous 24 à 48 h ouvrées."}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <section
+      id="demander-une-demo"
+      aria-labelledby="demo-title"
+      className={cn("pb-20 pt-4 lg:pb-28", s.focusInk)}
+    >
+      <div className="wrap">
+        <header className="max-w-3xl">
+          <h2 id="demo-title" className="t-h2 text-ink">
             Demander une démo de {solutionName}
           </h2>
-          <p className="t-lead mt-4 !text-white/80">
+          <p className="t-lead mt-4">
             Notre équipe revient vers vous sous 24 à 48 heures ouvrées pour
             organiser une présentation adaptée à votre contexte.
           </p>
+        </header>
 
-          <ol className="relative mt-8 max-w-md">
-            <span
-              aria-hidden
-              className="absolute bottom-4 left-[9px] top-4 w-1.5 bg-[var(--accent)]"
-            />
-            {STEPS.map((step) => (
-              <li key={step} className="relative py-2.5 pl-11">
-                <span
-                  aria-hidden
-                  className="absolute left-0 top-3 size-6 rounded-full border-[5px] border-[var(--accent)] bg-night"
-                />
-                <span className="text-base font-semibold text-white">
-                  {step}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </div>
+        <div className="coupon mt-10">
+          <CouponBand
+            no={couponNo(solutionSlug) || "•"}
+            title="Demande de démo"
+            chip={solutionName}
+          />
 
-        <div
-          className={cn(
-            "rounded-md bg-panel p-6 text-ink sm:p-8 lg:p-10",
-            s.focusInkForce,
-          )}
-        >
           {status === "success" ? (
-            <div role="status" className="py-6 text-center sm:py-10">
-              <div className="mx-auto grid size-14 place-items-center rounded-full bg-ink text-white">
-                <Check className="size-7" strokeWidth={2.5} aria-hidden />
-              </div>
-              <h3 className="t-h3 mt-5 text-ink">
-                Merci, votre demande a bien été envoyée
-              </h3>
-              <p className="mx-auto mt-3 max-w-[44ch] text-ink-soft">
-                Notre équipe commerciale vous recontactera très rapidement.
-              </p>
-              {reference && (
-                <p className="mt-5 text-sm text-ink-soft">
-                  Référence&nbsp;:{" "}
-                  <code className="rounded bg-enamel px-2 py-0.5 font-mono text-ink">
-                    {reference}
-                  </code>
+            <div className="grid lg:grid-cols-[minmax(0,1fr)_17.5rem]">
+              <div
+                role="status"
+                className="relative flex min-h-[22rem] flex-col justify-center p-6 sm:p-8 lg:p-10"
+              >
+                <p className="t-field">Demande enregistrée</p>
+                <h3 className="t-h3 mt-3 text-ink">
+                  Merci, votre demande a bien été envoyée
+                </h3>
+                <p className="t-body mt-3 max-w-[44ch] text-ink-soft">
+                  Notre équipe commerciale vous recontactera très rapidement.
                 </p>
-              )}
+                {reference && (
+                  <p className="mt-5 text-sm text-ink-soft">
+                    Référence&nbsp;:{" "}
+                    <code className="rounded-[3px] border border-ink/30 bg-enamel px-2 py-0.5 font-mono text-ink">
+                      {reference}
+                    </code>
+                  </p>
+                )}
+                <p
+                  aria-hidden
+                  className={cn(
+                    "stamp mt-8 self-start",
+                    s.stampBig,
+                    s.stampPress,
+                  )}
+                >
+                  Démo demandée
+                </p>
+              </div>
+              {stub}
             </div>
           ) : (
             <form
@@ -193,7 +234,7 @@ export function LeadFormSection({
               method="post"
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="relative grid gap-5"
+              className="relative grid lg:grid-cols-[minmax(0,1fr)_17.5rem]"
             >
               <input
                 type="hidden"
@@ -234,145 +275,126 @@ export function LeadFormSection({
                 />
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field
-                  id="lead-name"
-                  label="Nom et prénom"
-                  error={errors.name?.message}
-                  required
-                >
-                  <input
+              <div className="grid gap-5 p-6 sm:p-8 lg:p-10">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <Field
                     id="lead-name"
-                    type="text"
-                    autoComplete="name"
+                    label="Nom et prénom"
+                    error={errors.name?.message}
                     required
-                    {...register("name")}
-                    className={inputClass}
-                  />
-                </Field>
-                <Field
-                  id="lead-email"
-                  label="E-mail professionnel"
-                  error={errors.email?.message}
-                  required
-                >
-                  <input
-                    id="lead-email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    {...register("email")}
-                    className={inputClass}
-                  />
-                </Field>
-                <Field
-                  id="lead-phone"
-                  label="Téléphone"
-                  error={errors.phone?.message}
-                  required
-                >
-                  <input
-                    id="lead-phone"
-                    type="tel"
-                    autoComplete="tel"
-                    required
-                    {...register("phone")}
-                    className={inputClass}
-                  />
-                </Field>
-                <Field
-                  id="lead-organization"
-                  label="Organisation"
-                  error={errors.organization?.message}
-                >
-                  <input
-                    id="lead-organization"
-                    type="text"
-                    autoComplete="organization"
-                    {...register("organization")}
-                    className={inputClass}
-                  />
-                </Field>
-              </div>
-
-              <Field
-                id="lead-message"
-                label="Votre besoin en quelques mots"
-                error={errors.message?.message}
-              >
-                <textarea
-                  id="lead-message"
-                  rows={5}
-                  {...register("message")}
-                  className={cn(inputClass, "h-auto py-3")}
-                />
-              </Field>
-
-              <div>
-                <label className="flex items-start gap-3 text-sm text-ink-soft">
-                  <input
-                    type="checkbox"
-                    required
-                    value="true"
-                    {...register("consent")}
-                    className="mt-0.5 size-5 shrink-0 accent-ink"
-                  />
-                  <span className="leading-relaxed">
-                    J&apos;accepte qu&apos;Alliance Consultants utilise les
-                    informations ci-dessus pour traiter ma demande. Mes données
-                    ne seront pas cédées à des tiers.
-                  </span>
-                </label>
-                {errors.consent && (
-                  <p
-                    className="mt-2 text-sm font-medium text-rose-700"
-                    role="alert"
                   >
-                    Le consentement est requis.
-                  </p>
+                    <input
+                      id="lead-name"
+                      type="text"
+                      autoComplete="name"
+                      required
+                      {...register("name")}
+                      className={inputClass}
+                    />
+                  </Field>
+                  <Field
+                    id="lead-email"
+                    label="E-mail professionnel"
+                    error={errors.email?.message}
+                    required
+                  >
+                    <input
+                      id="lead-email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      {...register("email")}
+                      className={inputClass}
+                    />
+                  </Field>
+                  <Field
+                    id="lead-phone"
+                    label="Téléphone"
+                    error={errors.phone?.message}
+                    required
+                  >
+                    <input
+                      id="lead-phone"
+                      type="tel"
+                      autoComplete="tel"
+                      required
+                      {...register("phone")}
+                      className={inputClass}
+                    />
+                  </Field>
+                  <Field
+                    id="lead-organization"
+                    label="Organisation"
+                    error={errors.organization?.message}
+                  >
+                    <input
+                      id="lead-organization"
+                      type="text"
+                      autoComplete="organization"
+                      {...register("organization")}
+                      className={inputClass}
+                    />
+                  </Field>
+                </div>
+
+                <Field
+                  id="lead-message"
+                  label="Votre besoin en quelques mots"
+                  error={errors.message?.message}
+                >
+                  <textarea
+                    id="lead-message"
+                    rows={5}
+                    {...register("message")}
+                    className={cn(inputClass, "h-auto py-3")}
+                  />
+                </Field>
+
+                <div>
+                  <label className="flex items-start gap-3 text-sm text-ink-soft">
+                    <input
+                      type="checkbox"
+                      required
+                      {...register("consent")}
+                      className="mt-0.5 size-5 shrink-0 accent-ink"
+                    />
+                    <span className="leading-relaxed">
+                      J&apos;accepte qu&apos;Alliance Consultants utilise les
+                      informations ci-dessus pour traiter ma demande. Mes données
+                      ne seront pas cédées à des tiers.
+                    </span>
+                  </label>
+                  {errors.consent && (
+                    <p
+                      className="mt-2 text-sm font-medium text-red-dk"
+                      role="alert"
+                    >
+                      Le consentement est requis.
+                    </p>
+                  )}
+                </div>
+
+                {serverErrorMessage && (
+                  <div
+                    role="alert"
+                    className="rounded-[3px] border-2 border-red-dk bg-white px-4 py-3 text-sm font-medium text-red-dk"
+                  >
+                    {serverErrorMessage}
+                  </div>
                 )}
               </div>
 
-              {serverErrorMessage && (
-                <div
-                  role="alert"
-                  className="rounded-md border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-900"
-                >
-                  {serverErrorMessage}
-                </div>
-              )}
-
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
-                <button
-                  type="submit"
-                  disabled={status === "submitting" || !isValid}
-                  aria-describedby="lead-submit-hint"
-                  className="group/cta inline-flex h-14 items-center justify-center gap-4 rounded-full bg-ink pl-7 pr-2 text-base font-bold text-white transition-[background-color,transform] duration-300 ease-[var(--ease-out-expo)] hover:bg-night-2 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {status === "submitting" ? "Envoi en cours…" : ctaLabel}
-                  <span
-                    aria-hidden
-                    className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5"
-                  >
-                    <ArrowRight className="size-5" strokeWidth={2} />
-                  </span>
-                </button>
-                <p id="lead-submit-hint" className="text-sm text-ink-mute">
-                  {!isValid && status !== "submitting"
-                    ? "Renseignez les champs obligatoires et cochez la case de consentement pour envoyer."
-                    : "Pas d’engagement — réponse sous 24 à 48 h ouvrées."}
-                </p>
-              </div>
+              {stub}
             </form>
           )}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
 const inputClass =
-  "h-12 w-full rounded-md border-2 border-rule bg-white px-3.5 text-base text-ink transition-colors placeholder:text-ink-mute hover:border-ink-mute focus:border-ink";
+  "h-12 w-full rounded-[3px] border-2 border-ink/40 bg-white px-3.5 text-base text-ink transition-colors placeholder:text-ink-mute hover:border-ink focus:border-ink";
 
 function Field({
   id,
@@ -389,17 +411,20 @@ function Field({
 }) {
   return (
     <div className="block">
-      <label htmlFor={id} className="mb-1.5 block text-sm font-bold text-ink">
+      <label
+        htmlFor={id}
+        className="mb-1.5 block font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-ink-soft"
+      >
         {label}
         {required && (
-          <span aria-hidden="true" className="ml-1 text-rose-700">
+          <span aria-hidden="true" className="ml-1 text-red-dk">
             *
           </span>
         )}
       </label>
       {children}
       {error && (
-        <p className="mt-1.5 text-sm font-medium text-rose-700" role="alert">
+        <p className="mt-1.5 text-sm font-medium text-red-dk" role="alert">
           {error}
         </p>
       )}

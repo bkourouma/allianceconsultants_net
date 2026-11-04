@@ -15,7 +15,6 @@ import { ShareActions } from "@/components/blog/ShareActions";
 import {
   countWords,
   faqToText,
-  postLineId,
   prepareArticle,
   readingMinutesFromWords,
 } from "@/components/blog/post-utils";
@@ -24,7 +23,6 @@ import {
   listRelatedPosts,
 } from "@/lib/blog";
 import { getSiteSettings } from "@/lib/content";
-import { lineStyle } from "@/lib/network";
 import {
   buildArticleJsonLd,
   buildBlogBreadcrumbJsonLd,
@@ -123,7 +121,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const minutes = readingMinutesFromWords(wordCount);
 
   return (
-    <div style={lineStyle(postLineId(post.slug))}>
+    <div>
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
@@ -132,11 +130,11 @@ export default async function BlogPostPage({ params }: PageProps) {
       <BlogArticleHero post={post} readingMinutes={minutes} />
 
       <div className="wrap pb-14 lg:pb-20">
-        <div className="lg:grid lg:grid-cols-[14rem_minmax(0,46rem)] lg:justify-center lg:gap-16">
+        <div className="lg:grid lg:grid-cols-[15rem_minmax(0,46rem)] lg:justify-center lg:gap-14">
           <aside className="mb-8 lg:sticky lg:top-28 lg:mb-0 lg:self-start">
             <ArticleToc items={toc} />
-            <div className="mt-8 hidden lg:block">
-              <p className="mb-3 text-sm font-bold text-ink">Partager</p>
+            <div className="coupon mt-6 hidden p-3 pb-5 lg:block">
+              <p className="t-field mb-3">Partager</p>
               <ShareActions url={url} title={post.title} variant="rail" />
             </div>
           </aside>
@@ -145,9 +143,10 @@ export default async function BlogPostPage({ params }: PageProps) {
             <ArticleBody html={html} id={ARTICLE_ID} />
             <ArticleFaq entries={post.faq} />
 
-            <footer className="mt-12 border-t border-ink/15 pt-6">
+            <footer className="mt-14">
+              <hr className="tear" />
               {post.tags.length > 0 ? (
-                <ul className="mb-6 flex flex-wrap gap-1.5">
+                <ul className="mt-6 flex flex-wrap gap-1.5">
                   {post.tags.map((t) => (
                     <li key={t.slug}>
                       <BlogTagBadge tag={t} />
@@ -155,7 +154,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                   ))}
                 </ul>
               ) : null}
-              <p className="mb-3 text-sm font-bold text-ink">Partager cet article</p>
+              <p className="t-field mb-3 mt-6">Partager cet article</p>
               <ShareActions url={url} title={post.title} variant="bar" />
             </footer>
           </article>
@@ -168,28 +167,22 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       {related.length > 0 ? (
         <section aria-labelledby="related-title" className="wrap pb-20 lg:pb-28">
-          <div className="flex flex-wrap items-end justify-between gap-4 pb-6">
-            <h2
-              id="related-title"
-              className="t-h2 text-ink"
-            >
+          <div className="flex flex-wrap items-end justify-between gap-4 pb-8">
+            <h2 id="related-title" className="t-h2 text-ink">
               À lire ensuite
             </h2>
             <Link
               href="/blog"
-              className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 hover:decoration-4"
+              className="inline-flex min-h-11 items-center gap-2 font-mono text-[0.75rem] font-medium uppercase tracking-[0.08em] text-ink underline decoration-red decoration-2 underline-offset-[6px] hover:decoration-4"
             >
               Tous les articles
               <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
             </Link>
           </div>
-          <ul className="border-b border-ink/15">
-            {related.map((p, i) => (
+          <ul className="grid gap-4 sm:gap-5">
+            {related.map((p) => (
               <li key={p.id}>
-                <BlogIndexCard
-                  post={{ ...p, readingMinutes: relatedMinutes[p.id] }}
-                  emphasis={i % 2 === 0 ? "lg" : "sm"}
-                />
+                <BlogIndexCard post={{ ...p, readingMinutes: relatedMinutes[p.id] }} />
               </li>
             ))}
           </ul>

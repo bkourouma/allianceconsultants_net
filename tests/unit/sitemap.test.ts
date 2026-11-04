@@ -62,7 +62,7 @@ describe("sitemap", () => {
     );
   });
 
-  it("inclut les pages statiques, services, formations, solutions, tags et références", async () => {
+  it("inclut les pages statiques, services, formations, solutions et références", async () => {
     const urls = (await sitemap()).map((e) => e.url);
     for (const path of [
       "/",
@@ -71,11 +71,15 @@ describe("sitemap", () => {
       "/solutions/medicpro",
       "/services/scanners-professionnels",
       "/formations/ged-archivage",
-      "/blog/tags/ia",
       "/references/ref1",
     ]) {
       expect(urls).toContain(`${BASE}${path}`);
     }
+  });
+
+  it("n'expose pas les pages de tag (noindex)", async () => {
+    const urls = (await sitemap()).map((e) => e.url);
+    expect(urls.some((u) => u.includes("/blog/tags/"))).toBe(false);
   });
 
   it("date /blog par le dernier article, et n'invente pas de date pour les pages MDX", async () => {

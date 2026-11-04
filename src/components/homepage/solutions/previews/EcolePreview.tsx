@@ -40,14 +40,14 @@ export function EcolePreview({ name }: { name: string }) {
             <button
               type="button"
               onClick={() => update(students.map(() => true))}
-              className="inline-flex min-h-11 items-center rounded-full px-3 text-[0.8125rem] font-bold text-ink underline decoration-2 underline-offset-4 hover:bg-enamel sm:min-h-8"
+              className="inline-flex min-h-11 items-center rounded-[3px] px-3 text-[0.8125rem] font-bold text-ink underline decoration-2 underline-offset-4 hover:bg-enamel sm:min-h-8"
             >
               Tous présents
             </button>
             <button
               type="button"
               onClick={() => update(students.map(() => false))}
-              className="inline-flex min-h-11 items-center rounded-full px-3 text-[0.8125rem] font-bold text-ink-soft underline decoration-2 underline-offset-4 hover:bg-enamel sm:min-h-8"
+              className="inline-flex min-h-11 items-center rounded-[3px] px-3 text-[0.8125rem] font-bold text-ink-soft underline decoration-2 underline-offset-4 hover:bg-enamel sm:min-h-8"
             >
               Remettre à zéro
             </button>
@@ -73,8 +73,8 @@ export function EcolePreview({ name }: { name: string }) {
               <span
                 key={s}
                 className={
-                  "h-2 flex-1 rounded-full transition-colors duration-300 motion-reduce:transition-none " +
-                  (marks[cls][i] ? "bg-[var(--accent)]" : "bg-enamel ring-1 ring-inset ring-rule")
+                  "h-2 flex-1 rounded-[2px] transition-colors duration-300 motion-reduce:transition-none " +
+                  (marks[cls][i] ? "bg-ink" : "bg-enamel ring-1 ring-inset ring-rule")
                 }
               />
             ))}

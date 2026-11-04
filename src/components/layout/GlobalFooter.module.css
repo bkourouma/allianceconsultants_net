@@ -1,0 +1,24 @@
+/* The stub's torn edge: a strip of night paper with half-round perforation
+   holes punched out along the top, so whatever sits behind shows through. */
+.edge {
+  height: 14px;
+  background: var(--color-night);
+  -webkit-mask-image: radial-gradient(circle at 11px 0, transparent 5px, #000 5.6px);
+  mask-image: radial-gradient(circle at 11px 0, transparent 5px, #000 5.6px);
+  -webkit-mask-size: 22px 14px;
+  mask-size: 22px 14px;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+
+/* Dashed perforation on dark stock. */
+.perf {
+  border: 0;
+  border-top: 2px dashed rgb(255 255 255 / 0.28);
+}
+
+@media print {
+  .edge {
+    display: none;
+  }
+}

@@ -3,10 +3,8 @@ import { JsonLd } from "@/components/shared/JsonLd";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { Breadcrumb } from "@/components/services/Breadcrumb";
 import { ServiceFinder } from "@/components/services/ServiceFinder";
-import { ServicesHeroArt } from "@/components/services/ServicesHeroArt";
-import { Terminus } from "@/components/services/Terminus";
+import { StubCTA } from "@/components/services/StubCTA";
 import { getServices } from "@/lib/content";
-import { LINES } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 
 const SITE_URL =
@@ -50,16 +48,15 @@ export default async function ServicesIndexPage() {
     <>
       <JsonLd data={breadcrumb} />
 
-      <section className="relative isolate overflow-hidden">
-        <ServicesHeroArt className="pointer-events-none absolute -right-10 top-0 -z-10 hidden h-full w-auto max-w-[44%] md:block lg:right-4" />
-        <div className="wrap pb-12 pt-8 md:pb-20 md:pt-10">
+      <section className="pb-10 pt-4 md:pb-14">
+        <div className="wrap">
           <Breadcrumb
             items={[{ label: "Accueil", href: "/" }, { label: "Services" }]}
           />
-          <h1 className="t-display mt-10 max-w-[16ch] text-ink md:mt-16">
-            Nos services, vos correspondances
+          <h1 className="t-display mt-6 max-w-[24ch] text-ink md:mt-10">
+            Concevoir, automatiser, dématérialiser
           </h1>
-          <p className="t-lead mt-6 md:max-w-[46ch]">
+          <p className="t-lead mt-6">
             Du développement spécifique à la dématérialisation, en passant par
             l&apos;automatisation IA et l&apos;AMOA : nous accompagnons les
             organisations africaines à chaque étape de leur transformation
@@ -88,10 +85,9 @@ export default async function ServicesIndexPage() {
 
       <div className="pb-16 md:pb-24">
         <div className="wrap">
-          <Terminus
-            titleId="services-terminus"
-            title="Un besoin ? Descendons à la bonne station."
-            colors={LINES.map((l) => l.color)}
+          <StubCTA
+            titleId="services-cta-title"
+            title="Un besoin ? Décrivez-le-nous."
             actions={
               <>
                 <CTAButton
@@ -99,7 +95,7 @@ export default async function ServicesIndexPage() {
                   label="Demander un échange"
                   block="final-cta"
                   size="lg"
-                  onDark
+                  className="w-full"
                 />
                 <CTAButton
                   intent="automation"
@@ -107,14 +103,14 @@ export default async function ServicesIndexPage() {
                   block="final-cta"
                   size="lg"
                   variant="secondary"
-                  onDark
+                  className="w-full"
                 />
               </>
             }
           >
             Décrivez votre contexte : nous vous indiquons le service et la
             solution qui correspondent.
-          </Terminus>
+          </StubCTA>
         </div>
       </div>
     </>

@@ -228,6 +228,11 @@ export function buildOrganizationJsonLd(
 // (feature 001-pages-corporate-solutions)
 // ============================================================================
 
+/**
+ * `Service` et non `Product` : Google exige `offers`, `review` ou
+ * `aggregateRating` pour un Product, et le dépôt ne publie ni prix public ni
+ * avis pour les solutions.
+ */
 export function buildProductJsonLd(
   solution: SolutionDetail,
   siteUrl: string
@@ -239,8 +244,6 @@ export function buildProductJsonLd(
 
   return {
     "@context": "https://schema.org",
-    // "Service" plutôt que "Product" : Product exige offers, review ou
-    // aggregateRating, que le site ne publie pas (pas de prix ni d'avis).
     "@type": "Service",
     name: solution.name,
     description: solution.shortDescription,

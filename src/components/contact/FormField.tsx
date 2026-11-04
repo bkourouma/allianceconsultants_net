@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 
 const ERROR_COLOR = "text-[#b4123f]";
 
-/** Classes d'un champ texte du site : 48 px, 8 px d'arrondi, bague de focus de marque. */
+/** Classes d'un champ texte autonome du site : 48 px, filet marine, bague de focus marine. */
 export function inputClass(invalid: boolean) {
   return cn(
-    "h-12 w-full rounded-lg border bg-panel px-3.5 text-base text-ink transition-colors placeholder:text-ink-mute focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-brand/30",
-    invalid ? "border-[#b4123f]" : "border-ink-mute/70",
+    "h-12 w-full rounded-[4px] border bg-panel px-3.5 text-base text-ink transition-colors placeholder:text-ink-mute focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-ink/25",
+    invalid ? "border-[#b4123f]" : "border-ink-mute",
   );
 }
 

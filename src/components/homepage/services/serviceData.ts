@@ -13,10 +13,13 @@ export const SERVICE_LINES: Record<string, LineId[]> = {
   "assistance-maitrise-ouvrage": ALL,
   "automatisation-ia-processus-metiers": ["docupro", "medicpro", "immotopia"],
   "dematerialisation-archives": ["docupro", "medicpro", "cliniquepro"],
+  "scanners-professionnels": ["docupro"],
 };
 
 export function linesForService(slug: string): LineId[] {
-  return SERVICE_LINES[slug] ?? ALL;
+  if (SERVICE_LINES[slug]) return SERVICE_LINES[slug];
+  if (slug.includes("scanner")) return ["docupro"];
+  return ALL;
 }
 
 /** Roundel code shown inside each line badge (kept short, like a line number). */

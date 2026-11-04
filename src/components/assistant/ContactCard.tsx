@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, CircleAlert, Loader2, ShieldCheck } from "lucide-react";
 import { z } from "zod";
 import { Field, FieldErrorMessage, inputClass } from "@/components/contact/FormField";
+import { cn } from "@/lib/utils";
+import styles from "./assistant.module.css";
 import type { ContactValues, SubmitResult } from "./useAssistantChat";
 
 // Mêmes règles que POST /api/lead (le serveur reste l'autorité) ; messages en français.
@@ -42,6 +44,11 @@ interface ContactCardProps {
   onDismiss: () => void;
 }
 
+/** Champ de coupon : filet navy de 2 px, angles de 4 px (l'anneau de focus vient du panneau). */
+function fieldClass(invalid: boolean) {
+  return cn(inputClass(invalid), "rounded-[4px] border-2", !invalid && "border-ink");
+}
+
 export function ContactCard({ id, summary, status, onSubmit, onDismiss }: ContactCardProps) {
   const [serverError, setServerError] = useState<string | null>(null);
   const {
@@ -63,9 +70,12 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
 
   if (status === "submitted") {
     return (
-      <div className="flex items-center gap-2.5 rounded-lg bg-panel px-3.5 py-3 text-sm font-semibold text-ink ring-1 ring-rule">
-        <ShieldCheck aria-hidden className="size-5 shrink-0 text-[var(--accent)]" strokeWidth={2} />
-        Coordonnées transmises à l&apos;équipe.
+      <div className="coupon flex items-center gap-2.5 px-3.5 py-3 text-sm font-semibold text-ink">
+        <ShieldCheck aria-hidden className="size-5 shrink-0 text-ink" strokeWidth={2} />
+        <span className="min-w-0 flex-1">Coordonnées transmises à l&apos;équipe.</span>
+        <span aria-hidden className={cn("stamp shrink-0 text-xs", styles.press)}>
+          Demande envoyée
+        </span>
       </div>
     );
   }
@@ -91,17 +101,18 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
       onSubmit={submit}
       noValidate
       aria-label="Vos coordonnées"
-      className="relative grid gap-4 overflow-hidden rounded-lg bg-panel p-4 pt-5 ring-1 ring-rule"
+      className={`${styles.panel} coupon relative grid gap-4 p-4`}
     >
-      <span aria-hidden className="absolute inset-x-0 top-0 h-1.5 bg-[var(--accent)]" />
-
       <div aria-hidden="true" className="absolute -left-[10000px] size-px overflow-hidden">
         <label htmlFor={fid("honeypot")}>Ne pas remplir</label>
         <input id={fid("honeypot")} type="text" tabIndex={-1} autoComplete="off" {...register("honeypot")} />
       </div>
 
       <div>
-        <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-ink">
+        <p aria-hidden className="t-field mb-1">
+          Coupon détachable
+        </p>
+        <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-ink">
           Vos coordonnées
         </h3>
         <p className="mt-1 text-sm text-ink-soft">
@@ -111,7 +122,7 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
           <summary className="cursor-pointer font-semibold text-ink underline decoration-ink/40 underline-offset-4">
             Voir le résumé transmis avec vos coordonnées
           </summary>
-          <p className="mt-2 whitespace-pre-line rounded-lg bg-enamel p-3">{summary}</p>
+          <p className="mt-2 whitespace-pre-line rounded-[4px] border border-dashed border-ink bg-enamel p-3">{summary}</p>
         </details>
       </div>
 
@@ -124,7 +135,7 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
           aria-invalid={errors.name ? true : undefined}
           aria-describedby={errors.name ? `${fid("name")}-error` : undefined}
           {...register("name")}
-          className={inputClass(!!errors.name)}
+          className={fieldClass(!!errors.name)}
         />
       </Field>
       <Field id={fid("organization")} label="Organisation" required error={errors.organization?.message}>
@@ -136,7 +147,7 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
           aria-invalid={errors.organization ? true : undefined}
           aria-describedby={errors.organization ? `${fid("organization")}-error` : undefined}
           {...register("organization")}
-          className={inputClass(!!errors.organization)}
+          className={fieldClass(!!errors.organization)}
         />
       </Field>
       <Field id={fid("email")} label="E-mail professionnel" required error={errors.email?.message}>
@@ -148,7 +159,7 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
           aria-invalid={errors.email ? true : undefined}
           aria-describedby={errors.email ? `${fid("email")}-error` : undefined}
           {...register("email")}
-          className={inputClass(!!errors.email)}
+          className={fieldClass(!!errors.email)}
         />
       </Field>
       <Field
@@ -166,7 +177,7 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
           aria-invalid={errors.phone ? true : undefined}
           aria-describedby={errors.phone ? `${fid("phone")}-error` : `${fid("phone")}-hint`}
           {...register("phone")}
-          className={inputClass(!!errors.phone)}
+          className={fieldClass(!!errors.phone)}
         />
       </Field>
 
@@ -178,7 +189,7 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
             aria-invalid={errors.consent ? true : undefined}
             aria-describedby={errors.consent ? `${fid("consent")}-error` : undefined}
             {...register("consent")}
-            className="mt-0.5 size-5 shrink-0 accent-[#0b1b3a]"
+            className="mt-0.5 size-5 shrink-0 accent-ink"
           />
           <span className="leading-relaxed">
             J&apos;accepte qu&apos;Alliance Consultants utilise ces informations et le résumé de cet échange
@@ -200,34 +211,34 @@ export function ContactCard({ id, summary, status, onSubmit, onDismiss }: Contac
       </div>
 
       {serverError ? (
-        <div role="alert" className="flex gap-3 rounded-lg bg-[#fdeaf0] p-3 text-sm text-[#7a0c29]">
+        <div role="alert" className="flex gap-3 rounded-[4px] border-2 border-[#b4123f] bg-white p-3 text-sm text-[#7a0c29]">
           <CircleAlert aria-hidden className="mt-0.5 size-5 shrink-0" strokeWidth={2} />
           <p>{serverError}</p>
         </div>
       ) : null}
 
+      <div className="tear -mx-4 mb-0.5" aria-hidden />
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="group/cta inline-flex h-12 items-center justify-center gap-3 rounded-full bg-ink pl-5 pr-1.5 text-[0.9375rem] font-bold text-white transition-[background-color,opacity,transform] duration-300 ease-[var(--ease-out-expo)] hover:bg-night-2 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-70"
+          className="group/cta inline-flex h-12 items-center justify-center gap-2.5 rounded-[3px] bg-red px-5 font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] text-white shadow-[0_8px_16px_-8px_rgba(176,40,32,0.55)] transition-[background-color,opacity,transform] duration-200 ease-[var(--ease-out-expo)] hover:bg-red-dk active:translate-y-[2px] active:shadow-none disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? "Envoi en cours…" : "Envoyer mes coordonnées"}
-          <span
-            aria-hidden
-            className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-enabled/cta:group-hover/cta:translate-x-0.5"
-          >
-            {isSubmitting ? (
-              <Loader2 className="size-4 animate-spin" strokeWidth={2} />
-            ) : (
-              <ArrowRight className="size-4" strokeWidth={2} />
-            )}
-          </span>
+          {isSubmitting ? (
+            <Loader2 aria-hidden className="size-4 animate-spin" strokeWidth={2.25} />
+          ) : (
+            <ArrowRight
+              aria-hidden
+              className="size-4 transition-transform duration-200 ease-[var(--ease-out-expo)] group-enabled/cta:group-hover/cta:translate-x-0.5"
+              strokeWidth={2.25}
+            />
+          )}
         </button>
         <button
           type="button"
           onClick={onDismiss}
-          className="min-h-11 rounded-full px-2 text-sm font-semibold text-ink-soft underline decoration-ink/30 underline-offset-4 hover:text-ink"
+          className="min-h-11 rounded-[3px] px-2 text-sm font-semibold text-ink-soft underline decoration-ink/40 underline-offset-4 hover:text-ink"
         >
           Plus tard
         </button>

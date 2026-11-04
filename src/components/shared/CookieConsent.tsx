@@ -7,7 +7,7 @@ import { getConsentSnapshot, getServerConsentSnapshot, setConsentChoice, subscri
 
 // Même poids visuel pour les deux choix : contour ink 2px, pastille pleine au survol.
 const BTN =
-  "inline-flex min-h-11 cursor-pointer flex-1 items-center justify-center rounded-full bg-panel px-6 text-base font-bold text-ink ring-2 ring-inset ring-ink transition-colors duration-300 hover:bg-ink hover:text-white sm:flex-none";
+  "inline-flex min-h-11 cursor-pointer flex-1 items-center justify-center rounded-[3px] bg-panel px-6 font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] text-ink ring-2 ring-inset ring-ink transition-colors duration-200 hover:bg-ink hover:text-white sm:flex-none";
 
 /**
  * Bandeau de consentement : fixé en bas (aucun décalage de mise en page), non bloquant.
@@ -68,7 +68,7 @@ export function CookieConsent() {
       aria-labelledby="cookie-consent-title"
       aria-describedby="cookie-consent-desc"
       tabIndex={-1}
-      className="fixed inset-x-0 bottom-0 z-[60] border-t border-rule bg-panel pb-[env(safe-area-inset-bottom)] text-ink shadow-[0_-18px_30px_-18px_rgba(11,27,58,0.28)] outline-none print:hidden"
+      className="fixed inset-x-0 bottom-0 z-[60] border-t-2 border-ink bg-panel pb-[env(safe-area-inset-bottom)] text-ink shadow-[0_-18px_30px_-18px_rgba(11,27,58,0.28)] outline-none print:hidden"
     >
       <div className="wrap flex flex-col gap-4 py-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
         <div className="max-w-[68ch]">

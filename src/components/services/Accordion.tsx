@@ -9,23 +9,28 @@ export interface AccordionItem {
 }
 
 /**
- * Native <details>/<summary> accordion: keyboard + screen-reader semantics
- * for free, works without JS, no layout shift.
+ * Native <details>/<summary> accordion drawn as one coupon whose folds are
+ * dashed tear lines. Keyboard + screen-reader semantics for free, works
+ * without JS, no layout shift.
  */
 export function Accordion({ items }: { items: AccordionItem[] }) {
   return (
-    <div className="divide-y divide-rule overflow-hidden rounded-lg bg-panel ring-1 ring-rule">
+    <div className="coupon overflow-hidden">
       {items.map((it) => (
-        <details key={it.id} className="group" open={it.defaultOpen}>
-          <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 font-display text-lg font-semibold tracking-tight text-ink transition-colors hover:bg-enamel [&::-webkit-details-marker]:hidden">
+        <details
+          key={it.id}
+          className="group border-t-2 border-dashed border-ink first:border-t-0"
+          open={it.defaultOpen}
+        >
+          <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 font-display text-xl font-bold leading-tight text-ink transition-colors hover:bg-enamel group-open:bg-[#f6f5fb] md:px-6 [&::-webkit-details-marker]:hidden">
             {it.title}
             <ChevronDown
               aria-hidden
-              strokeWidth={1.75}
-              className="size-5 shrink-0 text-ink-soft transition-transform duration-300 ease-[var(--ease-out-expo)] group-open:rotate-180 motion-reduce:transition-none"
+              strokeWidth={2}
+              className="size-5 shrink-0 text-ink transition-transform duration-300 ease-[var(--ease-out-expo)] group-open:rotate-180 motion-reduce:transition-none"
             />
           </summary>
-          <div className="px-5 pb-6 pt-1 text-ink-soft">{it.content}</div>
+          <div className="px-5 pb-6 pt-3 text-ink-soft md:px-6">{it.content}</div>
         </details>
       ))}
     </div>

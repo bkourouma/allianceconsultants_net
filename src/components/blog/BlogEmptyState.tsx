@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { ArrowLeft, Rss } from "lucide-react";
 
-/** Empty listing: a line waiting for its first station. */
+const LINK =
+  "inline-flex min-h-11 items-center gap-2 font-mono text-[0.75rem] font-medium uppercase tracking-[0.08em] text-ink underline decoration-red decoration-2 underline-offset-[6px] hover:decoration-4";
+
+/**
+ * Empty listing: a blank coupon, fields still empty. The rubber stamp only
+ * appears for the main index ("à paraître"); a tag with no article stays calm.
+ */
 export function BlogEmptyState({
   title,
   children,
@@ -14,27 +20,19 @@ export function BlogEmptyState({
   backToAll?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-8 rounded-[8px] bg-panel p-8 ring-1 ring-rule sm:p-12 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <div>
-        <h2 className="font-display text-balance text-3xl font-extrabold leading-[1.05] tracking-[-0.025em] text-ink sm:text-4xl">
-          {title}
-        </h2>
-        {children ? <p className="t-body mt-3 text-ink-soft">{children}</p> : null}
-        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+    <div className="coupon grid overflow-hidden lg:grid-cols-[minmax(0,1fr)_17rem]">
+      <div className="p-6 sm:p-10">
+        <h2 className="t-h2 text-ink">{title}</h2>
+        {children ? <p className="t-lead mt-4">{children}</p> : null}
+        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-1">
           {showRss ? (
-            <Link
-              href="/feed.xml"
-              className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 hover:decoration-4"
-            >
+            <Link href="/feed.xml" className={LINK}>
               <Rss aria-hidden className="size-4" strokeWidth={2} />
               S&apos;abonner au flux RSS
             </Link>
           ) : null}
           {backToAll ? (
-            <Link
-              href="/blog"
-              className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4 hover:decoration-4"
-            >
+            <Link href="/blog" className={LINK}>
               <ArrowLeft aria-hidden className="size-4" strokeWidth={2} />
               Tous les articles
             </Link>
@@ -42,14 +40,19 @@ export function BlogEmptyState({
         </div>
       </div>
 
-      {/* A line that has not reached its first station yet. */}
-      <svg viewBox="0 0 320 120" aria-hidden="true" className="hidden h-auto w-full lg:block">
-        <path d="M0 90H110L170 30H250" fill="none" stroke="var(--accent)" strokeWidth="14" strokeLinejoin="round" />
-        <path d="M250 30H320" fill="none" stroke="var(--color-rule)" strokeWidth="14" strokeDasharray="4 18" strokeLinecap="round" />
-        <circle cx="110" cy="90" r="13" fill="#fff" stroke="#0b1b3a" strokeWidth="5" />
-        <circle cx="250" cy="30" r="17" fill="#fff" stroke="#0b1b3a" strokeWidth="5" />
-        <circle cx="250" cy="30" r="6" fill="var(--accent)" />
-      </svg>
+      <div
+        aria-hidden
+        className="relative hidden flex-col justify-center gap-3 border-l-2 border-dashed border-ink bg-enamel/60 px-6 lg:flex"
+      >
+        <span className="h-2.5 w-4/5 rounded-[2px] bg-rule" />
+        <span className="h-2.5 w-3/5 rounded-[2px] bg-rule" />
+        <span className="h-2.5 w-2/3 rounded-[2px] bg-rule" />
+        {showRss ? (
+          <span className="stamp absolute bottom-6 right-5 bg-panel/80 text-[0.75rem]!">
+            À paraître
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }

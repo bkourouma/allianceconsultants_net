@@ -1,8 +1,5 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import styles from "./Timeline.module.css";
+import styles from "./Passport.module.css";
 
 interface Milestone {
   year: number;
@@ -15,120 +12,67 @@ interface HistoryTimelineProps {
 }
 
 /**
- * Horizontal history line (desktop) / vertical list (phone).
- * Years are stations, spaced proportionally to time. On desktop the line
- * advances with scroll; without JS or with reduced motion it is fully drawn.
+ * L'histoire d'Alliance en passeport : une page de visa par jalon.
+ * L'année en grands chiffres carbone, un cachet d'entrée encre marine lisible,
+ * une zone lisible par machine en pied de page. Entièrement statique.
  */
 export function HistoryTimeline({ history, className }: HistoryTimelineProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  // 1 = fully drawn (SSR / no JS / reduced motion).
-  const [p, setP] = useState(1);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const el = ref.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const next = Math.min(1, Math.max(0, (vh * 0.92 - r.top) / (vh * 0.55)));
-      const q = Math.round(next * 100) / 100;
-      setP((prev) => (prev === q ? prev : q));
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
   if (history.length === 0) return null;
-  const first = history[0].year;
-  const last = history[history.length - 1].year;
-  const span = Math.max(1, last - first);
 
   return (
-    <div
-      ref={ref}
+    <ol
+      aria-label="Histoire d'Alliance Consultants"
       className={cn(
-        "relative pl-10 lg:h-72 lg:pl-0 lg:px-3",
+        "grid gap-6 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5",
         className,
       )}
     >
-      {/* track + progress */}
-      <div
-        aria-hidden
-        className="absolute bottom-2 left-[0.875rem] top-2 w-1 rounded-full bg-ink lg:inset-x-3 lg:bottom-auto lg:left-3 lg:right-3 lg:top-1/2 lg:h-2 lg:w-auto lg:-translate-y-1/2 lg:bg-rule"
-      >
-        <div
-          className={cn(styles.fill, "hidden h-full w-full rounded-full bg-ink lg:block")}
-          style={{ ["--p" as string]: p }}
-        />
-      </div>
+      {history.map((m, i) => (
+        <li
+          key={`${m.year}-${i}`}
+          className={cn(styles.visa, "coupon relative flex min-h-[15rem] sm:min-h-[19rem] flex-col overflow-hidden")}
+        >
+          <div className="relative flex items-center justify-between border-b-2 border-ink px-5 py-2.5">
+            <span className="!text-xs t-field">Visa d&apos;entrée</span>
+            <span className="!text-xs t-field t-num" aria-hidden>
+              p. {String(i + 1).padStart(2, "0")}
+            </span>
+          </div>
 
-      <ol aria-label="Histoire d'Alliance Consultants" className="relative space-y-9 lg:absolute lg:inset-x-3 lg:inset-y-0 lg:space-y-0">
-        {history.map((m, i) => {
-          const x = ((m.year - first) / span) * 100;
-          const reached = p >= x / 100 - 0.001;
-          const isFirst = i === 0;
-          const isLast = i === history.length - 1;
-          const above = i % 2 === 0;
-          return (
-            <li
-              key={`${m.year}-${i}`}
-              className="relative lg:absolute lg:left-[var(--x)] lg:top-1/2"
-              style={{ ["--x" as string]: `${x}%` }}
+          <div className="relative flex flex-1 flex-col px-5 pb-4 pt-5">
+            <time
+              dateTime={String(m.year)}
+              className="t-num carbon block font-display text-[5rem] font-extrabold italic leading-[0.85] tracking-[-0.01em] xl:text-[4.5rem] 2xl:text-[5rem]"
             >
-              <span
-                aria-hidden
-                className={cn(
-                  "absolute -left-10 top-1 grid size-8 place-items-center rounded-full bg-enamel",
-                  "lg:left-0 lg:top-0 lg:-translate-x-1/2 lg:-translate-y-1/2",
-                )}
-              >
-                <span
-                  className={cn(
-                    "block size-6 rounded-full border-[5px] transition-colors duration-500 ease-[var(--ease-out-expo)]",
-                    "border-ink bg-[var(--accent)]",
-                    !reached && "lg:bg-panel lg:border-ink/30",
-                  )}
-                />
-              </span>
-              <div
-                className={cn(
-                  "lg:absolute lg:w-60",
-                  above ? "lg:bottom-7" : "lg:top-7",
-                  isFirst
-                    ? "lg:left-[-0.75rem] lg:text-left"
-                    : isLast
-                      ? "lg:right-[-0.75rem] lg:text-right"
-                      : "lg:left-1/2 lg:-translate-x-1/2 lg:text-center",
-                )}
-              >
-                <time
-                  dateTime={String(m.year)}
-                  className={cn(
-                    "t-num block font-display text-4xl font-extrabold leading-none tracking-tight transition-colors duration-500",
-                    "text-ink",
-                    !reached && "lg:text-ink-mute",
-                  )}
-                >
-                  {m.year}
-                </time>
-                <p className="mt-2 text-base leading-snug text-ink-soft">{m.label}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
+              {m.year}
+            </time>
+            <p className="relative z-10 mt-5 max-w-[24ch] flex-1 text-[1.0625rem] leading-snug text-ink">
+              {m.label}
+            </p>
+
+            {/* Navy entry cachet, slightly off-register */}
+            <span
+              aria-hidden
+              className={cn(
+                styles.entry,
+                i % 2 === 0 ? "-rotate-[5deg]" : "-rotate-[2deg]",
+              )}
+            >
+              <span>Abidjan</span>
+              <b>{m.year}</b>
+              <span>Côte d&apos;Ivoire</span>
+            </span>
+
+            {/* Machine-readable zone */}
+            <p
+              aria-hidden
+              className="mt-5 select-none overflow-hidden whitespace-nowrap font-mono text-xs leading-tight tracking-[0.12em] text-ink/60"
+            >
+              {`ALLIANCE<CONSULTANTS<<${m.year}<<<<<<<<<<`}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }

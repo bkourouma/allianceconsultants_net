@@ -3,9 +3,7 @@ import Link from "next/link";
 import { Link2 } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { ManageCookiesButton } from "@/components/shared/ManageCookiesButton";
-import { RouteBand } from "@/components/about/RouteBand";
 import { getSiteSettings } from "@/lib/content";
-import { getLine } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 import { Toc, type TocItem } from "./Toc";
 
@@ -66,14 +64,14 @@ function H2({ id }: { id: string }) {
     <div className="group relative">
       <h2
         id={id}
-        className="font-display text-[1.625rem] font-bold leading-tight tracking-tight text-ink [text-wrap:balance] sm:text-3xl"
+        className="border-t-2 border-ink pt-4 font-display text-[1.75rem] font-bold leading-tight text-ink [text-wrap:balance] sm:text-[2rem]"
       >
         {title(id)}
       </h2>
       <a
         href={`#${id}`}
         aria-label={`Lien direct vers la section : ${title(id)}`}
-        className="absolute -left-9 top-1 hidden size-7 place-items-center rounded-full text-ink-mute opacity-0 transition-opacity hover:text-ink focus-visible:opacity-100 group-hover:opacity-100 xl:grid"
+        className="absolute -left-9 top-5 hidden size-7 place-items-center rounded-[3px] text-ink-mute opacity-0 transition-opacity hover:text-ink focus-visible:opacity-100 group-hover:opacity-100 xl:grid"
       >
         <Link2 aria-hidden className="size-4" strokeWidth={2} />
       </a>
@@ -108,7 +106,7 @@ export default async function PrivacyPage() {
     <>
       <JsonLd data={breadcrumb} />
 
-      <section className="bg-enamel pt-8 lg:pt-12">
+      <section className="border-b-2 border-ink bg-enamel pb-12 pt-8 lg:pb-16 lg:pt-12">
         <div className="wrap">
           <nav aria-label="Fil d'Ariane">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-ink-mute">
@@ -140,21 +138,13 @@ export default async function PrivacyPage() {
             <time dateTime={LAST_UPDATED}>{LAST_UPDATED_LABEL}</time>
           </p>
         </div>
-        <RouteBand
-          colors={[
-            getLine("docupro")!.color,
-            getLine("cliniquepro")!.color,
-            getLine("medicpro")!.color,
-          ]}
-          className="mt-10 lg:mt-14"
-        />
       </section>
 
       <section className="bg-panel py-12 lg:py-20">
         <div className="wrap grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-20">
           <Toc items={SECTIONS} />
 
-          <div className="min-w-0 max-w-[68ch] space-y-14 text-[1.0625rem] leading-[1.75] text-ink-soft lg:space-y-16">
+          <div className="min-w-0 max-w-[68ch] space-y-14 text-[1.0625rem] leading-[1.75] text-ink-soft lg:space-y-16 [&_li]:text-pretty [&_p]:text-pretty">
             <article aria-labelledby="responsable-de-traitement">
               <H2 id="responsable-de-traitement" />
               <p className={P}>

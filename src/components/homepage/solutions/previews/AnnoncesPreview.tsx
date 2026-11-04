@@ -46,11 +46,11 @@ export function AnnoncesPreview({ name }: { name: string }) {
           {shown.map((l) => (
             <li
               key={l.id}
-              className="flex items-stretch gap-3 rounded-md bg-enamel p-2 ring-1 ring-inset ring-rule"
+              className="flex items-stretch gap-3 rounded-[3px] bg-enamel p-2 ring-1 ring-inset ring-rule"
             >
               <span
                 aria-hidden
-                className="grid w-16 shrink-0 place-items-center rounded bg-[var(--accent)] text-[var(--on-accent)] sm:w-20"
+                className="grid w-16 shrink-0 place-items-center rounded-[2px] bg-panel text-ink ring-[1.5px] ring-inset ring-ink sm:w-20"
               >
                 <Home className="size-6" strokeWidth={1.75} />
               </span>
@@ -78,7 +78,7 @@ export function AnnoncesPreview({ name }: { name: string }) {
                 onClick={() =>
                   setNote("Aperçu : le contact WhatsApp est désactivé dans cette démonstration.")
                 }
-                className="inline-flex min-h-11 shrink-0 cursor-not-allowed items-center gap-1.5 self-center rounded-full bg-panel px-3 text-[0.75rem] font-bold text-ink-mute ring-1 ring-inset ring-rule sm:min-h-9"
+                className="inline-flex min-h-11 shrink-0 cursor-not-allowed items-center gap-1.5 self-center rounded-[3px] bg-panel px-3 text-[0.75rem] font-bold text-ink-mute ring-1 ring-inset ring-rule sm:min-h-9"
               >
                 <MessageCircle aria-hidden className="size-4" strokeWidth={2} />
                 <span className="hidden sm:inline">WhatsApp</span>

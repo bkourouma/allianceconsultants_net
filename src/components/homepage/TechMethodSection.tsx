@@ -1,4 +1,3 @@
-import { LINES } from "@/lib/network";
 import type { Homepage } from "@/lib/validators/content";
 
 interface TechMethodSectionProps {
@@ -6,61 +5,52 @@ interface TechMethodSectionProps {
 }
 
 /**
- * Stack as a signage board: a full-bleed ink band, heading stacked over one
- * wide enamel-edged panel. No percentages, no levels — just what the products
- * are built with. The six line colours run along the foot of the band, towards
- * the terminus that follows.
+ * La stack en fiche technique : un coupon calme, filets encre, le résumé de
+ * méthode d'un côté, les technologies en puces de l'autre. Pas de pourcentages,
+ * pas de niveaux : seulement ce avec quoi les produits sont construits.
  */
 export function TechMethodSection({ techSection }: TechMethodSectionProps) {
   return (
     <section
       aria-labelledby="tech-section-title"
-      className="relative bg-ink pt-16 text-white lg:pt-24"
+      className="bg-enamel pb-16 pt-4 text-ink lg:pb-24"
     >
       <div className="wrap">
-        <h2
-          id="tech-section-title"
-          className="t-h2 max-w-[22ch] text-white lg:max-w-[26ch]"
-        >
+        <h2 id="tech-section-title" className="t-h2 max-w-[22ch] lg:max-w-[26ch]">
           {techSection.title}
         </h2>
 
-        <div className="mt-8 rounded-lg border border-white/25 p-2 sm:p-2.5 lg:mt-12">
-          <div className="grid gap-8 rounded-[5px] border border-white/20 p-5 sm:p-7 lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)] lg:gap-12 lg:p-9">
-            <div>
-              <p className="flex items-center gap-3 text-sm font-bold text-white">
-                <span
-                  aria-hidden
-                  className="grid size-7 place-items-center rounded-full bg-white"
-                >
-                  <span className="size-3 rounded-full border-[3px] border-ink" />
-                </span>
-                Stack technique
-              </p>
-              <p className="mt-5 max-w-[44ch] text-lg leading-relaxed text-white/80">
+        <div className="coupon mt-8 lg:mt-12">
+          <div className="flex items-center justify-between gap-4 rounded-t-[2px] border-b-2 border-ink px-5 py-3 sm:px-8">
+            <span className="!text-xs t-field">Fiche technique</span>
+            <span className="!text-xs t-field t-num">
+              {techSection.stack.length} composants
+            </span>
+          </div>
+
+          <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)]">
+            <div className="p-5 sm:p-8 lg:p-10">
+              <p className="!text-xs t-field">Méthode</p>
+              <p className="mt-3 max-w-[44ch] text-lg leading-relaxed text-ink-soft">
                 {techSection.methodSummary}
               </p>
             </div>
 
-            <ul className="flex flex-wrap content-start gap-2.5">
-              {techSection.stack.map((tech) => (
-                <li
-                  key={tech}
-                  className="rounded bg-white px-3 py-1.5 text-sm font-bold leading-snug text-ink transition-transform duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5"
-                >
-                  {tech}
-                </li>
-              ))}
-            </ul>
+            <div className="border-t-2 border-dashed border-ink bg-[#f6f5fb] p-5 sm:p-8 lg:rounded-br-[2px] lg:border-l-2 lg:border-t-0 lg:p-10">
+              <p className="!text-xs t-field">Stack technique</p>
+              <ul className="mt-3 flex flex-wrap content-start gap-2.5">
+                {techSection.stack.map((tech) => (
+                  <li
+                    key={tech}
+                    className="rounded-[3px] border-2 border-ink bg-panel px-3 py-1.5 text-sm font-semibold leading-snug text-ink transition-transform duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5"
+                  >
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* The six lines, heading for the terminus */}
-      <div aria-hidden className="mt-16 flex h-2 lg:mt-24">
-        {LINES.map((l) => (
-          <span key={l.id} className="flex-1" style={{ background: l.color }} />
-        ))}
       </div>
     </section>
   );

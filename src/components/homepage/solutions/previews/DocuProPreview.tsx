@@ -35,7 +35,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
   return (
     <>
       {text.slice(0, i)}
-      <mark className="rounded-[2px] bg-[var(--accent)] px-0.5 text-[var(--on-accent)]">
+      <mark className="rounded-[2px] bg-ink px-0.5 text-white">
         {text.slice(i, i + q.length)}
       </mark>
       {text.slice(i + q.length)}
@@ -62,7 +62,7 @@ export function DocuProPreview({ name }: { name: string }) {
           <label htmlFor={inputId} className="sr-only">
             Rechercher un document
           </label>
-          <div className="flex min-h-11 items-center gap-2 rounded-md bg-enamel px-3 ring-1 ring-inset ring-rule focus-within:ring-2 focus-within:ring-ink sm:min-h-10">
+          <div className="flex min-h-11 items-center gap-2 rounded-[3px] bg-panel px-3 ring-2 ring-inset ring-ink focus-within:ring-[3px] sm:min-h-10">
             <Search aria-hidden className="size-4 shrink-0 text-ink-mute" strokeWidth={2} />
             <input
               id={inputId}

@@ -12,7 +12,6 @@ import {
   listAllPublishedTags,
   listPublishedPosts,
 } from "@/lib/blog";
-import { lineStyle } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 import { getReadingMinutes } from "../../_reading-times";
 
@@ -68,6 +67,9 @@ export async function generateMetadata({
       canonical: url,
       types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
     },
+    // Pages de tag courtes (quelques articles, pagination) : contenu faible.
+    // Elles restent explorables pour le maillage vers les articles, sans être indexées.
+    robots: { index: false, follow: true },
   };
 }
 
@@ -100,7 +102,7 @@ export default async function BlogTagPage({ params, searchParams }: PageProps) {
   };
 
   return (
-    <div style={lineStyle(line.id)}>
+    <div>
       <JsonLd data={breadcrumbJsonLd} />
 
       <header className="wrap pb-8 pt-6 sm:pt-10 lg:pb-12">
@@ -115,7 +117,7 @@ export default async function BlogTagPage({ params, searchParams }: PageProps) {
         <div className="mt-8 flex items-start gap-4 sm:gap-6">
           <span
             aria-hidden
-            className="mt-1 grid size-12 shrink-0 place-items-center rounded-full font-display text-xl font-extrabold sm:size-16 sm:text-2xl lg:size-20 lg:text-3xl"
+            className="mt-1 grid size-12 shrink-0 place-items-center rounded-[4px] border-2 border-ink font-display text-2xl font-extrabold italic shadow-[0_1px_2px_rgba(15,42,90,0.14),0_8px_16px_-8px_rgba(15,42,90,0.3)] sm:size-16 sm:text-3xl lg:size-20 lg:text-4xl"
             style={{ background: line.color, color: line.onColor }}
           >
             {tag.label.trim().charAt(0).toUpperCase() || "#"}
@@ -128,12 +130,13 @@ export default async function BlogTagPage({ params, searchParams }: PageProps) {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-ink/15 pt-6">
+        <hr className="tear mt-10" />
+        <div className="pt-5">
           <BlogFilterBar tags={tags} activeSlug={tag.slug} />
         </div>
       </header>
 
-      <section aria-label="Articles" className="wrap pb-16 pt-2 sm:pb-24">
+      <section aria-label="Articles" className="wrap pb-20 pt-6 sm:pb-28">
         {items.length === 0 ? (
           <BlogEmptyState title="Aucun article pour ce tag" showRss={false} backToAll />
         ) : (

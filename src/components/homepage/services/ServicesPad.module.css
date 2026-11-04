@@ -1,0 +1,78 @@
+/* The slip pad: ruled paper under the service coupons, glued binding on top,
+   a few sheet edges peeking out below. Coupons rest on it, they are not nested in a card. */
+
+.pad {
+  --gx: 0.75rem; /* side gutter shared with the slip list */
+  position: relative;
+  background-color: #f9fafc;
+  border-radius: 0 0 4px 4px;
+}
+@media (min-width: 640px) {
+  .pad {
+    --gx: 1.25rem;
+  }
+}
+/* The ruled lines run only between the slips' left and right edges: they stop
+   flush with the cards instead of poking out into the gutter. */
+.pad::before {
+  content: "";
+  position: absolute;
+  inset: 0 var(--gx);
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 1.9375rem,
+    rgb(195 202 219 / 0.75) 1.9375rem 2rem
+  );
+}
+/* A sheet edge peeking out under the pad, drawn with 1px rules. */
+.pad::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: -0.3125rem;
+  height: 0.3125rem;
+  border: 1px solid #cfd6e6;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  background-color: #eef1f8;
+}
+.list {
+  position: relative;
+  z-index: 1;
+}
+
+.binding {
+  height: 1.5rem;
+  border-radius: 4px 4px 0 0;
+  background-color: var(--color-ink);
+  background-image: radial-gradient(circle at 50% 50%, var(--color-enamel) 0 3px, transparent 3.5px);
+  background-size: 1.75rem 1.5rem;
+  background-position: 0.5rem 0;
+}
+
+.slip {
+  transition:
+    transform 260ms var(--ease-out-expo),
+    box-shadow 260ms var(--ease-out-expo);
+}
+.slip:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 2px rgb(15 42 90 / 0.14),
+    0 12px 20px -10px rgb(15 42 90 / 0.38);
+}
+.slip:has(button:focus-visible) {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slip {
+    transition: none;
+  }
+  .slip:hover {
+    transform: none;
+  }
+}

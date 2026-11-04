@@ -71,13 +71,13 @@ export function MedicProPreview({ name }: { name: string }) {
                   )}
                 </div>
                 {/* timeline: shaded anticipation window + expiry marker */}
-                <div aria-hidden className="relative mt-2 h-2 rounded-full bg-enamel">
+                <div aria-hidden className="relative mt-2 h-2 rounded-[2px] bg-enamel ring-1 ring-inset ring-rule">
                   <span
-                    className="absolute inset-y-0 left-0 rounded-full bg-[var(--accent)]/25 transition-[width] duration-500 ease-[var(--ease-out-expo)] motion-reduce:transition-none"
+                    className="absolute inset-y-0 left-0 rounded-[2px] bg-ink/20 transition-[width] duration-500 ease-[var(--ease-out-expo)] motion-reduce:transition-none"
                     style={{ width: `${(win / SPAN) * 100}%` }}
                   />
                   <span
-                    className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[var(--accent)] bg-panel transition-[left] duration-500 ease-[var(--ease-out-expo)] motion-reduce:transition-none"
+                    className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-[2px] border-[3px] border-ink bg-panel transition-[left] duration-500 ease-[var(--ease-out-expo)] motion-reduce:transition-none"
                     style={{ left: `${pos * 100}%` }}
                   />
                 </div>

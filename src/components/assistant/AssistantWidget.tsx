@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 import type { TopicResponse } from "@/lib/assistant/topics";
 import { pageAccent } from "./accent";
+import styles from "./assistant.module.css";
 import { track } from "./analytics";
 import { markAssistantOpened, markNudged, useJourneyTracker } from "./journey";
 
@@ -110,15 +111,15 @@ export function AssistantWidget() {
           role="status"
           className="fixed bottom-[calc(5.25rem+env(safe-area-inset-bottom))] right-3 z-40 w-[min(19rem,calc(100vw-1.5rem))] animate-fade-up sm:right-4"
         >
-          <div className="relative overflow-hidden rounded-lg bg-panel ring-1 ring-rule shadow-[0_10px_28px_-20px_rgba(7,18,43,0.55)]">
-            <span aria-hidden className="absolute inset-y-0 left-0 w-1.5 bg-[var(--accent)]" />
+          <div className={`coupon relative ${styles.panel}`}>
             <button
               type="button"
               onClick={() => void openAssistant("nudge")}
-              className="block w-full py-3.5 pl-5 pr-12 text-left outline-offset-[-3px]"
+              className="block w-full rounded-[2px] py-3.5 pl-4 pr-12 text-left"
             >
-              <span className="block text-base leading-snug text-ink">{nudge.topic.nudge}</span>
-              <span className="mt-1.5 block text-sm font-bold text-ink underline decoration-[var(--accent)] decoration-2 underline-offset-4">
+              <span className="t-field block">Assistant IA</span>
+              <span className="mt-1.5 block text-base leading-snug text-ink">{nudge.topic.nudge}</span>
+              <span className="mt-2 block font-display text-[0.9375rem] font-bold uppercase tracking-[0.06em] text-ink underline decoration-red decoration-2 underline-offset-4">
                 Discuter avec l&apos;assistant
               </span>
             </button>
@@ -129,7 +130,7 @@ export function AssistantWidget() {
                 setNudge(null);
               }}
               aria-label="Fermer la suggestion"
-              className="absolute right-0.5 top-0.5 grid size-11 place-items-center rounded-full text-ink-mute hover:text-ink"
+              className="absolute right-0.5 top-0.5 grid size-11 place-items-center rounded-[3px] text-ink-soft hover:text-ink"
             >
               <X aria-hidden className="size-4" strokeWidth={2.25} />
             </button>
@@ -149,15 +150,11 @@ export function AssistantWidget() {
           // Précharge le panneau : l'ouverture est alors instantanée.
           void import("./AssistantPanel");
         }}
-        className="group/launcher fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-3 z-40 inline-flex h-14 items-center gap-3 rounded-full bg-ink pl-1.5 pr-1.5 text-base font-bold text-white shadow-[0_10px_28px_-14px_rgba(7,18,43,0.7)] transition-[background-color,transform] duration-300 ease-[var(--ease-out-expo)] hover:bg-night-2 active:translate-y-px sm:right-4 sm:pl-5"
+        className={`${styles.launcher} group/launcher fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-3 z-40 inline-flex h-14 min-w-14 items-center justify-center gap-2.5 rounded-full border-2 border-ink bg-ink px-0 text-base font-bold text-white shadow-[0_1px_2px_rgba(15,42,90,0.14),0_8px_16px_-8px_rgba(15,42,90,0.3)] transition-[background-color,transform,box-shadow] duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:bg-night-2 active:translate-y-px active:shadow-none sm:right-4 sm:px-5`}
       >
+        <MessageCircle aria-hidden className="size-5 shrink-0" strokeWidth={2} />
         <span className="hidden sm:inline">Une question ?</span>
-        <span
-          aria-hidden
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/launcher:-rotate-[8deg]"
-        >
-          <MessageCircle className="size-5" strokeWidth={2} />
-        </span>
+        <span aria-hidden className="absolute -right-0.5 -top-0.5 size-3.5 rounded-full bg-red ring-2 ring-white" />
       </button>
     </div>
   );

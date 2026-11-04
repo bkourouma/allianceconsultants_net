@@ -77,7 +77,7 @@ for (const slug of SLUGS) {
       expect(href).toBe("#demander-une-demo");
     });
 
-    test("includes Product, FAQPage and BreadcrumbList JSON-LD", async ({ page }) => {
+    test("includes Service, FAQPage and BreadcrumbList JSON-LD", async ({ page }) => {
       const scripts = await page.locator('script[type="application/ld+json"]').allTextContents();
       const types = scripts
         .map((raw) => {
@@ -88,7 +88,7 @@ for (const slug of SLUGS) {
           }
         })
         .filter(Boolean);
-      expect(types).toContain("Product");
+      expect(types).toContain("Service");
       expect(types).toContain("FAQPage");
       expect(types).toContain("BreadcrumbList");
     });

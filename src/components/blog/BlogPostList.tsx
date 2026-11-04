@@ -2,8 +2,8 @@ import { BlogFeatured } from "./BlogFeatured";
 import { BlogIndexCard, type BlogListPost } from "./BlogIndexCard";
 
 /**
- * Editorial listing: on the first page the latest article is featured large,
- * the rest runs as rows alternating between a larger and a smaller treatment.
+ * Listing: on the first page the latest article is featured on a large
+ * coupon, the rest runs as a list of slim coupons separated by whitespace.
  */
 export function BlogPostList({
   items,
@@ -28,10 +28,10 @@ export function BlogPostList({
       ) : null}
 
       {rows.length > 0 ? (
-        <ul className="border-b border-ink/15">
-          {rows.map((p, i) => (
+        <ul className="grid gap-4 sm:gap-5">
+          {rows.map((p) => (
             <li key={p.id}>
-              <BlogIndexCard post={p} emphasis={i % 2 === 0 ? "lg" : "sm"} />
+              <BlogIndexCard post={p} />
             </li>
           ))}
         </ul>

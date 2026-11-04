@@ -1,5 +1,4 @@
 import { Check } from "lucide-react";
-import { Section } from "@/components/ui/Section";
 import type { SolutionBenefit } from "@/lib/validators/content";
 
 interface BenefitListProps {
@@ -7,15 +6,22 @@ interface BenefitListProps {
 }
 
 /**
- * Benefits as boarding-pass rows: hairline-separated, a line-coloured tick
- * roundel, no cards. `metric` strings in the content are unvalidated claims
- * and are intentionally not rendered as statistics.
+ * Benefits as ruled rows: hairline-separated, a product-colour tick chip, no
+ * cards. `metric` strings in the content are unvalidated claims and are
+ * intentionally not rendered as statistics.
  */
 export function BenefitList({ benefits }: BenefitListProps) {
   return (
-    <Section id="benefices" bg="gray" padding="sm" aria-labelledby="benefices-title">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-        <h2 id="benefices-title" className="t-h3 max-w-[18ch] text-ink lg:sticky lg:top-40 lg:self-start">
+    <section
+      id="benefices"
+      aria-labelledby="benefices-title"
+      className="pb-16 lg:pb-24"
+    >
+      <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+        <h2
+          id="benefices-title"
+          className="t-h2 text-ink lg:sticky lg:top-[calc(var(--site-header-h,4rem)+4.5rem)] lg:self-start"
+        >
           Ce que vous en retirez, concrètement
         </h2>
         <ul className="border-t-2 border-ink">
@@ -26,12 +32,12 @@ export function BenefitList({ benefits }: BenefitListProps) {
             >
               <span
                 aria-hidden
-                className="mt-0.5 grid size-8 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)]"
+                className="mt-0.5 grid size-8 place-items-center rounded-[3px] bg-[var(--accent)] text-[var(--on-accent)] ring-1 ring-ink"
               >
                 <Check className="size-4" strokeWidth={2.5} />
               </span>
               <div>
-                <h3 className="font-display text-lg font-bold leading-snug tracking-[-0.01em] text-ink sm:text-xl">
+                <h3 className="font-display text-xl font-bold leading-snug text-ink sm:text-2xl">
                   {b.title}
                 </h3>
                 <p className="t-body mt-1.5 text-ink-soft">{b.description}</p>
@@ -40,6 +46,6 @@ export function BenefitList({ benefits }: BenefitListProps) {
           ))}
         </ul>
       </div>
-    </Section>
+    </section>
   );
 }

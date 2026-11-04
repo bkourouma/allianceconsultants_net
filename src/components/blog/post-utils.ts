@@ -32,12 +32,12 @@ const READABLE_LINES: readonly LineId[] = [
   "annonces",
 ];
 
-/** The line a post "runs on": deterministic from its slug. */
+/** The product colour a post's cover tab uses: deterministic from its slug. */
 export function postLineId(slug: string): LineId {
   return READABLE_LINES[hashString(slug) % READABLE_LINES.length];
 }
 
-/** A tag's roundel colour: deterministic from its slug. */
+/** A tag's colour tab: deterministic from its slug. */
 export function tagLine(slug: string): NetworkLine {
   return LINES[hashString(`tag:${slug}`) % LINES.length];
 }
@@ -51,6 +51,17 @@ const dateFmt = new Intl.DateTimeFormat("fr-FR", {
 
 export function formatPostDate(d: Date): string {
   return dateFmt.format(d);
+}
+
+const monthFmt = new Intl.DateTimeFormat("fr-FR", { month: "short", timeZone: "UTC" });
+
+/** Day / short month / year, for the date stub of a slim coupon. */
+export function formatPostDateParts(d: Date): { day: string; month: string; year: string } {
+  return {
+    day: String(d.getUTCDate()),
+    month: monthFmt.format(d).replace(/\.$/, ""),
+    year: String(d.getUTCFullYear()),
+  };
 }
 
 export function stripHtml(html: string): string {

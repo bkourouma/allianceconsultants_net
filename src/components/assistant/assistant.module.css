@@ -34,3 +34,43 @@
     opacity: 1;
   }
 }
+
+/* ───────── Carnet de coupons : focus, tampon, lanceur ───────── */
+
+/* Anneau de focus du panneau : navy plein, au-dessus des règles de champ partagées (inputClass). */
+.panel.panel :is(a, button, summary, input, textarea):focus-visible,
+.panel.panel :is(input, textarea):focus {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Lanceur navy : anneau à deux tons (blanc puis navy), lisible sur fond clair comme sombre. */
+.launcher:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px #ffffff,
+    0 0 0 6px var(--color-ink);
+}
+
+/* Tampon « DEMANDE ENVOYÉE » : pressé une seule fois (l'animation se fige sur l'état final). */
+.press {
+  animation: stamp-press 0.32s var(--ease-out-expo) both;
+}
+
+@keyframes stamp-press {
+  from {
+    opacity: 0;
+    transform: rotate(-4deg) scale(1.6);
+  }
+  to {
+    opacity: 0.92;
+    transform: rotate(-4deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press {
+    animation: none;
+  }
+}

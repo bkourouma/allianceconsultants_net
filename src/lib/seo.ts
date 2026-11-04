@@ -228,6 +228,11 @@ export function buildOrganizationJsonLd(
 // (feature 001-pages-corporate-solutions)
 // ============================================================================
 
+/**
+ * `Service` et non `Product` : Google exige `offers`, `review` ou
+ * `aggregateRating` pour un Product, et le dépôt ne publie ni prix public ni
+ * avis pour les solutions.
+ */
 export function buildProductJsonLd(
   solution: SolutionDetail,
   siteUrl: string
@@ -239,12 +244,12 @@ export function buildProductJsonLd(
 
   return {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "Service",
     name: solution.name,
     description: solution.shortDescription,
-    category: solution.category,
-    brand: {
-      "@type": "Brand",
+    serviceType: solution.category,
+    provider: {
+      "@type": "Organization",
       name: "Alliance Consultants",
     },
     url,

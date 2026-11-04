@@ -9,7 +9,7 @@ import { BenefitList } from "@/components/solutions/BenefitList";
 import { ComparisonSection } from "@/components/solutions/ComparisonSection";
 import { UseCases } from "@/components/solutions/UseCases";
 import { ProofBlock, hasProof } from "@/components/solutions/ProofBlock";
-import { StationNav } from "@/components/solutions/StationNav";
+import { SectionNav } from "@/components/solutions/SectionNav";
 import { Breadcrumb } from "@/components/solutions/Breadcrumb";
 import s from "@/components/solutions/Solutions.module.css";
 import { getLine, lineStyle } from "@/lib/network";
@@ -98,7 +98,8 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
         hero={solution.hero}
         category={solution.category}
         lineName={solution.name}
-        stations={solution.featureGroups.map((g) => g.title)}
+        slug={solution.slug}
+        areas={solution.featureGroups.map((g) => g.title)}
         externalUrl={solution.externalUrl}
         breadcrumb={
           <Breadcrumb
@@ -111,7 +112,7 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
         }
       />
 
-      <StationNav />
+      <SectionNav />
 
       <ValueProp
         text={solution.valueProposition}

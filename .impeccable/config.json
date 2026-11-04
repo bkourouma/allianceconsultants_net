@@ -11,6 +11,52 @@
         ],
         "createdAt": "2026-10-03T00:40:17.527Z",
         "reason": "agent: false positive, regex/HTML-string literals in a sanitised-HTML post-processor, not rendered <img> elements"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/solutions/SolutionHero.tsx"
+        ],
+        "createdAt": "2026-10-14T07:13:02.258Z",
+        "reason": "coupon stub: 2px dashed navy tear line (perforation) is the world's defining element, not a coloured accent border"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/components/solutions/SolutionHero.tsx"
+        ],
+        "createdAt": "2026-10-14T07:13:02.381Z",
+        "reason": "coupon stub: 2px dashed navy tear line (perforation) is the world's defining element, not a coloured accent border"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/app/(site)/solutions/page.tsx",
+          "src/components/homepage/TechMethodSection.tsx",
+          "src/components/solutions/LeadFormSection.tsx",
+          "src/components/solutions/RelatedSolutions.tsx",
+          "src/components/solutions/SolutionsFinder.tsx",
+          "src/components/wallet/wallet.module.css"
+        ],
+        "createdAt": "2026-10-14T07:27:58.927Z",
+        "reason": "Carnet coupon grammar: heavy navy coupon rule, dashed tear line and navy coupon spine are the world's structure, not coloured accent borders (matches the user-approved sketch)"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/app/(site)/solutions/page.tsx",
+          "src/components/homepage/TechMethodSection.tsx",
+          "src/components/solutions/LeadFormSection.tsx",
+          "src/components/solutions/RelatedSolutions.tsx",
+          "src/components/solutions/SolutionsFinder.tsx",
+          "src/components/wallet/wallet.module.css"
+        ],
+        "createdAt": "2026-10-14T07:27:59.011Z",
+        "reason": "Carnet coupon grammar: heavy navy coupon rule, dashed tear line and navy coupon spine are the world's structure, not coloured accent borders (matches the user-approved sketch)"
       }
     ]
   }

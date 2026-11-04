@@ -14,15 +14,19 @@
 
 
   /* ───────── RÉSEAU design world (feature: redesign) ───────── */
-  --color-ink: #0b1b3a;
-  --color-ink-soft: #3a4764;
-  --color-ink-mute: #5b6784;
-  --color-enamel: #f3f5fa;
+  --color-ink: #0f2a5a;
+  --color-ink-soft: #3a4a70;
+  --color-ink-mute: #4a5878;
+  --color-enamel: #eef0f5;
   --color-panel: #ffffff;
-  --color-rule: #d5dbea;
-  --color-night: #07122b;
-  --color-night-2: #0e2149;
-  --color-brand: #1457f5;
+  --color-rule: #c3cadb;
+  --color-night: #0a1d40;
+  --color-night-2: #12306a;
+  --color-brand: #d6342a;
+  /* Le Carnet de coupons (v2) */
+  --color-red: #d6342a;
+  --color-red-dk: #b02820;
+  --color-carbon: #5b4aa8;
 
   --color-line-docupro: #1457f5;
   --color-line-medicpro: #098240;
@@ -30,10 +34,11 @@
   --color-line-immotopia: #f26a1b;
   --color-line-annonces: #e0245e;
   --color-line-ecole: #f5b800;
-  --color-line-academie: #6d3be0;
+  --color-line-academie: #5b4aa8;
 
-  --font-display: var(--font-display-bricolage), "Segoe UI", system-ui, sans-serif;
-  --font-text: var(--font-text-figtree), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-display-barlow-condensed), "Arial Narrow", system-ui, sans-serif;
+  --font-text: var(--font-text-barlow), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-mono-chivo), ui-monospace, "Cascadia Mono", monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -122,15 +127,16 @@ body {
    Scope: everything under .site-root (public site). Admin is untouched. */
 
 .site-root {
-  /* next/font defines --font-*-bricolage/figtree on this wrapper, so the
+  /* next/font defines the --font-*-barlow/chivo variables on this wrapper, so the
      stacks must be resolved here: the @theme copies live on :root, where
      those variables don't exist, and would silently fall back to Inter. */
-  --font-display: var(--font-display-bricolage), "Segoe UI", system-ui, sans-serif;
-  --font-text: var(--font-text-figtree), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-display-barlow-condensed), "Arial Narrow", system-ui, sans-serif;
+  --font-text: var(--font-text-barlow), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-mono-chivo), ui-monospace, "Cascadia Mono", monospace;
   font-family: var(--font-text);
   background: var(--color-enamel);
   color: var(--color-ink);
-  --accent: var(--color-brand);
+  --accent: var(--color-ink);
   --on-accent: #ffffff;
   min-height: 100dvh;
   --site-header-h: 4rem;
@@ -175,26 +181,28 @@ body {
 /* Type scale (display ≤ 6rem, tracking ≥ -0.04em) */
 .t-display {
   font-family: var(--font-display);
+  font-style: italic;
   font-weight: 800;
-  font-size: clamp(2.5rem, 1.6rem + 4.6vw, 5.5rem);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.75rem, 1.7rem + 5vw, 5.75rem);
+  line-height: 0.94;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
 .t-h2 {
   font-family: var(--font-display);
-  font-weight: 750;
-  font-size: clamp(2rem, 1.3rem + 2.8vw, 3.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 .t-h3 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.4rem, 1.15rem + 1vw, 2rem);
+  line-height: 1.08;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .t-lead {
@@ -235,4 +243,46 @@ body {
     transform: none;
     transition: none;
   }
+}
+
+
+/* ───────────── Le Carnet de coupons: shared materials ─────────────
+   .coupon       white coupon stock, heavy navy rule
+   .coupon-stub  detachable stub: dashed tear line on the left
+   .tear         dashed perforation (horizontal)
+   .stamp        red rubber stamp, rotated, slightly imperfect ink
+   .carbon       carbon-copy purple figures
+   .t-field      mono field caption (inside coupons/controls only)   */
+
+.coupon {
+  background: var(--color-panel);
+  border: 2px solid var(--color-ink);
+  border-radius: 4px;
+  /* soft ambient lift (offset + blur); thickness comes from the 2px rule */
+  box-shadow: 0 1px 2px rgb(15 42 90 / 0.14), 0 10px 18px -10px rgb(15 42 90 / 0.32);
+}
+.coupon-stub { border-left: 2px dashed var(--color-ink); }
+.tear { border: 0; border-top: 2px dashed var(--color-ink); }
+.stamp {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border: 2px solid var(--color-red);
+  border-radius: 3px;
+  color: var(--color-red);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  opacity: 0.92;
+}
+.carbon { color: var(--color-carbon); }
+.t-field {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-mute);
 }

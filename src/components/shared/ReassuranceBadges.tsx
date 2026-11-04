@@ -19,22 +19,19 @@ interface ReassuranceBadgesProps {
   className?: string;
 }
 
-/** A quiet single-line list of validated facts, separated by station dots. */
+/** A ruled line of validated facts: navy rule, mono caps, small navy marks. */
 export function ReassuranceBadges({ facts = VALIDATED_FACTS, className }: ReassuranceBadgesProps) {
   return (
     <ul
       className={cn(
-        "flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.8125rem] font-semibold text-ink-soft sm:text-[0.875rem]",
+        "m-0 flex list-none flex-wrap items-center justify-between gap-x-5 gap-y-2 border-t-2 border-ink p-0 pt-3.5 font-mono text-xs font-medium uppercase tracking-[0.05em] text-ink",
         className,
       )}
       aria-label="Points de repère Alliance Consultants"
     >
       {facts.slice(0, 4).map((fact) => (
-        <li key={fact} className="inline-flex items-center gap-2">
-          <span
-            aria-hidden
-            className="inline-block size-2.5 shrink-0 rounded-full border-[2.5px] border-ink bg-panel"
-          />
+        <li key={fact} className="inline-flex items-center gap-2 whitespace-nowrap">
+          <span aria-hidden className="inline-block size-1.5 shrink-0 rounded-full bg-ink" />
           {fact}
         </li>
       ))}

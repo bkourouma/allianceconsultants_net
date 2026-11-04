@@ -1,88 +1,104 @@
-/* Decorative route spine in the left margin. Hidden below 1360px and in print. */
-.spine {
+/* Perforation rail in the left margin: a dashed navy line, one small
+   tick per top-level section and a red dot on the current one.
+   Hidden below 1360px and in print. */
+.rail {
   display: none;
   pointer-events: none;
 }
 
 @media (min-width: 1360px) {
-  .spine {
+  .rail {
     display: block;
     position: fixed;
     z-index: 30;
     top: calc(var(--site-header-h, 4rem) + 1.5rem);
     bottom: 1.5rem;
     /* page content is max 80rem centred: stay inside the free margin */
-    left: calc(50% - 40rem - 1.75rem);
-    width: 1rem;
-    --p: 0;
-    --h: 0px;
-    --spine-accent: var(--color-ink);
+    left: calc(50% - 40rem - 2.125rem);
+    width: 1.75rem;
   }
 }
 
+.rail[data-away] {
+  opacity: 0;
+}
+
 @media print {
-  .spine {
+  .rail {
     display: none !important;
   }
 }
 
-.track,
-.fill {
+/* The dashed line itself (2px, 6px dash / 6px gap). */
+.line {
   position: absolute;
-  left: 50%;
   top: 0;
   bottom: 0;
-  width: 4px;
-  margin-left: -2px;
-  border-radius: 2px;
+  right: 0;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #7b8db8 0 6px,
+    transparent 6px 12px
+  );
+  opacity: 1;
 }
 
-.track {
-  background: rgb(11 27 58 / 0.16);
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.5);
-}
-
-.fill {
-  background: var(--spine-accent);
-  transform-origin: top center;
-  transform: scaleY(var(--p));
-}
-
-.station {
+.tick {
   position: absolute;
-  left: 50%;
-  width: 12px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   height: 12px;
-  margin: -6px 0 0 -6px;
-  border-radius: 9999px;
-  border: 2px solid var(--color-ink);
-  background: #fff;
-  box-sizing: border-box;
+  margin-top: -6px;
+  color: var(--color-ink-mute);
+  opacity: 0.9;
 }
 
-.passed {
-  background: var(--st, var(--color-ink));
+.tickPassed {
+  color: var(--color-ink);
+  opacity: 1;
 }
 
-.train {
+.bar {
+  display: block;
+  width: 7px;
+  height: 2px;
+  background: currentColor;
+  margin-right: -1px;
+}
+
+/* The stamp-dot: a small red rubber-stamp mark on the current tick. */
+.dot {
   position: absolute;
-  left: 50%;
-  top: 0;
-  width: 10px;
-  height: 16px;
-  margin: -8px 0 0 -5px;
-  border-radius: 5px;
-  background: var(--spine-accent);
-  border: 2px solid #fff;
-  box-sizing: border-box;
-  outline: 1px solid var(--color-ink);
-  transform: translateY(calc(var(--h) * var(--p)));
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 9999px;
+  background: var(--color-red);
+  box-shadow: 0 0 0 2px var(--color-enamel);
+}
+
+/* Over a dark section: light ink (toggled per tick from the component). */
+.tick[data-dark],
+.tickPassed[data-dark] {
+  color: var(--color-panel);
+  opacity: 0.9;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .fill,
-  .train,
-  .station {
-    transition: background-color 0.3s var(--ease-out-expo, ease-out);
+  .rail {
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tick,
+  .tickPassed {
+    transition:
+      color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dot {
+    transition: top 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }

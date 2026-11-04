@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { listAllPublishedTags, listPublishedPostsForSitemap } from "@/lib/blog";
+import { listPublishedPostsForSitemap } from "@/lib/blog";
 import { listPublishedProjectReferencesForSitemap } from "@/lib/projectReferences";
 import {
   getAllServiceSlugs,
@@ -63,13 +63,12 @@ function mdxEntries(prefix: string, slugs: string[], priority: number): Entry[] 
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [solutionSlugs, serviceSlugs, trainingSlugs, posts, refs, tags] = await Promise.all([
+  const [solutionSlugs, serviceSlugs, trainingSlugs, posts, refs] = await Promise.all([
     safely("solutions", getAllSolutionDetailSlugs, [] as string[]),
     safely("services", getAllServiceSlugs, [] as string[]),
     safely("formations", getAllTrainingSlugs, [] as string[]),
     safely("articles du blog", listPublishedPostsForSitemap, []),
     safely("références", listPublishedProjectReferencesForSitemap, []),
-    safely("tags du blog", listAllPublishedTags, []),
   ]);
 
   // Date réelle de dernière modification d'un article : sa mise à jour, ou sa
@@ -93,12 +92,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority,
   }));
 
-  const tagEntries: Entry[] = tags.map((t) => ({
-    url: `${BASE_URL}/blog/tags/${t.slug}`,
-    changeFrequency: "weekly" as const,
-    priority: 0.4,
-  }));
-
   const referenceEntries: Entry[] = refs.map((r) => ({
     url: `${BASE_URL}/references/${r.id}`,
     lastModified: r.updatedAt,
@@ -112,7 +105,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...mdxEntries("/services", serviceSlugs, 0.8),
     ...mdxEntries("/formations", trainingSlugs, 0.7),
     ...postEntries,
-    ...tagEntries,
     ...referenceEntries,
   ];
 }

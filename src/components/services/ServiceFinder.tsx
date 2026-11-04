@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getLine } from "@/lib/network";
-import { LineRoundel } from "./LineRoundel";
+import { CouponHead } from "./CouponHead";
+import { ProductChips } from "./ProductChips";
 import { NEEDS, SERVICE_META } from "./serviceMap";
+import fx from "./fx.module.css";
 
 export interface FinderService {
   slug: string;
@@ -15,9 +16,9 @@ export interface FinderService {
 }
 
 /**
- * "Quel besoin ?" selector + the services drawn as interchange stations on
- * one long ink line. Picking a need highlights matching services and dims
- * the others (nothing is removed from the DOM or the tab order).
+ * "Quel besoin ?" selector + the services as bons de travail (work-order
+ * coupons). Picking a need lifts the matching coupon and presses a stamp on
+ * it; the others recede (nothing leaves the DOM or the tab order).
  */
 export function ServiceFinder({ services }: { services: FinderService[] }) {
   const [need, setNeed] = useState<string | null>(null);
@@ -27,130 +28,154 @@ export function ServiceFinder({ services }: { services: FinderService[] }) {
 
   return (
     <div>
-      <div className="rounded-lg bg-panel p-5 ring-1 ring-rule sm:p-7">
-        <h2 id="need-title" className="t-h3 text-ink">
-          Quel besoin ?
-        </h2>
-        <p className="mt-2 max-w-[60ch] text-ink-soft">
-          Choisissez ce qui vous ressemble : les services concernés s&apos;allument sur la ligne.
-        </p>
-        <div
-          role="group"
-          aria-labelledby="need-title"
-          className="mt-5 flex flex-wrap gap-2.5"
-        >
-          {NEEDS.map((n) => {
-            const on = n.id === need;
-            return (
-              <button
-                key={n.id}
-                type="button"
-                aria-pressed={on}
-                onClick={() => setNeed(on ? null : n.id)}
-                className={cn(
-                  "inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-[0.9375rem] font-semibold transition-[background-color,color,box-shadow] duration-200 ease-[var(--ease-out-expo)]",
-                  on
-                    ? "bg-ink text-white ring-2 ring-ink"
-                    : "bg-enamel text-ink ring-2 ring-inset ring-rule hover:ring-ink",
-                )}
-              >
-                {on && <Check aria-hidden className="size-4" strokeWidth={2} />}
-                {n.label}
-              </button>
-            );
-          })}
-          {active && (
-            <button
-              type="button"
-              onClick={() => setNeed(null)}
-              className="inline-flex min-h-11 items-center rounded-full px-4 text-[0.9375rem] font-semibold text-ink-soft underline underline-offset-4 hover:text-ink"
+      <div className="border-y-2 border-ink py-6 md:py-7">
+        <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start lg:gap-12">
+          <div>
+            <h2 id="need-title" className="t-h3 text-ink">
+              Quel besoin ?
+            </h2>
+            <p className="mt-1.5 max-w-[34ch] text-ink-soft">
+              Choisissez ce qui vous ressemble : le bon de travail concerné se
+              détache.
+            </p>
+          </div>
+          <div>
+            <div
+              role="group"
+              aria-labelledby="need-title"
+              className="flex flex-wrap gap-2.5"
             >
-              Tout afficher
-            </button>
-          )}
-        </div>
-        <p role="status" aria-live="polite" className="mt-4 min-h-6 text-sm font-semibold text-ink-soft">
-          {active
-            ? `${count} service${count > 1 ? "s" : ""} pour « ${active.label} »`
-            : ""}
-        </p>
-      </div>
-
-      <ol className="mt-10 sm:mt-14">
-        {services.map((s, i) => {
-          const meta = SERVICE_META[s.slug];
-          const lines = meta?.lines ?? [];
-          const hit = match(s.slug);
-          const highlighted = !!active && hit;
-          const first = i === 0;
-          const last = i === services.length - 1;
-          return (
-            <li key={s.slug} className="relative pb-5 pl-12 last:pb-0 md:pb-7 md:pl-24">
-              {/* ink line segment */}
-              <span
-                aria-hidden
-                className={cn(
-                  "absolute left-[13px] w-1.5 bg-ink md:left-[40px] md:w-2",
-                  first ? "top-[44px] bottom-0" : last ? "top-0 h-[44px]" : "inset-y-0",
-                )}
-              />
-              {/* interchange station */}
-              <span
-                aria-hidden
-                className={cn(
-                  "absolute left-0 top-7 md:top-6 size-8 rounded-full border-[6px] border-ink ring-4 ring-enamel transition-colors duration-300 md:left-6 md:size-10 md:border-[7px]",
-                  highlighted ? "bg-[var(--accent)]" : "bg-panel",
-                )}
-              />
-              <article
-                className={cn(
-                  "grid gap-6 rounded-lg bg-panel p-6 ring-1 transition-[opacity,box-shadow] duration-300 ease-[var(--ease-out-expo)] md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] md:gap-10 md:p-8",
-                  highlighted
-                    ? "ring-2 ring-ink shadow-[0_14px_32px_-18px_rgba(11,27,58,0.45)]"
-                    : "ring-rule",
-                  !hit && "opacity-50",
-                )}
-              >
-                <div>
-                  <h3 className="t-h3 text-ink">{s.title}</h3>
-                  <p className="t-body mt-3 text-ink-soft">{s.shortDescription}</p>
-                  {highlighted && (
-                    <p className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-sm font-semibold text-white">
-                      <Check aria-hidden className="size-4" strokeWidth={2} />
-                      Correspond à votre besoin
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-col justify-between gap-6">
-                  {lines.length > 0 && (
-                    <div>
-                      <p className="text-sm font-semibold text-ink-mute">Se connecte à</p>
-                      <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-3" aria-label="Solutions connectées">
-                        {lines.map((id) => (
-                          <li key={id}>
-                            <LineRoundel line={id} size="sm" />
-                          </li>
-                        ))}
-                      </ul>
-                      <p className="mt-2 text-sm text-ink-soft">
-                        {meta?.transversal
-                          ? "Toutes les solutions"
-                          : lines.map((id) => getLine(id)?.name).join(" · ")}
-                      </p>
-                    </div>
-                  )}
-                  <Link
-                    href={`/services/${s.slug}`}
-                    className="group/link inline-flex min-h-11 items-center gap-2 self-start rounded-full bg-ink pl-5 pr-1.5 font-bold text-white transition-colors hover:bg-night-2"
+              {NEEDS.map((n) => {
+                const on = n.id === need;
+                return (
+                  <button
+                    key={n.id}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setNeed(on ? null : n.id)}
+                    className={cn(
+                      "inline-flex min-h-11 items-center gap-2 rounded-[3px] border-2 border-ink px-4 font-display text-[1.0625rem] font-bold uppercase tracking-[0.05em] transition-[background-color,color,transform] duration-200 ease-[var(--ease-out-expo)] active:translate-y-px",
+                      on
+                        ? "bg-ink text-white"
+                        : "bg-panel text-ink hover:bg-ink hover:text-white",
+                    )}
                   >
-                    Découvrir le service
-                    <span className="sr-only"> {s.title}</span>
                     <span
                       aria-hidden
-                      className="grid size-8 place-items-center rounded-full bg-white text-ink transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/link:translate-x-0.5 motion-reduce:transition-none"
+                      className={cn(
+                        "grid size-5 shrink-0 place-items-center rounded-[2px] border-2",
+                        on
+                          ? "border-red bg-red text-white"
+                          : "border-ink bg-transparent text-transparent",
+                      )}
                     >
-                      <ArrowRight className="size-4" strokeWidth={2} />
+                      <Check className="size-3.5" strokeWidth={3} />
                     </span>
+                    {n.label}
+                  </button>
+                );
+              })}
+              {active && (
+                <button
+                  type="button"
+                  onClick={() => setNeed(null)}
+                  className="inline-flex min-h-11 items-center px-3 font-display text-[1.0625rem] font-bold uppercase tracking-[0.05em] text-ink-soft underline underline-offset-4 hover:text-ink"
+                >
+                  Tout afficher
+                </button>
+              )}
+            </div>
+            <p
+              role="status"
+              aria-live="polite"
+              className="mt-3 min-h-5 font-mono text-[0.75rem] font-medium uppercase tracking-[0.08em] text-ink-mute"
+            >
+              {active
+                ? `${count} service${count > 1 ? "s" : ""} pour « ${active.label} »`
+                : ""}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ol className="mt-10 grid gap-7 md:mt-14 md:gap-9">
+        {services.map((s, i) => {
+          const meta = SERVICE_META[s.slug];
+          const hit = match(s.slug);
+          const highlighted = !!active && hit;
+          const no = String(i + 1);
+          const numeral = String(i + 1).padStart(2, "0");
+          return (
+            <li key={s.slug}>
+              <article
+                className={cn(
+                  "coupon relative grid transition-[transform,box-shadow,opacity] duration-300 ease-[var(--ease-out-expo)] md:grid-cols-[minmax(0,1fr)_15rem]",
+                  highlighted
+                    ? "-translate-y-1.5 shadow-[0_16px_20px_-12px_rgba(15,42,90,0.42)]"
+                    : "hover:-translate-y-0.5",
+                  !hit && "opacity-70",
+                )}
+              >
+                {highlighted && (
+                  <span
+                    key={need}
+                    aria-hidden
+                    className={cn(
+                      "stamp pointer-events-none absolute -top-4 right-5 z-10 bg-white md:right-[16.5rem]",
+                      fx.stampPress,
+                    )}
+                  >
+                    Votre besoin
+                  </span>
+                )}
+                <CouponHead
+                  no={no}
+                  label="Bon de travail"
+                  className="md:col-span-2"
+                />
+                <div className="min-w-0 px-5 py-6 md:px-8 md:py-8">
+                  <h3 className="font-display text-[clamp(1.75rem,1.3rem+1.6vw,2.5rem)] font-bold leading-[1.02] text-ink">
+                    {s.title}
+                  </h3>
+                  <p className="t-body mt-3 text-lg leading-relaxed text-ink-soft">
+                    {s.shortDescription}
+                  </p>
+                  {meta && meta.lines.length > 0 && (
+                    <div className="mt-6 border-t border-rule pt-4">
+                      <p className="t-field">
+                        {meta.transversal
+                          ? "S'applique à toutes nos solutions"
+                          : "Se connecte à"}
+                      </p>
+                      <ProductChips
+                        ids={meta.lines}
+                        className="mt-2.5"
+                        label={`Solutions liées à ${s.title}`}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-end justify-between gap-5 border-t-2 border-dashed border-ink bg-[#f6f5fb] px-5 py-5 md:flex-col md:items-stretch md:justify-between md:border-l-2 md:border-t-0 md:px-6 md:py-6">
+                  <div>
+                    <p className="t-field text-carbon!">Coupon détachable</p>
+                    <p
+                      aria-hidden
+                      className="carbon mt-1 font-display text-[3.5rem] font-extrabold leading-[0.9] md:text-[4.25rem]"
+                    >
+                      {numeral}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/services/${s.slug}`}
+                    className="group/link inline-flex min-h-11 items-center justify-center gap-2 rounded-[3px] bg-ink px-4 font-display text-[1.0625rem] font-bold uppercase tracking-[0.06em] text-white transition-colors duration-200 hover:bg-night-2 after:absolute after:inset-0 after:content-['']"
+                  >
+                    Découvrir
+                    <span className="sr-only"> le service {s.title}</span>
+                    <ArrowRight
+                      aria-hidden
+                      strokeWidth={2.25}
+                      className="size-4 transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover/link:translate-x-0.5 motion-reduce:transition-none"
+                    />
                   </Link>
                 </div>
               </article>

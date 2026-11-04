@@ -14,26 +14,25 @@ interface PillLinkProps {
 }
 
 const BASE =
-  "group/cta inline-flex items-center justify-center rounded-full font-bold no-underline transition-[background-color,color,transform] duration-300 ease-[var(--ease-out-expo)] active:translate-y-px";
+  "group/cta inline-flex items-center justify-center rounded-[3px] font-display font-bold uppercase no-underline tracking-[0.06em] transition-[background-color,color,transform,box-shadow] duration-200 ease-[var(--ease-out-expo)] active:translate-y-[2px] active:shadow-none";
 const SIZE = {
-  md: "h-12 pl-5 pr-1.5 text-[0.9375rem] gap-3",
-  lg: "h-14 pl-7 pr-2 text-base gap-4",
+  md: "min-h-12 px-6 py-2 text-[1.0625rem] gap-2.5",
+  lg: "min-h-14 px-8 py-2 text-[1.25rem] gap-3",
 };
 
 function variantClasses(variant: "primary" | "secondary", onDark: boolean) {
   if (variant === "primary") {
-    return onDark
-      ? "bg-white text-ink hover:bg-enamel"
-      : "bg-ink text-white hover:bg-night-2";
+    // The red stub: same material as CTAButton.
+    return "bg-red text-white shadow-[0_8px_16px_-8px_rgba(176,40,32,0.55)] hover:bg-red-dk";
   }
   return onDark
-    ? "bg-transparent text-white ring-2 ring-inset ring-white/70 hover:bg-white hover:text-ink"
+    ? "bg-transparent text-white ring-2 ring-inset ring-white/80 hover:bg-white hover:text-ink"
     : "bg-transparent text-ink ring-2 ring-inset ring-ink hover:bg-ink hover:text-white";
 }
 
 /**
- * Ink pill link with a line-coloured arrow roundel. Same visual as CTAButton
- * but for arbitrary hrefs (CTAButton only builds /contact-demo URLs).
+ * Link styled as a coupon stub, for arbitrary hrefs (CTAButton only builds
+ * /contact-demo URLs). `primary` is the red stub, `secondary` the outlined one.
  */
 export function PillLink({
   href,
@@ -46,12 +45,11 @@ export function PillLink({
 }: PillLinkProps) {
   const cls = cn(BASE, SIZE[size], variantClasses(variant, onDark), className);
   const arrow = (
-    <span
+    <ArrowRight
       aria-hidden
-      className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--on-accent)] transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5"
-    >
-      <ArrowRight className="size-4" strokeWidth={2} />
-    </span>
+      className="size-4 shrink-0 transition-transform duration-200 ease-[var(--ease-out-expo)] group-hover/cta:translate-x-0.5"
+      strokeWidth={2.25}
+    />
   );
   if (plain) {
     return (

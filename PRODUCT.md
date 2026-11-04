@@ -33,8 +33,8 @@ French only, vouvoiement. Primary CTA across the site: "Demander une démo" (to 
 
 ## Brand Commitments
 
-Name "Alliance Consultants". Logo exists (`public/images/Logo_AllianceConsultants.png`): isometric cube forming "A" and "C" in navy and vivid blue, wordmark "Alliance / Computer / Consultants". Existing palette is generic blue (#1d4ed8) + slate; the user asked for a full redesign, so the look is not binding — only the logo and name are.
-User brief for the redesign: modern, elegant, professional, fun, many interactive components.
+Name "Alliance Consultants". Logo (`public/images/Logo_AllianceConsultants.png`): isometric cube forming "A" and "C" in navy and vivid blue, wordmark "Alliance / Computer / Consultants" — binding, keep as is. The AI assistant widget ("Une question ?", `src/components/assistant/`, feature 003) is binding: it stays, restyled to fit the new world.
+Direction history: a first redesign ("RÉSEAU", a transit-network map world, shipped Oct 2026) was judged by the user as **too technical / busy** and **not premium enough**. It is now the anti-reference: the new world must read as established, premium and calm, instantly understandable by a non-technical decision-maker, while keeping the brief's modern, elegant, professional, fun and interactive qualities. The look is otherwise not binding; all content and routes are.
 
 ## Evidence on Hand
 

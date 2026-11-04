@@ -239,12 +239,14 @@ export function buildProductJsonLd(
 
   return {
     "@context": "https://schema.org",
-    "@type": "Product",
+    // "Service" plutôt que "Product" : Product exige offers, review ou
+    // aggregateRating, que le site ne publie pas (pas de prix ni d'avis).
+    "@type": "Service",
     name: solution.name,
     description: solution.shortDescription,
-    category: solution.category,
-    brand: {
-      "@type": "Brand",
+    serviceType: solution.category,
+    provider: {
+      "@type": "Organization",
       name: "Alliance Consultants",
     },
     url,

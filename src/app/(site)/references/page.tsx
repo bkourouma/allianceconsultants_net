@@ -186,7 +186,7 @@ function EmptyState({ sector }: { sector?: string }) {
         <PillLink
           size="lg"
           className="w-full"
-          href="/contact-demo?intent=contact&from=references&block=references-empty"
+          href="/contact-demo?intent=contact&block=references-empty"
         >
           Discutons de votre projet
         </PillLink>

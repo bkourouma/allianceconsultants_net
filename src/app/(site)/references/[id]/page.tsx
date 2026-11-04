@@ -193,7 +193,7 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
                 <p className="t-field !text-carbon">Coupon détachable</p>
                 <PillLink
                   className="w-full"
-                  href={`/contact-demo?intent=contact&from=references&block=references-cta`}
+                  href={`/contact-demo?intent=contact&block=references-cta`}
                 >
                   Prendre contact
                 </PillLink>

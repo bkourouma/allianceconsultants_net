@@ -16,7 +16,7 @@ interface CTAButtonProps {
   label: string;
   solutionSlug?: string;
   block: Block;
-  /** @deprecated tracking origin; defaulted to "homepage". Slated for removal once tracking is centralized. */
+  /** @deprecated no longer added to the URL (unused by contact-demo). Slated for removal. */
   from?: string;
   variant?: "primary" | "secondary";
   size?: "sm" | "md" | "lg";
@@ -52,13 +52,13 @@ export function CTAButton({
   label,
   solutionSlug,
   block,
-  from = "homepage",
   variant = "primary",
   size = "md",
   onDark = false,
   className,
 }: CTAButtonProps) {
-  const params = new URLSearchParams({ intent, from, block });
+  // `from` is no longer sent: contact-demo never reads it and it made URLs too long for SEO.
+  const params = new URLSearchParams({ intent, block });
   if (solutionSlug) params.set("solution", solutionSlug);
 
   const href = `/contact-demo?${params.toString()}`;

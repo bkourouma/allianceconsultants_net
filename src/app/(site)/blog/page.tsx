@@ -14,7 +14,15 @@ const SITE_URL =
 
 export const revalidate = 60;
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}): Promise<Metadata> {
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
+  // Les pages paginées se référencent elles-mêmes (pas de canonique vers la page 1).
+  const canonical = page > 1 ? `${SITE_URL}/blog?page=${page}` : `${SITE_URL}/blog`;
   return {
     ...buildMetadata({
       title: "Blog Alliance Consultants — IA, automatisation, SaaS",
@@ -23,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteUrl: `${SITE_URL}/blog`,
     }),
     alternates: {
-      canonical: `${SITE_URL}/blog`,
+      canonical,
       types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
     },
   };

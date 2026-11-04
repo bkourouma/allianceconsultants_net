@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { RouteBand } from "@/components/about/RouteBand";
 import { getSiteSettings } from "@/lib/content";
-import { getLine } from "@/lib/network";
 import { buildMetadata } from "@/lib/seo";
 
 const SITE_URL =
@@ -70,7 +68,7 @@ export default async function MentionsLegalesPage() {
     <>
       <JsonLd data={breadcrumb} />
 
-      <section className="bg-enamel pt-8 lg:pt-12">
+      <section className="border-b-2 border-ink bg-enamel pb-12 pt-8 lg:pb-16 lg:pt-12">
         <div className="wrap">
           <nav aria-label="Fil d'Ariane">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-ink-mute">
@@ -99,14 +97,6 @@ export default async function MentionsLegalesPage() {
             <time dateTime={LAST_UPDATED}>{LAST_UPDATED_LABEL}</time>
           </p>
         </div>
-        <RouteBand
-          colors={[
-            getLine("docupro")!.color,
-            getLine("cliniquepro")!.color,
-            getLine("medicpro")!.color,
-          ]}
-          className="mt-10 lg:mt-14"
-        />
       </section>
 
       <section className="bg-panel py-12 lg:py-20">

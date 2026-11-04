@@ -38,10 +38,13 @@ interface PageProps {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const [{ slug }, sp] = await Promise.all([params, searchParams]);
+  const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
   const tags = await listAllPublishedTags().catch(() => []);
   const tag = tags.find((t) => t.slug === slug);
   const url = `${SITE_URL}/blog/tags/${slug}`;
@@ -64,7 +67,8 @@ export async function generateMetadata({
       siteUrl: url,
     }),
     alternates: {
-      canonical: url,
+      // Les pages paginées se référencent elles-mêmes (pas de canonique vers la page 1).
+      canonical: page > 1 ? `${url}?page=${page}` : url,
       types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
     },
     // Pages de tag courtes (quelques articles, pagination) : contenu faible.

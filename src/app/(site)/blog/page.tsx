@@ -25,7 +25,10 @@ export async function generateMetadata({
   const canonical = page > 1 ? `${SITE_URL}/blog?page=${page}` : `${SITE_URL}/blog`;
   return {
     ...buildMetadata({
-      title: "Blog Alliance Consultants — IA, automatisation, SaaS",
+      title:
+        page > 1
+          ? `Blog Alliance Consultants — IA, automatisation, SaaS (page ${page})`
+          : "Blog Alliance Consultants — IA, automatisation, SaaS",
       description:
         "Articles, retours d'expérience et bonnes pratiques sur la transformation digitale, l'IA, l'automatisation et les solutions SaaS métier en Afrique francophone.",
       siteUrl: `${SITE_URL}/blog`,

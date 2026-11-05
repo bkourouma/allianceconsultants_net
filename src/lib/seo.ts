@@ -14,9 +14,20 @@ export function withBrandSuffix(title: string): string {
   return full.length <= TITLE_MAX ? full : title;
 }
 
+const META_DESCRIPTION_MAX = 160;
+
+function fitMetaDescription(input: string): string {
+  const clean = input.replace(/\s+/g, " ").trim();
+  if (clean.length <= META_DESCRIPTION_MAX) return clean;
+  const cut = clean.slice(0, META_DESCRIPTION_MAX - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  const base = lastSpace > META_DESCRIPTION_MAX * 0.6 ? cut.slice(0, lastSpace) : cut;
+  return base.replace(/[\s,;:.\-–—]+$/, "") + "…";
+}
+
 export function buildMetadata({
   title,
-  description,
+  description: rawDescription,
   ogImage,
   siteUrl,
 }: {
@@ -25,6 +36,7 @@ export function buildMetadata({
   ogImage?: string;
   siteUrl: string;
 }): Metadata {
+  const description = fitMetaDescription(rawDescription);
   const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
   const bingVerification = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
 

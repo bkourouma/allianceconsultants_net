@@ -27,7 +27,9 @@ export async function generateMetadata({
     ...buildMetadata({
       title: "Blog Alliance Consultants — IA, automatisation, SaaS",
       description:
-        "Articles, retours d'expérience et bonnes pratiques sur la transformation digitale, l'IA, l'automatisation et les solutions SaaS métier en Afrique francophone.",
+        page > 1
+          ? `Blog Alliance Consultants, page ${page} : d'autres articles et retours d'expérience sur la transformation digitale, l'IA, l'automatisation et les solutions SaaS métier.`
+          : "Articles, retours d'expérience et bonnes pratiques sur la transformation digitale, l'IA, l'automatisation et les solutions SaaS métier en Afrique francophone.",
       siteUrl: `${SITE_URL}/blog`,
     }),
     alternates: {

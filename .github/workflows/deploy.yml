@@ -5,6 +5,11 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+# Serialize this site: one run cannot replace another while its public version is verified.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
 env:
   REGISTRY: ghcr.io
   APP_NAME: allianceconsultants-net
@@ -32,6 +37,7 @@ jobs:
         run: |
           docker build \
             -f infra/Dockerfile \
+            --build-arg APP_COMMIT_SHA="$GITHUB_SHA" \
             --build-arg NEXT_PUBLIC_SITE_URL=https://allianceconsultants.net \
             --build-arg NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=${{ secrets.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }} \
             --build-arg NEXT_PUBLIC_BING_SITE_VERIFICATION=${{ secrets.NEXT_PUBLIC_BING_SITE_VERIFICATION }} \
@@ -70,7 +76,9 @@ jobs:
           cp docker-compose.prod.yml "$APP_DIR/docker-compose.prod.yml"
           cp docker/nginx/nginx.conf "$APP_DIR/docker/nginx/nginx.conf"
           cd "$APP_DIR"
-          docker pull "${{ env.APP_IMAGE }}:latest"
+          docker pull "${{ env.APP_IMAGE }}:$GITHUB_SHA"
+          # Select the exact image just built; compose keeps its existing local :latest tag.
+          docker tag "${{ env.APP_IMAGE }}:$GITHUB_SHA" "${{ env.APP_IMAGE }}:latest"
           dc() {
             docker compose --env-file .env.production -f docker-compose.prod.yml "$@"
           }
@@ -85,3 +93,10 @@ jobs:
           echo "--- Web logs (last 30 lines) ---"
           docker logs --tail 30 allianceconsultants-web 2>&1 || true
           docker image prune -f
+
+      - name: Verify exact deployed commit
+        shell: bash
+        run: |
+          bash scripts/verify-deployment-sha.sh \
+            "$GITHUB_SHA" "${{ env.APP_IMAGE }}" "allianceconsultants-web" \
+            "http://127.0.0.1:3700/" "https://${{ env.APP_DOMAIN }}/"

@@ -29,6 +29,7 @@ const staticRoutes = [
   { url: "/references", priority: 0.7, changeFrequency: "monthly" as const },
   { url: "/blog", priority: 0.7, changeFrequency: "weekly" as const },
   { url: "/a-propos", priority: 0.6, changeFrequency: "monthly" as const },
+  { url: "/solutions/docupro-suite/gestion-courrier", priority: 0.8, changeFrequency: "monthly" as const },
   { url: "/contact-demo", priority: 0.9, changeFrequency: "monthly" as const },
   { url: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
   { url: "/mentions-legales", priority: 0.3, changeFrequency: "yearly" as const },

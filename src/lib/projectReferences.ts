@@ -85,11 +85,11 @@ export async function getPublishedProjectReferenceById(
  * Liste utilisée par le sitemap : ids des fiches publiées + date de mise à jour.
  */
 export async function listPublishedProjectReferencesForSitemap(): Promise<
-  { id: string; updatedAt: Date }[]
+  { id: string; companyName: string; projectTitle: string; updatedAt: Date }[]
 > {
   return prisma.projectReference.findMany({
     where: { published: true },
-    select: { id: true, updatedAt: true },
+    select: { id: true, companyName: true, projectTitle: true, updatedAt: true },
     orderBy: { updatedAt: "desc" },
   });
 }

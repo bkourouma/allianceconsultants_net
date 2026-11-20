@@ -16,6 +16,7 @@ import { getLine, lineStyle } from "@/lib/network";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Faq } from "@/components/solutions/Faq";
+import { RichBody } from "@/components/services/RichBody";
 import { RelatedSolutions } from "@/components/solutions/RelatedSolutions";
 import { LeadFormSection } from "@/components/solutions/LeadFormSection";
 import {
@@ -135,7 +136,19 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
       <ProofBlock proof={solution.proof} useCasesFallback={solution.useCases} />
 
       <Faq entries={solution.faq} />
-      {solution.slug === "docupro-suite" && (
+      {solution.editorialSections && solution.editorialSections.length > 0 && (
+        <section aria-label="Informations complémentaires" className="pb-16 lg:pb-24">
+          <div className="wrap space-y-12">
+            {solution.editorialSections.map((sec, i) => (
+              <div key={i} className="max-w-[72ch]">
+                <h2 className="t-h2 text-ink mb-6">{sec.title}</h2>
+                <RichBody body={sec.body} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+      {solution.slug === "docupro-suite" && !solution.editorialSections && (
         <section aria-labelledby="gestion-courrier-title" className="pb-16 lg:pb-24">
           <div className="wrap">
             <h2 id="gestion-courrier-title" className="t-h2 text-ink">

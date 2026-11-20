@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Perforation } from "@/components/about/CouponKit";
@@ -9,6 +9,7 @@ import {
   getPublishedProjectReferenceById,
   listLatestPublishedProjectReferences,
 } from "@/lib/projectReferences";
+import { referenceIdFromParam, referencePath } from "@/lib/referenceSlug";
 import { getSiteSettings } from "@/lib/content";
 import {
   buildCaseStudyJsonLd,
@@ -29,8 +30,10 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  const ref = await getPublishedProjectReferenceById(id);
+  const { id: param } = await params;
+  const ref = await getPublishedProjectReferenceById(
+    referenceIdFromParam(param),
+  );
   if (!ref) {
     return {
       title: "Référence introuvable",
@@ -38,10 +41,12 @@ export async function generateMetadata({
     };
   }
 
-  const url = `${SITE_URL}/references/${id}`;
-  const title = `${ref.companyName} — ${ref.projectTitle}`;
+  const url = `${SITE_URL}${referencePath(ref)}`;
+  const title = `${ref.companyName} : ${ref.projectTitle} — référence Alliance Consultants`;
   const description = oneLine(
-    [ref.problem, ref.solution].join(" — "),
+    [ref.sector ? `Secteur : ${ref.sector}.` : null, ref.problem, ref.solution]
+      .filter(Boolean)
+      .join(" — "),
     155,
   );
 
@@ -57,11 +62,20 @@ export async function generateMetadata({
 }
 
 export default async function ReferenceDetailPage({ params }: PageProps) {
-  const { id } = await params;
-  const ref = await getPublishedProjectReferenceById(id);
+  const { id: param } = await params;
+  const ref = await getPublishedProjectReferenceById(
+    referenceIdFromParam(param),
+  );
   if (!ref) {
     notFound();
   }
+
+  // Anciennes adresses (identifiant seul) → adresse descriptive.
+  const path = referencePath(ref);
+  if (path !== `/references/${param}`) {
+    permanentRedirect(path);
+  }
+  const id = path.slice("/references/".length);
 
   const [settings, latest] = await Promise.all([
     getSiteSettings(),
@@ -87,7 +101,7 @@ export default async function ReferenceDetailPage({ params }: PageProps) {
     updatedAt: ref.updatedAt,
   });
 
-  const others = latest.filter((r) => r.id !== id).slice(0, 3);
+  const others = latest.filter((r) => r.id !== ref.id).slice(0, 3);
 
   const sections: { title: string; body: string }[] = [
     { title: "Problématique", body: ref.problem },

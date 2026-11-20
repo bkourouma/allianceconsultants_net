@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { listPublishedPostsForSitemap } from "@/lib/blog";
+import { referencePath } from "@/lib/referenceSlug";
 import { listPublishedProjectReferencesForSitemap } from "@/lib/projectReferences";
 import {
   getAllServiceSlugs,
@@ -93,7 +94,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const referenceEntries: Entry[] = refs.map((r) => ({
-    url: `${BASE_URL}/references/${r.id}`,
+    url: `${BASE_URL}${referencePath(r)}`,
     lastModified: r.updatedAt,
     changeFrequency: "monthly" as const,
     priority: 0.6,

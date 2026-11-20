@@ -14,6 +14,7 @@ import { Breadcrumb } from "@/components/solutions/Breadcrumb";
 import s from "@/components/solutions/Solutions.module.css";
 import { getLine, lineStyle } from "@/lib/network";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { Faq } from "@/components/solutions/Faq";
 import { RelatedSolutions } from "@/components/solutions/RelatedSolutions";
 import { LeadFormSection } from "@/components/solutions/LeadFormSection";
@@ -134,6 +135,25 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
       <ProofBlock proof={solution.proof} useCasesFallback={solution.useCases} />
 
       <Faq entries={solution.faq} />
+      {solution.slug === "docupro-suite" && (
+        <section aria-labelledby="gestion-courrier-title" className="pb-16 lg:pb-24">
+          <div className="wrap">
+            <h2 id="gestion-courrier-title" className="t-h2 text-ink">
+              Gestion du courrier administratif
+            </h2>
+            <p className="t-body mt-4 !max-w-[62ch] text-ink-soft">
+              Du courrier entrant à l&apos;archivage, découvrez comment le module
+              Docu-Courriers suit chaque courrier.{" "}
+              <Link
+                href="/solutions/docupro-suite/gestion-courrier"
+                className="underline"
+              >
+                Voir la gestion électronique du courrier
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
       <RelatedSolutions
         related={solution.relatedSolutions}
         allSolutions={allSolutions}

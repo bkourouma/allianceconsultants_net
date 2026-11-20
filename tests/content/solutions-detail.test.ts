@@ -109,4 +109,15 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
       expect(allowed).toContain(detail.hero.primaryCta.intent);
     }
   });
+
+  it("ecole-digitale: cibles Côte d'Ivoire, paragraphe local visible et CTA démo", async () => {
+    const { data } = await loadDetail("ecole-digitale");
+    const detail = SolutionDetailSchema.parse(data);
+    expect(detail.seoTitle).toContain("Côte d'Ivoire");
+    expect(detail.seoDescription).toContain("Côte d'Ivoire");
+    expect(detail.hero.headline).toContain("Côte d'Ivoire");
+    expect(detail.valueProposition).toContain("Côte d'Ivoire");
+    expect(detail.hero.primaryCta.intent).toBe("demo");
+    expect(detail.hero.primaryCta.label.toLowerCase()).toContain("démo");
+  });
 });

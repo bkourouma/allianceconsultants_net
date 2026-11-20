@@ -6,7 +6,7 @@ import ts from 'typescript';
 
 const SITE_KIND = 'alliance';
 const ROOT_SOURCE = 'src/app/api/lead/route.ts';
-function scenario({ failure = false, noWebhook = false } = {}) {
+function scenario({ failure = false, noWebhook = false, noDurableSink = false } = {}) {
   const calls = { prepared: [], confirmed: [] };
   const env = { N8N_WEBHOOK_URL: noWebhook ? '' : 'https://upstream.invalid', LEADS_TO_EMAIL: 'test@example.test', LEADS_FROM_EMAIL: 'test@example.test' };
   const helper = { prepareBusinessSubmission: async input => { calls.prepared.push(input); return 'ticket'; }, confirmBusinessSubmission: async (...args) => { calls.confirmed.push(args); return true; }, submissionDevice: () => 'MOBILE' };
@@ -15,7 +15,7 @@ function scenario({ failure = false, noWebhook = false } = {}) {
   const exportsByPath = new Map();
   const load = path => {
     if (exportsByPath.has(path)) return exportsByPath.get(path);
-    const module = { exports: {} }; exportsByPath.set(path, module.exports);
+    const sandboxModule = { exports: {} }; exportsByPath.set(path, sandboxModule.exports);
     const source = readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
     const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
     const require = name => {
@@ -31,13 +31,13 @@ function scenario({ failure = false, noWebhook = false } = {}) {
       if (name === '@/lib/leads/handler') return load('lib/leads/handler.ts');
       if (name === '@/lib/leads/rate-limit') return { checkRateLimit: () => ({ allowed: true }), getClientIp: () => 'isolated' };
       if (name === '@/lib/leads/sinks') return { LeadDispatchError: DispatchError };
-      if (name.endsWith('/resend.sink')) return { ResendLeadSink: class { critical = true; async handle() { if (failure) throw new Error('isolated sink failure'); } } };
+      if (name.endsWith('/resend.sink')) return { ResendLeadSink: class { critical = true; async handle() { if (failure) throw new Error('isolated sink failure'); return noDurableSink ? undefined : { delivered: true }; } } };
       if (name.endsWith('/log.sink')) return { LogLeadSink: class { critical = false; async handle() {} } };
       if (name === 'zod') return { ZodError: class extends Error {} };
       throw new Error(`Unexpected import in isolated handler test: ${name}`);
     };
-    vm.runInNewContext(compiled, { module, exports: module.exports, require, Request, Response, Headers, AbortSignal, Buffer, process: { env }, console: { warn() {}, error() {} }, fetch: async () => new Response(null, { status: failure ? 502 : 200 }) });
-    return module.exports;
+    vm.runInNewContext(compiled, { module: sandboxModule, exports: sandboxModule.exports, require, Request, Response, Headers, AbortSignal, Buffer, process: { env }, console: { warn() {}, error() {} }, fetch: async () => new Response(null, { status: failure ? 502 : 200 }) });
+    return sandboxModule.exports;
   };
   return { calls, handler: load(ROOT_SOURCE) };
 }
@@ -59,4 +59,8 @@ test('a failed persistence or critical sink never confirms a conversion', async 
 if (SITE_KIND === 'immo') test('forwarded:false is not a transmitted submission', async () => {
   const { calls, handler } = scenario({ noWebhook: true }); const response = await handler.POST(request(body));
   assert.equal((await response.json()).forwarded, false); assert.equal(calls.prepared.length, 0); assert.equal(calls.confirmed.length, 0);
+});
+if (SITE_KIND === 'ecole') test('a missing real email provider never turns a log-only success into a conversion', async () => {
+  const { calls, handler } = scenario({ noDurableSink: true }); const response = await handler.POST(request(body));
+  assert.equal(response.status, 200); assert.equal(calls.confirmed.length, 0);
 });

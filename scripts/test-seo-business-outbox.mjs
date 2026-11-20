@@ -14,13 +14,13 @@ async function fixture(run) {
 test('preparation alone never creates a conversion; failed primary sinks can abandon safely', () => fixture(async directory => {
   let calls = 0;
   const outbox = createBusinessOutbox({ directory, sourceId: 'source-123', token, now: () => at, fetch: async () => { calls++; return Response.json({ accepted: 1, duplicates: 0 }); } });
-  const ticket = await outbox.prepare({ pagePath: '/demo', language: 'fr' });
+  const ticket = await outbox.prepare({ pagePath: '/', language: 'fr' });
   await outbox.flush(); assert.equal(calls, 0); assert.equal((await outbox.status()).unconfirmed, 1);
   await outbox.abandon(ticket); assert.equal((await outbox.status()).unconfirmed, 0);
 }));
 test('confirmed events survive a failed delivery and restart; duplicate acknowledgement is accepted', () => fixture(async directory => {
   const outbox = createBusinessOutbox({ directory, sourceId: 'source-123', token, now: () => at, fetch: async () => { throw new Error('private token secret upstream'); } });
-  const ticket = await outbox.prepare({ pagePath: '/demo', language: 'fr', device: 'MOBILE', email: 'never-store@example.test' });
+  const ticket = await outbox.prepare({ pagePath: '/', language: 'fr', device: 'MOBILE', email: 'never-store@example.test' });
   assert.equal(await outbox.confirm(ticket, 'durable-lead-reference'), true);
   await outbox.flush(); assert.equal((await outbox.status()).pending, 1);
   const data = await Promise.all((await readdir(directory)).filter(p => p.endsWith('.json')).map(p => readFile(join(directory, p), 'utf8')));
@@ -43,6 +43,8 @@ test('partial or false HTTP200 acknowledgement never deletes persisted events', 
 test('request fields never become stored PII, invented location or query parameters', () => {
   assert.deepEqual(submissionDimensions({ pagePath: '/?email=person', language: 'fr', device: 'MOBILE', country: 'ci', email: 'person' }), { language: 'fr', device: 'MOBILE' });
   assert.equal(submissionDevice('Mozilla/5.0 iPhone Mobile'), 'MOBILE'); assert.equal(submissionDevice('unknown'), undefined);
+  assert.deepEqual(submissionDimensions({ pagePath: '/contact/person@example.test' }), {});
+  assert.deepEqual(submissionDimensions({ pagePath: '/contact/person%40example.test' }), {});
 });
 test('rotating to a different source never replays the old scoped outbox', () => fixture(async directory => {
   const original = createBusinessOutbox({ directory, sourceId: 'source-123', token, now: () => at });

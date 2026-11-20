@@ -5,12 +5,13 @@ import { isAbsolute, join } from 'node:path';
 const INGEST_ORIGIN = 'https://dashboard.allianceconsultants.net';
 const MAX_FILES = 10_000;
 const BATCH = 25;
+const ALLOWED_PAGE_PATHS = new Set(["/","/a-propos","/blog","/contact-demo","/contact-erreur","/contact-recu","/formations","/mentions-legales","/privacy","/references","/services","/solutions","/solutions/docupro-suite/gestion-courrier"]);
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 
 /** Only allowlisted, non-personal measurement fields enter the durable outbox. */
 export function submissionDimensions({ pagePath, language, device } = {}) {
   const result = {};
-  if (typeof pagePath === 'string' && pagePath.startsWith('/') && !pagePath.startsWith('//') && pagePath.length <= 1000 && !/[?#\\\u0000-\u0020]/.test(pagePath)) result.pagePath = pagePath;
+  if (typeof pagePath === 'string' && ALLOWED_PAGE_PATHS.has(pagePath)) result.pagePath = pagePath;
   if (typeof language === 'string' && /^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/i.test(language)) result.language = language.toLowerCase();
   if (['MOBILE', 'DESKTOP', 'TABLET'].includes(device)) result.device = device;
   return result;

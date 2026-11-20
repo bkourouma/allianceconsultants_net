@@ -11,24 +11,60 @@ const LINKS_BY_TAG: Record<string, ContextLink[]> = {
   ged: [
     {
       href: "/services/dematerialisation-archives",
-      label: "Numérisation et dématérialisation de vos archives",
+      label: "Numérisation et dématérialisation des archives",
     },
-    { href: "/solutions/docupro-suite", label: "DocuPro Suite, gestion documentaire" },
+    {
+      href: "/solutions/docupro-suite",
+      label: "DocuPro Suite, GED & archivage électronique",
+    },
   ],
   automatisation: [
     {
       href: "/services/automatisation-ia-processus-metiers",
-      label: "Automatisation IA de vos processus métiers",
+      label: "Automatisation IA des processus métiers",
+    },
+    {
+      href: "/formations/automatisation-n8n-processus-ia",
+      label: "Formation automatisation n8n & processus IA",
     },
   ],
   ia: [
     {
       href: "/services/automatisation-ia-processus-metiers",
-      label: "Automatisation IA de vos processus métiers",
+      label: "Automatisation IA des processus métiers",
+    },
+    {
+      href: "/formations/ia-entreprise",
+      label: "Formation IA en entreprise à Abidjan",
     },
   ],
   immobilier: [
-    { href: "/solutions/immotopia-cloud", label: "ImmoTopia.cloud, logiciel pour agences immobilières" },
+    {
+      href: "/solutions/immotopia-cloud",
+      label: "ImmoTopia.cloud, logiciel immobilier & gestion locative",
+    },
+  ],
+  sante: [
+    {
+      href: "/solutions/cliniquepro",
+      label: "CliniquePro, gestion de clinique et cabinet médical",
+    },
+  ],
+  developpement: [
+    {
+      href: "/services/developpement-specifique",
+      label: "Développement spécifique & applications sur mesure",
+    },
+    {
+      href: "/formations/developpement-web-dotnet-ia",
+      label: "Formation développement web, .NET & IA",
+    },
+  ],
+  donnees: [
+    {
+      href: "/formations/sql-server",
+      label: "Formation SQL Server & bases de données",
+    },
   ],
 };
 
@@ -42,7 +78,7 @@ export function contextLinksForTags(tagSlugs: string[]): ContextLink[] {
       out.push(link);
     }
   }
-  return out.slice(0, 5);
+  return out.slice(0, 4);
 }
 
 /** Liens contextuels vers les pages service ou solution liées au sujet de l'article. */
@@ -54,15 +90,15 @@ export function ArticleContextLinks({ tagSlugs }: { tagSlugs: string[] }) {
       <p id="context-links-title" className="t-field mb-3">
         Pour aller plus loin
       </p>
-      <ul className="grid gap-1">
+      <ul className="grid gap-2">
         {links.map((l) => (
           <li key={l.href}>
             <Link
               href={l.href}
-              className="inline-flex min-h-11 items-center gap-2 font-medium text-ink underline decoration-red decoration-2 underline-offset-4 hover:decoration-4"
+              className="inline-flex min-h-11 items-center gap-2 py-2 font-medium text-ink underline decoration-red decoration-2 underline-offset-4 hover:decoration-4 leading-snug break-words"
             >
-              {l.label}
-              <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
+              <span>{l.label}</span>
+              <ArrowRight aria-hidden className="size-4 shrink-0" strokeWidth={2} />
             </Link>
           </li>
         ))}

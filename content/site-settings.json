@@ -34,14 +34,22 @@
   ],
   "footerMenu": {
     "solutions": [
-      { "label": "MedicPro", "href": "/solutions/medicpro" }
+      { "label": "DocuPro Suite", "href": "/solutions/docupro-suite" },
+      { "label": "CliniquePro", "href": "/solutions/cliniquepro" },
+      { "label": "ImmoTopia", "href": "/solutions/immotopia-cloud" },
+      { "label": "École Digitale", "href": "/solutions/ecole-digitale" },
+      { "label": "MedicPro", "href": "/solutions/medicpro" },
+      { "label": "Toutes les solutions", "href": "/solutions" }
     ],
     "services": [
+      { "label": "Développement spécifique", "href": "/services/developpement-specifique" },
       { "label": "Automatisation IA", "href": "/services/automatisation-ia-processus-metiers" },
-      { "label": "Numérisation & dématérialisation", "href": "/services/dematerialisation-archives" }
+      { "label": "Numérisation & dématérialisation", "href": "/services/dematerialisation-archives" },
+      { "label": "Tous les services", "href": "/services" }
     ],
     "formations": [
-      { "label": "Formation IA entreprise", "href": "/formations/ia-entreprise" }
+      { "label": "Formation IA entreprise", "href": "/formations/ia-entreprise" },
+      { "label": "Toutes les formations", "href": "/formations" }
     ],
     "blog": [
       { "label": "Tous les articles", "href": "/blog" }

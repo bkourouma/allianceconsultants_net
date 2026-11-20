@@ -34,29 +34,17 @@
   ],
   "footerMenu": {
     "solutions": [
-      { "label": "DocuPro Suite", "href": "https://docupro-new.allianceconsultants.net/" },
-      { "label": "MedicPro", "href": "/solutions/medicpro" },
-      { "label": "CliniquePro", "href": "https://cliniquepro.allianceconsultants.net/" },
-      { "label": "ImmoTopia", "href": "https://immotopia.cloud/" },
-      { "label": "Immo-Annonces.fr", "href": "/solutions/annonces-web" },
-      { "label": "École Digitale", "href": "https://ecoledigitale.allianceconsultants.net/" }
+      { "label": "MedicPro", "href": "/solutions/medicpro" }
     ],
     "services": [
-      { "label": "Développement spécifique", "href": "/services/developpement-specifique" },
       { "label": "Automatisation IA", "href": "/services/automatisation-ia-processus-metiers" },
-      { "label": "AMOA", "href": "/services/assistance-maitrise-ouvrage" },
       { "label": "Numérisation & dématérialisation", "href": "/services/dematerialisation-archives" }
     ],
     "formations": [
-      { "label": "Formation IA entreprise", "href": "/formations/ia-entreprise" },
-      { "label": "Développement web & IA", "href": "/formations/developpement-web-dotnet-ia" },
-      { "label": "Automatisation n8n", "href": "/formations/automatisation-n8n-processus-ia" },
-      { "label": "SQL Server", "href": "/formations/sql-server" },
-      { "label": "GED & Archivage", "href": "/formations/ged-archivage" }
+      { "label": "Formation IA entreprise", "href": "/formations/ia-entreprise" }
     ],
     "blog": [
-      { "label": "Tous les articles", "href": "/blog" },
-      { "label": "Flux RSS", "href": "/feed.xml" }
+      { "label": "Tous les articles", "href": "/blog" }
     ],
     "legal": [
       { "label": "Mentions légales", "href": "/mentions-legales" },

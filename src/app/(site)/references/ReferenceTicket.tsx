@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { referencePath } from "@/lib/referenceSlug";
 import type { PublicProjectReference } from "@/lib/projectReferences";
 
 type TicketReference = Pick<
@@ -52,7 +53,7 @@ export function ReferenceTicket({ reference }: { reference: TicketReference }) {
           <p className="t-field">{reference.companyName}</p>
           <h3 className="mt-2 font-display text-[1.5rem] font-bold leading-[1.08] text-ink">
             <Link
-              href={`/references/${reference.id}`}
+              href={referencePath(reference)}
               className="after:absolute after:inset-0"
             >
               {reference.projectTitle}

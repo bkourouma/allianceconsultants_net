@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { referencePath } from "@/lib/referenceSlug";
 import type { PublicProjectReference } from "@/lib/projectReferences";
 import { cn } from "@/lib/utils";
 import styles from "./ProjectReferenceCard.module.css";
@@ -55,7 +56,7 @@ export function ProjectReferenceCard({ reference }: ProjectReferenceCardProps) {
         </p>
         <h3 className="t-h3 mt-1 text-ink">
           <Link
-            href={`/references/${reference.id}`}
+            href={referencePath(reference)}
             className="after:absolute after:inset-0"
           >
             {reference.projectTitle}

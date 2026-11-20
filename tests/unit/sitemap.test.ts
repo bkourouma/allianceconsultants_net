@@ -38,7 +38,7 @@ beforeEach(() => {
   ]);
   blog.listAllPublishedTags.mockResolvedValue([{ slug: "ia", label: "IA", count: 2 }]);
   refs.listPublishedProjectReferencesForSitemap.mockResolvedValue([
-    { id: "ref1", updatedAt: new Date("2026-02-02T00:00:00Z") },
+    { id: "cref1aaaaaaaaaaaaaaaaaaaaa", companyName: "Client Test", projectTitle: "Projet Test", updatedAt: new Date("2026-02-02T00:00:00Z") },
   ]);
   content.getAllSolutionDetailSlugs.mockResolvedValue(["medicpro"]);
   content.getAllServiceSlugs.mockResolvedValue(["scanners-professionnels"]);
@@ -71,7 +71,7 @@ describe("sitemap", () => {
       "/solutions/medicpro",
       "/services/scanners-professionnels",
       "/formations/ged-archivage",
-      "/references/ref1",
+      "/references/client-test-projet-test-cref1aaaaaaaaaaaaaaaaaaaaa",
     ]) {
       expect(urls).toContain(`${BASE}${path}`);
     }

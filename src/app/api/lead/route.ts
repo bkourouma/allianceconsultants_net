@@ -1,3 +1,4 @@
+import { prepareBusinessSubmission, confirmBusinessSubmission, submissionDevice } from '@/lib/seo-business-outbox.mjs';
 import { NextResponse, type NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
 import { LeadInputSchema, type LeadInput } from "@/lib/validators/lead";
@@ -119,6 +120,9 @@ export async function POST(req: NextRequest) {
     ipHash = null;
   }
 
+  // Prepare measurement without personal data; only durable persistence confirms it.
+  const measurement = await prepareBusinessSubmission({ pagePath: input.fromPage ?? undefined, device: submissionDevice(req.headers.get('user-agent')) });
+
   // Persist
   let leadId: string;
   let createdLead;
@@ -153,6 +157,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  await confirmBusinessSubmission(measurement, leadId);
+
   // Notify (best-effort — lead is already persisted)
   let mailSent = false;
   try {
@@ -175,3 +181,4 @@ export async function POST(req: NextRequest) {
     { status: 200 }
   );
 }
+

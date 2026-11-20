@@ -57,7 +57,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@esbuild ./node_modu
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/get-tsconfig ./node_modules/get-tsconfig
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/resolve-pkg-maps ./node_modules/resolve-pkg-maps
 
+RUN mkdir -p /app/data/seo-business-outbox && chown nextjs:nodejs /app/data/seo-business-outbox
 USER nextjs
 EXPOSE 3000
 
 CMD ["node", "server.js"]
+

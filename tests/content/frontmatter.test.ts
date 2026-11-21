@@ -91,4 +91,15 @@ describe("Content frontmatter validation", () => {
       expect(result.success, `${entry.file}: ${JSON.stringify(result.error?.issues)}`).toBe(true);
     }
   });
+
+  it("ia-entreprise training has local Abidjan targeting and valid contextual link", async () => {
+    const raw = await fs.readFile(path.join(ROOT, "trainings", "ia-entreprise.mdx"), "utf-8");
+    const { data, content } = matter(raw);
+    const parsed = TrainingSchema.parse(data);
+    expect(parsed.title).toContain("Abidjan");
+    expect(parsed.shortDescription).toContain("Abidjan");
+    expect(parsed.shortDescription.length).toBeLessThanOrEqual(160);
+    expect(content).toContain("[contactez-nous](/contact-demo)");
+    expect(content).toContain("(/services/automatisation-ia-processus-metiers)");
+  });
 });

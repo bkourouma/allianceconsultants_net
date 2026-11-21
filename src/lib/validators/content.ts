@@ -236,6 +236,12 @@ export const SolutionComparisonSchema = z.object({
   points: z.array(SolutionComparisonPointSchema).min(2).max(5),
 });
 
+/** Section éditoriale facultative (paragraphes thématiques, focus métier). */
+export const SolutionSectionSchema = z.object({
+  title: z.string().min(2).max(120),
+  body: z.string().min(10),
+});
+
 export const SolutionDetailSchema = SolutionSchema.extend({
   // SEO promu en obligatoire au niveau page détail
   seoTitle: z.string().min(10).max(60),
@@ -255,6 +261,7 @@ export const SolutionDetailSchema = SolutionSchema.extend({
     .max(3),
   productLink: SolutionProductLinkSchema.optional(),
   comparison: SolutionComparisonSchema.optional(),
+  editorialSections: z.array(SolutionSectionSchema).optional(),
 });
 
 export type SolutionLeadIntent = z.infer<typeof SolutionLeadIntentSchema>;

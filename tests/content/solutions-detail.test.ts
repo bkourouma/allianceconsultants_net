@@ -110,6 +110,17 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
     }
   });
 
+  it("ecole-digitale: cibles Côte d'Ivoire, paragraphe local visible et CTA démo", async () => {
+    const { data } = await loadDetail("ecole-digitale");
+    const detail = SolutionDetailSchema.parse(data);
+    expect(detail.seoTitle).toContain("Côte d'Ivoire");
+    expect(detail.seoDescription).toContain("Côte d'Ivoire");
+    expect(detail.hero.headline).toContain("Côte d'Ivoire");
+    expect(detail.valueProposition).toContain("Côte d'Ivoire");
+    expect(detail.hero.primaryCta.intent).toBe("demo");
+    expect(detail.hero.primaryCta.label.toLowerCase()).toContain("démo");
+  });
+
   it("immotopia-cloud: editorialSections contient la gestion locative en Côte d'Ivoire sans allégation non sourcée", async () => {
     const { data } = await loadDetail("immotopia-cloud");
     const detail = SolutionDetailSchema.parse(data);
@@ -119,7 +130,6 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
     expect(detail.editorialSections?.[0].body).toContain("Mobile Money");
     expect(detail.editorialSections?.[0].body).toContain("/contact-demo");
   });
-
 
   it("docupro-suite: editorialSections contient la GED et la gestion du courrier avec le lien #136", async () => {
     const { data } = await loadDetail("docupro-suite");

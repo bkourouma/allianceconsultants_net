@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { ArticleBody } from "@/components/blog/ArticleBody";
+import { ArticleContextLinks } from "@/components/blog/ArticleContextLinks";
 import { ArticleFaq } from "@/components/blog/ArticleFaq";
 import { ArticleToc } from "@/components/blog/ArticleToc";
 import { BlogArticleHero } from "@/components/blog/BlogArticleHero";
@@ -142,6 +143,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <article aria-label={post.title} className="min-w-0">
             <ArticleBody html={html} id={ARTICLE_ID} />
             <ArticleFaq entries={post.faq} />
+            <ArticleContextLinks tagSlugs={post.tags.map((t) => t.slug)} />
 
             <footer className="mt-14">
               <hr className="tear" />

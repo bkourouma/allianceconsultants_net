@@ -121,6 +121,16 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
     expect(detail.hero.primaryCta.label.toLowerCase()).toContain("démo");
   });
 
+  it("immotopia-cloud: editorialSections contient la gestion locative en Côte d'Ivoire sans allégation non sourcée", async () => {
+    const { data } = await loadDetail("immotopia-cloud");
+    const detail = SolutionDetailSchema.parse(data);
+    expect(detail.editorialSections).toBeDefined();
+    expect(detail.editorialSections?.length).toBe(1);
+    expect(detail.editorialSections?.[0].title).toBe("Logiciel de gestion locative en Côte d'Ivoire");
+    expect(detail.editorialSections?.[0].body).toContain("Mobile Money");
+    expect(detail.editorialSections?.[0].body).toContain("/contact-demo");
+  });
+
   it("docupro-suite: editorialSections contient la GED et la gestion du courrier avec le lien #136", async () => {
     const { data } = await loadDetail("docupro-suite");
     const detail = SolutionDetailSchema.parse(data);

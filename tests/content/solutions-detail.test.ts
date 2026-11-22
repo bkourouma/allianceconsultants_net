@@ -120,7 +120,6 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
     expect(detail.editorialSections?.[0].body).toContain("/contact-demo");
   });
 
-
   it("docupro-suite: editorialSections contient la GED et la gestion du courrier avec le lien #136", async () => {
     const { data } = await loadDetail("docupro-suite");
     const detail = SolutionDetailSchema.parse(data);

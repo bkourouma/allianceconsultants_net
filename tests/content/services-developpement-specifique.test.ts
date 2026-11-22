@@ -5,7 +5,7 @@ import matter from "gray-matter";
 import { ServiceSchema } from "@/lib/validators/content";
 
 describe("Service développement spécifique (PR #122)", () => {
-  it("respecte la chronologie (fondée en 2003, implantation ivoirienne en 2006) et ne contient pas 'à Abidjan depuis 2003'", async () => {
+  it("présente Alliance Consultants comme basée à Abidjan depuis 2003, sans mention d'une implantation en 2006", async () => {
     const raw = await fs.readFile(
       path.join(process.cwd(), "content", "services", "developpement-specifique.mdx"),
       "utf-8"
@@ -18,12 +18,11 @@ describe("Service développement spécifique (PR #122)", () => {
     expect(service.seoTitle?.length).toBeGreaterThanOrEqual(10);
     expect(service.seoTitle?.length).toBeLessThanOrEqual(60);
     expect(service.seoTitle).toContain("Abidjan");
-    expect(service.seoTitle).not.toContain("depuis 2003");
 
     expect(service.seoDescription).toBeDefined();
     expect(service.seoDescription?.length).toBeGreaterThanOrEqual(50);
     expect(service.seoDescription?.length).toBeLessThanOrEqual(160);
-    expect(service.seoDescription).toContain("Fondée en 2003, Alliance Consultants est aujourd'hui basée à Abidjan");
+    expect(service.seoDescription).toContain("basée à Abidjan depuis 2003");
 
     // H1
     expect(service.h1).toBeDefined();
@@ -34,13 +33,11 @@ describe("Service développement spécifique (PR #122)", () => {
     // FAQ
     expect(service.faq).toBeDefined();
     const locFaq = service.faq?.find((f) => f.question.includes("se trouve"));
-    expect(locFaq?.answer).toContain("Fondée en 2003, Alliance Consultants est aujourd'hui basée à Abidjan");
-    expect(locFaq?.answer).toContain("2006");
+    expect(locFaq?.answer).toContain("basée à Abidjan depuis 2003");
+    expect(locFaq?.answer).not.toContain("2006");
 
-    // Aucun passage n'affirme 'à Abidjan depuis 2003' ou 'installée à Abidjan... depuis 2003'
-    const fullText = raw.toLowerCase();
-    expect(fullText).not.toContain("à abidjan depuis 2003");
-    expect(fullText).not.toContain("installée à abidjan, en côte d'ivoire, depuis 2003");
+    // La date de 2006 ne doit apparaître nulle part (contradiction avec la page d'accueil)
+    expect(raw).not.toContain("2006");
 
     // Liens internes vers les solutions
     expect(content).toContain("[DocuPro Suite](/solutions/docupro-suite)");

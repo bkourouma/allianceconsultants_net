@@ -120,4 +120,14 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
     expect(detail.hero.primaryCta.intent).toBe("demo");
     expect(detail.hero.primaryCta.label.toLowerCase()).toContain("démo");
   });
+
+  it("docupro-suite: editorialSections contient la GED et la gestion du courrier avec le lien #136", async () => {
+    const { data } = await loadDetail("docupro-suite");
+    const detail = SolutionDetailSchema.parse(data);
+    expect(detail.editorialSections).toBeDefined();
+    expect(detail.editorialSections?.length).toBe(2);
+    expect(detail.editorialSections?.[0].title).toContain("GED");
+    expect(detail.editorialSections?.[1].title).toContain("courrier");
+    expect(detail.editorialSections?.[1].body).toContain("/solutions/docupro-suite/gestion-courrier");
+  });
 });

@@ -16,11 +16,17 @@ ENV NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=$NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 ENV NEXT_PUBLIC_BING_SITE_VERIFICATION=$NEXT_PUBLIC_BING_SITE_VERIFICATION
 
 RUN npx prisma generate
+ARG APP_COMMIT_SHA
+ENV APP_COMMIT_SHA=$APP_COMMIT_SHA
+RUN node -e 'if (process.env.APP_COMMIT_SHA?.length !== 40 || !/^[0-9a-f]{40}$/.test(process.env.APP_COMMIT_SHA)) throw new Error("APP_COMMIT_SHA must be a full commit SHA")'
 RUN npm run build
 
 # Stage 2: Runner
 FROM node:22-alpine AS runner
 WORKDIR /app
+
+ARG APP_COMMIT_SHA
+LABEL org.opencontainers.image.revision=$APP_COMMIT_SHA
 
 ENV NODE_ENV=production
 ENV PORT=3000
@@ -51,7 +57,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@esbuild ./node_modu
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/get-tsconfig ./node_modules/get-tsconfig
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/resolve-pkg-maps ./node_modules/resolve-pkg-maps
 
+RUN mkdir -p /app/data/seo-business-outbox && chown nextjs:nodejs /app/data/seo-business-outbox
 USER nextjs
 EXPOSE 3000
 
 CMD ["node", "server.js"]
+

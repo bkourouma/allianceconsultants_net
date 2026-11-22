@@ -109,4 +109,14 @@ describe("Solutions detail content (feature 001-pages-corporate-solutions)", () 
       expect(allowed).toContain(detail.hero.primaryCta.intent);
     }
   });
+
+  it("immotopia-cloud: editorialSections contient la gestion locative en Côte d'Ivoire sans allégation non sourcée", async () => {
+    const { data } = await loadDetail("immotopia-cloud");
+    const detail = SolutionDetailSchema.parse(data);
+    expect(detail.editorialSections).toBeDefined();
+    expect(detail.editorialSections?.length).toBe(1);
+    expect(detail.editorialSections?.[0].title).toBe("Logiciel de gestion locative en Côte d'Ivoire");
+    expect(detail.editorialSections?.[0].body).toContain("Mobile Money");
+    expect(detail.editorialSections?.[0].body).toContain("/contact-demo");
+  });
 });

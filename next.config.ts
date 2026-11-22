@@ -8,6 +8,12 @@ const withMDX = createMDX({
   },
 });
 
+// Read only while building: Next serializes these headers into the production artifact.
+const commitSha = process.env.APP_COMMIT_SHA;
+const commitHeaders = commitSha?.length === 40 && /^[0-9a-f]{40}$/.test(commitSha)
+  ? [{ key: "x-commit-sha", value: commitSha }]
+  : [];
+
 const nextConfig: NextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   output: "standalone",
@@ -26,6 +32,7 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
+          ...commitHeaders,
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

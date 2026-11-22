@@ -148,7 +148,7 @@ export default async function SolutionDetailPage({ params }: RouteProps) {
           </div>
         </section>
       )}
-      {solution.slug === "docupro-suite" && (
+      {solution.slug === "docupro-suite" && !solution.editorialSections && (
         <section aria-labelledby="gestion-courrier-title" className="pb-16 lg:pb-24">
           <div className="wrap">
             <h2 id="gestion-courrier-title" className="t-h2 text-ink">

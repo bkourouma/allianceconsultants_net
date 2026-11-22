@@ -1,0 +1,18 @@
+# Alerte e-mail : si l'agent pr-agent ne répond plus, ce workflow échoue et GitHub prévient par e-mail.
+name: Surveillance pr-agent
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions: {}
+jobs:
+  sante:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Vérifier /health
+        run: |
+          out=$(curl -fsS --max-time 20 --retry 2 --retry-delay 10 https://pr-agent.allianceconsultants.net/health)
+          echo "$out"
+          echo "$out" | grep -q '"status":"ok"'
+          if echo "$out" | grep -q '"suspendu":true'; then echo "::warning::pr-agent est suspendu (interrupteur d'urgence)"; fi

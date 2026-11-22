@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Deployment SHA checks
+        run: bash scripts/test-deployment-sha.sh
+
       - name: Typecheck
         run: npm run typecheck
 
@@ -30,6 +33,8 @@ jobs:
       - name: Validate content
         run: npm run validate-content
 
+      - name: Durable business measurement regressions
+        run: node --test scripts/test-seo-business-outbox.mjs scripts/test-seo-business-hooks.mjs
       - name: Unit tests
         run: npm run test:ci
 
@@ -39,9 +44,17 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
           NEXT_PUBLIC_SITE_URL: https://allianceconsultants.net
           SKIP_DB_PUSH: "true"
+          APP_COMMIT_SHA: ${{ github.sha }}
+
+      - name: Verify compiled SHA
+        run: node scripts/test-commit-artifact.mjs
+        env:
+          APP_COMMIT_SHA: ${{ github.sha }}
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
 
       # Lighthouse CI — non bloquant MVP, bloquant en V2
       - name: Lighthouse CI (non-blocking MVP)
         run: npm run lhci || true
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+

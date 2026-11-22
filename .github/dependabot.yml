@@ -1,0 +1,15 @@
+# Mises à jour hebdomadaires des dépendances npm, relues par l'agent pr-agent.
+# Les montées de version majeures sont ignorées : elles se traitent à la main.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "deps"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
